@@ -1,0 +1,28 @@
+@import '@/styles/variables';
+@import '@/styles/animations';
+
+.Preloader {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 40px;
+  text-align: center;
+  animation: fadeIn ease-in 1s;
+
+  &_blue {
+    color: $blue-400;
+  }
+
+  &_spinner {
+    margin: 80px 0;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side, $blue-400 94%,#0000) top/14.1px 14.1px no-repeat,
+           conic-gradient(#0000 30%, $blue-400);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 14.1px),#000 0);
+    animation: spinner-c7wet2 1s infinite linear;
+  } 
+}
+

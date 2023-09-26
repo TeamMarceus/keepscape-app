@@ -1,0 +1,6 @@
+export const AUTHENTICATION_ROUTES = {
+  LOGIN: '/login',
+  PAGE_NOT_FOUND: '/page-not-found',
+  SIGNUP: '/signup',
+  LOGOUT: '/logout',
+};

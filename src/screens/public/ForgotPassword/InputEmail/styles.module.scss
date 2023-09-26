@@ -1,0 +1,40 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.InputEmail {
+  margin-top: 80px;
+  padding-bottom: 60px;
+  text-align: center;
+
+  &_header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  &_content {
+    &_buttonGroup {
+      margin-top: 60px;
+      width: 100%;
+
+      &_buttonText {
+        @include flex-center;
+      }
+
+      &_spinner {
+        margin-left: 12px;
+        width: auto;
+      }
+
+      &_proceedButton {
+        margin-bottom: 24px;
+        width: 250px;
+      }
+    }
+  }
+
+  &_withMarginTop {
+    margin-top: 12px;
+}
+}

@@ -1,0 +1,96 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+@import '@/styles/animations';
+
+.Suggestions {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn ease-in 0.5s;
+  flex-direction: column;
+  padding: 0 60px;
+  padding-bottom: 60px;
+  text-align: center;
+
+  &_header {
+    @include flex-between;
+    margin-bottom: 40px;
+  }
+
+  &_button {
+    padding: 12px 40px;
+
+    &_logout {
+      font-size: 18px;
+      text-decoration: underline !important;
+    }
+  }
+
+  &_top3 {
+    color: $blue-400;
+  }
+
+  &_gifts {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 20px;
+    margin-top: 60px;
+
+    &_suggestion {
+      &_text {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 32px;
+        text-align: start;
+      }
+      
+      &_products {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 24px;
+        background-color: $neutral-100;
+        border-radius: 5px;
+        box-shadow: $shadow-normal;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 40px;
+        margin-bottom: 40px;
+      }
+
+      &_productsEmpty {
+        background-color: $neutral-100;
+        border-radius: 5px;
+        box-shadow: $shadow-normal;
+        @include flex-center;
+        padding: 32px 40px;
+        margin-bottom: 40px;
+      }
+
+      &_product {
+        background-color: $border-200;
+        height: 100%;
+      }
+    }
+
+    &_lock {
+      background-color: $neutral-900;
+      border-radius: 5px;
+      box-shadow: $shadow-normal;
+      @include flex-center;
+      flex-direction: column;
+      height: 400px;
+      margin-bottom: 40px;
+      opacity: 1;
+
+      &_price {
+        color: $blue-400;
+      }
+
+      &_button {
+        margin-top: 40px;
+        width: 250px;
+      }
+    }
+  }
+}

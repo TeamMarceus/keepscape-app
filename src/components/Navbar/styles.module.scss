@@ -1,0 +1,213 @@
+@import "src/styles/mixins";
+@import "src/styles/variables";
+
+@mixin dropdown($display) {
+  display: $display;
+  flex-direction: column;
+  position: absolute !important;
+  top: 46px;
+  right: 9px;
+  box-shadow: $shadow-normal;
+  width: 160px;
+  z-index: 1;
+  border: none;
+  @content;
+}
+
+.Navbar {
+  display: flex;
+  flex-direction: column;
+  background: $blue-400;
+  box-shadow: $shadow-raised;
+  color: $neutral-0;
+  height: 140px;
+  left: 0;
+  justify-content: space-between;
+  padding: 12px 24px 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1030;
+
+  @include breakpoint(xs) {
+    padding: 0 8px;
+  }
+
+  &_header {
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  &_logo {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    @include breakpoint(sm) {
+      width: 300px;
+    }
+
+    @include breakpoint(xs) {
+      width: 145px;
+    }
+
+    &_icon {
+      margin-right: 10px;
+      width: 25px;
+    }
+
+    &_text {
+      font-weight: 400 !important;
+    }
+  }
+
+  &_search {
+    @include flex-center;
+
+    &_input {
+      width: 900px;
+
+      > input {
+        border-radius: 4px 0 0 4px;
+        border-color: $neutral-0;
+      }
+    }
+
+    &_button {
+      background-color: $neutral-0;
+      border-radius: 0 4px 4px 0;
+      padding: 7.4px 4px;
+    }
+
+    &_icon {
+      background-color: $blue-400;
+      border-radius: 4px;
+      padding: 4px 12px;
+    }
+  }
+
+  &_navUser {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+
+    &_accountIcon {
+      color: $neutral-0 !important;
+      margin: 0 4px 0 0;
+    }
+
+    &_caret {
+      color: $neutral-0 !important;
+      margin: 0 0 0 4px;
+    }
+
+    &_companyLogoWrapper {
+      align-items: center;
+      background-color: #f4f2fb;
+      border-radius: 16px;
+      display: flex;
+      height: 34px;
+      justify-content: center;
+      margin-right: 24px;
+      padding: 4px 16px;
+      width: 90px;
+
+      @include breakpoint(sm) {
+        display: none;
+      }
+    }
+
+    &_companyLogo {
+      margin: 0 auto;
+      object-fit: contain;
+      width: 100%;
+    }
+
+    &_name {
+      @include heading(1rem, 1.67);
+      color: $neutral-0;
+
+      @include breakpoint(sm) {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      @include breakpoint(xs) {
+        max-width: 50px;
+      }
+    }
+
+    &_button {
+      @include flex-center;
+      @include ease(0.2s);
+
+      background: transparent;
+      border: none;
+      color: $neutral-0;
+      cursor: pointer;
+      outline: none;
+    }
+
+    &_dropdown {
+      @include dropdown(none);
+
+      &___toggled {
+        @include dropdown(flex);
+      }
+
+      &_link {
+        @include heading(1rem, 1.67);
+        @include ease(0.3s);
+
+        text-decoration: none;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        color: $neutral-700;
+
+        &:hover {
+          background-color: $neutral-50;
+        }
+
+        &:focus,
+        &:active {
+          background-color: $neutral-100;
+        }
+
+        &:first-child {
+          border-radius: 4px 4px 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 0 4px 4px;
+        }
+
+        &_icon {
+          margin-right: 8px;
+          color: $neutral-400;
+        }
+      }
+    }
+  }
+
+  &_loginSignup {
+    margin-left: auto;
+
+    &_link {
+      @include heading(1rem, 1.67);
+      @include ease(0.3s);
+      text-decoration: none;
+      padding: 10px 12px;
+      color: $neutral-0;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: $neutral-100;
+      }
+    }
+  }
+}

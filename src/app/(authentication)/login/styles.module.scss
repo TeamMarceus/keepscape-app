@@ -1,0 +1,77 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.LoginPage {
+  margin-top: 60px;
+  max-width: 450px;
+  padding-bottom: 60px;
+  text-align: center;
+  width: 100%;
+
+  &_header {
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+
+  &_content {
+    padding: 0 20px 20px;
+
+    &_input {
+      margin-top: 10px;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &_errorMessage {
+        margin-top: 8px;
+        text-align: left;
+      }
+    }
+
+    &_forgotPassword {
+      display: block;
+      font-weight: 700;
+      text-align: left;
+      text-decoration: none;
+      width: max-content;
+
+      &:focus {
+        color: $blue-200;
+      }
+    }
+
+    &_loginButton {
+      margin-top: 60px !important;
+      width: 100%;
+      @include flex-center;
+
+      &_buttonText {
+        @include flex-center;
+      }
+
+      &_spinner {
+        margin-left: 12px;
+      }
+    }
+
+    &_textLink {
+      @include flex-between;
+      margin-top: 30px;
+
+      &_signUp {
+        color: $blue-400;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          color: $blue-300;
+        }
+  
+        &:focus {
+          color: $blue-200;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@use '../../styles/mixins';
+
+.loader {
+  height: 40vh;
+  width: 100%;
+  @include mixins.flex-center;
+}

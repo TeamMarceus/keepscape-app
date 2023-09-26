@@ -1,0 +1,15 @@
+@import '../../styles/mixins';
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 900px;
+  padding-top: 75px;
+
+  @include breakpoint(xs) {
+    height: auto;
+    margin: 24px;
+  }
+}

@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.CardImage {
+  padding: 32px 40px;
+  @include flex-center;
+  flex-direction: column;
+
+  > p {
+    font-weight: 600;
+    margin: 16px 0;
+  }
+
+  &___clicked {
+    border: 1px solid $blue-400;
+  }
+
+  &_button {
+    margin-top: 24px;
+  }
+}
