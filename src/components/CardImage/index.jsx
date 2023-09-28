@@ -16,7 +16,6 @@ function CardImage({
   imageWidth,
   name,
   price = null,
-  isClicked = false,
   isClickable = false,
 }) {
   return (
@@ -24,8 +23,7 @@ function CardImage({
   <Card 
     className={cn(
       styles.CardImage, 
-      className, 
-      isClicked && styles.CardImage___clicked
+      className
     )}
     isClickable={isClickable}
     onClick={onClick}
@@ -35,9 +33,9 @@ function CardImage({
         // eslint-disable-next-line @next/next/no-img-element
       <img 
         alt={name}
+        className={styles.CardImage_imageString}
         src={imageString}
-        style={{ height: imageHeight, width: imageWidth }}
-    />
+      />
     }
     
     {image && 
@@ -48,22 +46,24 @@ function CardImage({
         width={imageWidth}
       />
     }
-
-    <Text
-      colorClass={colorClasses.NEUTRAL['600']}
-      type={(image || imageString) ? textTypes.BODY.MD : textTypes.HEADING.LG}
-    >
-      {name}
-    </Text>
-
-    {price && (
+    <div className={styles.CardImage_info}>
       <Text
-        colorClass={colorClasses.RED['700']}
-        type={textTypes.HEADING.XXS}
+        className={styles.CardImage_info_name}
+        colorClass={colorClasses.NEUTRAL['600']}
+        type={textTypes.BODY.LG}
       >
-        {`₱${price}`}
+        {name}
       </Text>
-    )}
+
+      {price && (
+        <Text
+          colorClass={colorClasses.RED['200']}
+          type={textTypes.BODY.LG}
+        >
+          {`₱ ${price}`}
+        </Text>
+      )}
+    </div>
   </Card>);
 }
 
@@ -73,12 +73,10 @@ CardImage.propTypes = {
   image: PropTypes.any,
   imageString: PropTypes.string,
   imageHeight: PropTypes.number,
-  imageWidth: PropTypes.number.isRequired,
+  imageWidth: PropTypes.number,
   name: PropTypes.string.isRequired,
   price: PropTypes.number,
-  isClicked: PropTypes.bool,
   isClickable: PropTypes.bool,
-  buttonLink: PropTypes.string,
 };
 
 export default CardImage;

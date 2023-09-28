@@ -177,6 +177,7 @@ export default function SignUpPage() {
               acquireResponse.refreshToken);
 
             } catch (error) {
+              setIsSigningUp(false);
               const responseData = error.response.data;
 
               if (responseData.includes('Email')) {

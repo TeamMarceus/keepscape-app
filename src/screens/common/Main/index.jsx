@@ -1,14 +1,21 @@
 import React from 'react'
 
+
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import Souvenir1 from '%/images/Beaches/souvenir1.png';
+import Souvenir2 from '%/images/Beaches/souvenir2.png';
 import { colorClasses, textTypes } from '@/app-globals';
 import { CardImage, Text } from '@/components'
 import { getUser } from '@/ducks';
+
+import { beaches } from '../constants/beaches';
+import { provinces } from '../constants/provinces';
 
 import styles from './styles.module.scss'
 
@@ -151,105 +158,96 @@ const categories = [
   {
     name: 'necklace',
     image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  }
-]
-
-const places = [
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
-  },
-  {
-    name: 'Cebu',
-    image: 'https://picsum.photos/200/300',
   }
 ]
 
 
-function MainPage() {
+
+function Main() {
   const router = useRouter();
   const user = useSelector((store) => getUser(store));
 
   const sliderSettings = {
-    autoplay: true,
-    autoplaySpeed: 2000,
     lazyLoad: true,
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
   };
+
+  const sliderSettings2 = {
+    autoplay: true,
+    autoplaySpeed: 2000,
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   
   return (
-    <div className={styles.MainPage}>
+    <div className={styles.Main}>
+      <div className={styles.Main_banner}>
+        <div className={styles.Main_banner_slider}>
+          <Slider {...sliderSettings2}>
+            {beaches.map((beach) => (
+              <div key={beach.name} className={styles.Main_banner_image}>
+                <Image
+                  priority
+                  alt={beach.name}
+                  height={254}
+                  src={beach.image}
+                  width={750}
+                />
+              </div>
+            ))}
+          </Slider>
+        </div>
+
+        <div className={styles.Main_banner_right}>
+          <Image
+            priority
+            alt="Souvenir"
+            className={styles.Main_banner_right_image}
+            height={125}
+            src={Souvenir1}
+            width={450}
+          />
+          <Image
+            priority
+            alt="Souvenir"
+            className={styles.Main_banner_right_image}
+            height={125}
+            src={Souvenir2}
+            width={450}
+          />
+        </div>
+      </div>
+
       {user.guid &&
         <>
           <Text
-              className={styles.MainPage_suggestions_title}  
+              className={styles.Main_suggestions_title}  
               colorClass={colorClasses.NEUTRAL['0']}
               type={textTypes.HEADING.XS}
             >
               Based on your profile, you might be interested in these suggestions...
           </Text>
 
-          <div className={styles.MainPage_suggestions} id="preferences">
+          <div className={styles.Main_suggestions} id="preferences">
             {suggestions.map((item, index) => (
-              <div key={index} className={styles.MainPage_suggestions_item}>
-                <div className={styles.MainPage_suggestions_item_text}>
+              <div key={index} className={styles.Main_suggestions_item}>
+                <div className={styles.Main_suggestions_item_text}>
                   <Text
-                    className={styles.MainPage_suggestions_item_name}
+                    className={styles.Main_suggestions_item_name}
                     type={textTypes.HEADING.SM}
                   >
                     {item.name}
                   </Text>
 
                   <Text
-                    className={styles.MainPage_suggestions_item_description}
+                    className={styles.Main_suggestions_item_description}
                     type={textTypes.BODY.LG}
                   >
                     {item.description}
@@ -259,8 +257,8 @@ function MainPage() {
                 <div 
                 className={
                     item.products.length !== 0 ? 
-                    styles.MainPage_suggestions_item_products :
-                    styles.MainPage_suggestions_item_productsEmpty
+                    styles.Main_suggestions_item_products :
+                    styles.Main_suggestions_item_productsEmpty
                   }
                 >
                   {item.products.length !== 0 ? 
@@ -270,7 +268,7 @@ function MainPage() {
                           <CardImage 
                             key={productIndex}
                             isClickable
-                            className={styles.MainPage_suggestions_item_product}
+                            className={styles.Main_suggestions_item_product}
                             imageHeight={180}
                             imageString={product.image}
                             imageWidth={180}
@@ -296,64 +294,64 @@ function MainPage() {
         </>
       }
 
-      <div className={styles.MainPage_provinces} id="province">
+      <div className={styles.Main_provinces} id="province">
         <Text
-            className={styles.MainPage_grid_title}  
-            colorClass={colorClasses.NEUTRAL['600']}
-            type={textTypes.HEADING.XS}
-          >
-           PROVINCES
-        </Text>
-        
-        <div className={styles.MainPage_provinces_list}>
-           <Slider {...sliderSettings}>
-            {places.map((province, index) => (
-              <CardImage
-                key={index}
-                isClickable
-                className={styles.MainPage_provinces_item}
-                imageHeight={120}
-                imageString={province.image}
-                imageWidth={130}
-                name={province.name}
-                onClick={() => 
-                    router.push(`/keepscape/province/${province.name}`)
-                }
-              />
-            ))}
-          </Slider>
-        </div>
-      </div>
-
-      <div className={styles.MainPage_grid} id="category">
-        <Text
-          className={styles.MainPage_grid_title}  
+          className={styles.Main_provinces_title}  
           colorClass={colorClasses.NEUTRAL['600']}
           type={textTypes.HEADING.XS}
         >
-           CATEGORIES
+           PROVINCES
         </Text>
         
-        <div className={styles.MainPage_grid_list}>
-          {categories.map((category, index) => (
+        <div className={styles.Main_provinces_list}>
+          {provinces.map((province, index) => (
             <CardImage
              key={index}
               isClickable
-              className={styles.MainPage_grid_item}
-              imageHeight={120}
-              imageString={category.image}
-              imageWidth={140}
-              name={category.name}
+              className={styles.Main_provinces_item}
+              image={province.image}
+              imageHeight={180}
+              imageWidth={180}
+              name={province.name}
               onClick={() => 
-                  router.push(`/keepscape/category/${category.name}`)
+                  router.push(`/keepscape/province/${province.name}`)
               }
             />
           ))}
         </div>
 
       </div>
+
+      <div className={styles.Main_categories} id="category">
+        <Text
+            className={styles.Main_provinces_title}  
+            colorClass={colorClasses.NEUTRAL['600']}
+            type={textTypes.HEADING.XS}
+          >
+           CATEGORIES
+        </Text>
+        
+        <div className={styles.Main_categories_list}>
+           <Slider {...sliderSettings}>
+            {categories.map((category, index) => (
+              <CardImage
+                key={index}
+                isClickable
+                className={styles.Main_categories_item}
+                imageHeight={120}
+                imageString={category.image}
+                imageWidth={130}
+                name={category.name}
+                onClick={() => 
+                    router.push(`/keepscape/category/${category.name}`)
+                }
+              />
+            ))}
+          </Slider>
+        </div>
+      </div>
     </div>
   )
 }
 
-export default MainPage
+export default Main

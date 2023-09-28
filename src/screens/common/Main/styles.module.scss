@@ -1,11 +1,41 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.MainPage {
+.Main {
   display: flex;
   flex-direction: column;
   margin-top: 90px;
   padding-bottom: 80px;
+
+  &_banner {
+    @include flex-center;
+    gap: 4px;
+    margin-bottom: 40px;
+    
+    &_slider {
+      max-width: 750px;
+      
+      > div {
+        > ul {
+          bottom: 10px !important;
+        }
+
+        > button {
+          width: 115px !important;
+        }
+      }
+    }
+
+    &_image {
+      height: 250px;
+    }
+
+    &_right {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
 
   &_suggestions {
     animation: fadeIn ease-in 0.5s;
@@ -72,14 +102,13 @@
       }
 
       &_product {
-        background-color: $border-200;
         margin: 0 12px !important;
         padding: 0 0 12px 0 !important;
       }
     }
   }
 
-  &_provinces {
+  &_categories {
     background-color: $neutral-0;
     border-radius: 5px;
     box-shadow: $shadow-normal;
@@ -94,13 +123,12 @@
     }
 
     &_item {
-      background-color: $border-200;
       margin: 0 12px;
       padding: 0 0 12px 0;
     }
   }
 
-  &_grid {
+  &_provinces {
     background-color: $neutral-0;
     border-radius: 5px;
     box-shadow: $shadow-normal;
@@ -108,19 +136,12 @@
     padding: 32px 24px;
     
     &_list {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 0 24px;
       max-width: 1200px;
       margin-top: 24px;
-    }
-
-    &_item {
-      padding: 0 !important;
-
-      &:hover {
-        box-shadow: $shadow-raised;
-      }
     }
   }
 }

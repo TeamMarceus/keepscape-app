@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import { CardImage, Checkbox, Filters, Icon, Pagination, Text } from '@/components'
+import { Filters, Pagination, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 

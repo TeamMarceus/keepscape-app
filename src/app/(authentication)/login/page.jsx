@@ -142,6 +142,7 @@ export default function LoginPage() {
                   acquireResponse.refreshToken
                 );                
               } catch (error) {
+                setIsLoggingIn(false);
                 const {status} = error.response;
 
                 switch (status) {
