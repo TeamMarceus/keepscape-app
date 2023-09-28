@@ -72,7 +72,7 @@ function Dashboard() {
 
   return <div className={styles.Dashboard}>
     <div className={styles.Dashboard_header}>
-      <Text type={textTypes.HEADING.MD}>keepscape Admin Dashboard</Text>
+      <Text type={textTypes.HEADING.MD}>Keepscape Admin Dashboard</Text>
       <ButtonLink 
         className={styles.Dashboard_logout}
         to="/logout"

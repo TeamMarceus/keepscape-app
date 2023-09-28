@@ -4,6 +4,6 @@ import React from 'react';
 
 import { Preloader } from '@/components';
 
-export default function GiftLoading() {
+export default function KeepscapeLoading() {
   return <Preloader />;
 }

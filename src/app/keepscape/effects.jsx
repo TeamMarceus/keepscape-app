@@ -2,17 +2,20 @@
 
 import PropTypes from 'prop-types';
 
+import { Navbar } from '@/components';
+
 import styles from './styles.module.scss';
 
-export default function GiftEffects({ children }) {
+export default function KeepscapeEffects({ children }) {
 
   return (
   <section className={styles.container}>
+    <Navbar />
     {children}
   </section>
   );
 }
 
-GiftEffects.propTypes = {
+KeepscapeEffects.propTypes = {
   children: PropTypes.node,
 };

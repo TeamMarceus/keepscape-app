@@ -1,0 +1,13 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.Pagination {
+  @include flex-center;
+  width: 100%;
+  overflow: hidden;
+  margin: 24px 0;
+
+  &_iconButton {
+    color: $blue-400 !important;
+  }
+}

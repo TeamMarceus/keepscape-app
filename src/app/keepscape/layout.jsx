@@ -2,16 +2,16 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import GiftEffects from './effects';
+import KeepscapeEffects from './effects';
 
 export const metadata = {
-  title: 'Gift | keepscape',
+  title: 'Keepscape Philippines | Souvenir Shop',
 };
 
-export default function GiftLayout({ children }) {
-  return <GiftEffects>{children}</GiftEffects>;
+export default function KeepscapeLayout({ children }) {
+  return <KeepscapeEffects>{children}</KeepscapeEffects>;
 }
 
-GiftLayout.propTypes = {
+KeepscapeLayout.propTypes = {
   children: PropTypes.any,
 };

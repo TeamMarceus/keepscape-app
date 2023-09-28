@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import AdminEffects from './effects';
 
 export const metadata = {
-  title: 'Admin | keepscape',
+  title: 'Admin | Keepscape',
 };
 
 export default function AdminLayout({ children }) {

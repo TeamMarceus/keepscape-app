@@ -56,3 +56,49 @@ a {
 .ReactModal__Overlay--after-open {
   opacity: 1 !important;
 }
+
+// Slick
+.slick-prev,
+.slick-next {
+  height: 40px !important;
+  width: 40px !important;
+  z-index: 1;
+
+  &:hover {
+    scale: 1.2;
+  }
+
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.slick-next {
+  right: -35px !important;
+}
+
+.slick-prev {
+  left: -35px !important;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  color: $blue-100 !important;
+  font-size: 40px !important;
+}
+
+.slick-dots {
+  bottom: -40px !important;
+}
+
+.slick-dots li.slick-active button::before {
+  color: $blue-100 !important;
+}
+
+.slick-dots li button::before {
+  font-size: 12px !important;
+}
+
+.slick-slide {
+  width: unset !important;
+}

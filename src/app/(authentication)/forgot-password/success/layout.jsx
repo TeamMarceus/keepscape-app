@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const metadata = {
-  title: 'Success | keepscape',
+  title: 'Success | Keepscape',
 };
 
 export default function SuccessLayout({ children }) {

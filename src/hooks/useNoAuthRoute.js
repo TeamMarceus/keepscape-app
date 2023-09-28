@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import { ADMIN_ROUTES } from '@/app/admin/routes';
-import { BUYER_ROUTES } from '@/app/gift-giver/routes';
+import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
 import { userTypes } from '@/app-globals';
 
 import { getUser } from '../ducks';
@@ -35,7 +35,7 @@ const useNoAuthRoute = () => {
 
       // redirect the student to the buyer homepage
       if (userType === userTypes.BUYER) {
-        router.replace(BUYER_ROUTES.HISTORY);
+        router.replace(PUBLIC_ROUTES.MAIN_PAGE);
         return;
       }
 

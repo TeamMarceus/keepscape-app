@@ -1,0 +1,84 @@
+@use '../../../styles/mixins';
+@use '../../../styles/variables';
+
+@mixin base {
+  position: relative;
+  background: none;
+  border: none;
+  outline: none;
+  margin: 0 4px;
+  padding: 0;
+  height: 50px;
+  width: 50px;
+  font-weight: 600;
+  border-radius: 50%;
+  @include mixins.flex-center;
+  @include mixins.ease(0.2s);
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:disabled {
+    color: variables.$neutral-400;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      background-color: initial;
+    }
+  }
+
+  @content;
+}
+
+.Numbers {
+  &___active {
+    @include base {
+      @include mixins.heading(1.75rem, 1.167);
+      color: variables.$blue-400;
+      user-select: none;
+      cursor: default;
+    }
+  }
+  @include base {
+    @include mixins.heading(1.5rem, 1.2);
+    color: variables.$blue-300;
+    user-select: none;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      background-color: transparentize(variables.$blue-300, 0.9);
+    }
+
+    &:focus,
+    &:active {
+      background-color: transparentize(variables.$blue-300, 0.75);
+    }
+  }
+
+  &_number {
+    &___ellipsis {
+      cursor: default;
+
+      &:hover,
+      &:focus {
+        background-color: initial;
+      }
+    }
+
+    &___hasNewUnloadedData {
+      &::after {
+        content: '';
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: variables.$red-300;
+        position: absolute;
+        top: 0;
+        right: 8px;
+      }
+    }
+  }
+}

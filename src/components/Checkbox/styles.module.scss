@@ -1,0 +1,75 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.Checkbox {
+  display: flex;
+
+  &___disabled {
+    opacity: 0.5;
+  }
+
+  &_label {
+    position: relative;
+    display: inline-block;
+    font-size: 1rem !important;
+    user-select: none;
+    padding-left: 22px !important;
+
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      display: inline-block;
+    }
+
+    /* Outer box of the fake checkbox */
+    &::before {
+      height: 16px;
+      width: 16px;
+      border: 2px solid $neutral-400;
+      border-radius: 4px;
+      left: 0;
+    }
+
+    /* Checkmark of the fake checkbox */
+    &::after {
+      height: 5px;
+      width: 11px;
+      border-left: 2px solid $neutral-0;
+      border-bottom: 2px solid $neutral-0;
+      transform: rotate(-45deg);
+      left: 3px;
+      top: 5px;
+    }
+
+    &:hover {
+      &::before {
+        border-color: $blue-300 !important;
+      }
+    }
+  }
+
+  &_input {
+    display: none;
+
+    /* Hide the checkmark by default */
+    & + .Checkbox_label::after {
+      content: none;
+    }
+
+    /* Unhide on the checked state */
+    &:checked + .Checkbox_label::after {
+      content: '';
+    }
+
+    &:checked + .Checkbox_label::before {
+      background-color: $blue-300;
+      border-color: $blue-300;
+    }
+
+    /* Adding focus styles on the outer-box of the fake checkbox */
+    &:focus + .Checkbox_label::before {
+      outline: $blue-300 auto 5px;
+    }
+  }
+}

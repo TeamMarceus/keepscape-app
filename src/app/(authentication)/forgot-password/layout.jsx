@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ForgotPasswordEffects from './effects';
 
 export const metadata = {
-  title: 'Forgot Password | keepscape',
+  title: 'Forgot Password | Keepscape',
 };
 
 export default function ForgotPasswordLayout({ children }) {

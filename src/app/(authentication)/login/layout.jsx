@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import LoginEffects from './effects';
 
 export const metadata = {
-  title: 'Login | keepscape',
+  title: 'Login | Keepscape',
 };
 
 export default function LoginLayout({ children }) {

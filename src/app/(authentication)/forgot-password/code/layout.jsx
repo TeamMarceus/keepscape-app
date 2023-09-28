@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const metadata = {
-  title: 'Confirmation Code | keepscape',
+  title: 'Confirmation Code | Keepscape',
 };
 
 export default function CodeLayout({ children }) {

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { AUTHENTICATION_ROUTES } from '@/app/(authentication)/routes';
 import { ADMIN_ROUTES } from '@/app/admin/routes';
-import { BUYER_ROUTES } from '@/app/gift-giver/routes';
+import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
 import { userTypes } from '@/app-globals';
 
 import { getUser } from '../ducks';
@@ -40,7 +40,7 @@ const usePrivateRoute = ({ forUserType }) => {
       /**
        *   Table for pages that can be accessed by the different user types
        *    -----------------------------
-       *   | Type | Gift Giver | Admin  |
+       *   | Type | Buyer      | Admin  |
        *    -----------------------------
        *   |  G   |    /       |    x   |   
        *    -----------------------------
@@ -51,7 +51,7 @@ const usePrivateRoute = ({ forUserType }) => {
         userType === userTypes.BUYER &&
         forUserType !== userTypes.BUYER
       ) {
-        router.replace(BUYER_ROUTES.HISTORY);
+        router.replace(PUBLIC_ROUTES.MAIN_PAGE);
         return;
       }
 

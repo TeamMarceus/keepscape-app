@@ -1,7 +1,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { ADMIN_ROUTES } from '@/app/admin/routes';
-import { BUYER_ROUTES } from '@/app/gift-giver/routes';
+import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
 import { userTypes } from '@/app-globals';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import useActionDispatch from '@/hooks/useActionDispatch';
@@ -27,7 +27,7 @@ const useSubdomainRedirect = () => {
     if (userType === userTypes.ADMIN && !next) {
       next = ADMIN_ROUTES.DASHBOARD;
     } else if (userType === userTypes.BUYER && !next) {
-      next = BUYER_ROUTES.HISTORY;
+      next = PUBLIC_ROUTES.MAIN_PAGE;
     }
     
     // let subdomain = null;

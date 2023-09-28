@@ -23,7 +23,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: 'keepscape',
+  title: 'Keepscape',
 };
 
 

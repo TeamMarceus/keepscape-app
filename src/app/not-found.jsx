@@ -5,7 +5,7 @@ import React from 'react';
 import PageNotFound from '@/screens/public/PageNotFound';
 
 export const metadata = {
-  title: 'Page Not Found | keepscape',
+  title: 'Page Not Found | Keepscape',
 };
 
 export default function AppNotFound() {

@@ -7,7 +7,7 @@ import PageNotFound from '@/screens/public/PageNotFound';
 import { ADMIN_ROUTES } from './routes';
 
 export const metadata = {
-  title: 'Page Not Found | keepscape',
+  title: 'Page Not Found | Keepscape',
 };
 
 export default function AdminNotFound() {

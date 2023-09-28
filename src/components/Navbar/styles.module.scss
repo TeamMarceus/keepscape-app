@@ -33,6 +33,29 @@
     padding: 0 8px;
   }
 
+  &_links {
+    @include flex-between;
+
+    &_scrollLinks {
+      display: flex;
+      align-items: center;
+    }
+
+    &_link {
+      cursor: pointer;
+      padding: 0 12px;
+      text-decoration: none;
+
+      &:hover,
+      &:focus,
+      &:active {
+        > p {
+          color: $neutral-100;
+        }
+      }
+    }
+  }
+
   &_header {
     align-items: center;
     display: flex;
@@ -87,6 +110,14 @@
     }
   }
 
+  &_cart {
+    &:hover {
+      > i {
+        color: $neutral-100;
+      }
+    }
+  }
+
   &_navUser {
     display: flex;
     justify-content: flex-end;
@@ -102,27 +133,6 @@
       margin: 0 0 0 4px;
     }
 
-    &_companyLogoWrapper {
-      align-items: center;
-      background-color: #f4f2fb;
-      border-radius: 16px;
-      display: flex;
-      height: 34px;
-      justify-content: center;
-      margin-right: 24px;
-      padding: 4px 16px;
-      width: 90px;
-
-      @include breakpoint(sm) {
-        display: none;
-      }
-    }
-
-    &_companyLogo {
-      margin: 0 auto;
-      object-fit: contain;
-      width: 100%;
-    }
 
     &_name {
       @include heading(1rem, 1.67);

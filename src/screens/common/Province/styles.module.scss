@@ -1,0 +1,43 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.Province {
+  margin-top: 90px;
+  padding-bottom: 80px;
+  
+  &_banner {
+    background-image: url('../../../../public/images/Misc/banner.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 250px;
+    margin-bottom: 40px;
+    border-radius: 5px;
+    box-shadow: $shadow-normal;
+    @include flex-center;
+
+    &_text {
+      font-size: 90px;
+    }
+  }
+
+  &_content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_products {
+    margin-left: 40px;
+    
+    &_list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      column-gap: 20px;
+      row-gap: 12px;
+    }
+  }
+  
+  &_pagination {
+    margin-top: 60px;
+  }
+}

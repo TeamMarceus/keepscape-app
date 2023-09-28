@@ -18,7 +18,6 @@ function CardImage({
   price = null,
   isClicked = false,
   isClickable = false,
-  buttonLink = null,
 }) {
   return (
   
@@ -64,15 +63,6 @@ function CardImage({
       >
         {`₱${price}`}
       </Text>
-    )}
-
-    {buttonLink && (
-      <ButtonLink
-        className={styles.CardImage_button}
-        to={buttonLink}
-      >
-        PURCHASE
-      </ButtonLink>
     )}
   </Card>);
 }

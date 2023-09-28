@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import SignupEffects from './effects';
 
 export const metadata = {
-  title: 'Sign Up | keepscape',
+  title: 'Sign Up | Keepscape',
 };
 
 export default function SignupLayout({ children }) {

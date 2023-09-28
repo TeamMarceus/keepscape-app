@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const metadata = {
-  title: 'Input Email | keepscape',
+  title: 'Input Email | Keepscape',
 };
 
 export default function EmailLayout({ children }) {

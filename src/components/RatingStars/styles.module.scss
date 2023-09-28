@@ -1,0 +1,12 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.RatingStars {
+  @include flex-center;
+
+  &_icon {
+    padding: 0 2px;
+    color: $yellow-400;
+    font-size: 16px;
+  }
+}

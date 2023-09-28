@@ -1,0 +1,78 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.Filters {
+  &_header {
+    display: flex;
+    gap: 8px;
+
+    &_icon {
+      font-size: 20px;
+    }
+  }
+
+  &_checkboxes {
+    margin-top: 24px;
+
+    &_checkbox {
+      margin-top: 20px;
+    }
+  }
+
+  &_ratings {
+    margin-top: 24px;
+    border-top: 1px solid $neutral-200;
+    padding-top: 24px;
+
+    &_stars {
+      background-color: unset !important;
+      color: $neutral-400;
+      @include flex-center;
+      margin-top: 16px;
+      margin-left: 8px;
+      padding: 2px !important;
+
+      &:hover {
+        background-color: $neutral-100 !important;
+      }
+
+      &_active {
+        background-color: $neutral-100 !important;
+      }
+
+      &_last {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  &_priceRange {
+    margin-top: 24px;
+    border-top: 1px solid $neutral-200;
+    padding-top: 24px;
+
+    &_inputs {
+      @include flex-between;
+      margin-top: 16px;
+      gap: 16px;
+    }
+
+    &_input {
+      width: 75px;
+
+      >input {
+        padding: 24px 4px 4px !important;
+      }
+
+      &_errorMessage{
+        margin-top: 12px;
+        text-align: center;
+      }
+    }
+
+    &_button {
+      margin-top: 20px;
+      width: 100%;
+    }
+  }
+}
