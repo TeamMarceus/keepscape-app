@@ -11,7 +11,7 @@ import { Link as LinkScroll } from 'react-scroll';
 import Logo from '%/images/Logo/logo-white.svg'
 
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
-import { buttonKinds, colorClasses, iconButtonTypes, textTypes} from '@/app-globals';
+import { buttonKinds, colorClasses, iconButtonTypes} from '@/app-globals';
 import { Card, ControlledInput, Icon, IconButton, Text } from '@/components';
 import { getUser} from '@/ducks';
 import { useOnClickOutside } from '@/hooks';
@@ -82,6 +82,22 @@ function Navbar() {
                   colorClass={colorClasses.NEUTRAL['0']}
                 >
                   Shop by Category
+                </Text>
+              </LinkScroll>
+              |
+              <LinkScroll
+                key="discover"
+                smooth
+                className={styles.Navbar_links_link}
+                duration={700}
+                offset={-200}
+                to="discover"
+              >
+                <Text
+                  className={styles.Navbar_links_link_text}
+                  colorClass={colorClasses.NEUTRAL['0']}
+                >
+                  Discover More
                 </Text>
               </LinkScroll>
             </>

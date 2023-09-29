@@ -20,14 +20,14 @@
   }
 
   &_price {
-    margin-top: 12px;
+    margin-top: 12px !important;
   }
 
   &_ratings {
     display: flex;
-    align-items: unset;
-    justify-content: unset;
-    margin: 12px 0 8px;
+    align-items: unset !important;
+    justify-content: unset !important;
+    margin: 12px 0 8px !important;
   }
 
   &_button {

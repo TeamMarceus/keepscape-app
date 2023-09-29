@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
@@ -11,7 +10,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import Souvenir1 from '%/images/Beaches/souvenir1.png';
 import Souvenir2 from '%/images/Beaches/souvenir2.png';
 import { colorClasses, textTypes } from '@/app-globals';
-import { CardImage, Text } from '@/components'
+import { Button, CardImage, Text } from '@/components'
+import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
 import { beaches } from '../constants/beaches';
@@ -161,6 +161,67 @@ const categories = [
   }
 ]
 
+const products = [
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 4,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 5,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 3,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 2,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 1,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 4,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 4,
+    place: 'Cebu, Oslob'
+  },
+  {
+    name: 'Butanding Keychain',
+    image: 'https://picsum.photos/200/300',
+    price: 100,
+    rating: 4,
+    place: 'Cebu, Oslob'
+  },
+  
+
+
+]
 
 
 function Main() {
@@ -319,7 +380,6 @@ function Main() {
             />
           ))}
         </div>
-
       </div>
 
       <div className={styles.Main_categories} id="category">
@@ -349,6 +409,43 @@ function Main() {
             ))}
           </Slider>
         </div>
+      </div>
+
+      <div className={styles.Main_discover} id="discover">
+        <div className={styles.Main_discover_banner}>
+          <Text
+            colorClass={colorClasses.BLUE['400']}
+            type={textTypes.HEADING.XXS}
+          >
+            DAILY DISCOVER
+          </Text>
+        </div>
+
+        <div className={styles.Main_discover_products}>
+           {products.map((product, index) => (
+              <ProductCard
+                key={index}
+                isClickable
+                className={styles.Main_discover_products_item}
+                image={product.image}
+                name={product.name}
+                place={product.place}
+                price={product.price}
+                rating={product.rating}
+                onClick={() => {}
+                    // router.push(`/keepscape/${c.name}`)
+                }
+              />
+            ))}
+        </div>  
+
+        <Button
+          className={styles.Main_discover_button}
+          disabled={false}
+          onClick={() => {}}
+        >
+          SEE MORE
+        </Button> 
       </div>
     </div>
   )
