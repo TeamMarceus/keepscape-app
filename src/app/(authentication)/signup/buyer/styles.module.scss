@@ -1,0 +1,59 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.BuyerSignUpPage {
+  margin-top: 60px;
+  max-width: 450px;
+  padding-bottom: 60px;
+  text-align: center;
+  width: 100%;
+
+  &_header {
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+
+  &_content {
+    padding: 0 20px 20px;
+
+    &_withMargin {
+      margin-top: 10px;
+    }
+
+    &_signupButton {
+      @include flex-center;
+    }
+
+    &_buttonGroup {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-top: 40px;
+
+      &_buttonText {
+        @include flex-center;
+      }
+
+      &_spinner {
+        margin-left: 12px;
+      }
+    }
+  }
+
+  &_footer {
+    padding: 0 20px 20px;
+
+    &_signIn {
+      color: $blue-400;
+      font-weight: 700;
+      text-decoration: none;
+
+      &:hover {
+        color: $blue-300;
+      }
+
+      &:focus {
+        color: $blue-200;
+      }
+    }
+  }
+}

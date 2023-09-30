@@ -4,6 +4,7 @@ export { default as ButtonGroup } from './Button/Group';
 export { default as ButtonLink } from './Button/Link';
 export { default as Card } from './Card';
 export { default as CardImage } from './CardImage';
+export { default as CardLink } from './Card/Link';
 export { default as Checkbox } from './Checkbox';
 export { default as ControlledInput } from './Input/Controlled';
 export { default as DatePicker } from './Input/DatePicker';

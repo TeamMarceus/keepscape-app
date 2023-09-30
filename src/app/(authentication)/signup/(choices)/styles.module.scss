@@ -1,0 +1,38 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.ChoicesPage {
+  @include flex-center;
+  flex-direction: column;
+  margin-top: 60px;
+  padding-bottom: 60px;
+  text-align: center;
+
+  &_choices {
+   display: flex;
+   margin-top: 40px;
+  }
+
+  &_choice {
+    padding: 24px 32px;
+    margin-bottom: 40px;
+
+    &_card {
+      padding: 40px;
+      margin-bottom: 24px;
+
+      &_icon {
+        color: $blue-100;
+        font-size: 300px;
+      }
+    }
+  }
+
+  &_back {
+    font-size: 24px;
+
+    i {
+      font-size: 24px;
+    }
+  }
+}

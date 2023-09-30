@@ -77,7 +77,7 @@ const validate = (values) => {
   return errors;
 };
 
-export default function SignUpPage() {
+export default function BuyerSignUpPage() {
   const { redirect } = useSubdomainRedirect();
   const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
   const productsRestart = useActionDispatch(
@@ -96,15 +96,15 @@ export default function SignUpPage() {
 
 
   return (
-    <section className={styles.SignUpPage}>
+    <section className={styles.BuyerSignUpPage}>
         <Text 
-          className={styles.SignUpPage_header}
+          className={styles.BuyerSignUpPage_header}
           type={textTypes.HEADING.MD}
         >
           Enter your account details
         </Text>
 
-      <div className={styles.SignUpPage_content}>
+      <div className={styles.BuyerSignUpPage_content}>
         <Formik
           initialValues={{
             firstName: '',
@@ -237,7 +237,7 @@ export default function SignUpPage() {
               />
 
               <ControlledInput
-                className={styles.SignUpPage_content_withMargin}
+                className={styles.BuyerSignUpPage_content_withMargin}
                 error={errors.lastName}
                 name="lastName"
                 placeholder="Last Name*"
@@ -246,7 +246,7 @@ export default function SignUpPage() {
               />
 
               <ControlledInput
-                className={styles.SignUpPage_content_withMargin}
+                className={styles.BuyerSignUpPage_content_withMargin}
                 error={errors.email}
                 name="email"
                 placeholder="Email Address*"
@@ -255,7 +255,7 @@ export default function SignUpPage() {
               />
 
 
-              <Grid className={styles.SignUpPage_content_withMargin}>
+              <Grid className={styles.BuyerSignUpPage_content_withMargin}>
                 <ControlledInput
                   error={errors.password}
                   kind={inputKinds.PASSWORD}
@@ -276,20 +276,20 @@ export default function SignUpPage() {
                 />
               </Grid>
 
-              <div className={styles.SignUpPage_content_buttonGroup}>
+              <div className={styles.BuyerSignUpPage_content_buttonGroup}>
                 <Button
-                  className={styles.SignUpPage_content_signupButton}
+                  className={styles.BuyerSignUpPage_content_signupButton}
                   disabled={isSigningUp}
                   kind={buttonKinds.SUBMIT}
                   onClick={() => {}}
                 >
                   <span
-                    className={styles.SignUpPage_content_buttonGroup_buttonText}
+                    className={styles.BuyerSignUpPage_content_buttonGroup_buttonText}
                   >
                     Sign Up
                     {isSigningUp && (
                       <Spinner
-                        className={styles.SignUpPage_content_buttonGroup_spinner}
+                        className={styles.BuyerSignUpPage_content_buttonGroup_spinner}
                         colorName={colorNames.WHITE}
                         size={spinnerSizes.XS}
                       />
@@ -302,11 +302,11 @@ export default function SignUpPage() {
         </Formik>
       </div>
 
-      <div className={styles.SignUpPage_footer}>
+      <div className={styles.BuyerSignUpPage_footer}>
         <Text>
           Already have an account?{' '}
           <Link
-            className={styles.SignUpPage_footer_signIn}
+            className={styles.BuyerSignUpPage_footer_signIn}
             href="/login"
             onClick={isSigningUp ? (e) => e.preventDefault() : () => {}}
           >

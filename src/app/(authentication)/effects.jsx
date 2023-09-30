@@ -80,6 +80,11 @@ export default function AuthenticationEffects({ children }) {
       setIsRedirected(true);
       setUserType(userTypes.BUYER);
     }
+
+    if (!userTypeParam) {
+      setIsRedirectSuccessful(false);
+    }
+    
   }, [userTypeParam, isRedirected]);
 
   if (isRedirectedLoggingIn) {
