@@ -1,0 +1,30 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.ReviewCard {
+  background-color: $neutral-50;
+  border-radius: 5px;
+  box-shadow: $shadow-normal;
+  padding: 24px 20px;
+  display: flex;
+  align-items: center;
+
+  &_icon {
+    font-size: 70px !important;
+    color: $blue-400 !important;
+    margin-right: 8px;
+  }
+
+  &_info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+
+    &_user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+  }
+}

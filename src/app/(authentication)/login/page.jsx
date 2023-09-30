@@ -209,7 +209,7 @@ export default function LoginPage() {
                   <span
                     className={styles.LoginPage_content_loginButton_buttonText}
                   >
-                    LOGIN
+                    login
                     {isLoggingIn && (
                       <Spinner
                         className={styles.LoginPage_content_loginButton_spinner}

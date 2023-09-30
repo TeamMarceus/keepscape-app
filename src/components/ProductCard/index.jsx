@@ -1,8 +1,9 @@
 import cn from 'classnames';
+import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import { Card, RatingStars, Text} from '@/components';
+import { Button, Card, RatingStars, Text} from '@/components';
 
 import styles from './styles.module.scss';
 
@@ -14,8 +15,11 @@ function ProductCard({
   isClickable = false,
   rating,
   place,
-  onClick = () => {},
+  id,
+  userGuid = null,
 }) {
+  const router = useRouter();
+
   return (
     <Card 
       className={cn(
@@ -23,7 +27,13 @@ function ProductCard({
         className
       )}
       isClickable={isClickable}
-      onClick={onClick}
+      onClick={() => {
+        if (userGuid) {
+          router.push(`/buyer/product/${id}`);
+        } else {
+          router.push(`/login?next=/buyer/product/${id}`)
+        }
+      }}
     >
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -46,12 +56,23 @@ function ProductCard({
 
         <RatingStars className={styles.ProductCard_ratings} rating={rating}/>
         
-        <Text
-          colorClass={colorClasses.NEUTRAL['400']}
-          type={textTypes.BODY.XS}
-        >
-          {place}
-        </Text>
+        <div className={styles.ProductCard_bottom}>
+          <Text
+            colorClass={colorClasses.NEUTRAL['400']}
+            type={textTypes.BODY.XS}
+          >
+            {place}
+          </Text>
+
+          <div className={styles.ProductCard_button}>
+            <Text 
+              colorClass={colorClasses.NEUTRAL['0']}
+              type={textTypes.BODY.SM}
+            >
+              Buy Now
+            </Text>
+          </div>
+        </div>
       </div>
     </Card>
   );
@@ -65,7 +86,8 @@ ProductCard.propTypes = {
   isClickable: PropTypes.bool,
   rating: PropTypes.number.isRequired,
   place: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  userGuid: PropTypes.string,
 };
 
 export default ProductCard;

@@ -33,14 +33,9 @@ export default function AuthenticationEffects({ children }) {
 
   const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
 
-  // const userTypeParam = searchParams.get('userType');
-  // const token = searchParams.get('token');
   const next = searchParams.get('next');
 
   const userTypeParam = user.role;
-
-  // const accessToken = token ? token.split(':')[0] : null;
-  // const refreshToken = token ? token.split(':')[1] : null;
 
   const [isRedirectedLoggingIn, setIsRedirectedLoggingIn] = useState(
     !!accessToken && !!refreshToken
@@ -93,7 +88,7 @@ export default function AuthenticationEffects({ children }) {
 
   return (
     <section className={styles.container}>
-      {/* {!isRedirectSuccessful && ( */}
+      {!isRedirectSuccessful && (
             <Image
               priority
               alt="Logo"
@@ -101,7 +96,7 @@ export default function AuthenticationEffects({ children }) {
               src={Logo}
               width={300}
             />
-        {/* )} */}
+        )} 
 
         <AuthenticationContext.Provider value={userType}>
           {children}

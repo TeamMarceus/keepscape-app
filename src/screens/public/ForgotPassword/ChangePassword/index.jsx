@@ -159,7 +159,7 @@ function ChangePassword() {
                 <span
                   className={styles.ChangePassword_content_buttonGroup_buttonText}
                 >
-                  PROCEED
+                  Proceed
                   {isUpdatingPassword && (
                     <Spinner
                       className={styles.ChangePassword_content_buttonGroup_spinner}
@@ -175,7 +175,7 @@ function ChangePassword() {
                 to='/login'
                 type={buttonTypes.TEXT.BLUE}
               >
-                BACK TO LOGIN
+                Back to Login
               </ButtonLink>
             </div>
           </form>

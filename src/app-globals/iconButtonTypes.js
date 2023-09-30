@@ -11,6 +11,12 @@ export const ICON_BUTTON_TYPES = {
     MD: 'outline___md',
     LG: 'outline___lg',
   },
+  ICON: {
+    XS: 'icon___xs',
+    SM: 'icon___sm',
+    MD: 'icon___md',
+    LG: 'icon___lg',
+  },
 };
 
 export default ICON_BUTTON_TYPES;

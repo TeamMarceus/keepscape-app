@@ -23,9 +23,9 @@ function Pagination({
     totalPages > 1 && (
       <div className={cn(styles.Pagination, className)}>
         <IconButton
+          className={styles.Pagination_iconButton}
           disabled={currentPage === 1}
           icon="first_page"
-          iconClassName={styles.Pagination_iconButton}
           onClick={() => {
             pageJump(
               currentPage - SKIP_NAVIGATE_STEP >= 1
@@ -36,9 +36,9 @@ function Pagination({
         />
 
         <IconButton
+          className={styles.Pagination_iconButton}
           disabled={currentPage === 1}
           icon="chevron_left"
-          iconClassName={styles.Pagination_iconButton}
           id="chevronLeftButton"
           onClick={() => {
             pageJump(currentPage - 1 === 0 ? 1 : currentPage - 1);
@@ -53,9 +53,9 @@ function Pagination({
         />
 
         <IconButton
+          className={styles.Pagination_iconButton}
           disabled={currentPage === totalPages}
           icon="chevron_right"
-          iconClassName={styles.Pagination_iconButton}
           id="chevronRightButton"
           onClick={() => {
             pageJump(
@@ -65,9 +65,9 @@ function Pagination({
         />
 
         <IconButton
+          className={styles.Pagination_iconButton}
           disabled={currentPage === totalPages}
           icon="last_page"
-          iconClassName={styles.Pagination_iconButton}
           id="lastPageButton"
           onClick={() => {
             pageJump(

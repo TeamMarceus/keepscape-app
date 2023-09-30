@@ -2,17 +2,20 @@
 
 import PropTypes from 'prop-types';
 
-import { Navbar } from '@/components';
+import { Footer, Navbar } from '@/components';
 
 import styles from './styles.module.scss';
 
 export default function KeepscapeEffects({ children }) {
 
   return (
-  <section className={styles.container}>
-    <Navbar />
-    {children}
-  </section>
+    <>
+      <Navbar />
+      <section className={styles.container}>
+        {children}
+      </section>
+      <Footer />
+    </>
   );
 }
 

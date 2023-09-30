@@ -34,25 +34,25 @@ const suggestions = [
         title: 'Product 2',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/200/400'
       },
       {
         title: 'Product 3',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/200/500'
       },
       {
         title: 'Product 1',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/200/600'
       },
       {
         title: 'Product 2',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/200/700'
       },
       {
         title: 'Product 3',
@@ -70,13 +70,13 @@ const suggestions = [
         title: 'Product 1',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/200/900'
       },
       {
         title: 'Product 2',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/100/300'
       },
       {
         title: 'Product 3',
@@ -88,19 +88,19 @@ const suggestions = [
         title: 'Product 1',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/300/300'
       },
       {
         title: 'Product 2',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/400/300'
       },
       {
         title: 'Product 3',
         price: 100,
         url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        image: 'https://picsum.photos/500/300'
       }
     ]
   }
@@ -109,43 +109,43 @@ const suggestions = [
 const categories = [
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/210/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/220/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/230/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/240/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/250/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/260/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/270/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/280/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/290/300'
   },
   {
     name: 'necklace',
-    image: 'https://picsum.photos/200/300'
+    image: 'https://picsum.photos/210/300'
   },
   {
     name: 'necklace',
@@ -163,66 +163,70 @@ const categories = [
 
 const products = [
   {
+    id: 1,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/310',
     price: 100,
     rating: 4,
     place: 'Cebu, Oslob'
   },
   {
+    id: 2,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/320',
     price: 100,
     rating: 5,
     place: 'Cebu, Oslob'
   },
   {
+    id: 3,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/330',
     price: 100,
     rating: 3,
     place: 'Cebu, Oslob'
   },
   {
+    id: 4,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/340',
     price: 100,
     rating: 2,
     place: 'Cebu, Oslob'
   },
   {
+    id: 5,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/350',
     price: 100,
     rating: 1,
     place: 'Cebu, Oslob'
   },
   {
+    id: 6,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/360',
     price: 100,
     rating: 4,
     place: 'Cebu, Oslob'
   },
   {
+    id: 7,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/370',
     price: 100,
     rating: 4,
     place: 'Cebu, Oslob'
   },
   {
+    id: 8,
     name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/200/380',
     price: 100,
     rating: 4,
     place: 'Cebu, Oslob'
   },
-  
-
-
 ]
-
 
 function Main() {
   const router = useRouter();
@@ -273,7 +277,7 @@ function Main() {
             className={styles.Main_banner_right_image}
             height={125}
             src={Souvenir1}
-            width={450}
+            width={460}
           />
           <Image
             priority
@@ -281,7 +285,7 @@ function Main() {
             className={styles.Main_banner_right_image}
             height={125}
             src={Souvenir2}
-            width={450}
+            width={460}
           />
         </div>
       </div>
@@ -427,14 +431,13 @@ function Main() {
                 key={index}
                 isClickable
                 className={styles.Main_discover_products_item}
+                id={product.id}
                 image={product.image}
                 name={product.name}
                 place={product.place}
                 price={product.price}
                 rating={product.rating}
-                onClick={() => {}
-                    // router.push(`/keepscape/${c.name}`)
-                }
+                userId={user?.guid}
               />
             ))}
         </div>  
@@ -444,7 +447,7 @@ function Main() {
           disabled={false}
           onClick={() => {}}
         >
-          SEE MORE
+          See More
         </Button> 
       </div>
     </div>

@@ -15,14 +15,12 @@
 }
 
 .Navbar {
-  display: flex;
-  flex-direction: column;
+  @include flex-center;
   background: $blue-400;
   box-shadow: $shadow-raised;
   color: $neutral-0;
   height: 140px;
   left: 0;
-  justify-content: space-between;
   padding: 12px 24px 20px;
   position: fixed;
   right: 0;
@@ -33,8 +31,16 @@
     padding: 0 8px;
   }
 
+  &_container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    width: 100%;
+  }
+
   &_links {
     @include flex-between;
+    margin-bottom: 24px;
 
     &_scrollLinks {
       display: flex;

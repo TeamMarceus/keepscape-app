@@ -4,8 +4,8 @@
 @mixin solid($size) {
   @include ease(0.3s);
   @include flex-center;
-
-  background-color: transparent;
+  border-radius: 100px;
+  background-color: $blue-400;
   border: none;
   color: $neutral-0;
   cursor: pointer;
@@ -15,13 +15,19 @@
   text-decoration: none;
   text-transform: capitalize;
 
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $blue-300;
+  }
+
   &:disabled {
     cursor: default;
     opacity: 0.5;
 
     &:hover,
     &:focus {
-      background-color: transparent !important;
+      background-color: $blue-400 !important;
     }
   }
 
@@ -38,14 +44,50 @@
   }
 }
 
+@mixin icon($size) {
+  @include ease(0.3s);
+  @include flex-center;
+  background-color: transparent;
+  border: none;
+  color: $neutral-0;
+  cursor: pointer;
+  height: max-content;
+  outline: none;
+  padding: 4px;
+  text-decoration: none;
+  text-transform: capitalize;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+
+    &:hover,
+    &:focus {
+      background-color: $blue-400 !important;
+    }
+  }
+
+  .IconButton_icon {
+    @if $size == xs {
+      font-size: 1rem;
+    } @else if $size == sm {
+      font-size: 1.25rem;
+    } @else if $size == md {
+      font-size: 1.5rem;
+    } @else if $size == lg {
+      font-size: 2rem;
+    }
+  }
+}
+
+
 @mixin outline($size) {
   @include ease(0.3s);
   @include flex-center;
-
   background-color: transparent;
-  border: 1px solid $violet-300;
+  border: 1px solid $blue-300;
   border-radius: 100px;
-  color: $violet-300;
+  color: $blue-300;
   cursor: pointer;
   height: max-content;
   outline: none;
@@ -54,12 +96,12 @@
   text-transform: capitalize;
 
   &:hover {
-    background-color: transparentize($violet-300, 0.9);
+    background-color: transparentize($blue-300, 0.9);
   }
 
   &:focus,
   &:active {
-    background-color: transparentize($violet-300, 0.75);
+    background-color: transparentize($blue-300, 0.75);
   }
 
   &:disabled {
@@ -119,6 +161,24 @@
 
     &___lg {
       @include outline(lg);
+    }
+  }
+
+  &___icon {
+    &___xs {
+      @include icon(xs);
+    }
+
+    &___sm {
+      @include icon(sm);
+    }
+
+    &___md {
+      @include icon(md);
+    }
+
+    &___lg {
+      @include icon(lg);
     }
   }
 

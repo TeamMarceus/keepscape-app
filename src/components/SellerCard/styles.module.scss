@@ -1,0 +1,43 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.Seller {
+  display: flex;
+  flex-direction: column;
+  grid-column: 8/13;
+  padding: 24px 16px;
+
+  &_info {
+    @include flex-between;
+    margin-bottom: 8px;
+  }
+
+  &_span {
+    color: $blue-400;
+    font-weight: 600;
+  }
+
+  &_name {
+    @include flex-center;
+
+    &_icon {
+      font-size: 24px !important;
+      color: $blue-400 !important;
+      margin-right: 8px;
+    }
+  }
+
+  &_description {
+    margin-top: 24px;
+    background-color: $neutral-100;
+    border-top: 3px solid $blue-400;
+    border-bottom: 3px solid $blue-400;
+    border-radius: 5px;
+    padding: 16px 20px;
+  }
+
+  &_contacts {
+    margin-top: auto;
+  }
+
+}

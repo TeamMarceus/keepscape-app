@@ -3,6 +3,7 @@
 import PropTypes from 'prop-types';
 
 import { userTypes } from '@/app-globals';
+import { Footer, Navbar } from '@/components';
 import { usePrivateRoute } from '@/hooks';
 
 import styles from './styles.module.scss';
@@ -11,9 +12,13 @@ export default function GiftGiverEffects({ children }) {
   usePrivateRoute({ forUserType: userTypes.BUYER });
 
   return (
-  <section className={styles.container}>
-    {children}
-  </section>
+    <>
+      <Navbar />
+      <section className={styles.container}>
+        {children}
+      </section>
+      <Footer />
+    </>
   );
 }
 

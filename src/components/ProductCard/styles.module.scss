@@ -16,7 +16,7 @@
   }
 
   &_info {
-    padding: 12px 16px 8px;
+    padding: 12px 14px 8px;
   }
 
   &_price {
@@ -24,13 +24,24 @@
   }
 
   &_ratings {
-    display: flex;
-    align-items: unset !important;
-    justify-content: unset !important;
     margin: 12px 0 8px !important;
   }
 
+  &_bottom {
+    @include flex-between;
+    gap: 8px;
+  }
+
   &_button {
-    margin-top: 24px;
+    background-color: $blue-400;
+    border-radius: 5px;
+    color: $neutral-0;
+    padding: 4px;
+    font-weight: 500;
+    text-align: center;
+
+    &:hover {
+      background-color: $blue-300;
+    }
   }
 }

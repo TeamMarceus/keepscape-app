@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 
 import { buttonKinds, colorClasses, inputKinds, textTypes } from '@/app-globals';
 
-import { RatingStars } from '..';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
 import Icon from '../Icon';
 import ControlledInput from '../Input/Controlled';
+import  RatingStars from '../RatingStars';
 import Text from '../Text';
 
 import styles from './styles.module.scss';

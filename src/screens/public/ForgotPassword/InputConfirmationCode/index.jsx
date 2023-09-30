@@ -177,7 +177,7 @@ function InputConfirmationCode() {
                 <span
                   className={styles.InputConfirmationCode_content_buttonGroup_buttonText}
                 >
-                  SUBMIT
+                  Submit
                   {isSubmitting && (
                     <Spinner
                       className={styles.InputConfirmationCode_content_buttonGroup_spinner}
@@ -193,7 +193,7 @@ function InputConfirmationCode() {
                 to='/login'
                 type={buttonTypes.TEXT.BLUE}
               >
-                BACK TO LOGIN
+                Back to Login
               </ButtonLink>
             </div>
           </form>

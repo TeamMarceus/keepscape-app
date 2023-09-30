@@ -1,0 +1,152 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.Product {
+  display: flex;
+  flex-direction: column;
+  margin-top: 90px;
+
+  &_content {
+    display: flex;
+
+    &_left {
+      background-color: $neutral-0;
+      border-radius: 5px;
+      display: flex;
+      padding: 24px 20px;
+      margin-right: 32px;
+    }
+
+    &_images {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+    }
+
+    &_slider {
+      margin-top: 8px;
+
+      &_item {
+        margin: 0 4px;
+      }
+
+      &_image {
+        cursor: pointer;
+
+        &___active {
+          border: 2px solid $blue-400 !important;
+        }
+      }
+
+      > div {
+        > button {
+          height: 30px !important;
+          width: 110px !important;
+        }
+      }
+    }
+
+    &_info {
+      margin-left: 30px;
+      width: 390px;
+      
+      &_reviews {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+  
+        &_span {
+          font-size: 14px;
+          color: $blue-400;
+          font-weight: 600;
+        }
+      }
+  
+      &_price {
+        background-color: $neutral-100;
+        border-left: 10px solid $blue-400;
+        border-radius: 5px;
+        padding: 16px 20px;
+        margin-top: 24px;
+      }
+  
+      &_quantity {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-top: 40px;
+  
+        &_buttons {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+      }
+  
+      &_purchase {
+        margin-top: 60px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        
+        &_button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &_description {
+    margin-top: 40px;
+    background-color: $neutral-0;
+    border-radius: 5px;
+    padding: 24px 20px;
+
+    &_title {
+      background-color: $neutral-50;
+      border-radius: 5px;
+      padding: 12px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &_reviews {
+    @extend .Product_description;
+
+    &_title {
+      @extend .Product_description_title;
+    }
+
+    &_ratings {
+      background-color: $blue-25;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 40px;
+    }
+
+    &_rating {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  
+      &_span {
+        font-size: 32px;
+      }
+    }
+
+    &_buttons {
+
+      &_button {
+        width: 120px;
+        margin-right: 12px;
+      }
+    }
+
+    &_list {
+      margin-top: 40px;
+    }
+  }
+}

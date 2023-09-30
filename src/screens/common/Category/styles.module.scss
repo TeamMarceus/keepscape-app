@@ -3,7 +3,6 @@
 
 .Category {
   margin-top: 90px;
-  padding-bottom: 80px;
   
   &_banner {
     background-image: url('../../../../public/images/Misc/banner.png');
@@ -27,8 +26,6 @@
   }
 
   &_products {
-    margin-left: 40px;
-    
     &_list {
       display: grid;
       grid-template-columns: repeat(5, 1fr);

@@ -14,7 +14,7 @@ export default function AppNotFound() {
   return (
     <PageNotFound
       buttonLink={AUTHENTICATION_ROUTES.LOGIN}
-      buttonText="BACK TO LOGIN"
+      buttonText="Back to Login"
     />
   );
 }

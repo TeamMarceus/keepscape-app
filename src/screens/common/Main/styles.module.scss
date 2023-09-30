@@ -5,7 +5,6 @@
   display: flex;
   flex-direction: column;
   margin-top: 90px;
-  padding-bottom: 80px;
 
   &_banner {
     @include flex-center;
@@ -44,7 +43,7 @@
     box-shadow: $shadow-normal;
     display: flex;
     flex-direction: column;
-    max-width: 1236px;
+    width: 100%;
     margin: 24px 0 40px 0;
     padding: 12px 24px;
     text-align: center;
@@ -114,7 +113,7 @@
     box-shadow: $shadow-normal;
     display: flex;
     flex-direction: column;
-    max-width: 1236px;
+    width: 100%;
     margin-bottom: 40px;
     padding: 32px 24px;
 

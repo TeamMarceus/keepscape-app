@@ -135,7 +135,7 @@ function InputEmail() {
                 <span
                   className={styles.InputEmail_content_buttonGroup_buttonText}
                 >
-                  PROCEED
+                  Proceed
                   {isVerifying && (
                     <Spinner
                       className={styles.InputEmail_content_buttonGroup_spinner}
@@ -151,7 +151,7 @@ function InputEmail() {
                 to='/login'
                 type={buttonTypes.TEXT.BLUE}
               >
-                BACK TO LOGIN 
+                Back to Login 
               </ButtonLink>
             </div>
           </form>

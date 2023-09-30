@@ -2,7 +2,7 @@
 @import '@/styles/mixins';
 
 .RatingStars {
-  @include flex-center;
+  display: flex;
 
   &_icon {
     padding: 0 2px;

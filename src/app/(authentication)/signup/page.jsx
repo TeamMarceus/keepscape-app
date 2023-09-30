@@ -286,7 +286,7 @@ export default function SignUpPage() {
                   <span
                     className={styles.SignUpPage_content_buttonGroup_buttonText}
                   >
-                    SIGN UP
+                    Sign Up
                     {isSigningUp && (
                       <Spinner
                         className={styles.SignUpPage_content_buttonGroup_spinner}
