@@ -1,0 +1,6 @@
+@use '../../styles/variables';
+
+.asterisk {
+  color: variables.$red-400;
+  font-weight: bold;
+}

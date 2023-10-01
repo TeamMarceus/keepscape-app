@@ -19,5 +19,6 @@
   "search.exclude": {
     "**/node_modules": false,
     "node_modules/**": true
-  }
+  },
+  "editor.formatOnSave": true
 }

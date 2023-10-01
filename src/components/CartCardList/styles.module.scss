@@ -1,0 +1,50 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.CartCardList {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  place-items: center;
+  gap: 12px;
+  padding: 24px 40px;
+
+  &_product {
+    display: flex;
+    align-items: center;
+    grid-column: 1/6;
+    place-self: start start;
+    
+    &_details {
+      display: flex;
+      margin-left: 16px;
+      gap: 12px;
+
+      &_text {
+        margin-bottom: 8px;
+      }
+
+      &_customize {
+        min-height: 75px !important;
+      }
+    }
+  }
+
+  &_price {
+    grid-column: 6/7;
+  }
+
+  &_quantity {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    grid-column: 8/10;
+  }
+
+  &_totalPrice {
+    grid-column: 10/13;
+  }
+
+  &_actions {
+    grid-column: 14;
+  }
+}

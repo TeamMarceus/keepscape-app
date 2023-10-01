@@ -4,11 +4,12 @@ import cn from 'classnames';
 
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
+import { Link } from 'react-scroll';
 import Slider from 'react-slick';
 
 import { buttonTypes, colorClasses, iconButtonTypes, textTypes } from '@/app-globals';
-import { Button, Card, Icon, IconButton, RatingStars, ReviewCard, SellerCard, Text } from '@/components'
+import { Button, ButtonLink, ControlledTextArea, IconButton, RatingStars, ReviewCard, SellerCard, Text } from '@/components'
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { getUser } from '@/ducks';
 
 import styles from './styles.module.scss'
@@ -47,6 +48,8 @@ function Product({ id }) {
   const user = useSelector(getUser);
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [customInput, setCustomInput] = useState('')
+  const [clickedRating, setClickedRating] = useState(0)
 
   return (
     <div className={styles.Product}>
@@ -65,7 +68,7 @@ function Product({ id }) {
                 {product.images.map((image, index) => (
                   <div 
                     key={index} 
-                    className={styles.Product_content_slider}
+                    className={styles.Product_content_slider_container}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                     <img 
@@ -92,13 +95,31 @@ function Product({ id }) {
             </Text> 
             
             <div className={styles.Product_content_info_reviews}>
-              <RatingStars className={styles.Product_content_info_reviews_stars} rating={product.rating} />
+                <Link
+                  key="rating"
+                  smooth
+                  className={styles.Product_content_info_link}
+                  duration={700}
+                  offset={-200}
+                  to="reviews"
+                >
+                <RatingStars className={styles.Product_content_info_reviews_stars} rating={product.rating} />
+              </Link>
               |
-              <Text colorClass={colorClasses.NEUTRAL['500']}> 
-                Rated by: {' '}
-                <span className={styles.Product_content_info_reviews_span}>{product.numOfReviews}</span> 
-                {' '} users
-              </Text>
+              <Link
+                  key="reviews"
+                  smooth
+                  className={styles.Product_content_info_link}
+                  duration={700}
+                  offset={-200}
+                  to="reviews"
+                >
+                <Text colorClass={colorClasses.NEUTRAL['500']}> 
+                  Rated by: {' '}
+                  <span className={styles.Product_content_info_reviews_span}>{product.numOfReviews}</span> 
+                  {' '} users
+                </Text>
+              </Link>
               |
               <Text colorClass={colorClasses.NEUTRAL['500']}> 
                 Total sold: {' '}
@@ -114,6 +135,15 @@ function Product({ id }) {
                 ₱{product.price}
               </Text>
             </div>
+
+            <ControlledTextArea
+              inputClassName={styles.Product_content_info_customize}
+              name="customize"
+              placeholder="Enter customization details here..."
+              type={textAreaTypes.SLIM}
+              value={customInput}
+              onChange={(e) => setCustomInput(e.target.value)}
+            />
 
             <div className={styles.Product_content_info_quantity}>
               <Text colorClass={colorClasses.NEUTRAL['500']}>
@@ -153,12 +183,13 @@ function Product({ id }) {
               >
                 Add to cart
               </Button>
-              <Button
+              <ButtonLink
                 className={styles.Product_content_info_purchase_button}
+                to="/buyer/cart"
                 onClick={()=>{}}
               >
                 Buy Now
-              </Button>
+              </ButtonLink>
             </div>
           </div>
         </div>
@@ -188,7 +219,7 @@ function Product({ id }) {
         </Text>
       </div>
 
-      <div className={styles.Product_reviews}>
+      <div className={styles.Product_reviews} id="reviews">
         <Text 
           className={styles.Product_reviews_title}
           type={textTypes.HEADING.XXS}
@@ -211,37 +242,43 @@ function Product({ id }) {
           <div className={styles.Product_reviews_buttons}>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 0 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(0) }}
             >
               All
             </Button>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 5 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(5) }}
             >
               5 Stars
             </Button>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 4 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(4) }}
             >
               4 Stars
             </Button>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 3 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(3) }}
             >
               3 Stars
             </Button>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 2 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(2) }}
             >
               2 Stars
             </Button>
             <Button
               className={styles.Product_reviews_buttons_button}
-              onClick={()=>{}}
+              type={clickedRating === 1 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{ setClickedRating(1) }}
             >
               1 Star
             </Button>

@@ -1,0 +1,138 @@
+@use '../../styles/mixins';
+@use '../../styles/variables';
+
+@mixin text-area {
+  width: 100%;
+  outline: none;
+  border: 1px solid variables.$neutral-300;
+  overflow: auto;
+  height: 114px;
+  min-height: 50px;
+  max-height: 240px;
+
+  @content;
+}
+
+@mixin base-form {
+  @include text-area;
+  @include mixins.body(1rem, 1.5);
+  color: variables.$neutral-700;
+  background-color: variables.$neutral-0;
+  border-bottom: 2px solid variables.$neutral-300;
+  text-align: left;
+  resize: vertical;
+  overflow-y: scroll;
+  border-radius: 8px 8px 0 0;
+  padding: 24px 16px 4px;
+  @include mixins.ease(0.1s);
+
+  &:focus {
+    border-color: variables.$blue-400;
+  }
+
+  &::placeholder {
+    opacity: 0.5;
+  }
+}
+
+@mixin base-slim {
+  @include text-area;
+  @include mixins.body(0.875rem, 1.5);
+  color: variables.$neutral-700;
+  background-color:  variables.$neutral-0;
+  height: 20px;
+  text-align: inherit;
+  resize: vertical;
+  max-width: inherit;
+  border-radius: 5px;
+  padding: 12px;
+  transition: border-color 0.1s ease-in-out, background-color 0.1s ease-in-out,
+    box-shadow 0.1s ease-in-out;
+
+  &:focus:not([disabled]),
+  &:active:not([disabled]) {
+    background-color: transparent !important;
+    border: 1px solid ;
+    border-color: variables.$blue-400 !important;
+    box-shadow: 0 0 0 4px rgba(44, 171, 227, 0.15);
+  }
+
+  &:hover:not([disabled]) {
+    background-color: transparent;
+    box-shadow: 0 0 0 4px rgba(44, 171, 227, 0.15);
+  }
+}
+
+@mixin base-icon($right: 16px) {
+  position: absolute;
+  right: $right;
+  color: variables.$neutral-500;
+  user-select: none;
+
+  @content;
+}
+
+.TextArea {
+  &___form {
+    @include base-form;
+
+    &_placeholder {
+      position: absolute;
+      pointer-events: none;
+      transform-origin: bottom left;
+      max-width: calc(100% - 16px);
+      padding: 0 8px;
+      left: 8px;
+      top: 16px;
+      transition: transform 0.25s;
+      @include mixins.text-ellipsis;
+
+      &___active {
+        transform: scale(0.75) translateY(-22px);
+      }
+    }
+
+    &:focus ~ .TextArea___form_placeholder {
+      transform: scale(0.75) translateY(-22px);
+    }
+  }
+
+  &___slim {
+    @include base-slim;
+  }
+
+  &_icon {
+    @include base-icon {
+      top: 20px;
+    }
+  }
+
+  &___icon {
+    padding-right: 32px;
+  }
+
+  &___error {
+    border-color: variables.$red-300;
+  }
+
+  &___success {
+    border-color: variables.$blue-300;
+  }
+
+  &_helperText {
+    white-space: pre-wrap;
+  }
+
+  &_helperTextContainer {
+    margin: 8px 0 0 16px;
+  }
+
+  &_container {
+    position: relative;
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}

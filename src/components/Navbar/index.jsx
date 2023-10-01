@@ -242,8 +242,7 @@ function Navbar() {
             icon="shopping_cart"
             type={iconButtonTypes.ICON.LG}
             onClick={()=>{
-              if (!user.guid)
-                router.push('/login');
+              router.push('/buyer/cart'); 
             }}
           />
         </div>
