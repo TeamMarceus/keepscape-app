@@ -4,35 +4,30 @@
 .ChoicesPage {
   @include flex-center;
   flex-direction: column;
-  margin-top: 60px;
+  margin-top: 40px;
   padding-bottom: 60px;
   text-align: center;
 
   &_choices {
    display: flex;
-   margin-top: 40px;
+   margin-top: 24px;
   }
 
   &_choice {
-    padding: 24px 32px;
+    padding: 24px;
     margin-bottom: 40px;
 
     &_card {
       padding: 40px;
       margin-bottom: 24px;
-
-      &_icon {
-        color: $blue-100;
-        font-size: 300px;
-      }
     }
   }
 
   &_back {
-    font-size: 24px !important;
+    font-size: 20px !important;
 
     i {
-      font-size: 24px !important;
+      font-size: 20px !important;
     }
   }
 }

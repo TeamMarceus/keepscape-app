@@ -40,8 +40,8 @@ export const getAccessToken = (store) =>
   usersSelectors.loginSelectors.getAccessToken(store[USERS]);
 export const getRefreshToken = (store) =>
   usersSelectors.loginSelectors.getRefreshToken(store[USERS]);
-export const getWasRedirected = (store) =>
-  usersSelectors.loginSelectors.getWasRedirected(store[USERS]);
+export const getDeliveryDetails = (store) =>
+  usersSelectors.loginSelectors.getDeliveryDetails(store[USERS]);
 
 // suggestions
 export const getSuggestions = (store) => 

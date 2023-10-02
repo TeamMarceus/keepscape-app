@@ -31,7 +31,9 @@ export default function ChoicesPage() {
           >
             <Image
               alt="Keychain"
+              height={200}
               src={Keychain}
+              width={200}
             />
           </Card>
           <Text type={textTypes.HEADING.XXS}>
@@ -47,7 +49,9 @@ export default function ChoicesPage() {
           >
             <Image
               alt="Shopping Cart"
+              height={200}
               src={Cart}
+              width={200}
             />
           </Card>
           <Text type={textTypes.HEADING.XXS}>

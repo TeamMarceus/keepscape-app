@@ -1,0 +1,75 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.Delivery {
+  margin: 60px auto 0;
+  max-width: 500px;
+  text-align: center;
+  width: 100%;
+
+  &_header {
+    margin-bottom: 40px;
+  }
+
+  &_content {
+    padding: 0 20px 20px;
+
+    &_input {
+      margin-top: 10px;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &_errorMessage {
+        margin-top: 8px;
+        text-align: left;
+      }
+    }
+
+    &_forgotPassword {
+      display: block;
+      font-weight: 700;
+      text-align: left;
+      text-decoration: none;
+      width: max-content;
+
+      &:focus {
+        color: $blue-200;
+      }
+    }
+
+    &_saveButton {
+      margin: 60px 0 !important;
+      width: 100%;
+      @include flex-center;
+
+      &_buttonText {
+        @include flex-center;
+      }
+
+      &_spinner {
+        margin-left: 12px;
+      }
+    }
+
+    &_textLink {
+      @include flex-between;
+      margin-top: 30px;
+
+      &_signUp {
+        color: $blue-400;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          color: $blue-300;
+        }
+  
+        &:focus {
+          color: $blue-200;
+        }
+      }
+    }
+  }
+}

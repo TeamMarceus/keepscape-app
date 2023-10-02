@@ -28,11 +28,9 @@ function ProductCard({
       )}
       isClickable={isClickable}
       onClick={() => {
-        if (userGuid) {
+    
           router.push(`/buyer/product/${id}`);
-        } else {
-          router.push(`/login?next=/buyer/product/${id}`)
-        }
+        
       }}
     >
 

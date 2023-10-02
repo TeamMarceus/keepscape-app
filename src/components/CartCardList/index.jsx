@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import cn from 'classnames';
 
@@ -16,6 +16,7 @@ import {
   Card, 
   Checkbox, 
   ControlledTextArea, 
+  Icon, 
   IconButton, 
   Text
 } from '@/components';
@@ -25,222 +26,389 @@ import { textAreaTypes } from '../TextArea/constants';
 import styles from './styles.module.scss';
 
 function CartCardList({
-  actions,
   className,
   isAllSelected,
-  product,
-  products,
+  userCart,
   setIsAllSelected,
-  setNewProducts,
+  setUserCart,
   setTotalPrice,
   totalPrice,
 }) {
-  const [newCustomization, setNewCustomization] = useState(product.customization);
 
   useEffect (() => {
     // Iterate through all products set the total price of all selected products
     let total = 0;
-    products.forEach((prod) => {
-      if (prod.isSelected) {
-        total += (prod.price * prod.quantity);
-      }
+      userCart.forEach((cart) => {
+        cart.products.forEach((prod) => {
+          if (prod.isSelected) {
+            total += (prod.price * prod.quantity);
+          }
+        });   
     });
-
     setTotalPrice(total);
+  
   }
-  ,[isAllSelected]);
+  ,[isAllSelected, userCart]);
+  
 
-  return (
-    <Card 
-      className={cn(
-        styles.CartCardList, 
-        className
-      )}
-    >
-      <div className={styles.CartCardList_product}>
-        <Checkbox
-          checked={isAllSelected || product.isSelected}
-          className={styles.CartCardList_product_checkbox}
-          name={product.name}
-          onChange={() => { 
-
-            if (isAllSelected) {
-              setTotalPrice(0);
-              setIsAllSelected(false);
-            
-              // Set all products to not selected
-              setNewProducts((prevProducts) => prevProducts.map((prevProduct) => ({
+  const onCartSelectChange = (cart) => {
+    if (isAllSelected) {
+      setIsAllSelected(false);
+  
+      // Set the user cart shop products to be unselected
+      setUserCart(userCart.map((prevCart) => {
+        if (prevCart.id === cart.id) {
+          return {
+            ...prevCart,
+            isSelected: false,
+            products: cart.products.map((prevProduct) => ({
                 ...prevProduct,
                 isSelected: false,
-              })));
+              }))
+          };
+        }
+  
+        return prevCart;
+      }));
+    } else {
+      // Set the user cart shop products to be selected or unselected
+      setUserCart((prevUserCart) => prevUserCart.map((prevCart) => {
+        if (prevCart.id === cart.id) {
+          return {
+            ...prevCart,
+            isSelected: !cart.isSelected,
+            products: cart.products.map((prevProduct) => ({
+              ...prevProduct,
+              isSelected: !cart.isSelected,
+            }))
+          };
+        }
 
-            } else {
-              setTotalPrice(totalPrice + (product.isSelected ? -1 : 1) * (product.price * product.quantity));
+        return prevCart;
+      }));
+    } 
+  }
 
-              // Set product to selected or not selected
-              setNewProducts((prevProducts) => prevProducts.map((prevProduct) => {
-                if (prevProduct.id === product.id) {
-                  return {
-                    ...prevProduct,
-                    isSelected: !product.isSelected,
-                  };
-                }
-
-                return prevProduct;
-              }));
-
-            } 
-          }}
-        />
-
-        <div className={styles.CartCardList_product_details}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt={product.image}
-            className={styles.CartCardList_product_details_image}
-            height={100}
-            src={product.image}
-            width={100}
-          />
-          <div>
-            <Text 
-              className={styles.CartCardList_product_details_text}
-              type={textTypes.HEADING.XXS}
-            >
-              {product.name}
-            </Text>
-
-            <ControlledTextArea
-              inputClassName={styles.CartCardList_product_details_customize}
-              name="customize"
-              placeholder="Enter customization details here..."
-              type={textAreaTypes.SLIM}
-              value={newCustomization}
-              onChange={(e) => setNewCustomization(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.CartCardList_price}>
-        <Text
-          className={styles.CartCardList_price_text}
-          colorClass={colorClasses.NEUTRAL['400']}
-          type={textTypes.HEADING.XXS}
-        >
-         ₱ {product.price}
-        </Text>
-      </div>
-
-      <div className={styles.CartCardList_quantity}>
-        <IconButton 
-          disabled={product.quantity <= 0}
-          icon="remove"
-          type={iconButtonTypes.OUTLINE.LG}
-          onClick={()=> {
-
-             // Set product quantity
-             setNewProducts((prevProducts) => prevProducts.map((prevProduct) => {
+  const onProductSelectChange = (cart, product) => {
+    if (isAllSelected) {
+      setIsAllSelected(false);
+      
+      setUserCart(userCart.map((prevCart) => {
+        if (prevCart.id === cart.id) {
+          return {
+            ...prevCart,
+            isSelected: false,
+            products: cart.products.map((prevProduct) => {
               if (prevProduct.id === product.id) {
                 return {
                   ...prevProduct,
-                  quantity: product.quantity - 1,
+                  isSelected: true,
                 };
-              }
+              } 
+              
+              return {
+                ...prevProduct,
+                isSelected: false,
+              }; 
+            })
+          };
+        }
+  
+        return prevCart;
+      }));
 
-              return prevProduct;
-            }));
+    } else if (cart.isSelected) {
 
-            if (product.isSelected) {
-              setTotalPrice(totalPrice - product.price);
-            }
-          }}
-        />
-       
-        <Text
-          className={styles.CartCardList_price_text}
-          colorClass={colorClasses.NEUTRAL['400']}
-          type={textTypes.HEADING.XXS}
-        >
-          {product.quantity}
-        </Text>
-
-        <IconButton 
-          disabled={product.quantity >= 10}
-          icon="add"
-          type={iconButtonTypes.OUTLINE.LG}
-          onClick={()=> {
-            
-            // Set product quantity
-            setNewProducts((prevProducts) => prevProducts.map((prevProduct) => {
+       // Set cart shop to be unselected and set the only selected product to be selected
+       setUserCart(userCart.map((prevCart) => {
+        if (prevCart.id === cart.id) {
+          return {
+            ...prevCart,
+            isSelected: false,
+            products: cart.products.map((prevProduct) => {
               if (prevProduct.id === product.id) {
                 return {
                   ...prevProduct,
-                  quantity: product.quantity + 1,
+                  isSelected: true,
                 };
               }
+  
+              return {
+                ...prevProduct,
+                isSelected: false,
+              }; 
+            })
+          };
+        }
+  
+        return prevCart;
+      }));
 
+    } else {
+      // Set the cart individual product to be selected or unselected
+      setUserCart(userCart.map((prevCart) => {
+        if (prevCart.id === cart.id) {
+          return {
+            ...prevCart,
+            products: cart.products.map((prevProduct) => {
+              if (prevProduct.id === product.id) {
+                return {
+                  ...prevProduct,
+                  isSelected: !product.isSelected,
+                };
+              }
+  
               return prevProduct;
-            }));
-            
-            if (product.isSelected) {
-              setTotalPrice(totalPrice + product.price);
+            })
+          };
+        }
+  
+        return prevCart;
+      }));
+    } 
+  }
+
+  const onCustomizationChange = (cart, product, value) => {
+    // Set the cart product customization to be changed
+    setUserCart(userCart.map((prevCart) => {
+      if (prevCart.id === cart.id) {
+        return {
+          ...prevCart,
+          products: cart.products.map((prevProduct) => {
+            if (prevProduct.id === product.id) {
+              return {
+                ...prevProduct,
+                customization: value,
+              };
             }
-          }}
-        />
-      </div>
 
-      <div className={styles.CartCardList_totalPrice}>
-        <Text
-          className={styles.CartCardList_totalPrice_text}
-          colorClass={colorClasses.NEUTRAL['400']}
-          type={textTypes.HEADING.XXS}
+            return prevProduct;
+          })
+        };
+      }
+
+      return prevCart;
+    }));
+  }
+
+  const onQuantityIncrement = (cart, product) => {
+    // Set the cart product quantity to be incremented
+    setUserCart(userCart.map((prevCart) => {
+      if (prevCart.id === cart.id) {
+        return {
+          ...prevCart,
+          products: cart.products.map((prevProduct) => {
+            if (prevProduct.id === product.id) {
+              return {
+                ...prevProduct,
+                quantity: prevProduct.quantity + 1,
+              };
+            }
+
+            return prevProduct;
+          })
+        };
+      }
+
+      return prevCart;
+    }));
+  }
+
+  const onQuantityDecrement = (cart, product) => {
+    // Set the cart product quantity to be decremented
+    setUserCart(userCart.map((prevCart) => {
+      if (prevCart.id === cart.id) {
+        return {
+          ...prevCart,
+          products: cart.products.map((prevProduct) => {
+            if (prevProduct.id === product.id) {
+              return {
+                ...prevProduct,
+                quantity: prevProduct.quantity - 1,
+              };
+            }
+
+            return prevProduct;
+          })
+        };
+      }
+
+      return prevCart;
+    }));
+  }
+
+  const onDelete = (cart, product) => {
+    // Set the cart product to be deleted
+    setUserCart(userCart.map((prevCart) => {
+      if (prevCart.id === cart.id) {
+        return {
+          ...prevCart,
+          products: cart.products.filter((prevProduct) => prevProduct.id !== product.id),
+        };
+      }
+
+      return prevCart;
+    }));
+  }
+
+  return (
+    <>
+    { 
+      userCart.map((cart) => (
+        cart.products.length > 0 &&
+        <Card 
+          key={cart.id}
+          className={cn(
+            styles.CartCardList, 
+            className
+          )}
         >
-          ₱ {product.price * product.quantity}
-        </Text>
-      </div>
+          
+          {  cart.products.length > 0 &&
+            <div className={styles.CartCardList_shop}>
+              <Checkbox
+                checked={isAllSelected || cart.isSelected}
+                className={styles.CartCardList_product_checkbox}
+                name={cart.shop}
+                onChange={() => onCartSelectChange(cart)}
+              />
 
-      <div className={styles.CartCardList_actions}>
-        {actions.map(({ label, onClick }) => (
-          <Button
-            key={label}
-            className={styles.CartCardList_actions_button}
-            type={buttonTypes.SECONDARY.RED}
-            onClick={onClick}
-          >
-            {label}
-          </Button>
-        ))}
-      </div>
-    </Card>
+              <Icon 
+                className={styles.CartCardList_shop_icon}
+                icon="storefront" 
+              />
+
+              <Text
+                className={styles.CartCardList_shop_text}
+                type={textTypes.HEADING.XXXS}
+              >
+                {cart.shop}
+              </Text>
+            </div>
+          }
+
+          { cart.products.length > 0 &&
+            cart.products.map((product) => (
+              <div key={product.id} className={styles.CartCardList_item}>
+                <div className={styles.CartCardList_product}>
+                  <Checkbox
+                    checked={isAllSelected || cart.isSelected || product.isSelected}
+                    className={styles.CartCardList_product_checkbox}
+                    name={product.name}
+                    onChange={() => onProductSelectChange(cart, product)}
+                  />
+
+                  <div className={styles.CartCardList_product_details}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt={product.image}
+                      className={styles.CartCardList_product_details_image}
+                      height={100}
+                      src={product.image}
+                      width={100}
+                    />
+                    <div>
+                      <Text 
+                        className={styles.CartCardList_product_details_text}
+                        type={textTypes.HEADING.XXS}
+                      >
+                        {product.name}
+                      </Text>
+
+                      <ControlledTextArea
+                        inputClassName={styles.CartCardList_product_details_customize}
+                        name="customize"
+                        placeholder="Enter customization details here..."
+                        type={textAreaTypes.SLIM}
+                        value={product.customization}
+                        onChange={(e) => onCustomizationChange(cart, product, e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.CartCardList_price}>
+                  <Text
+                    className={styles.CartCardList_price_text}
+                    colorClass={colorClasses.NEUTRAL['400']}
+                    type={textTypes.HEADING.XXS}
+                  >
+                  ₱ {product.price}
+                  </Text>
+                </div>
+
+                <div className={styles.CartCardList_quantity}>
+                  <IconButton 
+                    disabled={product.quantity <= 0}
+                    icon="remove"
+                    type={iconButtonTypes.OUTLINE.LG}
+                    onClick={()=> onQuantityDecrement(cart, product)}
+                  />
+                
+                  <Text
+                    className={styles.CartCardList_price_text}
+                    colorClass={colorClasses.NEUTRAL['400']}
+                    type={textTypes.HEADING.XXS}
+                  >
+                    {product.quantity}
+                  </Text>
+
+                  <IconButton 
+                    disabled={product.quantity >= 10}
+                    icon="add"
+                    type={iconButtonTypes.OUTLINE.LG}
+                    onClick={()=> onQuantityIncrement(cart, product)}
+                  />
+                </div>
+
+                <div className={styles.CartCardList_totalPrice}>
+                  <Text
+                    className={styles.CartCardList_totalPrice_text}
+                    colorClass={colorClasses.NEUTRAL['400']}
+                    type={textTypes.HEADING.XXS}
+                  >
+                    ₱ {product.price * product.quantity}
+                  </Text>
+                </div>
+
+                <div className={styles.CartCardList_actions}>
+                  <Button
+                    className={styles.CartCardList_actions_button}
+                    type={buttonTypes.SECONDARY.RED}
+                    onClick={()=> onDelete(cart, product)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))
+          }
+        </Card>
+      ))
+    }
+    </>
   );
 }
 
 CartCardList.propTypes = {
-  actions: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    onClick: PropTypes.func,
-  })),
   className: PropTypes.string,
   isAllSelected: PropTypes.bool,
-  product: PropTypes.shape({
-    customization: PropTypes.string,
-    image: PropTypes.string,
-    name: PropTypes.string,
-    quantity: PropTypes.number,
-    price: PropTypes.number,
+  userCart: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    shop: PropTypes.string,
     isSelected: PropTypes.bool,
-  }),
-  products: PropTypes.arrayOf(PropTypes.shape({
-    customization: PropTypes.string,
-    image: PropTypes.string,
-    name: PropTypes.string,
-    quantity: PropTypes.number,
-    price: PropTypes.number,
-    isSelected: PropTypes.bool,
+    products: PropTypes.arrayOf(PropTypes.shape({
+      customization: PropTypes.string,
+      image: PropTypes.string,
+      name: PropTypes.string,
+      quantity: PropTypes.number,
+      price: PropTypes.number,
+      isSelected: PropTypes.bool,
+      shop: PropTypes.string,
+    })),
   })),
   setIsAllSelected: PropTypes.func,
-  setNewProducts: PropTypes.func,
+  setUserCart: PropTypes.func,
   setTotalPrice: PropTypes.func,
   totalPrice: PropTypes.number,
 };

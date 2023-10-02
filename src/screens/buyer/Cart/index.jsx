@@ -2,40 +2,103 @@ import React, { useState } from 'react';
 
 import Image from 'next/image';
 
+import { useSelector } from 'react-redux';
+
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { Button, CartCardList, Checkbox, Text } from '@/components';
+import { Button, ButtonLink, CartCardList, Checkbox, Text } from '@/components';
+
+import { getDeliveryDetails } from '@/ducks';
 
 import styles from './styles.module.scss';
 
-const products = [
+
+const userCart = [
   {
     id: '1',
-    name: 'Butanding Souvenir',
-    image: 'https://picsum.photos/200',
-    customization: 'I want this in blue color with a ribbon on top of it and a card.',
-    price: 100,
-    quantity: 1,
-
+    shop: 'Butanding Souvenir Shop',
+    products: [
+      {
+        id: '1',
+        name: 'Butanding Souvenir',
+        image: 'https://picsum.photos/200',
+        customization: 'I want this in blue color with a ribbon on top of it and a card.',
+        price: 100,
+        quantity: 1,
+        shop: 'Butanding Souvenir Shop',
+    
+      },
+      {
+        id: '2',
+        name: 'Butanding Souvenir2',
+        image: 'https://picsum.photos/300',
+        customization: 'I want this in red color with a ribbon on top of it and a card.',
+        price: 200,
+        quantity: 2,
+        shop: 'Butanding Souvenir Shop',
+      },
+      {
+        id: '3',
+        name: 'Butanding Souvenir3',
+        image: 'https://picsum.photos/400',
+        customization: 'I want this in violet color with a ribbon on top of it and a card.',
+        price: 200,
+        quantity: 5,
+        shop: 'Butanding Souvenir Shop',
+      }
+    ]
   },
   {
     id: '2',
-    name: 'Butanding Souvenir2',
-    image: 'https://picsum.photos/300',
-    customization: 'I want this in blue color with a ribbon on top of it and a card.',
-    price: 200,
-    quantity: 2,
+    shop: 'Butanding Souvenir2 Shop2',
+    products: [
+      {
+        id: '4',
+        name: 'Butanding Souvenir4',
+        image: 'https://picsum.photos/200',
+        customization: 'I want this in blue color with a ribbon on top of it and a card.',
+        price: 100,
+        quantity: 1,
+        shop: 'Butanding Souvenir Shop',
+    
+      },
+      {
+        id: '5',
+        name: 'Butanding Souvenir5',
+        image: 'https://picsum.photos/300',
+        customization: 'I want this in red color with a ribbon on top of it and a card.',
+        price: 200,
+        quantity: 2,
+        shop: 'Butanding Souvenir Shop',
+      },
+      {
+        id: '6',
+        name: 'Butanding Souvenir6',
+        image: 'https://picsum.photos/400',
+        customization: 'I want this in violet color with a ribbon on top of it and a card.',
+        price: 200,
+        quantity: 5,
+        shop: 'Butanding Souvenir Shop',
+      }
+    ]
   }
 ];
 
 function Cart() {
+  const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  const [newProducts, setNewProducts] = useState(products.map((product) => ({
+  // Set the products of the userCart to have isSelected property
+  const [newUserCart, setNewUserCart] = useState(userCart.map((cart) => ({
+    ...cart,
+    isSelected: false,
+    products: cart.products.map((product) => ({
       ...product,
       isSelected: false,
-    })));
+    })),
+  })));
 
   return (
     <div className={styles.Cart}>
@@ -66,13 +129,14 @@ function Cart() {
           onChange={() => { 
             setIsAllSelected(!isAllSelected);
             
-            if (isAllSelected) {
-              setTotalPrice(0);
-            }
-
-            setNewProducts(newProducts.map((product) => ({
-              ...product,
+            // Set the cart products to have isSelected property
+            setNewUserCart(newUserCart.map((cart) => ({
+              ...cart,
               isSelected: !isAllSelected,
+              products: cart.products.map((product) => ({
+                ...product,
+                isSelected: !isAllSelected,
+              })),
             })));
           }}
         />
@@ -95,85 +159,81 @@ function Cart() {
           </Text>
         </div>
      </div>
-
-     <div className={styles.Cart_products}>
-        {
-          newProducts.map((product) => (
-              <CartCardList
-                key={product.id}
-                actions={
-                  [
-                    {
-                      label: 'Delete',
-                      onClick: () => {},
-                    },
-                  ]
-                }
-                className={styles.Cart_products_card}
-                isAllSelected={isAllSelected}
-                product={product}
-                products={newProducts}
-                setIsAllSelected={setIsAllSelected}
-                setNewProducts={setNewProducts}
-                setTotalPrice={setTotalPrice}
-                totalPrice={totalPrice}
-              />
-          ))
-        }
-      
-     </div>
+       
+      { newUserCart.length > 0 &&
+        <CartCardList
+        className={styles.Cart_products}
+        isAllSelected={isAllSelected}
+        setIsAllSelected={setIsAllSelected}
+        setTotalPrice={setTotalPrice}
+        setUserCart={setNewUserCart}
+        totalPrice={totalPrice}
+        userCart={newUserCart}
+      />}
 
      <div className={styles.Cart_footer}>
-      <div className={styles.Cart_footer_left}>
-        <Checkbox
-          checked={isAllSelected}
-          label="Select All"
-          name="product"
-          onChange={() => { 
-            setIsAllSelected(!isAllSelected);
+      <div className={styles.Cart_footer_container}> 
+        <div className={styles.Cart_footer_left}>
+          <Checkbox
+            checked={isAllSelected}
+            label="Select All"
+            name="product"
+            onChange={() => { 
+              setIsAllSelected(!isAllSelected);
 
-            if (isAllSelected) {
-              setTotalPrice(0);
-            }
+              // Set the cart products to have isSelected property
+              setNewUserCart(newUserCart.map((cart) => ({
+                ...cart,
+                isSelected: !isAllSelected,
+                products: cart.products.map((product) => ({
+                  ...product,
+                  isSelected: !isAllSelected,
+                })),
+              })));
+            }}
+          />
 
-            setNewProducts(newProducts.map((product) => ({
-              ...product,
-              isSelected: !isAllSelected,
-            })));
-          }}
-        />
+          <Button
+            className={styles.Cart_footer_button}
+            disabled={totalPrice === 0}
+            type={buttonTypes.PRIMARY.RED}
+            onClick={()=>{
+              // Set the cart products to have isSelected property and filter the selected products
+              setNewUserCart(newUserCart.map((cart) => ({
+                ...cart,
+                products: cart.products.filter((product) => !product.isSelected),
+              })));
 
-        <Button
-          className={styles.Cart_footer_delete}
-          type={buttonTypes.PRIMARY.RED}
-          onClick={()=>{}}
-        >
-          Delete Selected
-        </Button>
-      </div>
-
-      <div className={styles.Cart_footer_right}>
-        <Text 
-          colorClass={colorClasses.NEUTRAL['400']}
-          type={textTypes.HEADING.XXS}
-        >
-          Total:
-        </Text>
-
-        <Text 
-          colorClass={colorClasses.BLUE['300']}
-          type={textTypes.HEADING.XS}
-        >
-          ₱ {totalPrice}
-        </Text>
-
-        <Button
-          className={styles.Cart_footer_checkout}
-          onClick={()=>{}}
-        >
-          Checkout
-        </Button>
+            }}
+          >
+            Delete Selected
+          </Button>
         </div>
+
+        <div className={styles.Cart_footer_right}>
+          <Text 
+            colorClass={colorClasses.NEUTRAL['400']}
+            type={textTypes.HEADING.XXS}
+          >
+            Total:
+          </Text>
+
+          <Text 
+            colorClass={colorClasses.BLUE['300']}
+            type={textTypes.HEADING.XS}
+          >
+            ₱ {totalPrice}
+          </Text>
+
+          <ButtonLink
+            className={styles.Cart_footer_button}
+            disabled={totalPrice === 0}
+            to={deliveryDetails?.fullName ? '/buyer/checkout' : '/buyer/delivery'}
+          >
+            Checkout
+          </ButtonLink>
+        </div>
+      </div>
      </div>
     </div>
   );

@@ -4,7 +4,7 @@ export const initialState = {
   user: {},
   accessToken: null,
   refreshToken: null,
-  wasRedirected: false,
+  deliveryDetails: {},
 };
 
 const loginSlice = createSlice({
@@ -16,7 +16,7 @@ const loginSlice = createSlice({
         user,
         access_token: accessToken,
         refresh_token: refreshToken,
-        was_redirected: wasRedirected,
+        delivery_details: deliveryDetails,
       } = action.payload;
 
       return {
@@ -24,7 +24,7 @@ const loginSlice = createSlice({
         user: user || state.user,
         accessToken: accessToken || state.accessToken,
         refreshToken: refreshToken || state.refreshToken,
-        wasRedirected: wasRedirected ?? state.wasRedirected,
+        deliveryDetails: deliveryDetails || state.deliveryDetails,
       };
     },
     loginRestart: () => initialState,
@@ -37,7 +37,7 @@ export const selectors = {
   getUser: (state) => state.loginReducer.user,
   getAccessToken: (state) => state.loginReducer.accessToken,
   getRefreshToken: (state) => state.loginReducer.refreshToken,
-  getWasRedirected: (state) => state.loginReducer.wasRedirected,
+  getDeliveryDetails: (state) => state.loginReducer.deliveryDetails,
 };
 
 export default loginSlice.reducer;

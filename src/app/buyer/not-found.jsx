@@ -10,7 +10,7 @@ export const metadata = {
   title: 'Page Not Found | Keepscape',
 };
 
-export default function GiftGiverNotFound() {
+export default function BuyerNotFound() {
   return (
     <PageNotFound
       buttonLink={BUYER_ROUTES.HISTORY}
