@@ -131,7 +131,8 @@ function ImageDropzone({
         </>
       ) : (
         <div className={styles.file}>
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             alt="Uploaded File"
             className={styles.file_preview}
             src={uploadedFile?.preview ?? value}
@@ -146,7 +147,7 @@ function ImageDropzone({
             type="button"
             onClick={onRemove}
           >
-            <Icon className={styles.file_remove_icon} name="close" />
+            <Icon className={styles.file_remove_icon} icon="close" />
           </button>
         </div>
       )}

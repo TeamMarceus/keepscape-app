@@ -108,7 +108,7 @@ function Cart() {
           colorClass={colorClasses.BLUE['400']}
           type={textTypes.HEADING.MD}
         > 
-          Souvenir Cart 
+         Artisan Cart 
         </Text>
 
         <Image
