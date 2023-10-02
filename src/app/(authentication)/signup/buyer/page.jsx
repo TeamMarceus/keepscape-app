@@ -20,8 +20,10 @@ import {
   Grid,
   Spinner,
   Text,
+  ControlledTextArea,
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { getGeneralQuestions, getNewQuestions, getSuggestions } from '@/ducks';
 import { actions as questionsAction } from '@/ducks/reducers/questions';
 import { actions as productsActions } from '@/ducks/reducers/suggestions';
@@ -110,6 +112,10 @@ export default function BuyerSignUpPage() {
             firstName: '',
             lastName: '',
             email: '',
+            mobileNumber: '',
+            preferences: '',
+            interests: '',
+            description: '',
             password: '',
             confirmPassword: '',
           }}
@@ -118,6 +124,10 @@ export default function BuyerSignUpPage() {
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.email,
+              // mobileNumber: values.mobileNumber,
+              // preferences: values.preferences,
+              // interests: values.interests,
+              // description: values.description,
               password: values.password,
               confirmPassword: values.confirmPassword,
             };
@@ -228,22 +238,23 @@ export default function BuyerSignUpPage() {
         >
           {({ errors, values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <ControlledInput
-                error={errors.firstName}
-                name="firstName"
-                placeholder="First Name*"
-                value={values.firstName}
-                onChange={(e) => setFieldValue('firstName', e.target.value)}
-              />
+              <Grid>
+                <ControlledInput
+                  error={errors.firstName}
+                  name="firstName"
+                  placeholder="First Name*"
+                  value={values.firstName}
+                  onChange={(e) => setFieldValue('firstName', e.target.value)}
+                />
 
-              <ControlledInput
-                className={styles.BuyerSignUpPage_content_withMargin}
-                error={errors.lastName}
-                name="lastName"
-                placeholder="Last Name*"
-                value={values.lastName}
-                onChange={(e) => setFieldValue('lastName', e.target.value)}
-              />
+                <ControlledInput
+                  error={errors.lastName}
+                  name="lastName"
+                  placeholder="Last Name*"
+                  value={values.lastName}
+                  onChange={(e) => setFieldValue('lastName', e.target.value)}
+                />
+              </Grid>
 
               <ControlledInput
                 className={styles.BuyerSignUpPage_content_withMargin}
@@ -254,6 +265,41 @@ export default function BuyerSignUpPage() {
                 onChange={(e) => setFieldValue('email', e.target.value)}
               />
 
+              <ControlledInput
+                className={styles.BuyerSignUpPage_content_withMargin}
+                error={errors.mobileNumber}
+                name="mobileNumber"
+                placeholder="Mobile Number*"
+                value={values.email}
+                onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
+              />
+
+              <ControlledTextArea
+                inputClassName={styles.BuyerSignUpPage_content_withMargin}
+                name="preferences"
+                placeholder="Enter your souvenir preferences..."
+                type={textAreaTypes.FORM}
+                value={values.preferences}
+                onChange={(e) => setFieldValue('preferences', e.target.value)}
+              />
+
+              <ControlledTextArea
+                inputClassName={styles.BuyerSignUpPage_content_withMargin}
+                name="interests"
+                placeholder="Enter your personal interests..."
+                type={textAreaTypes.FORM}
+                value={values.interests}
+                onChange={(e) => setFieldValue('interests', e.target.value)}
+              />
+
+              <ControlledTextArea
+                inputClassName={styles.BuyerSignUpPage_content_withMargin}
+                name="description"
+                placeholder="Describe yourself (e.g. personality, likes, dislikes)"
+                type={textAreaTypes.FORM}
+                value={values.description}
+                onChange={(e) => setFieldValue('description', e.target.value)}
+              />
 
               <Grid className={styles.BuyerSignUpPage_content_withMargin}>
                 <ControlledInput

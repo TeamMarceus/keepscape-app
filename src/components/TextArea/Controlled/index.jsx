@@ -18,7 +18,7 @@ import styles from '../styles.module.scss';
 function ControlledTextArea({
   className,
   disabled = false,
-  error,
+  error = null,
   helperText,
   icon,
   id,
@@ -30,7 +30,7 @@ function ControlledTextArea({
   name,
   placeholder,
   readOnly = false,
-  success,
+  success = null,
   type = textAreaTypes.FORM,
   value = '',
   onBlur,
