@@ -62,6 +62,22 @@ const validate = (values) => {
     errors.email = 'This field can have at most 50 characters.';
   }
 
+  if (!values.mobileNumber) {
+    errors.mobileNumber = 'This field is required.';
+  }
+
+  if (!values.preferences) {
+    errors.preferences = 'This field is required.';
+  }
+
+  if (!values.interests) {
+    errors.interests = 'This field is required.';
+  }
+
+  if (!values.description) {
+    errors.description = 'This field is required.';
+  }
+
   if (!values.password) {
     errors.password = 'This field is required.';
   } else if (values.password.length > 20) {
@@ -274,28 +290,38 @@ export default function BuyerSignUpPage() {
                 onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
               />
 
+              <Text 
+                className={styles.BuyerSignUpPage_content_personalized}
+                type={textTypes.HEADING.XXXS}
+              >
+                To create a personalized experience, tell us about:
+              </Text>
+
               <ControlledTextArea
+                error={errors.preferences}
                 inputClassName={styles.BuyerSignUpPage_content_withMargin}
                 name="preferences"
-                placeholder="Enter your souvenir preferences..."
+                placeholder="Your souvenir preferences"
                 type={textAreaTypes.FORM}
                 value={values.preferences}
                 onChange={(e) => setFieldValue('preferences', e.target.value)}
               />
 
               <ControlledTextArea
+                error={errors.interests}
                 inputClassName={styles.BuyerSignUpPage_content_withMargin}
                 name="interests"
-                placeholder="Enter your personal interests..."
+                placeholder="Your personal interests"
                 type={textAreaTypes.FORM}
                 value={values.interests}
                 onChange={(e) => setFieldValue('interests', e.target.value)}
               />
 
               <ControlledTextArea
+                error={errors.description}
                 inputClassName={styles.BuyerSignUpPage_content_withMargin}
                 name="description"
-                placeholder="Describe yourself (e.g. personality, likes, dislikes)"
+                placeholder="Yourself (e.g. personality, likes, dislikes)"
                 type={textAreaTypes.FORM}
                 value={values.description}
                 onChange={(e) => setFieldValue('description', e.target.value)}

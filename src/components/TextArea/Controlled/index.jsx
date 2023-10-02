@@ -99,7 +99,7 @@ function ControlledTextArea({
 
           {hasErrorWithMessage && (
             <Text
-              colorClass={colorClasses.RED['500']}
+              colorClass={colorClasses.RED['200']}
               type={textTypes.BODY.XS}
             >
               {error}

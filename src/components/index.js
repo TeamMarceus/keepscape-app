@@ -13,6 +13,7 @@ export { default as DatePicker } from './Input/DatePicker';
 export { default as Icon } from './Icon';
 export { default as IconButton } from './Button/IconButton';
 export { default as IconLink } from './Button/IconLink';
+export { default as ImageDropzone } from './ImageDropzone';
 export { default as Filters } from './Filters';
 export { default as Footer } from './Footer';
 export { default as Grid } from './Grid';

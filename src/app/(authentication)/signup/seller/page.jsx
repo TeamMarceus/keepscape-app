@@ -20,8 +20,11 @@ import {
   Grid,
   Spinner,
   Text,
+  ControlledTextArea,
+  ImageDropzone,
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { getGeneralQuestions, getNewQuestions, getSuggestions } from '@/ducks';
 import { actions as questionsAction } from '@/ducks/reducers/questions';
 import { actions as productsActions } from '@/ducks/reducers/suggestions';
@@ -52,12 +55,28 @@ const validate = (values) => {
     errors.lastName = 'This field can have at least 2 characters.';
   }
 
+  if (!values.sellerName) {
+    errors.sellerName = 'This field is required.';
+  }
+
   if (!values.email) {
     errors.email = 'This field is required.';
   } else if (!isValidEmail(values.email)) {
     errors.email = 'This must be a valid email address.';
   } else if (values.email.length > 50) {
     errors.email = 'This field can have at most 50 characters.';
+  }
+
+  if (!values.mobileNumber) {
+    errors.mobileNumber = 'This field is required.';
+  }
+
+  if (!values.governmentId) {
+    errors.governmentId = 'Image is required.';
+  }
+
+  if (!values.description) {
+    errors.description = 'This field is required.';
   }
 
   if (!values.password) {
@@ -109,7 +128,11 @@ export default function SellerSignUpPage() {
           initialValues={{
             firstName: '',
             lastName: '',
+            sellerName: '',
             email: '',
+            mobileNumber: '',
+            governmentId: '',
+            description: '',
             password: '',
             confirmPassword: '',
           }}
@@ -117,7 +140,11 @@ export default function SellerSignUpPage() {
             const currentFormValues = {
               firstName: values.firstName,
               lastName: values.lastName,
+              // sellerName: values.sellerName,
               email: values.email,
+              // mobileNumber: values.mobileNumber,
+              // governmentId: values.governmentId,
+              // description: values.description,
               password: values.password,
               confirmPassword: values.confirmPassword,
             };
@@ -228,21 +255,31 @@ export default function SellerSignUpPage() {
         >
           {({ errors, values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <ControlledInput
-                error={errors.firstName}
-                name="firstName"
-                placeholder="First Name*"
-                value={values.firstName}
-                onChange={(e) => setFieldValue('firstName', e.target.value)}
-              />
+              <Grid>
+                <ControlledInput
+                  error={errors.firstName}
+                  name="firstName"
+                  placeholder="First Name*"
+                  value={values.firstName}
+                  onChange={(e) => setFieldValue('firstName', e.target.value)}
+                />
+
+                <ControlledInput
+                  error={errors.lastName}
+                  name="lastName"
+                  placeholder="Last Name*"
+                  value={values.lastName}
+                  onChange={(e) => setFieldValue('lastName', e.target.value)}
+                />
+              </Grid>
 
               <ControlledInput
                 className={styles.SellerSignUpPage_content_withMargin}
-                error={errors.lastName}
-                name="lastName"
-                placeholder="Last Name*"
-                value={values.lastName}
-                onChange={(e) => setFieldValue('lastName', e.target.value)}
+                error={errors.sellerName}
+                name="sellerName"
+                placeholder="Seller Name*"
+                value={values.sellerName}
+                onChange={(e) => setFieldValue('sellerName', e.target.value)}
               />
 
               <ControlledInput
@@ -254,6 +291,33 @@ export default function SellerSignUpPage() {
                 onChange={(e) => setFieldValue('email', e.target.value)}
               />
 
+              <ControlledInput
+                className={styles.SellerSignUpPage_content_withMargin}
+                error={errors.mobileNumber}
+                name="mobileNumber"
+                placeholder="Mobile Number*"
+                value={values.email}
+                onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
+              />
+
+              <ImageDropzone
+                className={styles.SellerSignUpPage_content_withMargin}
+                error={errors.governmentId}
+                text="Upload Government ID"
+                value={values.governmentId}
+                onChange={(image) => {
+                  setFieldValue('governmentId', image);
+                }}
+              />
+
+              <ControlledTextArea
+                inputClassName={styles.SellerSignUpPage_content_withMargin}
+                name="description"
+                placeholder="What do you sell and why you want to be a seller?"
+                type={textAreaTypes.FORM}
+                value={values.description}
+                onChange={(e) => setFieldValue('description', e.target.value)}
+              />
 
               <Grid className={styles.SellerSignUpPage_content_withMargin}>
                 <ControlledInput

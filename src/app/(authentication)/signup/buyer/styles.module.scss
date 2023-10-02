@@ -2,22 +2,27 @@
 @import '../../../../styles/mixins';
 
 .BuyerSignUpPage {
-  margin-top: 60px;
+  margin-top: 40px;
   max-width: 450px;
   padding-bottom: 60px;
-  text-align: center;
   width: 100%;
 
   &_header {
     padding: 20px;
     margin-bottom: 40px;
+    text-align: center;
   }
 
   &_content {
     padding: 0 20px 20px;
 
     &_withMargin {
-      margin-top: 10px;
+      margin-top: 10px !important;
+    }
+
+    &_personalized {
+      margin: 24px 0 8px !important;
+      text-align: center;
     }
 
     &_signupButton {
@@ -41,6 +46,7 @@
 
   &_footer {
     padding: 0 20px 20px;
+    text-align: center;
 
     &_signIn {
       color: $blue-400;
