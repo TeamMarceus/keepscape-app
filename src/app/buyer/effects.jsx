@@ -29,7 +29,7 @@ export default function BuyerEffects({ children }) {
   usePrivateRoute({ forUserType: userTypes.BUYER });
 
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken
+    !!accessToken && !!refreshToken && user.role === userTypes.BUYER,
   );
 
   useEffect(() => {
