@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Cart {
+.Checkout {
   display: flex;
   flex-direction: column;
   margin-top: 65px;
@@ -27,20 +27,65 @@
     }
   }
 
+  &_delivery {
+    background-color: $neutral-0;
+    border-radius: 5px;
+    border-top: 5px solid $blue-100;
+    margin: 150px 0 40px 0;
+    padding: 24px 40px;
+
+    &_title {
+      display: flex;
+      align-items: center;
+
+      &_icon {
+        font-size: 24px !important;
+        color: $blue-400 !important;
+        margin-right: 10px;
+      }
+    }
+
+    &_details {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 24px;
+
+      &_button {
+        margin-left: auto !important;
+      }
+    }
+  }
+  
   &_details {
     background-color: $neutral-0;
     border-radius: 5px;
-    border-bottom: 2px solid $blue-100;
-    @include flex-between;
-    margin-top: 150px;
     padding: 24px 40px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    place-items: center;
 
-    &_additionals {
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      gap: 150px;
-      padding-right: 35px;
+    &_products {
+      grid-column: 1/5;
+      place-self: normal;
+    }
+
+    &_customization {
+      width: 200px;
+      grid-column: 5/7;
+    }
+
+    &_price {
+      margin-left: 60px !important;
+      grid-column: 7/9;
+    }
+
+    &_quantity {
+      grid-column: 9/11;
+    }
+
+    &_total {
+      grid-column: 12;
     }
   }
 
@@ -60,18 +105,14 @@
     padding: 24px 40px;
     
     &_container {
-      @include flex-between;
       max-width: 1350px;
       width: 100%;
     }
 
-    &_left {
-      @include flex-center;
-      gap: 20px;
-    }
-
-    &_right {
-      @include flex-center;
+    &_content {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       gap: 12px;
     }
 

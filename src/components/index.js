@@ -7,6 +7,7 @@ export { default as CardImage } from './CardImage';
 export { default as CardLink } from './Card/Link';
 export { default as CartCardList } from './CartCardList';
 export { default as Checkbox } from './Checkbox';
+export { default as CheckoutCardList } from './CheckoutCardList';
 export { default as ControlledInput } from './Input/Controlled';
 export { default as ControlledTextArea } from './TextArea/Controlled';
 export { default as DatePicker } from './Input/DatePicker';

@@ -6,9 +6,11 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, CartCardList, Checkbox, Text } from '@/components';
+import { Button, ButtonLink, Card, CartCardList, Checkbox, Text } from '@/components';
 
 import { getDeliveryDetails } from '@/ducks';
+import { actions as usersActions } from '@/ducks/reducers/users';
+import { useActionDispatch } from '@/hooks';
 
 import styles from './styles.module.scss';
 
@@ -87,6 +89,10 @@ const userCart = [
 function Cart() {
   const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
 
+  const loginUpdate = useActionDispatch(
+    usersActions.loginActions.loginUpdate
+  );
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
@@ -120,7 +126,7 @@ function Cart() {
       </div>
      </div>
 
-     <div className={styles.Cart_details}>
+     <Card className={styles.Cart_details}>
         <Checkbox
           checked={isAllSelected}
           className={styles.Cart_details_checkbox}
@@ -158,7 +164,7 @@ function Cart() {
             Actions
           </Text>
         </div>
-     </div>
+     </Card>
        
       { newUserCart.length > 0 &&
         <CartCardList
@@ -215,7 +221,12 @@ function Cart() {
             colorClass={colorClasses.NEUTRAL['400']}
             type={textTypes.HEADING.XXS}
           >
-            Total:
+            Total ({ 
+              // Get the total number of selected products from the userCart
+              newUserCart.reduce((total, cart) => total + cart.products.filter((product) => product.isSelected).length, 0)
+            } item{
+              // Get the total number of selected products from the userCart
+              newUserCart.reduce((total, cart) => total + cart.products.filter((product) => product.isSelected).length, 0) > 1 ? 's' : ''}) :
           </Text>
 
           <Text 
@@ -229,6 +240,16 @@ function Cart() {
             className={styles.Cart_footer_button}
             disabled={totalPrice === 0}
             to={deliveryDetails?.fullName ? '/buyer/checkout' : '/buyer/delivery'}
+            onClick={() => {
+              // Update the checkout_cart property of the user with the only the selected products
+                loginUpdate({
+                  checkout_cart: newUserCart.map((cart) => ({
+                    ...cart,
+                    products: cart.products.filter((product) => product.isSelected),
+                  })),
+                });
+              }
+            }
           >
             Checkout
           </ButtonLink>

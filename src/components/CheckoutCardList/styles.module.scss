@@ -1,0 +1,77 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.Card {
+
+}
+
+.CheckoutCardList {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 12px;
+
+  &_shop {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $neutral-200;
+    margin: 0 -1.7rem 0 -1.7rem;
+    padding: 0 0 20px 20px;
+
+    &_icon {
+      color: $blue-400;
+      font-size: 16px;
+      margin: 0 8px 0 12px;
+    }
+  }
+
+  &_item {
+    background-color: $neutral-50;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    place-items: center;
+    padding: 12px 32px;
+    margin-top: 12px;
+  }
+
+  &_product {
+    display: flex;
+    align-items: center;
+    grid-column: 1/5;
+    place-self: normal;
+    gap: 12px;
+  }
+
+  &_customization {
+    min-height: 75px !important;
+    grid-column: 5/7;
+    width: 200px !important;
+  }
+
+  &_customizationText {
+    @include flex-center;
+    width: 200px !important;
+  }
+  
+  &_price {
+    grid-column: 7/9;
+  }
+
+  &_quantity {
+    grid-column: 9/11;
+  }
+
+  &_totalPrice {
+    grid-column: 12;
+  }
+
+  &_orderTotal {
+    background-color: $blue-0;
+    border-radius: 0 0 5px 5px;
+    border-top: dashed 2px $blue-100;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 32px;
+  }
+}

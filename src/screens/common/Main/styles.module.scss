@@ -45,11 +45,11 @@
     flex-direction: column;
     width: 100%;
     margin: 24px 0 40px 0;
-    padding: 12px 24px;
+    padding: 8px 24px 32px;
     text-align: center;
 
     &_title {
-      background-color: #3586A4;
+      background-color: $blue-400;
       border-radius: 5px;
       box-shadow: $shadow-normal;
       padding: 12px;
@@ -88,7 +88,7 @@
       }
       
       &_products {
-        padding: 24px 12px 50px;
+        padding: 12px 12px 0;
       }
 
       &_productsEmpty {

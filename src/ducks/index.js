@@ -42,6 +42,8 @@ export const getRefreshToken = (store) =>
   usersSelectors.loginSelectors.getRefreshToken(store[USERS]);
 export const getDeliveryDetails = (store) =>
   usersSelectors.loginSelectors.getDeliveryDetails(store[USERS]);
+export const getCheckoutCart = (store) =>
+  usersSelectors.loginSelectors.getCheckoutCart(store[USERS]);
 
 // suggestions
 export const getSuggestions = (store) => 
