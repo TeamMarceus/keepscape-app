@@ -101,7 +101,7 @@ function Filters({
                  newSearchParams.append(checkboxSearch, checkbox.name);
               }
 
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           />
         ))}
@@ -123,7 +123,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '5');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={5} />
@@ -139,7 +139,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '4');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={4} /> & Up
@@ -155,7 +155,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '3');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={3} />& Up
@@ -171,7 +171,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '2');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={2} /> & Up
@@ -187,7 +187,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '1');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={1} /> & Up
@@ -215,7 +215,7 @@ function Filters({
                 newSearchParams.delete('maximumPrice');
                 newSearchParams.append('minimumPrice', minimumPrice);
                 newSearchParams.append('maximumPrice', maximumPrice);
-                router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`)
+                router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
                 
               }
             }
