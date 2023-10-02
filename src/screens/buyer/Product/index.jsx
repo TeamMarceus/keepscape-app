@@ -7,8 +7,25 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-scroll';
 import Slider from 'react-slick';
 
-import { buttonTypes, colorClasses, iconButtonTypes, textTypes } from '@/app-globals';
-import { Button, ButtonLink, ControlledTextArea, IconButton, RatingStars, ReviewCard, SellerCard, Text } from '@/components'
+import { 
+  buttonTypes, 
+  colorClasses, 
+  iconButtonTypes, 
+  textTypes 
+} from '@/app-globals';
+
+import { 
+  Button, 
+  ButtonLink, 
+  Card, 
+  ControlledTextArea, 
+  IconButton, 
+  RatingStars, 
+  ReviewCard, 
+  SellerCard, 
+  Text 
+} from '@/components'
+
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { getUser } from '@/ducks';
 
@@ -43,6 +60,69 @@ const sliderSettings = {
   slidesToScroll: 1,
 };
 
+const reviews = [
+  {
+    id: 1,
+    name: 'John Doe',
+    rating: 1,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 2,
+    name: 'Johnny Doe',
+    rating: 2,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 3,
+    name: 'Alexandra Doe',
+    rating: 3,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 4,
+    name: 'John Deep',
+    rating: 4,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 5,
+    name: 'John Doe',
+    rating: 5,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 6,
+    name: 'Jane Doe',
+    rating: 1,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 7,
+    name: 'John Doe',
+    rating: 2,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 8,
+    name: 'John Doe',
+    rating: 3,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 9,
+    name: 'John Doe',
+    rating: 4,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+  {
+    id: 10,
+    name: 'John Doe',
+    rating: 5,
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  },
+];
+
 
 function Product({ id }) {
   const user = useSelector(getUser);
@@ -51,10 +131,13 @@ function Product({ id }) {
   const [customInput, setCustomInput] = useState('')
   const [clickedRating, setClickedRating] = useState(0)
 
+  const filteredReviews = clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) :
+    reviews.filter((review) => review.rating === clickedRating)
+
   return (
     <div className={styles.Product}>
       <div className={styles.Product_content}>
-        <div className={styles.Product_content_left}>
+        <Card className={styles.Product_content_left}>
           <div className={styles.Product_content_images}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
@@ -192,7 +275,7 @@ function Product({ id }) {
               </ButtonLink>
             </div>
           </div>
-        </div>
+        </Card>
 
         <SellerCard
           className={styles.Product_seller}
@@ -284,20 +367,18 @@ function Product({ id }) {
             </Button>
           </div>
         </div>
-
-        <ReviewCard
-          className={styles.Product_reviews_list}
-          comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies"
-          name="John Doe"
-          rating={4}
-        />
-
-        <ReviewCard
-          className={styles.Product_reviews_list}
-          comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies"
-          name="John Doe"
-          rating={4}
-        />
+        
+        {
+          filteredReviews.map((review) => (
+            <ReviewCard
+              key={review.id}
+              className={styles.Product_reviews_list}
+              comment={review.comment}
+              name={review.name}
+              rating={review.rating}
+            />
+          ))
+        }
       </div>
     </div>
   )
