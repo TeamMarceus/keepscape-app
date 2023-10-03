@@ -8,8 +8,24 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
-import { buttonKinds, buttonTypes, colorClasses, colorNames, inputKinds, spinnerSizes, textTypes } from '@/app-globals';
-import { Button, ButtonLink, ControlledInput, Spinner, Text } from '@/components';
+import {
+  buttonKinds, 
+  buttonTypes, 
+  colorClasses, 
+  colorNames, 
+  inputKinds, 
+  spinnerSizes, 
+  textTypes 
+} from '@/app-globals';
+
+import { 
+  Button, 
+  ButtonLink, 
+  ControlledInput, 
+  Spinner, 
+  Text 
+} from '@/components';
+
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch } from '@/hooks';
 

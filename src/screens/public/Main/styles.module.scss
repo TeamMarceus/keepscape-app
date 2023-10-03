@@ -46,7 +46,6 @@
     width: 100%;
     margin: 24px 0 40px 0;
     padding: 8px 24px 32px;
-    text-align: center;
 
     &_title {
       background-color: $blue-400;
@@ -164,6 +163,12 @@
       column-gap: 20px;
       margin-top: 24px;
       row-gap: 12px;
+
+      &_item {
+        &:hover {
+          scale: 1.05;
+        }
+      }
     }
 
     &_button {

@@ -156,15 +156,13 @@ CheckoutCardList.propTypes = {
   userCart: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     shop: PropTypes.string,
-    isSelected: PropTypes.bool,
     products: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
       customization: PropTypes.string,
       image: PropTypes.string,
       name: PropTypes.string,
       quantity: PropTypes.number,
       price: PropTypes.number,
-      isSelected: PropTypes.bool,
-      shop: PropTypes.string,
     })),
   })),
 };

@@ -26,9 +26,9 @@ function TabLink({
       [styles.Tab___withClose]: closeAction && active,
     })}
     data-test="tabLink"
+    href={to}
     id={id}
     target={target}
-    to={to}
   >
     {children}
     {closeAction && active && (

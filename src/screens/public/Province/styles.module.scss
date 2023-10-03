@@ -1,14 +1,14 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Category {
+.Province {
   margin-top: 90px;
   
   &_banner {
-    background-image: url('../../../../public/images/Misc/banner.png');
+    background-image: url('../../../../public/images/Beaches/cebu.png');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: cover;
     height: 250px;
     margin-bottom: 40px;
     border-radius: 5px;
@@ -32,8 +32,14 @@
       column-gap: 20px;
       row-gap: 12px;
     }
-  }
 
+    &_item {
+      &:hover {
+        scale: 1.05;
+      }
+    }
+  }
+  
   &_pagination {
     margin-top: 60px;
   }

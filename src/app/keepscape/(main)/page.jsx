@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Main from '@/screens/common/Main';
+import Main from '@/screens/public/Main';
 
 export default function MainPage() {
 

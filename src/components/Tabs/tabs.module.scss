@@ -25,16 +25,16 @@
       color: $neutral-400;
       border-bottom: 2px solid transparent;
     } @else if $state == selected {
-      color: $green-300;
-      border-bottom: 2px solid $green-300;
+      color: $blue-300;
+      border-bottom: 2px solid $blue-300;
     }
 
     &:hover {
-      background-color: transparentize($green-300, 0.9);
+      background-color: transparentize($blue-300, 0.9);
     }
 
     &:active {
-      background-color: transparentize($green-300, 0.8);
+      background-color: transparentize($blue-300, 0.8);
     }
   }
 }
@@ -46,7 +46,7 @@
       border-bottom: 2px solid transparent;
     } @else if $state == selected {
       color: $neutral-700;
-      border-bottom: 2px solid $green-300;
+      border-bottom: 2px solid $blue-300;
     }
 
     &:hover {
@@ -63,16 +63,16 @@
     @if $state == unselected {
       color: $neutral-400;
     } @else if $state == selected {
-      color: $green-300;
-      background-color: transparentize($green-300, 0.9);
+      color: $blue-300;
+      background-color: transparentize($blue-300, 0.9);
     }
 
     &:hover {
-      background-color: transparentize($green-300, 0.9);
+      background-color: transparentize($blue-300, 0.9);
     }
 
     &:active {
-      background-color: transparentize($green-300, 0.8);
+      background-color: transparentize($blue-300, 0.8);
     }
   }
 }

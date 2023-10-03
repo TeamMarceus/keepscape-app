@@ -77,7 +77,6 @@ function Checkout() {
         <ButtonLink
           className={styles.Checkout_delivery_details_button}
           to="/buyer/delivery"
-          // type={buttonTypes.TEXT.BLUE}
         > 
           Change Address
         </ButtonLink>
@@ -122,8 +121,8 @@ function Checkout() {
        
       { userCart.length > 0 &&
         <CheckoutCardList
-        className={styles.Checkout_products}
-        userCart={userCart}
+          className={styles.Checkout_products}
+          userCart={userCart}
       />}
 
      <div className={styles.Checkout_footer}>

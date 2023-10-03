@@ -27,13 +27,15 @@ import {
 } from '@/components'
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-import { getUser } from '@/ducks';
+import { getUser, getDeliveryDetails } from '@/ducks';
+import { actions as usersActions } from '@/ducks/reducers/users';
+import { useActionDispatch } from '@/hooks';
 
 import styles from './styles.module.scss'
 
 const product =
 {
-  id: 1,
+  id: '1',
   name: 'Butanding Keychain',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies.',
   images: [
@@ -49,6 +51,16 @@ const product =
   place: 'Cebu, Oslob',
   numOfReviews: 100,
   totalSold: 1000,
+}
+
+const seller = {
+  id: '1',
+  name: 'Butanding Store',
+  rating: 3,
+  totalSold: 1000,
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
+  contactNumber: '09312355213',
+  email: 'seller@gmail.com'
 }
 
 const sliderSettings = {
@@ -126,6 +138,11 @@ const reviews = [
 
 function Product({ id }) {
   const user = useSelector(getUser);
+  const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
+  const loginUpdate = useActionDispatch(
+    usersActions.loginActions.loginUpdate
+  );
+
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [customInput, setCustomInput] = useState('')
@@ -215,7 +232,7 @@ function Product({ id }) {
                 colorClass={colorClasses.RED['200']}
                 type={textTypes.HEADING.MD}
               >
-                ₱{product.price}
+                ₱ {product.price}
               </Text>
             </div>
 
@@ -268,8 +285,27 @@ function Product({ id }) {
               </Button>
               <ButtonLink
                 className={styles.Product_content_info_purchase_button}
-                to="/buyer/cart"
-                onClick={()=>{}}
+                to={deliveryDetails?.fullName ? '/buyer/checkout' : '/buyer/delivery'}
+                onClick={()=>{
+                  loginUpdate({
+                    checkout_cart: [
+                      {
+                        id: '1',
+                        shop: seller.name,
+                        products: [
+                          {
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            quantity,
+                            image: product.images[currentImageIndex],
+                            customization: customInput,
+                          }
+                        ]
+                      }
+                    ]
+                  })
+                }}
               >
                 Buy Now
               </ButtonLink>
@@ -279,12 +315,11 @@ function Product({ id }) {
 
         <SellerCard
           className={styles.Product_seller}
-          contactNumber="09312355213"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies"
-          email="seller@email.com"
-          name="John Doe"
-          rating={3}
-          totalSold={1000}
+          contactNumber={seller.contactNumber}
+          description={seller.description}
+          name={seller.name}
+          rating={seller.rating}
+          totalSold={seller.totalSold}
         />
 
       </div>

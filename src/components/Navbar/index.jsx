@@ -149,7 +149,7 @@ function Navbar() {
                 >
                   <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href="/"
+                    href="/buyer/account?activeTab=information"
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                   >
                     <Icon
@@ -161,7 +161,7 @@ function Navbar() {
 
                   <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href="/"
+                    href="/buyer/account?activeTab=purchases"
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                   >
                     <Icon

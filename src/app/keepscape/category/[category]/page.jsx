@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useParams } from 'next/navigation';
 
-import Category from '@/screens/common/Category';
+import Category from '@/screens/public/Category';
 
 export default function CategoryPage() {
   const params = useParams();

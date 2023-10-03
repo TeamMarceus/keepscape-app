@@ -21,87 +21,143 @@ import styles from './styles.module.scss'
 
 const suggestions = [
   {
-    name: 'item 1',
+    title: 'item 1',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet.',
     products: [
       {
-        title: 'Product 1',
+        id: 1,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/310',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        rating: 4,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 2',
+        id: 2,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/320',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/400'
+        rating: 5,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 3',
+        id: 3,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/330',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/500'
+        rating: 3,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 1',
+        id: 4,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/340',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/600'
+        rating: 2,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 2',
+        id: 5,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/350',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/700'
+        rating: 1,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 3',
+        id: 6,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/360',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
-      }
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
+      {
+        id: 7,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/370',
+        price: 100,
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
+      {
+        id: 8,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/380',
+        price: 100,
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
     ]
   },
   {
-    name: 'item 2',
+    title: 'item 2',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet.',
     products: [
       {
-        title: 'Product 1',
+        id: 9,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/310',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/900'
+        rating: 4,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 2',
+        id: 12,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/320',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/100/300'
+        rating: 5,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 3',
+        id: 13,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/330',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/200/300'
+        rating: 3,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 1',
+        id: 14,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/340',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/300/300'
+        rating: 2,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 2',
+        id: 15,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/350',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/400/300'
+        rating: 1,
+        place: 'Cebu, Oslob'
       },
       {
-        title: 'Product 3',
+        id: 16,
+        name1: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/360',
         price: 100,
-        url: 'https://www.google.com',
-        image: 'https://picsum.photos/500/300'
-      }
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
+      {
+        id: 17,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/370',
+        price: 100,
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
+      {
+        id: 18,
+        name: 'Butanding Keychain',
+        image: 'https://picsum.photos/200/380',
+        price: 100,
+        rating: 4,
+        place: 'Cebu, Oslob'
+      },
     ]
   }
 ];
@@ -228,34 +284,35 @@ const products = [
   },
 ]
 
+const productSliderSettings = {
+  lazyLoad: true,
+  dots: false,
+  infinite: false,
+  speed: 100,
+  slidesToShow: 5.5,
+  slidesToScroll: 1,
+};
+
+const bannerSliderSettings = {
+  autoplay: true,
+  autoplaySpeed: 2000,
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
+
 function Main() {
   const router = useRouter();
   const user = useSelector((store) => getUser(store));
 
-  const sliderSettings = {
-    lazyLoad: true,
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-  };
-
-  const sliderSettings2 = {
-    autoplay: true,
-    autoplaySpeed: 2000,
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   
   return (
     <div className={styles.Main}>
       <div className={styles.Main_banner}>
         <div className={styles.Main_banner_slider}>
-          <Slider {...sliderSettings2}>
+          <Slider {...bannerSliderSettings}>
             {beaches.map((beach) => (
               <div key={beach.name} className={styles.Main_banner_image}>
                 <Image
@@ -308,7 +365,7 @@ function Main() {
                     className={styles.Main_suggestions_item_name}
                     type={textTypes.HEADING.SM}
                   >
-                    {item.name}
+                    {item.title}
                   </Text>
 
                   <Text
@@ -328,20 +385,21 @@ function Main() {
                 >
                   {item.products.length !== 0 ? 
                     (
-                      <Slider {...sliderSettings}>
-                       {item.products.map((product, productIndex) => (
-                          <CardImage 
-                            key={productIndex}
+                      <Slider {...productSliderSettings}>
+                       {item.products.map((product) => (
+                          <ProductCard
+                            key={product.id}
                             isClickable
                             className={styles.Main_suggestions_item_product}
-                            imageHeight={180}
-                            imageString={product.image}
-                            imageWidth={180}
-                            name={product.title}
+                            id={product.id}
+                            image={product.image}
+                            name={product.name}
+                            place={product.place}
                             price={product.price}
-                            onClick={() => {}}
+                            rating={product.rating}
+                            userId={user?.guid}
                           />
-                          ))}
+                        ))}
                       </Slider>
                       ) : (
                       <Text
@@ -396,7 +454,7 @@ function Main() {
         </Text>
         
         <div className={styles.Main_categories_list}>
-           <Slider {...sliderSettings}>
+           <Slider {...productSliderSettings}>
             {categories.map((category, index) => (
               <CardImage
                 key={index}

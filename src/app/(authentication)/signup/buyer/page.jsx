@@ -286,7 +286,7 @@ export default function BuyerSignUpPage() {
                 error={errors.mobileNumber}
                 name="mobileNumber"
                 placeholder="Mobile Number*"
-                value={values.email}
+                value={values.mobileNumber}
                 onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
               />
 
