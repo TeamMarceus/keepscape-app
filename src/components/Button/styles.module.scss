@@ -198,6 +198,10 @@
     &___yellow {
       @include text($yellow-300);
     }
+
+    &___neutral {
+      @include text($neutral-300);
+    }
   }
 
   &___withIcon {

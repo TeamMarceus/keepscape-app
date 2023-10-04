@@ -12,7 +12,6 @@ import { getCheckoutCart, getDeliveryDetails, getUser } from '@/ducks';
 
 import CheckoutCardList from './CheckoutCardList';
 
-
 import styles from './styles.module.scss';
 
 function Checkout() {

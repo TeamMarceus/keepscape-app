@@ -20,6 +20,7 @@ export const BUTTON_TYPES = {
     RED: 'text___red',
     GREEN: 'text___green',
     YELLOW: 'text___yellow',
+    NEUTRAL: 'text___neutral',
   },
   TERTIARY: 'tertiary',
 };

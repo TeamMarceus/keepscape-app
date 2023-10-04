@@ -59,6 +59,7 @@ Button.propTypes = {
     buttonTypes.TEXT.RED,
     buttonTypes.TEXT.GREEN,
     buttonTypes.TEXT.YELLOW,
+    buttonTypes.TEXT.NEUTRAL,
     buttonTypes.TERTIARY,
   ]),
   kind: PropTypes.oneOf([

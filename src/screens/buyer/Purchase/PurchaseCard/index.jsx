@@ -19,6 +19,7 @@ import {
 } from '@/components';
 
 
+import DeliveryLogsModal from '../DeliveryLogsModal';
 import QrCodeModal from '../QrCodeModal';
 
 import styles from './styles.module.scss';
@@ -39,6 +40,7 @@ function PurchaseCard({
 }) {
 
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
+  const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
 
   return (
     <>
@@ -69,74 +71,39 @@ function PurchaseCard({
                 </Text>
               </div>
             </div>
-
-            <div className={styles.PurchaseCard_seller_right}>
-              { status === 'Delivered' &&
-                <>
-                  <Icon
-                    className={cn(styles.PurchaseCard_seller_right_icon, 
-                      styles.PurchaseCard_seller_right___delivered)}
-                    icon="check"
-                  />
-                  <Text
-                    colorClass={colorClasses.GREEN['400']}
-                    type={textTypes.HEADING.XXXS}
-                  >
-                    {status}
-                  </Text>
-                </>
+       
+            <Button
+              icon={
+                (() => {
+                  if (status === 'Pending') {
+                    return 'pending';
+                  } if (status === 'Delivered') {
+                    return 'check';
+                  } if (status === 'Cancelled') {
+                    return 'close';
+                  } 
+                    return 'local_shipping';
+                })()
               }
-
-              { status === 'Cancelled' &&
-                <>
-                  <Icon
-                    className={cn(styles.PurchaseCard_seller_right_icon, 
-                      styles.PurchaseCard_seller_right___cancelled)}
-                    icon="close"
-                  />
-                  <Text
-                    colorClass={colorClasses.RED['400']}
-                    type={textTypes.HEADING.XXXS}
-                  >
-                    {status}
-                  </Text>
-                </>
+              type={
+                (() => {
+                  if (status === 'Pending') {
+                    return buttonTypes.TEXT.NEUTRAL;
+                  } if (status === 'Delivered') {
+                    return buttonTypes.TEXT.GREEN;
+                  } if (status === 'Cancelled') {
+                    return buttonTypes.TEXT.RED;
+                  } 
+                    return buttonTypes.TEXT.BLUE;
+                })()
               }
-
-              { status === 'On Going' &&
-                <>
-                  <Icon
-                    className={cn(styles.PurchaseCard_seller_right_icon, 
-                      styles.PurchaseCard_seller_right___ongoing)}
-                    icon="local_shipping"
-                  />
-                  <Text
-                    colorClass={colorClasses.BLUE['400']}
-                    type={textTypes.HEADING.XXXS}
-                  >
-                    {status}
-                  </Text>
-                </>
-              }
-
-              { status === 'Pending' &&
-                <>
-                  <Icon
-                    className={cn(styles.PurchaseCard_seller_right_icon, 
-                      styles.PurchaseCard_seller_right___pending)}
-                    icon="pending"
-                  />
-                  <Text
-                    colorClass={colorClasses.NEUTRAL['400']}
-                    type={textTypes.HEADING.XXXS}
-                  >
-                    {status}
-                  </Text>
-                </>
-              }
-            </div>
+              onClick={() => setIsDeliveryLogsModalOpen(true)}
+            >
+              {status}
+            </Button>
+            
           </div>
-          
+       
           <div className={styles.PurchaseCard_item}>
             <div className={styles.PurchaseCard_product}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -241,6 +208,14 @@ function PurchaseCard({
           qrCode={qrCode}
           title={`${name} QR Code`}
         />  
+      }
+
+      {isDeliveryLogsModalOpen &&
+        <DeliveryLogsModal
+          handleClose={() => setIsDeliveryLogsModalOpen(false)}
+          isOpen={isDeliveryLogsModalOpen}
+          title={`${name} Delivery Details`}
+        />
       }
     </>
   );
