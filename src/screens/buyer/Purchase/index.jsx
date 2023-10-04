@@ -9,7 +9,9 @@ import {
   buttonTypes,
   colorClasses,
 } from '@/app-globals';
-import { Button, Text, PurchaseCard, ControlledInput } from '@/components';
+import { Button, Text, ControlledInput } from '@/components';
+
+import PurchaseCard from './PurchaseCard';
 
 import styles from './styles.module.scss';
 

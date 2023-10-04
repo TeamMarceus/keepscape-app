@@ -21,7 +21,7 @@ import {
   Text
 } from '@/components';
 
-import { textAreaTypes } from '../TextArea/constants';
+import { textAreaTypes } from '../../../../components/TextArea/constants';
 
 import styles from './styles.module.scss';
 

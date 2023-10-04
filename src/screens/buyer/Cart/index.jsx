@@ -6,11 +6,14 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, Card, CartCardList, Checkbox, Text } from '@/components';
+import { Button, ButtonLink, Card, Checkbox, Text } from '@/components';
+
 
 import { getDeliveryDetails } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch } from '@/hooks';
+
+import CartCardList from './CartCardList';
 
 import styles from './styles.module.scss';
 

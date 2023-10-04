@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Image from 'next/image';
 
@@ -6,9 +6,12 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, Card, CheckoutCardList, Icon, Text } from '@/components';
+import { Button, ButtonLink, Card, Icon, Text } from '@/components';
 
 import { getCheckoutCart, getDeliveryDetails, getUser } from '@/ducks';
+
+import CheckoutCardList from './CheckoutCardList';
+
 
 import styles from './styles.module.scss';
 
