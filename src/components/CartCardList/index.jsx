@@ -55,7 +55,7 @@ function CartCardList({
     if (isAllSelected) {
       setIsAllSelected(false);
   
-      // Set the user cart shop products to be unselected
+      // Set the user cart seller products to be unselected
       setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
@@ -71,7 +71,7 @@ function CartCardList({
         return prevCart;
       }));
     } else {
-      // Set the user cart shop products to be selected or unselected
+      // Set the user cart seller products to be selected or unselected
       setUserCart((prevUserCart) => prevUserCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
@@ -119,7 +119,7 @@ function CartCardList({
 
     } else if (cart.isSelected) {
 
-       // Set cart shop to be unselected and set the only selected product to be selected
+       // Set cart seller to be unselected and set the only selected product to be selected
        setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
@@ -265,24 +265,24 @@ function CartCardList({
         >
           
           {  cart.products.length > 0 &&
-            <div className={styles.CartCardList_shop}>
+            <div className={styles.CartCardList_seller}>
               <Checkbox
                 checked={isAllSelected || cart.isSelected}
                 className={styles.CartCardList_product_checkbox}
-                name={cart.shop}
+                name={cart.seller}
                 onChange={() => onCartSelectChange(cart)}
               />
 
               <Icon 
-                className={styles.CartCardList_shop_icon}
+                className={styles.CartCardList_seller_icon}
                 icon="storefront" 
               />
 
               <Text
-                className={styles.CartCardList_shop_text}
+                className={styles.CartCardList_seller_text}
                 type={textTypes.HEADING.XXXS}
               >
-                {cart.shop}
+                {cart.seller}
               </Text>
             </div>
           }
@@ -333,7 +333,7 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                  ₱ {product.price}
+                  ₱{product.price}
                   </Text>
                 </div>
 
@@ -395,7 +395,7 @@ CartCardList.propTypes = {
   isAllSelected: PropTypes.bool,
   userCart: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    shop: PropTypes.string,
+    seller: PropTypes.string,
     isSelected: PropTypes.bool,
     products: PropTypes.arrayOf(PropTypes.shape({
       customization: PropTypes.string,
@@ -404,7 +404,7 @@ CartCardList.propTypes = {
       quantity: PropTypes.number,
       price: PropTypes.number,
       isSelected: PropTypes.bool,
-      shop: PropTypes.string,
+      seller: PropTypes.string,
     })),
   })),
   setIsAllSelected: PropTypes.func,

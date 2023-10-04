@@ -3,9 +3,9 @@ const accountTabs = {
     name: 'My Account',
     value: 'information',
   },
-  ACCOUNT_PURCHASES: {
-    name: 'My Purchases',
-    value: 'purchases',
+  ACCOUNT_PURCHASE: {
+    name: 'My Purchase',
+    value: 'purchase',
   },
   CHANGE_PASSWORD: {
     name: 'Change Password',

@@ -117,9 +117,29 @@
   }
 
   &_cart {
-    &:hover {
-      > i {
-        color: $neutral-100;
+    position: relative;
+
+    &_count {
+      @include ease(0.2s);
+      @include flex-center;
+      background-color: $neutral-0;
+      color: $blue-400;
+      border-radius: 50%;
+      font-size: 12px;
+      height: 20px;
+      min-width: 20px;
+      padding: 0 4px;
+      position: absolute;
+      right: -5px;
+      top: -5px;
+      width: 20px;
+    }
+
+    &_icon {
+      &:hover {
+        > i {
+          color: $neutral-100;
+        }
       }
     }
   }

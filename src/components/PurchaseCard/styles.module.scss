@@ -1,0 +1,128 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.PurchaseCard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 12px;
+
+  &_seller {
+    @include flex-between;
+    border-bottom: 1px solid $neutral-200;
+    margin: 0 -1.7rem 0 -1.7rem;
+    padding: 0 32px 20px 20px;
+
+    &_left {
+      display: flex;
+    }
+
+    &_right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      &_icon {
+        font-size: 20px;
+      }
+
+      &___delivered {
+        color: $green-400;
+      }
+
+      &___cancelled {
+        color: $red-400;
+      }
+
+      &___ongoing {
+        color: $blue-400;
+      }
+
+      &___pending {
+        color: $neutral-400;
+      }
+    }
+
+    &_icon {
+      color: $blue-400;
+      font-size: 16px;
+      margin: 0 8px 0 12px;
+    }
+
+    &_text {
+      margin-right: 24px;
+    }
+
+    &_date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  &_item {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    place-items: center;
+    padding: 12px 12px 0 ;
+  }
+
+  &_product {
+    display: flex;
+    align-items: center;
+    grid-column: 1/7;
+    place-self: normal;
+    gap: 12px;
+
+    &_text {
+      margin-bottom: 8px !important;
+    }
+  }
+
+  &_customizationText {
+    @include flex-center;
+    width: 200px !important;
+  }
+  
+  &_price {
+    grid-column: 8/11;
+  }
+
+  &_qrCode {
+    cursor: pointer;
+    grid-column: 12/13;
+    
+    &_image {
+      box-shadow: $shadow-normal;
+      border-radius: 5px;
+
+      &:hover {
+        border: 1px solid $blue-400;
+        box-shadow: $shadow-raised;
+      }
+    }
+  }
+
+  &_orderTotal {
+    background-color: $blue-0;
+    border-radius: 0 0 5px 5px;
+    border-top: dashed 2px $blue-100;
+    @include flex-between;
+    padding: 24px 32px;
+
+    &_buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      &_button {
+        width: 150px !important;
+      }
+    }
+
+    &_text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+}

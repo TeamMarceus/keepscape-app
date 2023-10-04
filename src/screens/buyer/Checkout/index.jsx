@@ -139,7 +139,7 @@ function Checkout() {
             colorClass={colorClasses.BLUE['300']}
             type={textTypes.HEADING.XS}
           >
-            ₱ {totalPrice}
+            ₱{totalPrice}
           </Text>
 
           <Button

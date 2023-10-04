@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { colorClasses, tabKinds, tabTypes, textTypes } from '@/app-globals';
 import { Card, Tabs, Text } from '@/components';
 
+import Purchase from '../../buyer/Purchase';
+
 import AccountInformation from './AccountInformation';
 import ChangePassword from './ChangePassword';
 import accountTabs from './constants/accountTabs';
@@ -14,6 +16,7 @@ import styles from './styles.module.scss';
 function Account() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('activeTab');
+  const userType = 'buyer'
 
   return (
     <div className={styles.Account}>
@@ -30,30 +33,30 @@ function Account() {
           tabs={[
             {
               name: accountTabs.ACCOUNT_INFORMATION.name,
-              value: accountTabs.ACCOUNT_INFORMATION.value,
+              value: (!activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value),
               kind: tabKinds.LINK,
-              action: `/buyer/account?activeTab=${accountTabs.ACCOUNT_INFORMATION.value}`,
+              action: `/${userType}/account?activeTab=${accountTabs.ACCOUNT_INFORMATION.value}`,
             },
             {
-              name: accountTabs.ACCOUNT_PURCHASES.name,
-              value: accountTabs.ACCOUNT_PURCHASES.value,
+              name: accountTabs.ACCOUNT_PURCHASE.name,
+              value: accountTabs.ACCOUNT_PURCHASE.value,
               kind: tabKinds.LINK,
-              action: `/buyer/account?activeTab=/${accountTabs.ACCOUNT_PURCHASES.value}`,
+              action: `/${userType}/account?activeTab=${accountTabs.ACCOUNT_PURCHASE.value}`,
             },
             {
               name: accountTabs.CHANGE_PASSWORD.name,
               value: accountTabs.CHANGE_PASSWORD.value,
               kind: tabKinds.LINK,
-              action: `/buyer/account?activeTab=${accountTabs.CHANGE_PASSWORD.value}`,
+              action: `/${userType}/account?activeTab=${accountTabs.CHANGE_PASSWORD.value}`,
             },
           ]}
           type={tabTypes.VERTICAL.LG}
         />
       </div>
+        
 
       <Card className={styles.Account_card}>
-       
-        {activeTab === accountTabs.ACCOUNT_INFORMATION.value && (
+        {(!activeTab ||  activeTab === accountTabs.ACCOUNT_INFORMATION.value)  && (
           <AccountInformation />
         )}
 
@@ -61,7 +64,11 @@ function Account() {
           <ChangePassword />
         )}
 
+        {activeTab === accountTabs.ACCOUNT_PURCHASE.value && (
+          <Purchase />
+        )}
       </Card>
+      
     </div>
   );
 }

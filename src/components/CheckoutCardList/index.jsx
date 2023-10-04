@@ -38,17 +38,17 @@ function CheckoutCardList({
         <Card key={cart.id} className={cn(styles.Card, className)}>
           <div className={styles.CheckoutCardList}>
             {  cart.products.length > 0 &&
-              <div className={styles.CheckoutCardList_shop}>
+              <div className={styles.CheckoutCardList_seller}>
                 <Icon 
-                  className={styles.CheckoutCardList_shop_icon}
+                  className={styles.CheckoutCardList_seller_icon}
                   icon="storefront" 
                 />
 
                 <Text
-                  className={styles.CheckoutCardList_shop_text}
+                  className={styles.CheckoutCardList_seller_text}
                   type={textTypes.HEADING.XXXS}
                 >
-                  {cart.shop}
+                  {cart.seller}
                 </Text>
               </div>
             }
@@ -100,7 +100,7 @@ function CheckoutCardList({
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XXS}
                     >
-                    ₱ {product.price}
+                    ₱{product.price}
                     </Text>
                   </div>
 
@@ -120,7 +120,7 @@ function CheckoutCardList({
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XXS}
                     >
-                      ₱ {product.price * product.quantity}
+                      ₱{product.price * product.quantity}
                     </Text>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ function CheckoutCardList({
                 colorClass={colorClasses.BLUE['300']}
                 type={textTypes.HEADING.XXS}
               >
-                ₱ {cart.products.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)}
+                ₱{cart.products.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)}
               </Text>
           </div>
         </Card>
@@ -155,7 +155,7 @@ CheckoutCardList.propTypes = {
   className: PropTypes.string,
   userCart: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    shop: PropTypes.string,
+    seller: PropTypes.string,
     products: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
       customization: PropTypes.string,

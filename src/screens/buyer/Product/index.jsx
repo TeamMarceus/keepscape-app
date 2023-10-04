@@ -232,7 +232,7 @@ function Product({ id }) {
                 colorClass={colorClasses.RED['200']}
                 type={textTypes.HEADING.MD}
               >
-                ₱ {product.price}
+                ₱{product.price}
               </Text>
             </div>
 

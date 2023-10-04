@@ -23,6 +23,7 @@ export default function BuyerEffects({ children }) {
   const pathname = usePathname();
   const onCartPage = pathname === '/buyer/cart';
   const onCheckoutPage = pathname === '/buyer/checkout';
+
   const user = useSelector((store) => getUser(store));
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));

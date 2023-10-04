@@ -1,0 +1,48 @@
+@import "@/styles/mixins";
+@import "@/styles/variables";
+
+.Purchase {
+  &_title {
+    margin-bottom: 40px !important;
+  }
+
+  &_filters {
+    background-color: $neutral-50;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    &_button {
+      width: 100%;
+      padding: 12px 0 !important;
+
+      &___active {
+        border-bottom: 2px solid $blue-400 !important;
+        background-color: $blue-25 !important;
+
+        > h6 {
+          color: $blue-400;
+        }
+      }
+
+      &:hover {
+        > h6 {
+          color: $blue-400;
+        }
+      }
+    }
+  }
+
+  &_search {
+    margin-top: 24px;
+  }
+
+  &_products {
+    margin-top: 24px;
+
+    &_card {
+      margin-top: 16px;
+    }
+  }
+}

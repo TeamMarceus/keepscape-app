@@ -18,7 +18,7 @@ import styles from './styles.module.scss';
 const userCart = [
   {
     id: '1',
-    shop: 'Butanding Souvenir Shop',
+    seller: 'Butanding Souvenir Shop',
     products: [
       {
         id: '1',
@@ -27,7 +27,7 @@ const userCart = [
         customization: 'I want this in blue color with a ribbon on top of it and a card.',
         price: 100,
         quantity: 1,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
     
       },
       {
@@ -37,7 +37,7 @@ const userCart = [
         customization: 'I want this in red color with a ribbon on top of it and a card.',
         price: 200,
         quantity: 2,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
       },
       {
         id: '3',
@@ -46,13 +46,13 @@ const userCart = [
         customization: 'I want this in violet color with a ribbon on top of it and a card.',
         price: 200,
         quantity: 5,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
       }
     ]
   },
   {
     id: '2',
-    shop: 'Butanding Souvenir2 Shop2',
+    seller: 'Butanding Souvenir2 Shop2',
     products: [
       {
         id: '4',
@@ -61,7 +61,7 @@ const userCart = [
         customization: 'I want this in blue color with a ribbon on top of it and a card.',
         price: 100,
         quantity: 1,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
     
       },
       {
@@ -71,7 +71,7 @@ const userCart = [
         customization: 'I want this in red color with a ribbon on top of it and a card.',
         price: 200,
         quantity: 2,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
       },
       {
         id: '6',
@@ -80,7 +80,7 @@ const userCart = [
         customization: 'I want this in violet color with a ribbon on top of it and a card.',
         price: 200,
         quantity: 5,
-        shop: 'Butanding Souvenir Shop',
+        seller: 'Butanding Souvenir Shop',
       }
     ]
   }
@@ -233,7 +233,7 @@ function Cart() {
             colorClass={colorClasses.BLUE['300']}
             type={textTypes.HEADING.XS}
           >
-            ₱ {totalPrice}
+            ₱{totalPrice}
           </Text>
 
           <ButtonLink

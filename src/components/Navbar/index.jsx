@@ -161,7 +161,7 @@ function Navbar() {
 
                   <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href="/buyer/account?activeTab=purchases"
+                    href="/buyer/account?activeTab=purchase"
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                   >
                     <Icon
@@ -236,15 +236,20 @@ function Navbar() {
               />
             </div>
           </form>
-
-          <IconButton
-            className={styles.Navbar_cart}
-            icon="shopping_cart"
-            type={iconButtonTypes.ICON.LG}
-            onClick={()=>{
-              router.push('/buyer/cart'); 
-            }}
-          />
+          
+          <div className={styles.Navbar_cart}>
+            <div className={styles.Navbar_cart_count}>
+              7
+            </div>
+            <IconButton
+              className={styles.Navbar_cart_icon}
+              icon="shopping_cart"
+              type={iconButtonTypes.ICON.LG}
+              onClick={()=>{
+                router.push('/buyer/cart'); 
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

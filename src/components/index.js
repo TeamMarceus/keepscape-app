@@ -24,6 +24,7 @@ export { default as Modal } from './Modal';
 export { default as ModalLoader } from './ModalLoader';
 export { default as Pagination } from './Pagination';
 export { default as Preloader } from './Preloader';
+export { default as PurchaseCard } from './PurchaseCard';
 export { default as RatingStars } from './RatingStars';
 export { default as ReviewCard } from './ReviewCard';
 export { default as Separator } from './Separator';
