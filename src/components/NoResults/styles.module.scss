@@ -1,0 +1,10 @@
+.NoResults {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &_text {
+    margin-top: 24px !important;
+  }
+}

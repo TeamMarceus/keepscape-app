@@ -18,6 +18,7 @@ export { default as Footer } from './Footer';
 export { default as Grid } from './Grid';
 export { default as Label } from './Label';
 export { default as Navbar } from './Navbar';
+export { default as NoResults } from './NoResults';
 export { default as Modal } from './Modal';
 export { default as ModalLoader } from './ModalLoader';
 export { default as Pagination } from './Pagination';

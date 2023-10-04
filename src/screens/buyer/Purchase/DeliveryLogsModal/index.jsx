@@ -23,6 +23,26 @@ function DeliveryLogsModal({
 
   const deliveryLogs = [
     {
+      id: '11',
+      dateTime: '2021-08-01 12:00:00',
+      description: 'Product has been delivered',
+    },
+    {
+      id: '12',
+      dateTime: '2021-08-01 12:00:00',
+      description: 'Product is out for delivery',
+    },
+    {
+      id: '13',
+      dateTime: '2021-08-01 12:00:00',
+      description: 'Product is being prepared',
+    },
+    {
+      id: '14',
+      dateTime: '2021-08-01 12:00:00',
+      description: 'Product has been approved',
+    },
+    {
       id: '1',
       dateTime: '2021-08-01 12:00:00',
       description: 'Product has been delivered',

@@ -3,7 +3,7 @@
 
 .Purchase {
   &_title {
-    margin-bottom: 40px !important;
+    margin-bottom: 20px !important;
   }
 
   &_filters {
@@ -35,14 +35,18 @@
   }
 
   &_search {
-    margin-top: 24px;
+    margin-top: 18px;
   }
 
   &_products {
-    margin-top: 24px;
+    margin-top: 18px;
 
     &_card {
       margin-top: 16px;
     }
+  }
+
+  &_noResults {
+    margin-top: 40px !important;
   }
 }

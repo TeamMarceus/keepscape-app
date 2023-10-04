@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import cn from 'classnames';
+import Image from 'next/image';
 import { useSelector } from 'react-redux';
 
 import {
@@ -9,7 +10,7 @@ import {
   buttonTypes,
   colorClasses,
 } from '@/app-globals';
-import { Button, Text, ControlledInput } from '@/components';
+import { Button, Text, ControlledInput, NoResults } from '@/components';
 
 import PurchaseCard from './PurchaseCard';
 
@@ -200,6 +201,7 @@ function Purchase() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
+    {filteredSearch.length !== 0 ?
       <div className={styles.Purchase_products}>
         {filteredSearch.map((product) => (
           <PurchaseCard
@@ -220,7 +222,12 @@ function Purchase() {
         ))
         }
       </div>
-
+      :
+      <NoResults
+        className={styles.Purchase_noResults}
+        message="No Purchase Found"
+      />
+    }
     </div>
   );
 }
