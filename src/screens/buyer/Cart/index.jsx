@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, Card, Checkbox, Text } from '@/components';
+import { Button, ButtonLink, Card, Checkbox, NoResults, Text } from '@/components';
 
 
 import { getDeliveryDetails } from '@/ducks';
@@ -169,16 +169,22 @@ function Cart() {
         </div>
      </Card>
        
-      { newUserCart.length > 0 &&
+      {newUserCart.length > 0 ?
         <CartCardList
-        className={styles.Cart_products}
-        isAllSelected={isAllSelected}
-        setIsAllSelected={setIsAllSelected}
-        setTotalPrice={setTotalPrice}
-        setUserCart={setNewUserCart}
-        totalPrice={totalPrice}
-        userCart={newUserCart}
-      />}
+          className={styles.Cart_products}
+          isAllSelected={isAllSelected}
+          setIsAllSelected={setIsAllSelected}
+          setTotalPrice={setTotalPrice}
+          setUserCart={setNewUserCart}
+          totalPrice={totalPrice}
+          userCart={newUserCart}
+        />
+      :
+        <NoResults
+          className={styles.Cart_noResults}
+          message="You have no items in your cart."
+        />
+      }
 
      <div className={styles.Cart_footer}>
       <div className={styles.Cart_footer_container}> 

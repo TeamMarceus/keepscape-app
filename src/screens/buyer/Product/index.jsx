@@ -51,6 +51,7 @@ const product =
   place: 'Cebu, Oslob',
   numOfReviews: 100,
   totalSold: 1000,
+  isCustomizable: false,
 }
 
 const seller = {
@@ -235,15 +236,17 @@ function Product({ id }) {
                 ₱{product.price}
               </Text>
             </div>
-
-            <ControlledTextArea
-              inputClassName={styles.Product_content_info_customize}
-              name="customize"
-              placeholder="Enter customization details here..."
-              type={textAreaTypes.SLIM}
-              value={customInput}
-              onChange={(e) => setCustomInput(e.target.value)}
-            />
+            
+            {product.isCustomizable && 
+              <ControlledTextArea
+                inputClassName={styles.Product_content_info_customize}
+                name="customize"
+                placeholder="Enter customization details here..."
+                type={textAreaTypes.SLIM}
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+              />
+            }
 
             <div className={styles.Product_content_info_quantity}>
               <Text colorClass={colorClasses.NEUTRAL['500']}>
@@ -291,7 +294,7 @@ function Product({ id }) {
                     checkout_cart: [
                       {
                         id: '1',
-                        shop: seller.name,
+                        seller: seller.name,
                         products: [
                           {
                             id: product.id,
