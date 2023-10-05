@@ -1,5 +1,5 @@
-@use '../../styles/mixins';
-@use '../../styles/variables';
+@use '@/styles/mixins';
+@use '@/styles/variables';
 
 @mixin text-area {
   width: 100%;

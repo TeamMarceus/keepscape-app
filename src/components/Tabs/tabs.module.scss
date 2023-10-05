@@ -1,5 +1,5 @@
-@import '../../styles/variables';
-@import '../../styles/mixins';
+@import '@/styles/variables';
+@import '@/styles/mixins';
 
 @mixin base($font-size, $line-height, $padding) {
   font-family: "Open Sans", sans-serif;
