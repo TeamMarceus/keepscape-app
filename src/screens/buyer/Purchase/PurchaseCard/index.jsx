@@ -19,6 +19,7 @@ import {
 } from '@/components';
 
 
+import AddReviewModal from '../AddReviewModal';
 import DeliveryLogsModal from '../DeliveryLogsModal';
 import QrCodeModal from '../QrCodeModal';
 
@@ -41,6 +42,7 @@ function PurchaseCard({
 
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
+  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
 
   return (
     <>
@@ -178,7 +180,6 @@ function PurchaseCard({
           </div> 
 
           <div className={styles.PurchaseCard_orderTotal_buttons}> 
-          
             <ButtonLink
               className={styles.PurchaseCard_orderTotal_buttons_button}
               to='/buyer/cart'
@@ -188,6 +189,16 @@ function PurchaseCard({
               Buy Again
             </ButtonLink>
 
+            <Button
+              className={styles.PurchaseCard_orderTotal_buttons_button}
+              type={buttonTypes.SECONDARY.BLUE}
+              onClick={() => {
+                
+              }}
+            >
+              Report a Problem
+            </Button>
+
             { status === 'Pending' &&
               <Button
                 className={styles.PurchaseCard_orderTotal_buttons_button}
@@ -195,6 +206,18 @@ function PurchaseCard({
                 onClick={() => {}}
               >
                 Cancel Order
+              </Button>
+            }
+
+            { status === 'Delivered' &&
+              <Button
+                className={styles.PurchaseCard_orderTotal_buttons_button}
+                type={buttonTypes.SECONDARY.BLUE}
+                onClick={() => {
+                  setIsAddReviewModalOpen(true);
+                }}
+              >
+                Add a Review
               </Button>
             }
           </div>
@@ -215,6 +238,14 @@ function PurchaseCard({
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
           title={`${name} Delivery Details`}
+        />
+      }
+
+      {isAddReviewModalOpen &&
+        <AddReviewModal
+          handleClose={() => setIsAddReviewModalOpen(false)}
+          isOpen={isAddReviewModalOpen}
+          title={`Add a Review for ${name}`}
         />
       }
     </>

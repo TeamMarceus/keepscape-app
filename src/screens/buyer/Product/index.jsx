@@ -5,7 +5,10 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-scroll';
+
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import { 
   buttonTypes, 
@@ -51,7 +54,7 @@ const product =
   place: 'Cebu, Oslob',
   numOfReviews: 100,
   totalSold: 1000,
-  isCustomizable: false,
+  isCustomizable: true,
 }
 
 const seller = {

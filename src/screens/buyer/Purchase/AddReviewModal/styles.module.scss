@@ -1,0 +1,20 @@
+
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
+
+.AddReviewModal {
+  &_stars {
+    @include flex-center;
+    margin-bottom: 24px;
+  }
+
+  &_star {
+    color: $yellow-400 !important;
+  }
+
+  &_button {
+    @include flex-center;
+    width: 150px !important;
+    margin: 40px auto 0 !important;
+  }
+}

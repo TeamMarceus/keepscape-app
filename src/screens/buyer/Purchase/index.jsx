@@ -2,8 +2,6 @@
 import { useState } from 'react';
 
 import cn from 'classnames';
-import Image from 'next/image';
-import { useSelector } from 'react-redux';
 
 import {
   textTypes,
