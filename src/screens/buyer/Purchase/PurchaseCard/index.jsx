@@ -23,6 +23,8 @@ import AddReviewModal from '../AddReviewModal';
 import DeliveryLogsModal from '../DeliveryLogsModal';
 import QrCodeModal from '../QrCodeModal';
 
+import ReportProblemModal from '../ReportProblemModal';
+
 import styles from './styles.module.scss';
 
 function PurchaseCard({
@@ -43,6 +45,7 @@ function PurchaseCard({
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
+  const [isReportProblemModalOpen, setIsReportProblemModalOpen] = useState(false);
 
   return (
     <>
@@ -193,7 +196,7 @@ function PurchaseCard({
               className={styles.PurchaseCard_orderTotal_buttons_button}
               type={buttonTypes.SECONDARY.BLUE}
               onClick={() => {
-                
+                setIsReportProblemModalOpen(true);
               }}
             >
               Report a Problem
@@ -246,6 +249,15 @@ function PurchaseCard({
           handleClose={() => setIsAddReviewModalOpen(false)}
           isOpen={isAddReviewModalOpen}
           title={`Add a Review for ${name}`}
+        />
+      }
+
+      {isReportProblemModalOpen &&
+        <ReportProblemModal
+          handleClose={() => setIsReportProblemModalOpen(false)}
+          isOpen={isReportProblemModalOpen}
+          seller={seller}
+          title={`Report a Problem for ${name}`}
         />
       }
     </>

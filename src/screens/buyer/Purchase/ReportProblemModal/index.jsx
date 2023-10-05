@@ -19,21 +19,18 @@ import styles from './styles.module.scss';
 const validate = (values) => {  
   const errors = {};
 
-  if (!values.review) {
-    errors.review = 'This field is required.';
-  }
-
-  if (!values.rating) {
-    errors.rating = 'This field is required.';
+  if (!values.problem) {
+    errors.problem = 'This field is required.';
   }
 
   return errors;
 };
 
-function AddReviewModal({
+function ReportProblemModal({
   isOpen,
   handleClose,
   title,
+  seller,
 }) {
   const user = useSelector(getUser);
 
@@ -41,7 +38,7 @@ function AddReviewModal({
 
   return (
     <Modal
-      className={styles.AddReviewModal}
+      className={styles.ReportProblemModal}
       handleClose={handleClose}
       isOpen={isOpen}
       position={modalPositions.CENTER}
@@ -50,13 +47,11 @@ function AddReviewModal({
     >
       <Formik
         initialValues={{
-          review: '',
-          rating: '',
+          problem: '',
         }}
         onSubmit={async (values, { setErrors }) => {
           const currentFormValues = {
-            review: values.review,
-            rating: values.rating,
+            problem: values.problem,
             userId: user.id,
             userFullName: `${user.firstName} ${user.lastName}`,
           };
@@ -66,7 +61,6 @@ function AddReviewModal({
             setErrors(errors);
             return;
           }
-          console.log(values.rating);
 
           setIsSubmitting(true);
           setIsSubmitting(false);
@@ -74,41 +68,29 @@ function AddReviewModal({
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
-            <div className={styles.AddReviewModal_stars}>
-              {Array.from({ length: 5 }, (_, index) => (
-                <IconButton
-                  key={index}
-                  icon={values.rating > index ? 'star' : 'grade'}
-                  iconClassName={styles.AddReviewModal_star}
-                  type={iconButtonTypes.ICON.LG} 
-                  onClick={() => setFieldValue('rating', index + 1)}
-                />
-              ))}
-            </div>
-
             <ControlledTextArea
-              error={errors.review}
-              inputClassName={styles.AddReviewModal_textArea}
-              name="review"
-              placeholder="Write your review here..."
+              error={errors.problem}
+              inputClassName={styles.ReportProblemModal_textArea}
+              name="problem"
+              placeholder="Please describe the problem you encountered here."
               type={textAreaTypes.FORM}
-              value={values.review}
-              onChange={(e) => setFieldValue('review', e.target.value)}
+              value={values.problem}
+              onChange={(e) => setFieldValue('problem', e.target.value)}
             />
                   
             <Button
-              className={styles.AddReviewModal_button}
+              className={styles.ReportProblemModal_button}
               disabled={isSubmitting}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
               <span
-                className={styles.AddReviewModal_button_buttonText}
+                className={styles.ReportProblemModal_button_buttonText}
               >
                 Submit
                 {isSubmitting && (
                   <Spinner
-                    className={styles.AddReviewModal_button_spinner}
+                    className={styles.ReportProblemModal_button_spinner}
                     colorName={colorNames.WHITE}
                     size={spinnerSizes.XS}
                   />
@@ -122,10 +104,11 @@ function AddReviewModal({
   );
 }
 
-AddReviewModal.propTypes = {
+ReportProblemModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  seller: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 }
 
-export default AddReviewModal;
+export default ReportProblemModal;
