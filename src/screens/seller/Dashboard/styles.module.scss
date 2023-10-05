@@ -1,0 +1,78 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.Dashboard {
+  padding-bottom: 60px;
+
+  &_header {
+    @include flex-between;
+  }
+
+  &_logout {
+    text-decoration: underline;
+    font-size: 18px;
+  }
+  
+  &_cards {
+    margin-top: 60px;
+    justify-items: center;
+
+    &_card {
+      padding: 20px;
+      margin-top: 12px;
+      width: 350px;
+
+      &_grid {
+        grid-template-columns: 1fr 0.2fr !important;
+      }
+
+      &_rightColumn {
+        display: flex;
+        align-items: center;
+        text-align: right;
+      }
+
+      &_icon {
+        font-size: 3.5rem !important;
+
+        &___green {
+          color: $green-400 !important;
+        }
+
+        &___blue {
+          color: $blue-400 !important;
+        }
+
+        &___violet {
+          color: $violet-400 !important;
+        }
+
+        &___yellow {
+          color: $yellow-400 !important;
+        }
+
+        &___red {
+          color: $red-400 !important;
+        }
+      }
+    }
+  }
+
+  &_withMargin {
+    margin-top: 40px !important;
+  }
+
+  &_graph {
+    margin-top: 20px;
+    padding: 40px;
+    width: 100%;
+
+    @include breakpoint(lg) {
+      width: 100%;
+    }
+
+    @include breakpoint(xs) {
+      padding: 20px;
+    }
+  }
+}

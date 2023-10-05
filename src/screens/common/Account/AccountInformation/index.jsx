@@ -25,7 +25,7 @@ import styles from './styles.module.scss';
 function AccountInformation() {
   // const alert = useAlert();
   const user = useSelector((store) => getUser(store));
-  const userType = 'buyer';
+  const userType = 'seller';
 
   const isUserUpdating = false;
   const isVerifyingPassword = false;

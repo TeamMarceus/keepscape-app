@@ -11,7 +11,7 @@ import { Link as LinkScroll } from 'react-scroll';
 import Logo from '%/images/Logo/logo-white.svg'
 
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
-import { buttonKinds, colorClasses, iconButtonTypes} from '@/app-globals';
+import { buttonKinds, colorClasses, iconButtonTypes, userTypes} from '@/app-globals';
 import { Card, ControlledInput, Icon, IconButton, Text } from '@/components';
 import { getUser} from '@/ducks';
 import { useOnClickOutside } from '@/hooks';
@@ -26,15 +26,22 @@ function Navbar() {
   useOnClickOutside(ref, () => toggleDropdown(false));
   const user = useSelector((store) => getUser(store));
   const [search, setSearch] = useState('');
+  const userType = 'seller';
+  user.guid = '123';
+  user.sellerName = 'Butanding Seller';
 
   return (
-    <div className={styles.Navbar}>
+    <div className={cn(styles.Navbar, {
+      [styles.Navbar___seller]: userType === userTypes.SELLER,
+    })}>
       <div className={styles.Navbar_container}>
-        <div className={styles.Navbar_links}>
+        <div className={cn(styles.Navbar_links, {
+          [styles.Navbar_links___seller]: userType === userTypes.SELLER,
+        })}>
           <div className={styles.Navbar_links_scrollLinks}>
             {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
               <>
-                {user.guid &&
+                {user.guid && user.userType === userTypes.BUYER &&
                   <>
                     <LinkScroll
                     key="preferences"
@@ -103,21 +110,35 @@ function Navbar() {
                 </LinkScroll>
               </>
             ) : (
-              <Link
-                className={styles.Navbar_links_link}
-                href="/"
-              >
-                <Text
-                  className={styles.Navbar_links_link_text}
-                  colorClass={colorClasses.NEUTRAL['0']}
-                >
-                  Keepscape Home
-                </Text>
-              </Link>
+              <>
+                {userType === userTypes.BUYER &&
+                  <Link
+                    className={styles.Navbar_links_link}
+                    href="/"
+                  >
+                    <Text
+                      className={styles.Navbar_links_link_text}
+                      colorClass={colorClasses.NEUTRAL['0']}
+                    >
+                      Keepscape Home
+                    </Text>
+                  </Link>
+                }
+                {userType === userTypes.SELLER &&
+                  <Link href="/seller/dashboard">
+                    <Image
+                      alt="Keepscape"
+                      className={styles.Navbar_logo}
+                      src={Logo}
+                      width={200}
+                    />
+                  </Link>
+                }
+              </>
             )
           }
-        </div>
-
+          </div>
+          
           {user.guid ?
             ( 
               <div
@@ -134,7 +155,11 @@ function Navbar() {
                       className={styles.Navbar_navUser_accountIcon}
                       icon="account_circle"
                     />
-                    <span className={styles.Navbar_navUser_name}>Stephine</span>
+                    {userType === 'user' ? 
+                      <span className={styles.Navbar_navUser_name}>{user.firstName}</span>
+                      :
+                      <span className={styles.Navbar_navUser_name}>{user.sellerName}</span>
+                    }
                     <Icon
                       className={styles.Navbar_navUser_caret}
                       icon="keyboard_arrow_down"
@@ -149,7 +174,7 @@ function Navbar() {
                 >
                   <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href="/buyer/account?activeTab=information"
+                    href={`/${userType}/account?activeTab=information`}
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                   >
                     <Icon
@@ -159,17 +184,19 @@ function Navbar() {
                     My Account
                   </Link>
 
-                  <Link
-                    className={styles.Navbar_navUser_dropdown_link}
-                    href="/buyer/account?activeTab=purchase"
-                    onClick={() => toggleDropdown(!isDropdownToggled)}
-                  >
-                    <Icon
-                      className={styles.Navbar_navUser_dropdown_link_icon}
-                      icon="shopping_bag"
-                    />
-                    My Purchase
-                  </Link>
+                  {userType === userTypes.BUYER &&
+                    <Link
+                      className={styles.Navbar_navUser_dropdown_link}
+                      href="/buyer/account?activeTab=purchase"
+                      onClick={() => toggleDropdown(!isDropdownToggled)}
+                    >
+                      <Icon
+                        className={styles.Navbar_navUser_dropdown_link_icon}
+                        icon="shopping_bag"
+                      />
+                      My Purchase
+                    </Link>
+                  }
 
                   <Link className={styles.Navbar_navUser_dropdown_link} href="/logout">
                     <Icon
@@ -200,57 +227,59 @@ function Navbar() {
             )    
           } 
         </div>
+        
+        {userType === userTypes.BUYER &&
+          <div className={styles.Navbar_header}>
+            <Link href="/">
+              <Image
+                alt="Keepscape"
+                className={styles.Navbar_logo}
+                src={Logo}
+                width={200}
+              />
+            </Link>
 
-        <div className={styles.Navbar_header}>
-          <Link href="/">
-            <Image
-              alt="Keepscape"
-              className={styles.Navbar_logo}
-              src={Logo}
-              width={200}
-            />
-          </Link>
+            <form 
+              className={styles.Navbar_search} 
+              onSubmit={(e) => {
+                e.preventDefault();
+                // router.push(`/search?query=${search}`);
+              }}
+            >
+              <ControlledInput
+                className={styles.Navbar_search_input}
+                name="search"
+                placeholder="Search for souvenir products, places, and shops"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
 
-          <form 
-            className={styles.Navbar_search} 
-            onSubmit={(e) => {
-              e.preventDefault();
-              // router.push(`/search?query=${search}`);
-            }}
-          >
-            <ControlledInput
-              className={styles.Navbar_search_input}
-              name="search"
-              placeholder="Search for souvenir products, places, and shops"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-
-            <div className={styles.Navbar_search_button}>
+              <div className={styles.Navbar_search_button}>
+                <IconButton
+                  className={styles.Navbar_search_icon}
+                  icon="search"
+                  kind={buttonKinds.SUBMIT}
+                  type={iconButtonTypes.SOLID.LG}
+                  onClick={()=>{}}
+                />
+              </div>
+            </form>
+            
+            <div className={styles.Navbar_cart}>
+              <div className={styles.Navbar_cart_count}>
+                7
+              </div>
               <IconButton
-                className={styles.Navbar_search_icon}
-                icon="search"
-                kind={buttonKinds.SUBMIT}
-                type={iconButtonTypes.SOLID.LG}
-                onClick={()=>{}}
+                className={styles.Navbar_cart_icon}
+                icon="shopping_cart"
+                type={iconButtonTypes.ICON.LG}
+                onClick={()=>{
+                  router.push('/buyer/cart'); 
+                }}
               />
             </div>
-          </form>
-          
-          <div className={styles.Navbar_cart}>
-            <div className={styles.Navbar_cart_count}>
-              7
-            </div>
-            <IconButton
-              className={styles.Navbar_cart_icon}
-              icon="shopping_cart"
-              type={iconButtonTypes.ICON.LG}
-              onClick={()=>{
-                router.push('/buyer/cart'); 
-              }}
-            />
           </div>
-        </div>
+        }
       </div>
     </div>
   );

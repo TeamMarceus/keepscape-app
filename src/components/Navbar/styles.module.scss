@@ -31,6 +31,11 @@
     padding: 0 8px;
   }
 
+  &___seller {
+    height: 65px !important;
+    padding: 0 24px;
+  }
+
   &_container {
     display: flex;
     flex-direction: column;
@@ -41,6 +46,10 @@
   &_links {
     @include flex-between;
     margin-bottom: 24px;
+
+    &___seller {
+      margin-bottom: 0 !important;
+    }
 
     &_scrollLinks {
       display: flex;
@@ -93,6 +102,7 @@
 
   &_search {
     @include flex-center;
+    margin: 0 12px;
 
     &_input {
       width: 900px;

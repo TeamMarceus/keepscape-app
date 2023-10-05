@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import KeepscapeEffects from './effects';
 
 export const metadata = {
-  title: 'Keepscape Philippines | Souvenir Shop',
+  title: 'Keepscape Philippines | Artisan Crafts Shop',
 };
 
 export default function KeepscapeLayout({ children }) {

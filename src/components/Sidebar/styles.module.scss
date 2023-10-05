@@ -1,0 +1,14 @@
+@import "@/styles/variables";
+
+.Sidebar {
+  background: $neutral-0;
+  border-right: 1px solid $neutral-100;
+  box-shadow: $shadow-normal;
+  height: calc(100% - 65px);
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 65px;
+  width: 200px;
+  z-index: 1000;
+}

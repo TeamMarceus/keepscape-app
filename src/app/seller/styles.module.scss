@@ -1,0 +1,21 @@
+@import '../../styles/mixins';
+
+.container {
+  margin: 0 auto;
+  flex-direction: column;
+  max-width: 1440px;
+  padding: 75px 60px 80px;
+
+  @include breakpoint(lg) {
+    padding: 0 16px;
+    max-width: 960px;
+  }
+
+  @include breakpoint(md) {
+    max-width: 720px;
+  }
+
+  @include breakpoint(sm) {
+    max-width: 540px;
+  }
+}
