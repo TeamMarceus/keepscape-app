@@ -118,20 +118,19 @@
 
     &_buttons {
       @include flex-center;
-      // flex-direction: column;
       gap: 2px;
     }
 
     &_viewButton {
-      color: $blue-400;
+      color: $blue-400 !important;
     }
 
     &_setOnGoing {
-      color: $green-400;
+      color: $green-400 !important;
     }
 
     &_deleteButton {
-      color: $red-400;
+      color: $red-400 !important;
     }
   }
 

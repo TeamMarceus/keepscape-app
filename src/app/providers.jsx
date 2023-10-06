@@ -1,5 +1,6 @@
 'use client';
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { persistStore } from 'reduxjs-toolkit-persist';

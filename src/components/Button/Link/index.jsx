@@ -87,6 +87,7 @@ ButtonLink.propTypes = {
     buttonTypes.TEXT.RED,
     buttonTypes.TEXT.GREEN,
     buttonTypes.TEXT.YELLOW,
+    buttonTypes.TEXT.NEUTRAL,
     buttonTypes.TERTIARY,
   ]),
   className: PropTypes.string,

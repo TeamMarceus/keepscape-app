@@ -32,11 +32,11 @@ function Navbar() {
 
   return (
     <div className={cn(styles.Navbar, {
-      [styles.Navbar___seller]: userType === userTypes.SELLER,
+      [styles.Navbar___seller]: userType === userTypes.SELLER && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
     })}>
       <div className={styles.Navbar_container}>
         <div className={cn(styles.Navbar_links, {
-          [styles.Navbar_links___seller]: userType === userTypes.SELLER,
+          [styles.Navbar_links___seller]: userType === userTypes.SELLER && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
         })}>
           <div className={styles.Navbar_links_scrollLinks}>
             {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
@@ -228,7 +228,10 @@ function Navbar() {
           } 
         </div>
         
-        {userType === userTypes.BUYER &&
+        {(userType === userTypes.SELLER && 
+          pathname !== PUBLIC_ROUTES.MAIN_PAGE) || 
+          (pathname === PUBLIC_ROUTES.MAIN_PAGE) &&
+
           <div className={styles.Navbar_header}>
             <Link href="/">
               <Image
@@ -265,19 +268,21 @@ function Navbar() {
               </div>
             </form>
             
-            <div className={styles.Navbar_cart}>
-              <div className={styles.Navbar_cart_count}>
-                7
+            { userType === userTypes.BUYER &&
+              <div className={styles.Navbar_cart}>
+                <div className={styles.Navbar_cart_count}>
+                  7
+                </div>
+                <IconButton
+                  className={styles.Navbar_cart_icon}
+                  icon="shopping_cart"
+                  type={iconButtonTypes.ICON.LG}
+                  onClick={()=>{
+                    router.push('/buyer/cart'); 
+                  }}
+                />
               </div>
-              <IconButton
-                className={styles.Navbar_cart_icon}
-                icon="shopping_cart"
-                type={iconButtonTypes.ICON.LG}
-                onClick={()=>{
-                  router.push('/buyer/cart'); 
-                }}
-              />
-            </div>
+            }
           </div>
         }
       </div>

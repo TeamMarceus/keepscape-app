@@ -1,0 +1,18 @@
+
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
+
+.AddLogsModal {
+  &_date {
+    margin-bottom: 12px;
+  }
+
+  &_textArea {
+    margin-top: 12px;
+  }
+  &_button {
+    @include flex-center;
+    width: 150px !important;
+    margin: 40px auto 0 !important;
+  }
+}

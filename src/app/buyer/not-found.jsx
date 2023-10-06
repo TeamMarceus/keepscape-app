@@ -14,7 +14,7 @@ export default function BuyerNotFound() {
   return (
     <PageNotFound
       buttonLink={PUBLIC_ROUTES.MAIN_PAGE}
-      buttonText="BACK TO HOME"
+      buttonText="Back to Home"
     />
   );
 }

@@ -10,34 +10,36 @@ import {
 } from '@/app-globals';
 
 import { 
-  Button, 
   ButtonLink, 
   Card, 
   ControlledInput, 
   Icon, 
   IconButton, 
   NoResults, 
-  Text 
+  Text,
 } from '@/components';
 
 import { useWindowSize } from '@/hooks';
 
 import DeliveryLogsModal from '../DeliveryLogsModal';
 
-import PreloaderOnGoingOrders from './Preloader';
+import PreloaderOrders from '../Preloader';
+
+import AddLogsModal from './AddLogsModal';
+
 import styles from './styles.module.scss';
 
 const orders = [
   {
-    id: 1,
+    id: '1',
     dateOrdered: '2021-08-01',
     product: {
-        id: 1,
+        id: '1',
         name: 'Buntanding KeyChain 1',
         image: 'https://picsum.photos/200',
       },
     buyer: {
-      id: 1,
+      id: '1',
       name: 'Buyer 1',
       deliveryDetails: {
         fullName: 'Buyer 1',
@@ -50,15 +52,15 @@ const orders = [
     status: 'On Going',
   },
   {
-    id: 2,
+    id: '2',
     dateOrdered: '2021-08-01',
     product: {
-        id: 2,
+        id: '2',
         name: 'Buntanding KeyChain 2',
         image: 'https://picsum.photos/200',
       },
     buyer: {
-      id: 2,
+      id: '2',
       name: 'Buyer 2',
       deliveryDetails: {
         fullName: 'Buyer 2',
@@ -72,15 +74,15 @@ const orders = [
   },
 
   {
-    id: 3,
+    id: '3',
     dateOrdered: '2021-08-01',
     product: {
-        id: 2,
+        id: '2',
         name: 'Buntanding KeyChain 2',
         image: 'https://picsum.photos/200',
       },
     buyer: {
-      id: 2,
+      id: '2',
       name: 'Buyer 2',
       deliveryDetails: {
         fullName: 'Buyer 2',
@@ -93,15 +95,15 @@ const orders = [
     status: 'Pending',
   },
   {
-    id: 4,
+    id: '4',
     dateOrdered: '2021-08-01',
     product: {
-        id: 2,
+        id: '2',
         name: 'Buntanding KeyChain 2',
         image: 'https://picsum.photos/200',
       },
     buyer: {
-      id: 2,
+      id: '2',
       name: 'Buyer 2',
       deliveryDetails: {
         fullName: 'Buyer 2',
@@ -118,22 +120,20 @@ const orders = [
 function OnGoingOrders() {
   const { windowSize } = useWindowSize();
   const isOrdersLoading = false;
+
   const [search, setSearch] = useState('');
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
+  const [isAddLogsModalOpen, setIsAddLogsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const [filteredOrders, setFilteredOrders] = useState(
-    orders.filter(({ buyer, product }) => {
-      const buyerName = buyer.name.toLowerCase();
-      const productName = product.name.toLowerCase();
-      const searchValue = search.toLowerCase();
+  const filteredOrders = orders.filter((order) => {
+    const { product, buyer } = order;
 
-      return (
-        buyerName.includes(searchValue) ||
-        productName.includes(searchValue)
-      );
-    })
-  );
+    return (
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      buyer.name.toLowerCase().includes(search.toLowerCase()) 
+    );
+  });
 
   return (
     <>
@@ -152,10 +152,8 @@ function OnGoingOrders() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* <Card className={styles.OnGoingOrders_card} /> */}
-
         {isOrdersLoading ? (
-          <PreloaderOnGoingOrders />
+          <PreloaderOrders />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
@@ -272,25 +270,6 @@ function OnGoingOrders() {
 
                         <div className={styles.OnGoingOrders_grid_column}>
                           <div className={styles.OnGoingOrders_grid_buttons}>
-                            {/* <Button
-                              className={styles.OnGoingOrders_grid_viewDetails}
-                              type={buttonTypes.TEXT.BLUE}
-                              onClick={() => {
-                                setSelectedOrder({ id, product, buyer });
-                                setIsDeliveryLogsModalOpen(true);
-                              }}
-                            >
-                              View Logs
-                            </Button>
-
-                            <Button
-                              className={styles.OnGoingOrders_grid_addLogs}
-                              type={buttonTypes.TEXT.GREEN}
-                              onClick={() => {}}
-                            >
-                              Add Logs
-                            </Button> */}
-
                             <IconButton
                               className={styles.OnGoingOrders_grid_viewButton}
                               icon="visibility"
@@ -305,7 +284,10 @@ function OnGoingOrders() {
                               className={styles.OnGoingOrders_grid_addButton}
                               icon="add_circle_outline"
                               type={iconButtonTypes.ICON.MD}
-                              onClick={() => {}}
+                              onClick={() => {
+                                setSelectedOrder({ id, product, buyer });
+                                setIsAddLogsModalOpen(true);
+                              }}
                             />
                           </div>
                       </div>
@@ -354,12 +336,22 @@ function OnGoingOrders() {
         )}
 
       </div>
+
       {isDeliveryLogsModalOpen &&
         <DeliveryLogsModal
           deliveryDetails={selectedOrder.buyer.deliveryDetails}
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
           title={`${selectedOrder.product.name} Delivery Details`}
+        />
+      }
+
+      {isAddLogsModalOpen &&
+        <AddLogsModal
+          handleClose={() => setIsAddLogsModalOpen(false)}
+          isOpen={isAddLogsModalOpen}
+          orderId={selectedOrder.id}
+          title={`Add Delivery Logs for ${selectedOrder.product.name}`}
         />
       }
     </>

@@ -14,7 +14,7 @@ export default function SellerNotFound() {
   return (
     <PageNotFound
       buttonLink={SELLER_ROUTES.DASHBOARD}
-      buttonText="BACK TO HOME"
+      buttonText="Back to Home"
     />
   );
 }

@@ -32,3 +32,4 @@ export { default as Shine } from './Shine';
 export { default as Spinner } from './Spinner';
 export { default as Tabs } from './Tabs';
 export { default as Text } from './Text';
+export { default as DateTimePicker } from './DateTimePicker';

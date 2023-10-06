@@ -12,7 +12,7 @@ export default function KeepscapeNotFound() {
   return (
     <PageNotFound
       buttonLink="/"
-      buttonText="BACK TO HOME"
+      buttonText="Back to Home"
     />
   );
 }

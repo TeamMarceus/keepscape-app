@@ -17,7 +17,6 @@ import CartCardList from './CartCardList';
 
 import styles from './styles.module.scss';
 
-
 const userCart = [
   {
     id: '1',

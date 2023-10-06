@@ -1,0 +1,112 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.datetimePicker {
+  width: 100%;
+  
+  .MuiFormLabel-root {
+    color: $neutral-500;
+    opacity: 0.8;
+    font-size: 1rem;
+    text-transform: capitalize;
+    display: block;
+    margin: 4px 0 0 0;
+    font-family: 'Open Sans', sans-serif;
+    white-space: nowrap;
+    line-height: 1.5;
+    letter-spacing: normal;
+    left: 12px;
+    z-index: 1;
+    pointer-events: none;
+
+    &:active,
+    &:focus {
+      color: $blue-300 !important;
+    }
+  }
+
+  .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: $blue-300 !important;
+  }
+
+  .MuiInputBase-root {
+    color: $neutral-700;
+    background-color: $neutral-0;
+    border: 1px solid;
+    border-color: $neutral-300;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin: 0 0 8px 0;
+    font-family: 'Gotham', sans-serif;
+    white-space: nowrap;
+    padding: 12px 8px;
+    @include ease(0.2s);
+
+    &:focus {
+      border-color: $blue-300 !important;
+    }
+
+    &:active {
+      border-color: $blue-300 !important;
+    }
+
+    &:hover {
+      border-color: $blue-300 !important;
+    }
+  }
+  
+  .MuiInputAdornment-root {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .MuiInputBase-input {
+    padding: 0;
+  }
+
+  .MuiInputLabel-shrink {
+    display: none;
+  }
+
+  .MuiInputLabel-formControl {
+    transform: translate(0, 4px) scale(1);
+  }
+
+  .MuiFormControl-root {
+    @include ease(0.2s);
+    width: 100%;
+  }
+
+  .MuiInput-formControl {
+    margin-bottom: 0;
+  }
+
+  label + .MuiInput-formControl {
+    margin: 0;
+  }
+
+  .MuiInput-underline:before {
+    border: none;
+  }
+
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border: none;
+  }
+
+  .MuiInput-underline:after {
+    border: none;
+  }
+
+  .MuiInput-underline.Mui-disabled:before {
+    border: none;
+  }
+
+  .MuiInputBase-root.Mui-disabled {
+    background-color: $neutral-100;
+  }
+
+  .MuiInputBase-input.Mui-disabled {
+    color: $neutral-700;
+  }
+}

@@ -10,7 +10,7 @@ export default function AppEffects({ children }) {
   const router = useRouter();
  
   useEffect(() => {
-    const channel = new BroadcastChannel('getgiftideas-logout');
+    const channel = new BroadcastChannel('keepscape-logout');
   
     const handleLogout = () => {
       // Go to logout page first to reset all user data. This will also

@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 
@@ -43,13 +45,13 @@ export default function SellerEffects({ children }) {
   }
 
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Navbar />
       <Sidebar />
       <section className={styles.container}>
         {children}
       </section>
-    </>
+    </LocalizationProvider>
   );
 }
 

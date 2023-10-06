@@ -1,6 +1,5 @@
 import React from 'react';
 
-import cn from 'classnames';
 import PropTypes from 'prop-types';
 
 import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
@@ -52,7 +51,6 @@ function DeliveryDetailsModal({
 DeliveryDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   deliveryDetails: PropTypes.object.isRequired,
 }
 

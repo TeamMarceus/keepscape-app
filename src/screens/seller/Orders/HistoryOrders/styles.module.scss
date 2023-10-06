@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.OnGoingOrders {
+.HistoryOrders {
   padding-top: 24px;
 
   &_search {
@@ -114,19 +114,6 @@
       &_action {
         color: $neutral-700;
       }
-    }
-
-    &_buttons {
-      @include flex-center;
-      gap: 2px;
-    }
-
-    &_viewButton {
-      color: $blue-400 !important;
-    }
-
-    &_addButton {
-      color: $green-400 !important;
     }
   }
 

@@ -22,7 +22,8 @@ import { useWindowSize } from '@/hooks';
 
 import DeliveryLogsModal from '../DeliveryLogsModal';
 
-import PreloaderMyOrders from './Preloader';
+import PreloaderOrders from '../Preloader';
+
 import styles from './styles.module.scss';
 
 const orders = [
@@ -147,10 +148,8 @@ function MyOrders() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* <Card className={styles.MyOrders_card} /> */}
-
         {isOrdersLoading ? (
-          <PreloaderMyOrders />
+          <PreloaderOrders />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
@@ -267,6 +266,18 @@ function MyOrders() {
 
                         <Button
                           className={styles.MyOrders_grid_column}
+                          icon={
+                            (() => {
+                              if (status === 'Pending') {
+                                return 'pending';
+                              } if (status === 'Delivered') {
+                                return 'check';
+                              } if (status === 'Cancelled') {
+                                return 'close';
+                              } 
+                                return 'local_shipping';
+                            })()
+                          }
                           type={
                             (() => {
                               if (status === 'Pending') {

@@ -1,7 +1,7 @@
 @import "@/styles/mixins";
 @import "@/styles/variables";
 
-.PreloaderOnGoingOrders {
+.PreloaderOrders {
   @include ease(0.4s);
   margin-top: 24px;
   overflow: hidden;

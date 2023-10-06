@@ -1,5 +1,5 @@
 {
-  "name": "get-gift-ideas-app",
+  "name": "keepscape-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,15 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.0.2",
+    "@mui/material": "^5.14.12",
+    "@mui/x-date-pickers": "^6.16.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.5.0",
     "chart.js": "^4.4.0",
     "classnames": "^2.3.2",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "eslint-config-next": "13.4.19",
     "formik": "^2.4.3",
     "lodash-es": "^4.17.21",
     "material-icons": "^1.13.10",
+    "moment": "^2.29.4",
     "next": "13.4.19",
     "nextjs-toploader": "^1.4.2",
     "process": "^0.11.10",
