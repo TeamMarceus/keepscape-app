@@ -2,35 +2,22 @@ import React from 'react';
 
 import { DateTimePicker } from '@mui/x-date-pickers';
 
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
 import './styles.scss';
-import { colorClasses } from '@/app-globals';
 
-import Text from '../Text';
-import { textAreaTypes } from '../TextArea/constants';
-
-
-function DateTimePickerWrapper({ value, label, onChange, disabled, error}) {
+function DateTimePickerWrapper({ value, label, onChange, disabled, disableFutureDateTime }) {
   return  (
-    <>
-      <div className="datetimePicker">
-        <DateTimePicker
-          disabled={disabled}
-          label={label}
-          value={value}
-          onChange={onChange}
-        /> 
-      </div>
-        {error && (
-          <Text
-            colorClass={colorClasses.RED['200']}
-            type={textAreaTypes.BODY.XS}
-          >
-            {error}
-          </Text>
-        )}
-    </>
+    <div className="datetimePicker">
+      <DateTimePicker
+        disabled={disabled}
+        label={label}
+        maxDateTime={disableFutureDateTime ? dayjs() : undefined}
+        value={value}
+        onChange={onChange}
+      /> 
+    </div>
   )
 }
 
@@ -48,7 +35,7 @@ DateTimePickerWrapper.propTypes = {
   // function that handles the changes in the values.
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  error: PropTypes.string,
+  disableFutureDateTime: PropTypes.bool,
 };
 
 export default DateTimePickerWrapper;

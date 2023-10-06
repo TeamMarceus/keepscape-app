@@ -59,7 +59,7 @@ function AddLogsModal({
       <Formik
         initialValues={{
           log: '',
-          dateTime: '',
+          dateTime: dayjs(),
         }}
         onSubmit={async (values, { setErrors }) => {
           const currentFormValues = {
@@ -81,8 +81,8 @@ function AddLogsModal({
         {({ errors, values, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <DateTimePicker
-              label="Date and Time of Log"
-              value={values.dateTime || dayjs()}
+              disableFutureDateTime
+              value={values.dateTime}
               onChange={(d) => {
                 setFieldValue('dateTime', d);
               }}
