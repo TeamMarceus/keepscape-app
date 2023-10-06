@@ -8,3 +8,4 @@ export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
 export { default as useRouterScroll } from './useRouterScroll';
 export { default as useSubdomainRedirect } from './useSubdomainRedirect';
+export { default as useWindowSize } from './useWindowSize';

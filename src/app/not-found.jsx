@@ -12,7 +12,7 @@ export default function AppNotFound() {
   return (
     <PageNotFound
       buttonLink='/'
-      buttonText='BACK TO MAIN PAGE'
+      buttonText='Back to Home'
     />
   );
 }

@@ -4,7 +4,7 @@ import React from 'react';
 
 import PageNotFound from '@/screens/public/PageNotFound';
 
-import { BUYER_ROUTES } from './routes';
+import { PUBLIC_ROUTES } from '../keepscape/routes';
 
 export const metadata = {
   title: 'Page Not Found | Keepscape',
@@ -13,7 +13,7 @@ export const metadata = {
 export default function BuyerNotFound() {
   return (
     <PageNotFound
-      buttonLink={BUYER_ROUTES.HISTORY}
+      buttonLink={PUBLIC_ROUTES.MAIN_PAGE}
       buttonText="BACK TO HOME"
     />
   );

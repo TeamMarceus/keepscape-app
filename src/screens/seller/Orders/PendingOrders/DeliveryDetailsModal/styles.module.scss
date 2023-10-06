@@ -1,0 +1,18 @@
+@import "@/styles/mixins";
+@import "@/styles/variables";
+
+.DeliveryDetailsModal {
+  &_delivery {  
+    text-align: center;
+    margin: 0 auto;
+    max-width: 240px;
+
+    &_name {
+      margin-bottom: 16px !important;
+    }
+
+    &_number {
+      margin-bottom: 8px !important;
+    }
+  }
+}

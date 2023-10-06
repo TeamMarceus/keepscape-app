@@ -16,8 +16,8 @@ const navLinks = {
       icon: 'shopping_cart',
       subLinks: [
         {
-          label: 'All Orders',
-          to: SELLER_ROUTES.ALL_ORDERS,
+          label: 'My Orders',
+          to: SELLER_ROUTES.MY_ORDERS,
         },
         {
           label: 'Pending Orders',
@@ -39,8 +39,8 @@ const navLinks = {
       icon: 'shopping_bag',
       subLinks: [
         {
-          label: 'All Products',
-          to: SELLER_ROUTES.ALL_PRODUCTS,
+          label: 'My Products',
+          to: SELLER_ROUTES.MY_PRODUCTS,
         },
         {
           label: 'Add Product',
