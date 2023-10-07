@@ -318,15 +318,25 @@ function Product({ id }) {
             </div>
           </div>
         </Card>
+        <div className={styles.Product_seller}>
+          <SellerCard
+            contactNumber={seller.contactNumber}
+            description={seller.description}
+            email={seller.email}
+            name={seller.name}
+            rating={seller.rating}
+            sellerId={seller.id}
+            totalSold={seller.totalSold}
+          />
 
-        <SellerCard
-          className={styles.Product_seller}
-          contactNumber={seller.contactNumber}
-          description={seller.description}
-          name={seller.name}
-          rating={seller.rating}
-          totalSold={seller.totalSold}
-        />
+          <ButtonLink
+            className={styles.Product_seller_button}
+            to={`/buyer/seller-products?id=${seller.id}`}
+            type={buttonTypes.SECONDARY.BLUE}
+          >
+            Seller's Products
+          </ButtonLink>
+        </div>
 
       </div>
 

@@ -107,6 +107,16 @@
     }
   }
 
+  &_seller {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &_button {
+      margin-top: 40px;
+    }
+  }
+
   &_description {
     margin-top: 40px;
     background-color: $neutral-0;

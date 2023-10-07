@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 
-import { useSearchParams } from 'next/navigation';
+import cn from 'classnames';
+import { useSearchParams, useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import { Filters, Pagination, Text } from '@/components'
+import { Filters, NoResults, Pagination, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
@@ -83,6 +84,8 @@ function Province({ province }) {
   const categoryParams = searchParams.getAll('category');
   const user = useSelector(getUser);
   const[currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const newSearchParams = new URLSearchParams(searchParams.toString());
 
   const allCategories = [
     {
@@ -127,39 +130,52 @@ function Province({ province }) {
           className={styles.Province_filters}
           icon="menu"
           province={province}
+          route={`/keepscape/province/${province}`}
           title="All Products"
-          type="By Category"
+          type="By Province"
         />
 
-        <div>
-          <div className={styles.Province_products}>
-            <div className={styles.Province_products_list}>
-              {products.map((product, index) => (
-                <ProductCard
-                  key={index}
-                  isClickable
-                  className={styles.Province_products_item}
-                  id={product.id}
-                  image={product.image}
-                  name={product.name}
-                  place={product.place}
-                  price={product.price}
-                  rating={product.rating}
-                  userGuid={user?.guid}
-                />
-              ))}
-            </div>
-          </div>
+        <div className={cn(styles.Province_products, {
+          [styles.Province_products_empty]: products.length === 0
+        })}>
+          {products.length > 0 ?
+            <>
+              <div className={styles.Province_products_list}>
+                {products.map((product, index) => (
+                  <ProductCard
+                    key={index}
+                    isClickable
+                    className={styles.Province_products_item}
+                    id={product.id}
+                    image={product.image}
+                    name={product.name}
+                    place={product.place}
+                    price={product.price}
+                    rating={product.rating}
+                    userGuid={user?.guid}
+                  />
+                ))}
+              </div>
 
-          <Pagination
-            className={styles.Province_pagination}
-            currentPage={currentPage}
-            pageJump={(value) => {
-              setCurrentPage(value);
-              // setQueryParams({ page: value }, true);
-            }}
-            totalPages={10}
-          />
+              <Pagination 
+                className={styles.Province_pagination}
+                currentPage={currentPage}
+                pageJump={(value) => {
+                  setCurrentPage(value);
+
+                  newSearchParams.delete('page');
+                  newSearchParams.append('page', value);
+                  router.push(`/keepscape/province/${province}?${newSearchParams.toString()}`, { scroll: false })
+                }}
+                totalPages={10}
+              />
+            </>
+            :
+            <NoResults 
+            className={styles.Province_noResults}
+            message="No products found"
+            />
+          } 
         </div>
       </div>
     </div>

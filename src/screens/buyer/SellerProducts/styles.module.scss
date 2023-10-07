@@ -1,0 +1,50 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.SellerProducts {
+  margin-top: 90px;
+  
+  &_banner {
+    background-image: url('../../../../public/images/Beaches/cebu.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 250px;
+    margin-bottom: 40px;
+    border-radius: 5px;
+    box-shadow: $shadow-normal;
+    @include flex-center;
+
+    &_text {
+      font-size: 90px;
+    }
+  }
+
+  &_content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_products {
+    &_list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      column-gap: 20px;
+      row-gap: 12px;
+    }
+
+    &_empty {
+      width: 100%;
+    }
+
+    &_item {
+      &:hover {
+        scale: 1.05;
+      }
+    }
+  }
+
+  &_pagination {
+    margin-top: 60px;
+  }
+}

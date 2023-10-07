@@ -13,6 +13,8 @@
 
   &_checkboxes {
     margin-top: 24px;
+    border-bottom: 1px solid $neutral-200;
+    padding-bottom: 24px;
 
     &_checkbox {
       margin-top: 20px;
@@ -21,8 +23,8 @@
 
   &_ratings {
     margin-top: 24px;
-    border-top: 1px solid $neutral-200;
-    padding-top: 24px;
+    // border-top: 1px solid $neutral-200;
+    // padding-top: 24px;
 
     &_stars {
       background-color: unset !important;
@@ -74,5 +76,10 @@
       margin-top: 20px;
       width: 100%;
     }
+  }
+
+  &_clear {
+    margin-top: 40px;
+    width: 100%;
   }
 }

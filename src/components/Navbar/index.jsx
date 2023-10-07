@@ -26,9 +26,10 @@ function Navbar() {
   useOnClickOutside(ref, () => toggleDropdown(false));
   const user = useSelector((store) => getUser(store));
   const [search, setSearch] = useState('');
-  const userType = 'seller';
-  user.guid = '123';
-  user.sellerName = 'Butanding Seller';
+  const userType = user.role;
+  // const userType = 'user';
+  // user.guid = '123';
+  // user.sellerName = 'Butanding Seller';
 
   return (
     <div className={cn(styles.Navbar, {
@@ -228,10 +229,7 @@ function Navbar() {
           } 
         </div>
         
-        {(userType === userTypes.SELLER && 
-          pathname !== PUBLIC_ROUTES.MAIN_PAGE) || 
-          (pathname === PUBLIC_ROUTES.MAIN_PAGE) &&
-
+        { !pathname.includes('/seller/') &&
           <div className={styles.Navbar_header}>
             <Link href="/">
               <Image
@@ -255,6 +253,12 @@ function Navbar() {
                 placeholder="Search for souvenir products, places, and shops"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    router.push(`/keepscape/search?keyword=${search}`);
+                  }}
+                }
               />
 
               <div className={styles.Navbar_search_button}>
@@ -263,7 +267,9 @@ function Navbar() {
                   icon="search"
                   kind={buttonKinds.SUBMIT}
                   type={iconButtonTypes.SOLID.LG}
-                  onClick={()=>{}}
+                  onClick={()=>{
+                    router.push(`/keepscape/search?keyword=${search}`);
+                  }}
                 />
               </div>
             </form>

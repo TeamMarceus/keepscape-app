@@ -6,6 +6,7 @@
   flex-direction: column;
   grid-column: 8/13;
   padding: 24px 16px;
+  height: 100%;
 
   &_info {
     @include flex-between;

@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PropTypes from 'prop-types';
 
-import { buttonKinds, colorClasses, inputKinds, textTypes } from '@/app-globals';
+import { buttonKinds, buttonTypes, colorClasses, inputKinds, textTypes } from '@/app-globals';
 
 import Button from '../Button';
 import Checkbox from '../Checkbox';
@@ -40,22 +40,18 @@ function Filters({
   hasPriceRange = false,
   category = null,
   province = null,
+  route,
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams.toString());
 
-  let checked = null;
-  let query = null;
   let checkboxSearch = null;
+  
   if (province) { 
-    checked = 'province'; 
-    query = province;
     checkboxSearch = 'category';
   }
   if (category) {
-    checked = 'category'; 
-    query = category;
     checkboxSearch = 'province';
   }
 
@@ -82,30 +78,32 @@ function Filters({
         </Text>
       </div>
 
-      <div className={styles.Filters_checkboxes}>
-        <Text type={textTypes.HEADING.XXXS}>
-          {type}
-        </Text>
+      {checkboxes != null &&
+        <div className={styles.Filters_checkboxes}>
+          <Text type={textTypes.HEADING.XXXS}>
+            {type}
+          </Text>
 
-        {checkboxes && checkboxes.map((checkbox) => (
-          <Checkbox
-            key={checkbox.name}
-            checked={checkbox.isChecked}
-            className={styles.Filters_checkboxes_checkbox}
-            label={checkbox.label}
-            name={checkbox.name}
-            onChange={() => {
-              if (checkBoxParams.includes(checkbox.name)) {
-                newSearchParams.delete(checkboxSearch, checkbox.name);
-              } else {
-                 newSearchParams.append(checkboxSearch, checkbox.name);
-              }
+          {checkboxes && checkboxes.map((checkbox) => (
+            <Checkbox
+              key={checkbox.name}
+              checked={checkbox.isChecked}
+              className={styles.Filters_checkboxes_checkbox}
+              label={checkbox.label}
+              name={checkbox.name}
+              onChange={() => {
+                if (checkBoxParams.includes(checkbox.name)) {
+                  newSearchParams.delete(checkboxSearch, checkbox.name);
+                } else {
+                  newSearchParams.append(checkboxSearch, checkbox.name);
+                }
 
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
-            }}
-          />
-        ))}
-      </div>
+                router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
+              }}
+            />
+          ))}
+        </div>
+      }
 
       {hasRatings && (
         <div className={styles.Filters_ratings}>
@@ -123,7 +121,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '5');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+              router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={5} />
@@ -139,7 +137,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '4');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+              router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={4} /> & Up
@@ -155,7 +153,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '3');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+              router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={3} />& Up
@@ -171,7 +169,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '2');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+              router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={2} /> & Up
@@ -187,7 +185,7 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.append('ratings', '1');
               }
-              router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+              router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
             }}
           >
             <RatingStars className={styles.Filters_ratings_stars_last} rating={1} /> & Up
@@ -215,7 +213,7 @@ function Filters({
                 newSearchParams.delete('maximumPrice');
                 newSearchParams.append('minimumPrice', minimumPrice);
                 newSearchParams.append('maximumPrice', maximumPrice);
-                router.push(`/keepscape/${checked}/${query}?${newSearchParams.toString()}`, { scroll: false })
+                router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
                 
               }
             }
@@ -266,6 +264,22 @@ function Filters({
               Apply
             </Button>
           </form>
+
+          <Button
+              className={styles.Filters_clear}
+              type={buttonTypes.SECONDARY.BLUE}
+              onClick={()=>{
+                // Delete all filters
+                newSearchParams.delete('minimumPrice');
+                newSearchParams.delete('maximumPrice');
+                newSearchParams.delete('ratings');
+                newSearchParams.delete('province');
+                newSearchParams.delete('category');
+                router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
+              }}
+            >
+             Clear All
+          </Button>
         </div>
       )}
     </div>
@@ -286,6 +300,7 @@ Filters.propTypes = {
   hasPriceRange: PropTypes.bool,
   category: PropTypes.string,
   province: PropTypes.string,
+  route: PropTypes.string.isRequired,
 }
 
 export default Filters

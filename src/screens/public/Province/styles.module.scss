@@ -33,6 +33,10 @@
       row-gap: 12px;
     }
 
+    &_empty {
+      width: 100%;
+    }
+
     &_item {
       &:hover {
         scale: 1.05;
