@@ -26,6 +26,14 @@
 
       &_images {
         max-width: 160px !important;
+        
+        > div {
+          > button {
+            &::before {
+              font-size: 28px !important;
+            }
+          }
+        }
       }
     }
 
