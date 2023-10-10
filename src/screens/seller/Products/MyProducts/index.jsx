@@ -242,7 +242,7 @@ function MyProducts() {
                           <IconLink
                             className={styles.MyProducts_grid_editButton}
                             icon="edit"
-                            to={`/seller/products/${id}/edit`}
+                            to={`/seller/products/${id}/update`}
                             type={iconButtonTypes.ICON.MD}
                           />
 

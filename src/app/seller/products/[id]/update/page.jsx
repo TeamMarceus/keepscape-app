@@ -4,11 +4,11 @@ import React from 'react';
 
 import { useParams } from 'next/navigation';
 
-import ViewProduct from '@/screens/seller/Products/ViewProduct';
+import UpdateProduct from '@/screens/seller/Products/UpdateProduct';
 
-export default function ProductPage() {
+export default function UpdateProductPage() {
   const params = useParams();
   const { id } = params;
 
- return <ViewProduct id={id}/>
+ return <UpdateProduct id={id}/>
 }

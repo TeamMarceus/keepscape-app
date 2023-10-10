@@ -1,0 +1,65 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.UpdateProduct {
+  padding-top: 24px;
+  
+  &_content {
+    margin-top: 32px;
+
+    &_withMargin {
+      margin-top: 10px !important;
+    }
+
+    &_imageText {
+      margin: 24px 0 !important;
+      text-align: center;
+    }
+
+    &_bottomGrid {
+      margin-top: 24px;
+
+      &_checkbox {
+        justify-self: flex-end;
+        margin-top: 16px;
+      }
+    }
+
+    &_price {
+      &_commission {
+        border-bottom: 1.5px solid $neutral-200;
+        @include flex-between;
+        margin-top: 24px;
+        padding-bottom: 16px;
+
+        &_span {
+          color: $blue-400;
+          font-size: 16px;
+        }
+      }
+
+      &_total {
+        margin-top: 24px;
+        @include flex-between;
+      }
+    }
+
+    &_updateButton {
+      @include flex-center;
+    }
+
+    &_buttonGroup {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-top: 40px;
+
+      &_buttonText {
+        @include flex-center;
+      }
+
+      &_spinner {
+        margin-left: 12px;
+      }
+    }
+  }
+}
