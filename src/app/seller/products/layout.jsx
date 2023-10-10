@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 
 export const metadata = {
-  title: 'Orders | Seller',
+  title: 'Products | Seller',
 };
 
-export default function OrdersLayout({ children }) {
+export default function ProductsLayout({ children }) {
   return children;
 }
 
-OrdersLayout.propTypes = {
+ProductsLayout.propTypes = {
   children: PropTypes.any,
 };

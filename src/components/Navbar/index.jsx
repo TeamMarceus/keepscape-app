@@ -26,10 +26,10 @@ function Navbar() {
   useOnClickOutside(ref, () => toggleDropdown(false));
   const user = useSelector((store) => getUser(store));
   const [search, setSearch] = useState('');
-  const userType = user.role;
-  // const userType = 'user';
-  // user.guid = '123';
-  // user.sellerName = 'Butanding Seller';
+  // const userType = user.role;
+  const userType = 'seller';
+  user.guid = '123';
+  user.sellerName = 'Butanding Seller';
 
   return (
     <div className={cn(styles.Navbar, {
