@@ -1,5 +1,6 @@
 import React from 'react';
 
+import cn from 'classnames';
 import { useSearchParams } from 'next/navigation';
 
 import { colorClasses, tabKinds, tabTypes, textTypes, userTypes } from '@/app-globals';
@@ -55,11 +56,18 @@ function Account() {
   ];
 
   return (
-    <div className={styles.Account}>
-      <div className={styles.Account_tabs}>
+    <div className={cn(styles.Account,{
+      [styles.Account_seller]: userType === userTypes.SELLER,
+    })}>
+      <div className={cn(styles.Account_tabs, {
+        [styles.Account_tabs_seller]: userType === userTypes.SELLER,
+      })}>
         <Text
           className={styles.Account_title}
-          colorClass={colorClasses.NEUTRAL['300']}
+          colorClass={ userType === userTypes.SELLER ? 
+            colorClasses.NEUTRAL['800'] :
+            colorClasses.NEUTRAL['300']
+          }
           type={textTypes.HEADING.XS}
         >
           Account Information
@@ -67,7 +75,7 @@ function Account() {
         <Tabs
           activeTab={activeTab}
           tabs={userType === userTypes.BUYER ? buyerTabs : sellerTabs}
-          type={tabTypes.VERTICAL.LG}
+          type={userType === userTypes.BUYER ? tabTypes.VERTICAL.LG : tabTypes.HORIZONTAL.LG}
         />
       </div>
         

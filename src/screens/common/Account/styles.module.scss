@@ -6,6 +6,12 @@
   grid-gap: 24px 96px;
   margin-top: 90px;
 
+  &_seller {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px !important;
+  }
+
   @include breakpoint(md) {
     grid-gap: 24px 64px;
   }
@@ -17,6 +23,16 @@
 
   &_tabs {
     width: 300px;
+
+    &_seller {
+      width: 100% !important;
+
+      > div {
+        > a {
+          width: 100% !important;
+        }
+      }
+    }
   }
 
   &_title {
