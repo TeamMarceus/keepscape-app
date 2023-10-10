@@ -100,7 +100,7 @@ function Finance() {
         <div className={styles.Finance_header_buttons}>
           <Button
             className={styles.Finance_header_button}
-            type={buttonTypes.SECONDARY.BLUE}
+            // type={buttonTypes.SECONDARY.BLUE}
             onClick={() => {}}
           >
             G Cash
@@ -108,7 +108,7 @@ function Finance() {
 
           <Button
             className={styles.Finance_header_button}
-            type={buttonTypes.SECONDARY.BLUE}
+            // type={buttonTypes.SECONDARY.BLUE}
             onClick={() => {}}
           >
             Paymaya
@@ -116,7 +116,7 @@ function Finance() {
 
           <Button
             className={styles.Finance_header_button}
-            type={buttonTypes.SECONDARY.BLUE}
+            // type={buttonTypes.SECONDARY.BLUE}
             onClick={() => {}}
           >
             PayPal
@@ -124,7 +124,7 @@ function Finance() {
 
           <Button
             className={styles.Finance_header_button}
-            type={buttonTypes.SECONDARY.BLUE}
+            // type={buttonTypes.SECONDARY.BLUE}
             onClick={() => {}}
           >
             Bank Transfer

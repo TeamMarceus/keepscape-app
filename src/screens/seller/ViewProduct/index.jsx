@@ -172,12 +172,10 @@ function ViewProduct({ id }) {
               {product.name}
             </Text> 
 
-            {product.isHidden &&
-              <Icon
-                className={styles.ViewProduct_content_info_icon}
-                icon='visibility_off'
-              />
-            }
+            <Icon
+              className={styles.ViewProduct_content_info_icon}
+              icon={product.isHidden ? 'visibility_off' : 'visibility'}
+            />
           </div>
           
           <div className={styles.ViewProduct_content_info_reviews}>
@@ -241,6 +239,7 @@ function ViewProduct({ id }) {
 
             <Button 
               className={styles.ViewProduct_content_info_buttons_button}
+              icon="visibility"
               onClick={()=>{}}
             >
               {product.isHidden ? 'Unhide' : 'Hide'}
@@ -248,6 +247,7 @@ function ViewProduct({ id }) {
 
             <ButtonLink
                 className={styles.ViewProduct_content_info_buttons_button}
+                icon="edit"
                 to={`/seller/products/${id}/update`}
                 type={buttonTypes.PRIMARY.GREEN}
               >
@@ -256,6 +256,7 @@ function ViewProduct({ id }) {
 
             <Button 
               className={styles.ViewProduct_content_info_buttons_button}
+              icon="delete"
               type={buttonTypes.PRIMARY.RED}
               onClick={()=>{}}
             >
