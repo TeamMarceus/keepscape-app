@@ -1,0 +1,18 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.SellerApplication {
+  margin-top: 60px;
+  max-width: 450px;
+  padding-bottom: 60px;
+  width: 100%;
+  text-align: center;
+
+  &_header {
+    margin-bottom: 40px;
+  }
+
+  &_body {
+    margin-bottom: 60px;
+  }
+}

@@ -10,6 +10,7 @@ export { default as inputKinds } from './inputKinds';
 export { default as inputTypes } from './inputTypes';
 export { default as modalSizes } from './modalSizes';
 export { default as modalPositions } from './modalPositions';
+export { default as userStatus } from './userStatus';
 export {default as userTypes} from './userTypes';
 export { default as shineTypes } from './shineTypes';
 export { default as spinnerSizes } from './spinnerSizes';
