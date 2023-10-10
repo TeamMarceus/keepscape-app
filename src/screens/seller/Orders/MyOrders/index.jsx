@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import cn from 'classnames';
+import { useSearchParams } from 'next/navigation';
 
 import {
   buttonTypes,
@@ -115,14 +116,23 @@ const orders = [
 ]
 
 function MyOrders() {
+  const searchParams = useSearchParams();
+  const orderIdParam = searchParams.get('orderId');
+
   const { windowSize } = useWindowSize();
+
   const isOrdersLoading = false;
+
   const [search, setSearch] = useState('');
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
   const filteredOrders = orders.filter((order) => {
     const { product, buyer, status } = order;
+
+    if (orderIdParam && search === '') {
+      return order.id === Number(orderIdParam);
+    }
 
     return (
       product.name.toLowerCase().includes(search.toLowerCase()) ||
