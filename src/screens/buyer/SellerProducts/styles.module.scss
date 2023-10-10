@@ -14,9 +14,29 @@
     border-radius: 5px;
     box-shadow: $shadow-normal;
     @include flex-center;
+    flex-direction: column;
 
     &_text {
       font-size: 90px;
+    }
+
+    &_rating {
+      margin: 12px 0 24px;
+      
+      > i {
+        font-size: 32px !important;
+      }
+    }
+
+    &_additional {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 100%;
+
+      &_text {
+        color: $neutral-50;
+      }
     }
   }
 

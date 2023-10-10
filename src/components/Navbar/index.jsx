@@ -42,7 +42,7 @@ function Navbar() {
           <div className={styles.Navbar_links_scrollLinks}>
             {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
               <>
-                {user.guid && user.userType === userTypes.BUYER &&
+                {user.role === userTypes.BUYER &&
                   <>
                     <LinkScroll
                     key="preferences"
@@ -274,7 +274,7 @@ function Navbar() {
               </div>
             </form>
             
-            { userType === userTypes.BUYER &&
+            {!pathname.includes('/seller/') &&
               <div className={styles.Navbar_cart}>
                 <div className={styles.Navbar_cart_count}>
                   7

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import {  Filters, NoResults, Pagination, Text } from '@/components'
+import {  Filters, NoResults, Pagination, RatingStars, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
@@ -94,8 +94,39 @@ function SellerProducts({ id }) {
           colorClass={colorClasses.NEUTRAL['0']}
           type={textTypes.HEADING.XXL}
         >
-          Butanding Seller
+          KEYCHAIN SELLER
         </Text>
+
+        <RatingStars 
+          className={styles.SellerProducts_banner_rating}
+          rating={4}
+        />
+
+      <div className={styles.SellerProducts_banner_additional}>
+        <Text 
+          colorClass={colorClasses.NEUTRAL['200']}
+          type={textTypes.HEADING.XXXS}
+        >
+          Products: {' '}
+          <span className={styles.SellerProducts_banner_additional_text}>10</span>
+        </Text>
+
+        <Text 
+          colorClass={colorClasses.NEUTRAL['200']}
+          type={textTypes.HEADING.XXXS}
+        >
+          Email: {' '}
+          <span className={styles.SellerProducts_banner_additional_text}>seller@gmail.com</span>
+        </Text>
+
+        <Text 
+          colorClass={colorClasses.NEUTRAL['200']}
+          type={textTypes.HEADING.XXXS}
+        >
+          Contact Number: {' '}
+          <span className={styles.SellerProducts_banner_additional_text}>0906023213</span>
+        </Text>
+      </div>
       </div>
 
       <div className={styles.SellerProducts_content}>
