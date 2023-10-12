@@ -2,64 +2,48 @@
 @import '@/styles/mixins';
 
 .Dashboard {
-  padding-bottom: 60px;
+  padding-top: 24px;
 
   &_header {
     @include flex-between;
   }
 
-  &_logout {
-    text-decoration: underline;
-    font-size: 18px;
-  }
-  
-  &_cards {
-    margin-top: 60px;
-    justify-items: center;
+  &_statistics {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 100px 24px;
+    margin: 32px 0 40px;
 
-    &_card {
-      padding: 20px;
-      margin-top: 12px;
-      width: 350px;
+    &_details {
+      text-align: center;
+      width: 100%;
 
-      &_grid {
-        grid-template-columns: 1fr 0.2fr !important;
-      }
-
-      &_rightColumn {
-        display: flex;
-        align-items: center;
-        text-align: right;
-      }
-
-      &_icon {
-        font-size: 3.5rem !important;
-
-        &___green {
-          color: $green-400 !important;
-        }
-
-        &___blue {
-          color: $blue-400 !important;
-        }
-
-        &___violet {
-          color: $violet-400 !important;
-        }
-
-        &___yellow {
-          color: $yellow-400 !important;
-        }
-
-        &___red {
-          color: $red-400 !important;
-        }
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        border-right: 1px solid $neutral-200;
       }
     }
-  }
 
-  &_withMargin {
-    margin-top: 40px !important;
+    &_text {
+      @include flex-center;
+      margin-top: 12px;
+    }
+
+    &_assignmentIcon {
+      margin-right: 8px;
+      color: $neutral-400;
+    }
+
+    &_ongoingIcon {
+      margin-right: 8px;
+      color: $blue-400;
+    }
+
+    &_shoppingIcon {
+      margin-right: 8px;
+      color: $green-400;
+    }
   }
 
   &_graph {

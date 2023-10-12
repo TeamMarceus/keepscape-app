@@ -8,18 +8,15 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import cn from 'classnames';
-
 
 import { Bar } from 'react-chartjs-2';
 
 import {
-  buttonTypes,
   colorClasses,
-  gridTypes,
   textTypes,
 } from '@/app-globals';
-import { ButtonLink, Card, Grid, Icon, Text } from '@/components';
+
+import { Card, Icon, Text } from '@/components';
 
 import styles from './styles.module.scss';
 
@@ -53,17 +50,17 @@ function Dashboard() {
     labels,
     datasets: [
       {
-        label: 'Answers', 
+        label: 'Revenue', 
         data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         backgroundColor: '#48CFAD',
       },
       {
-        label: 'Revenue',
+        label: 'Buyers',
         data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         backgroundColor: '#ED5565',
       },
       {
-        label: 'Signups', 
+        label: 'Sellers', 
         data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
         backgroundColor: '#4FC1E9',
       },
@@ -71,118 +68,84 @@ function Dashboard() {
   };
 
   return <div className={styles.Dashboard}>
-    <div className={styles.Dashboard_header}>
-      <Text type={textTypes.HEADING.MD}>Keepscape Admin Dashboard</Text>
-      <ButtonLink 
-        className={styles.Dashboard_logout}
-        to="/logout"
-        type={buttonTypes.TEXT.RED}
-      >
-        LOGOUT
-      </ButtonLink>
-    </div>
+    <Text type={textTypes.HEADING.XS}>
+      Dashboard
+    </Text>
 
+    <Card className={styles.Dashboard_statistics}>
+      <div className={styles.Dashboard_statistics_details}>
+        <Text
+          colorClass={colorClasses.NEUTRAL['400']} 
+          type={textTypes.HEADING.MD}
+        >
+          100
+        </Text>
 
-    <Grid className={styles.Dashboard_cards} type={gridTypes.THREE}>
+        <div className={styles.Dashboard_statistics_text}>
+          <Icon
+            className={styles.Dashboard_statistics_assignmentIcon}
+            icon="assignment"
+          />
+
+          <Text 
+            colorClass={colorClasses.NEUTRAL['400']}  
+            type={textTypes.HEADING.XXXS}
+          >
+            Seller Applications
+          </Text>
+        </div>
+      </div>
+  
+      <div className={styles.Dashboard_statistics_details}>
+        <Text
+          colorClass={colorClasses.BLUE['400']} 
+          type={textTypes.HEADING.MD}
+        >
+          50
+        </Text>
+
+        <div className={styles.Dashboard_statistics_text}>
+          <Icon
+            className={styles.Dashboard_statistics_ongoingIcon}
+            icon="local_shipping"
+          />
+
+          <Text 
+            colorClass={colorClasses.BLUE['400']}
+            type={textTypes.HEADING.XXXS}
+          >
+            On-going Orders
+          </Text>
+        </div>
+      </div>
       
-      <div>
+      <div className={styles.Dashboard_statistics_details}>
         <Text
-          colorClass={colorClasses.NEUTRAL['600']}
-          type={textTypes.BODY.LG}
+          colorClass={colorClasses.GREEN['400']} 
+          type={textTypes.HEADING.MD}
         >
-          Total Number of Answers
+          200
         </Text>
 
-        <Card className={styles.Dashboard_cards_card}>
-          <Grid className={styles.Dashboard_cards_card_grid}>
-            <div className={styles.Dashboard_cards_card_leftColumn}>
-              <Icon
-                className={cn(
-                  styles.Dashboard_cards_card_icon,
-                  styles.Dashboard_cards_card_icon___green
-                )}
-                icon="question_answer"
-              />
-            </div>
-            <div className={styles.Dashboard_cards_card_rightColumn}>
-              <Text
-                colorClass={colorClasses.GREEN['200']}
-                type={textTypes.HEADING.SM}
-              >
-                100
-              </Text>
-            </div>
-          </Grid>
-        </Card>
-      </div>
+        <div className={styles.Dashboard_statistics_text}>
+          <Icon
+            className={styles.Dashboard_statistics_shoppingIcon}
+            icon="shopping_bag"
+          />
 
-      <div>
-        <Text
-          colorClass={colorClasses.NEUTRAL['600']}
-          type={textTypes.BODY.LG}
-        >
-          Total Revenue
+          <Text 
+            colorClass={colorClasses.GREEN['400']}
+            type={textTypes.HEADING.XXXS}
+          >
+            New Products
         </Text>
-
-        <Card className={styles.Dashboard_cards_card}>
-          <Grid className={styles.Dashboard_cards_card_grid}>
-            <div className={styles.Dashboard_cards_card_leftColumn}>
-              <Icon
-                className={cn(
-                  styles.Dashboard_cards_card_icon,
-                  styles.Dashboard_cards_card_icon___red
-                )}
-                icon="attach_money"
-              />
-            </div>
-
-            <div className={styles.Dashboard_cards_card_rightColumn}>
-              <Text
-                  colorClass={colorClasses.RED['200']}
-                  type={textTypes.HEADING.SM}
-                >
-                10
-              </Text>
-            </div>
-          </Grid>
-        </Card>
+        </div>
       </div>
 
-      <div>
-        <Text
-          colorClass={colorClasses.NEUTRAL['600']}
-          type={textTypes.BODY.LG}
-        >
-          Total Number of Signups
-        </Text>
-
-        <Card className={styles.Dashboard_cards_card}>
-          <Grid className={styles.Dashboard_cards_card_grid}>
-            <div className={styles.Dashboard_cards_card_leftColumn}>
-              <Icon
-                  className={cn(
-                  styles.Dashboard_cards_card_icon,
-                  styles.Dashboard_cards_card_icon___blue
-                )}
-                icon="person_add"
-              />
-            </div>
-
-            <div className={styles.Dashboard_cards_card_rightColumn}>
-              <Text
-                colorClass={colorClasses.BLUE['200']}
-                type={textTypes.HEADING.SM}
-              >
-                55
-              </Text>
-            </div>
-          </Grid>
-        </Card>
-      </div>
-    </Grid>
+    </Card>
 
     <Text className={styles.Dashboard_withMargin} type={textTypes.HEADING.XS}>
-     Daily Comparison
+      Statistics
     </Text>
 
     <Card className={styles.Dashboard_graph}>

@@ -1,0 +1,95 @@
+@import "@/styles/variables";
+
+@mixin dropdown($display) {
+  display: $display;
+  flex-direction: column;
+  @content;
+}
+
+@mixin base {
+  align-items: center;
+  justify-content: space-between;
+  color: $neutral-600;
+  display: flex;
+  font-size: 1rem;
+  line-height: 1.8;
+  text-decoration: none;
+  padding: 0.8rem 1rem;
+  position: relative;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $border-200;
+  }
+
+  @content;
+}
+
+@mixin subbase {
+  align-items: center;
+  color: $neutral-700;
+  display: flex;
+  font-size: 1rem;
+  line-height: 1.8;
+  text-decoration: none;
+  padding: 0.5rem 1rem 0.5rem 3.5rem;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $border-200;
+  }
+
+  @content;
+}
+
+
+.SidebarLink {
+  @include base;
+
+  &___active {
+    background: $border-200 !important;
+    color: $blue-400 !important;
+
+    .SidebarLink_icon {
+      color: $blue-400 !important;
+    }
+
+    .SidebarLink_dropdownIcon {
+      color: $blue-400 !important;
+    }
+  }
+
+  &_title {
+    display: flex;
+    align-items: center ;
+  }
+
+  &_icon {
+    color: $neutral-500 !important;
+    font-size: 1.5rem !important;
+    margin-right: 12px;
+  }
+
+  &_dropdownIcon {
+    color: $neutral-600 !important;
+    font-size: 1.5rem !important;
+
+    &___toggled {
+      transform: rotate(180deg);
+    }
+  }
+
+  &_subLinks {
+    @include subbase;
+  }
+
+  &_dropdown {
+    @include dropdown(none);
+
+    &___toggled {
+      @include dropdown(flex);
+    }
+  }
+}

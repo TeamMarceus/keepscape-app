@@ -12,7 +12,6 @@ function Dashboard() {
 
   return (
     <div className={styles.Dashboard}>
-      
       <Text type={textTypes.HEADING.XS}>
         Order Statistics
       </Text>

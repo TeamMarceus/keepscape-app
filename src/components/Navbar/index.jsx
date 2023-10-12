@@ -26,18 +26,19 @@ function Navbar() {
   useOnClickOutside(ref, () => toggleDropdown(false));
   const user = useSelector((store) => getUser(store));
   const [search, setSearch] = useState('');
-  // const userType = user.role;
-  const userType = 'seller';
-  user.guid = '123';
-  user.sellerName = 'Butanding Seller';
+  const userType = user.role; 
+  // const userType = 'seller';
+  // user.guid = '123';
+  // user.sellerName = 'Butanding Seller';
+  const isSellerOrAdmin = userType === userTypes.SELLER || userType === userTypes.ADMIN;
 
   return (
     <div className={cn(styles.Navbar, {
-      [styles.Navbar___seller]: userType === userTypes.SELLER && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
+      [styles.Navbar___seller]: isSellerOrAdmin && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
     })}>
       <div className={styles.Navbar_container}>
         <div className={cn(styles.Navbar_links, {
-          [styles.Navbar_links___seller]: userType === userTypes.SELLER && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
+          [styles.Navbar_links___seller]: isSellerOrAdmin && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
         })}>
           <div className={styles.Navbar_links_scrollLinks}>
             {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
@@ -125,8 +126,8 @@ function Navbar() {
                     </Text>
                   </Link>
                 }
-                {userType === userTypes.SELLER &&
-                  <Link href="/seller/dashboard">
+                {isSellerOrAdmin &&
+                  <Link href={userType === userTypes.SELLER ? '/seller/dashboard' : '/admin/dashboard'}>
                     <Image
                       alt="Keepscape"
                       className={styles.Navbar_logo}
@@ -156,11 +157,10 @@ function Navbar() {
                       className={styles.Navbar_navUser_accountIcon}
                       icon="account_circle"
                     />
-                    {userType === 'user' ? 
-                      <span className={styles.Navbar_navUser_name}>{user.firstName}</span>
-                      :
-                      <span className={styles.Navbar_navUser_name}>{user.sellerName}</span>
-                    }
+                    {userType === userTypes.BUYER || userType === userTypes.ADMIN && 
+                      <span className={styles.Navbar_navUser_name}>{user.firstName}</span>}
+
+                    {userType === userTypes.SELLER && <span className={styles.Navbar_navUser_name}>{user.sellerName}</span>}
                     <Icon
                       className={styles.Navbar_navUser_caret}
                       icon="keyboard_arrow_down"
@@ -173,17 +173,19 @@ function Navbar() {
                     [styles.Navbar_navUser_dropdown___toggled]: isDropdownToggled,
                   })}
                 >
-                  <Link
+                  {userType !== userTypes.ADMIN &&
+                    <Link
                     className={styles.Navbar_navUser_dropdown_link}
                     href={`/${userType}/account?activeTab=information`}
                     onClick={() => toggleDropdown(!isDropdownToggled)}
-                  >
-                    <Icon
-                      className={styles.Navbar_navUser_dropdown_link_icon}
-                      icon="settings"
-                    />
-                    My Account
-                  </Link>
+                    >
+                      <Icon
+                        className={styles.Navbar_navUser_dropdown_link_icon}
+                        icon="settings"
+                      />
+                      My Account
+                    </Link>
+                  }
 
                   {userType === userTypes.BUYER &&
                     <Link
@@ -229,7 +231,7 @@ function Navbar() {
           } 
         </div>
         
-        { !pathname.includes('/seller/') &&
+        {!pathname.includes('/seller/') || !pathname.includes('/admin/') &&
           <div className={styles.Navbar_header}>
             <Link href="/">
               <Image

@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 import { userTypes } from '@/app-globals';
 import { Footer, Navbar } from '@/components';
-import Sidebar from '@/components/Sidebar';
+import SellerSidebar from '@/components/SellerSidebar';
 import { getUser, getAccessToken, getRefreshToken } from '@/ducks';
 import { usePrivateRoute } from '@/hooks';
 
@@ -47,7 +47,7 @@ export default function SellerEffects({ children }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Navbar />
-      <Sidebar />
+      <SellerSidebar />
       <section className={styles.container}>
         {children}
       </section>

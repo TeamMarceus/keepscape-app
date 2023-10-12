@@ -7,12 +7,12 @@ import navLinks from './constants/navLinks';
 
 import styles from './styles.module.scss';
 
-function Sidebar() {
+function SellerSidebar() {
   const pathname = usePathname();
 
   return (
     <nav
-      className={styles.Sidebar}
+      className={styles.SellerSidebar}
     >
       <SidebarLink
         icon={navLinks.HOME.icon}
@@ -52,4 +52,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default SellerSidebar;

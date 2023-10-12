@@ -1,3 +1,4 @@
+export { default as AdminSidebar } from './AdminSidebar';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as Button } from './Button';
 export { default as ButtonGroup } from './Button/Group';
@@ -27,6 +28,7 @@ export { default as RatingStars } from './RatingStars';
 export { default as ReviewCard } from './ReviewCard';
 export { default as Separator } from './Separator';
 export { default as SellerCard } from './SellerCard';
+export { default as SellerSidebar } from './SellerSidebar';
 export { default as ScreenLoader } from './ScreenLoader';
 export { default as Shine } from './Shine';
 export { default as Spinner } from './Spinner';
