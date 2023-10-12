@@ -82,7 +82,6 @@ export const configureAxios = (store) => {
               })
             );
 
-
             // Modify the Authorization Header using the NEW ACCESS TOKEN
             error.config.headers.authorization = renewResponse.accessToken;
             isTokenRefreshing = false; // Reset the token refresh flag
