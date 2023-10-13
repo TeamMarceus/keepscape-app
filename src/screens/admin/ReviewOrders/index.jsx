@@ -29,7 +29,7 @@ import styles from './styles.module.scss';
 
 const orders = [
   {
-    id: 1,
+    id: '11113e4567-e89b-12d3-a456-426614174000',
     dateOrdered: '2021-08-01',
     product: {
         id: 1,
@@ -46,10 +46,7 @@ const orders = [
       },
     },
     quantity: 1,
-    seller: {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      sellerName: 'Seller 1',
-    },
+    sellerId: '123e4567-e89b-12d3-a456-426614174000',
     status: 'On Going',
   },
   {
@@ -70,10 +67,7 @@ const orders = [
       },
     },
     quantity: 1,
-    seller: {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      sellerName: 'Seller 1',
-    },
+    sellerId: '123e4567-e89b-12d3-a456-426614174000',
     status: 'Delivered',
   },
   {
@@ -94,10 +88,7 @@ const orders = [
       },
     },
     quantity: 1,
-    seller: {
-      id: 1,
-      sellerName: 'Seller 1',
-    },
+    sellerId: 1,
     status: 'Pending',
   },
   {
@@ -118,17 +109,14 @@ const orders = [
       },
     },
     quantity: 1,
-    seller: {
-      id: 1,
-      sellerName: 'Seller 1',
-    },
+    sellerId: 1,
     status: 'Cancelled',
   },
 ]
 
 function ReviewOrders() {
   const searchParams = useSearchParams();
-  const orderIdParam = searchParams.get('orderId');
+  const orderIdParam = searchParams.get('id');
 
   const { windowSize } = useWindowSize();
 
@@ -142,7 +130,7 @@ function ReviewOrders() {
     const { product, buyer, status } = order;
 
     if (orderIdParam && search === '') {
-      return order.id === Number(orderIdParam);
+      return order.id === orderIdParam;
     }
 
     return (
@@ -217,7 +205,7 @@ function ReviewOrders() {
                       styles.ReviewOrders_grid_column
                     )}
                   >
-                    Buyer
+                    Buyer ID
                   </div>
 
                   <div
@@ -226,7 +214,7 @@ function ReviewOrders() {
                       styles.ReviewOrders_grid_column
                     )}
                   >
-                    Seller
+                    Seller ID
                   </div>
 
                   <div
@@ -245,7 +233,7 @@ function ReviewOrders() {
 
                 {/* Body of OrderGrid starts here */}
                 {filteredOrders.map(
-                  ({ id, dateOrdered, product, quantity, buyer, seller, status }) =>
+                  ({ id, dateOrdered, product, quantity, buyer, sellerId, status }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
                       <Card key={id} className={styles.ReviewOrders_grid_orderGrid}>
@@ -277,31 +265,19 @@ function ReviewOrders() {
                         </div>
 
                         <ButtonLink 
-                          className={cn(styles.ReviewOrders_grid_column, 
-                            styles.ReviewOrders_grid_column_withId)}
+                          className={styles.ReviewOrders_grid_column}
                           to={`/admin/buyers?id=${buyer.id}`}
                           type={buttonTypes.TEXT.NEUTRAL}
                         >
-                  
                           {buyer.id}
-                
-                          <Text>
-                            {buyer.name}
-                          </Text>
                         </ButtonLink>
 
                         <ButtonLink 
-                          className={cn(styles.ReviewOrders_grid_column, 
-                            styles.ReviewOrders_grid_column_withId)}
-                          to={`/admin/sellers?id=${buyer.id}`}
+                          className={styles.ReviewOrders_grid_column}
+                          to={`/admin/sellers?id=${sellerId}`}
                           type={buttonTypes.TEXT.NEUTRAL}
                         >
-                
-                          {seller.id}
-
-                          <Text>
-                            {seller.sellerName}
-                          </Text>
+                          {sellerId}
                         </ButtonLink>
 
                         <Button

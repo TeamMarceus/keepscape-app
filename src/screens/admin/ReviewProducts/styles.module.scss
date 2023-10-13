@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.ReviewOrders {
+.ReviewProducts {
   padding-top: 24px;
 
   &_search {
@@ -24,25 +24,26 @@
         padding: 30px 40px;
       }
 
-      &_product {
-        border-radius: 5px;
-        box-shadow: $shadow-normal;
-        display: flex;
-        padding: 4px !important;
+      &_images {
+        max-width: 160px !important;
 
-        &:hover {
-          background-color: $blue-0;
-          box-shadow: $shadow-raised;
-          > p {
-            color: $blue-400;
+        > div {
+          > button {
+            &::before {
+              font-size: 28px !important;
+            }
           }
         }
       }
     }
 
-    &_orderGrid {
+    &_image {
+      padding: 0 1px;
+    }
+
+    &_productGrid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(7, 1fr);
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;
@@ -56,7 +57,7 @@
       }
     }
 
-    &_orderGrid[open] {
+    &_productGrid[open] {
       > summary {
         > div {
           > i {
@@ -101,6 +102,10 @@
       @include breakpoint(sm) {
         display: none;
       }
+    }
+
+    &_deleteButton {
+      color: $red-400 !important;
     }
 
     &_header {

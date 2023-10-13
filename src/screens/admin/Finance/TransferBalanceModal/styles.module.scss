@@ -2,7 +2,11 @@
 @import '@/styles/variables.scss';
 @import '@/styles/mixins.scss';
 
-.ReportProblemModal {
+.TransferBalanceModal {
+
+  &_withMargin {
+    margin-top: 10px;
+  }
 
   &_button {
     @include flex-center;
