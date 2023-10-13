@@ -231,7 +231,7 @@ function Navbar() {
           } 
         </div>
         
-        {!pathname.includes('/seller/') || !pathname.includes('/admin/') &&
+        {(!pathname.includes('/seller/') && !pathname.includes('/admin/')) &&
           <div className={styles.Navbar_header}>
             <Link href="/">
               <Image
@@ -246,7 +246,7 @@ function Navbar() {
               className={styles.Navbar_search} 
               onSubmit={(e) => {
                 e.preventDefault();
-                // router.push(`/search?query=${search}`);
+                router.push(`/keepscape/search?keyword=${search}`);
               }}
             >
               <ControlledInput
@@ -269,14 +269,12 @@ function Navbar() {
                   icon="search"
                   kind={buttonKinds.SUBMIT}
                   type={iconButtonTypes.SOLID.LG}
-                  onClick={()=>{
-                    router.push(`/keepscape/search?keyword=${search}`);
-                  }}
+                  onClick={()=>{}}
                 />
               </div>
             </form>
             
-            {!pathname.includes('/seller/') &&
+            {!isSellerOrAdmin &&
               <div className={styles.Navbar_cart}>
                 <div className={styles.Navbar_cart_count}>
                   7

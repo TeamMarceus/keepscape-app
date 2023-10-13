@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import cn from 'classnames';
+import { useSearchParams } from 'next/navigation';
 
 import {
   buttonTypes,
@@ -20,15 +21,63 @@ import {
 
 import { useWindowSize } from '@/hooks';
 
-import DeliveryLogsModal from '../DeliveryLogsModal';
+import DeliveryLogsModal from './DeliveryLogsModal';
 
-import PreloaderOrders from '../Preloader';
+import PreloaderOrders from './Preloader';
 
 import styles from './styles.module.scss';
 
 const orders = [
   {
     id: 1,
+    dateOrdered: '2021-08-01',
+    product: {
+        id: 1,
+        name: 'Buntanding KeyChain 1',
+        image: 'https://picsum.photos/200',
+      },
+    buyer: {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      name: 'Buyer 1',
+      deliveryDetails: {
+        fullName: 'Buyer 1',
+        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
+        contactNumber: '09123456789',
+      },
+    },
+    quantity: 1,
+    seller: {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      sellerName: 'Seller 1',
+    },
+    status: 'On Going',
+  },
+  {
+    id: 2,
+    dateOrdered: '2021-08-01',
+    product: {
+        id: 1,
+        name: 'Buntanding KeyChain 1',
+        image: 'https://picsum.photos/200',
+      },
+    buyer: {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      name: 'Buyer 1',
+      deliveryDetails: {
+        fullName: 'Buyer 1',
+        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
+        contactNumber: '09123456789',
+      },
+    },
+    quantity: 1,
+    seller: {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      sellerName: 'Seller 1',
+    },
+    status: 'Delivered',
+  },
+  {
+    id: 4,
     dateOrdered: '2021-08-01',
     product: {
         id: 1,
@@ -45,77 +94,46 @@ const orders = [
       },
     },
     quantity: 1,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Delivered',
-  },
-  {
-    id: 2,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 2,
-      name: 'Buyer 2',
-      deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
-        contactNumber: '09123456789',
-      },
+    seller: {
+      id: 1,
+      sellerName: 'Seller 1',
     },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Delivered',
+    status: 'Pending',
   },
   {
     id: 3,
     dateOrdered: '2021-08-01',
     product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
+        id: 1,
+        name: 'Buntanding KeyChain 1',
         image: 'https://picsum.photos/200',
       },
     buyer: {
-      id: 2,
-      name: 'Buyer 2',
+      id: 1,
+      name: 'Buyer 1',
       deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
+        fullName: 'Buyer 1',
+        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
         contactNumber: '09123456789',
       },
     },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Cancelled',
-  },
-  {
-    id: 4,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 2,
-      name: 'Buyer 2',
-      deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
-        contactNumber: '09123456789',
-      },
+    quantity: 1,
+    seller: {
+      id: 1,
+      sellerName: 'Seller 1',
     },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
     status: 'Cancelled',
   },
 ]
 
-function HistoryOrders() {
+function ReviewOrders() {
+  const searchParams = useSearchParams();
+  const orderIdParam = searchParams.get('orderId');
+
   const { windowSize } = useWindowSize();
+
   const isOrdersLoading = false;
+
   const [search, setSearch] = useState('');
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
@@ -123,26 +141,31 @@ function HistoryOrders() {
   const filteredOrders = orders.filter((order) => {
     const { product, buyer, status } = order;
 
+    if (orderIdParam && search === '') {
+      return order.id === Number(orderIdParam);
+    }
+
     return (
       product.name.toLowerCase().includes(search.toLowerCase()) ||
       buyer.name.toLowerCase().includes(search.toLowerCase()) ||
-      status.toLowerCase().includes(search.toLowerCase())
+      status.toLowerCase().includes(search.toLowerCase()) ||
+      order.dateOrdered.toLowerCase().includes(search.toLowerCase())
     );
   });
 
   return (
     <>
-      <div className={styles.HistoryOrders}>
+      <div className={styles.ReviewOrders}>
         
         <Text type={textTypes.HEADING.XS}>
-          Order History
+          Review Orders
         </Text>
 
         <ControlledInput
-          className={styles.HistoryOrders_search}
+          className={styles.ReviewOrders_search}
           icon="search"
           name="search"
-          placeholder="You can search by Product Name, Buyer Name, or Order Status"
+          placeholder="You can search by Date Ordered, Product, Buyer, or Status"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -153,18 +176,18 @@ function HistoryOrders() {
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredOrders.length ? (
-              <div className={styles.HistoryOrders_grid}>
+              <div className={styles.ReviewOrders_grid}>
                 {/* Header of OrderGrid starts here */}
                 <Card
                   className={cn(
-                    styles.HistoryOrders_grid_orderGrid,
-                    styles.HistoryOrders_grid_headers
+                    styles.ReviewOrders_grid_orderGrid,
+                    styles.ReviewOrders_grid_headers
                   )}
                 >
                   <div
                     className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column
                     )}
                   >
                     Date Ordered
@@ -172,8 +195,8 @@ function HistoryOrders() {
 
                   <div
                     className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column
                     )}
                   >
                     Product
@@ -181,17 +204,8 @@ function HistoryOrders() {
 
                   <div
                     className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Buyer
-                  </div>
-
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column
                     )}
                   >
                     Quantity
@@ -199,18 +213,27 @@ function HistoryOrders() {
 
                   <div
                     className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column
                     )}
                   >
-                    Customization
+                    Buyer
                   </div>
 
                   <div
                     className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column,
-                      styles.HistoryOrders_grid_header_action
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column
+                    )}
+                  >
+                    Seller
+                  </div>
+
+                  <div
+                    className={cn(
+                      styles.ReviewOrders_grid_header,
+                      styles.ReviewOrders_grid_column,
+                      styles.ReviewOrders_grid_header_action
                     )}
                   >
                     Status
@@ -222,24 +245,24 @@ function HistoryOrders() {
 
                 {/* Body of OrderGrid starts here */}
                 {filteredOrders.map(
-                  ({ id, dateOrdered, product, buyer, quantity, customization, status }) =>
+                  ({ id, dateOrdered, product, quantity, buyer, seller, status }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
-                      <Card key={id} className={styles.HistoryOrders_grid_orderGrid}>
-                        <div className={styles.HistoryOrders_grid_column}>
+                      <Card key={id} className={styles.ReviewOrders_grid_orderGrid}>
+                        <div className={styles.ReviewOrders_grid_column}>
                           {dateOrdered}
                         </div>
 
                         <ButtonLink 
-                          className={cn(styles.HistoryOrders_grid_column,
-                            styles.HistoryOrders_grid_column_product)}
-                          to={`/seller/products/${product.id}`}
+                          className={cn(styles.ReviewOrders_grid_column,
+                            styles.ReviewOrders_grid_column_product)}
+                          to={`/admin/review-products?id=${product.id}`}
                           type={buttonTypes.TEXT.NEUTRAL}
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             alt={product.name}
-                            className={styles.HistoryOrders_grid_column_product_image}
+                            className={styles.ReviewOrders_grid_column_product_image}
                             height={60}
                             src={product.image}
                             width={60}
@@ -249,45 +272,68 @@ function HistoryOrders() {
                           </Text>
                         </ButtonLink>
 
-                        <div className={styles.HistoryOrders_grid_column}>
-                          {buyer.name}
-                        </div>
-
-                        <div className={styles.HistoryOrders_grid_column}>
+                        <div className={styles.ReviewOrders_grid_column}>
                           {quantity}
                         </div>
 
-                        <div className={cn(styles.HistoryOrders_grid_column,
-                          styles.HistoryOrders_grid_column_customization
-                        )}>
-                          {customization}
-                        </div>
+                        <ButtonLink 
+                          className={cn(styles.ReviewOrders_grid_column, 
+                            styles.ReviewOrders_grid_column_withId)}
+                          to={`/admin/buyers?id=${buyer.id}`}
+                          type={buttonTypes.TEXT.NEUTRAL}
+                        >
+                  
+                          {buyer.id}
+                
+                          <Text>
+                            {buyer.name}
+                          </Text>
+                        </ButtonLink>
+
+                        <ButtonLink 
+                          className={cn(styles.ReviewOrders_grid_column, 
+                            styles.ReviewOrders_grid_column_withId)}
+                          to={`/admin/sellers?id=${buyer.id}`}
+                          type={buttonTypes.TEXT.NEUTRAL}
+                        >
+                
+                          {seller.id}
+
+                          <Text>
+                            {seller.sellerName}
+                          </Text>
+                        </ButtonLink>
 
                         <Button
-                          className={styles.HistoryOrders_grid_column}
+                          className={styles.ReviewOrders_grid_column}
                           icon={
                             (() => {
-                              if (status === 'Delivered') {
+                              if (status === 'Pending') {
+                                return 'pending';
+                              } if (status === 'Delivered') {
                                 return 'check';
+                              } if (status === 'Cancelled') {
+                                return 'close';
                               } 
-
-                              return 'close';
+                                return 'local_shipping';
                             })()
                           }
                           type={
                             (() => {
-              
-                               if (status === 'Delivered') {
+                              if (status === 'Pending') {
+                                return buttonTypes.TEXT.NEUTRAL;
+                              } if (status === 'Delivered') {
                                 return buttonTypes.TEXT.GREEN;
-                              } 
+                              } if (status === 'Cancelled') {
                                 return buttonTypes.TEXT.RED;
+                              } 
+                                return buttonTypes.TEXT.BLUE;
                             })()
                           }
                           onClick={() => {
                             if (status === 'Cancelled' || status === 'Pending') {
                               return;
                             }
-
                             setSelectedOrder({ id, product, buyer });
                             setIsDeliveryLogsModalOpen(true);
                           }}
@@ -299,12 +345,12 @@ function HistoryOrders() {
                       // Mobile View
                       <details
                         key={id}
-                        className={styles.HistoryOrders_grid_orderGrid}
+                        className={styles.ReviewOrders_grid_orderGrid}
                       >
-                        <summary className={styles.HistoryOrders_grid_title}>
-                          <div className={styles.HistoryOrders_grid_title_info}>
+                        <summary className={styles.ReviewOrders_grid_title}>
+                          <div className={styles.ReviewOrders_grid_title_info}>
                             <Icon
-                              className={styles.HistoryOrders_grid_title_icon}
+                              className={styles.ReviewOrders_grid_title_icon}
                               icon="expand_more"
                             />
 
@@ -314,7 +360,7 @@ function HistoryOrders() {
                           </div>
                         </summary>
 
-                        <div className={styles.HistoryOrders_grid_column}>
+                        <div className={styles.ReviewOrders_grid_column}>
                           <Text
                             colorClass={colorClasses.NEUTRAL['400']}
                             type={textTypes.HEADING.XXS}
@@ -331,7 +377,7 @@ function HistoryOrders() {
               </div>
             ) : (
               <NoResults
-                className={styles.HistoryOrders_noResults}
+                className={styles.ReviewOrders_noResults}
                 message="No orders found"
               />
             )}
@@ -350,4 +396,4 @@ function HistoryOrders() {
     </>
 )
 }
-export default HistoryOrders;
+export default ReviewOrders;

@@ -301,7 +301,7 @@ function MyOrders() {
                             })()
                           }
                           onClick={() => {
-                            if (status === 'Cancelled') {
+                            if (status === 'Cancelled' || status === 'Pending') {
                               return;
                             }
                             setSelectedOrder({ id, product, buyer });
