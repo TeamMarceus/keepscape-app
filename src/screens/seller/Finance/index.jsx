@@ -136,7 +136,7 @@ function Finance() {
         className={styles.Finance_search}
         icon="search"
         name="search"
-        placeholder="You can search by Date Created, Logs, Product, Order ID"
+        placeholder="You can search by Date Created, Logs, or Order ID"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -176,15 +176,6 @@ function Finance() {
                 <div
                   className={cn(
                     styles.Finance_grid_header,
-                    styles.Finance_grid_column
-                  )}
-                >
-                  Product
-                </div>
-
-                <div
-                  className={cn(
-                    styles.Finance_grid_header,
                     styles.Finance_grid_column,
                     styles.Finance_grid_header_action,
                   )}
@@ -197,7 +188,7 @@ function Finance() {
 
               {/* Body of OrderGrid starts here */}
               {filteredRecords.map(
-                ({ id, dateCreated, logs, product, orderId  }) =>
+                ({ id, dateCreated, logs, orderId  }) =>
                   windowSize.width > 767 ? (
                     // Desktop View
                     <Card key={id} className={styles.Finance_grid_recordGrid}>
@@ -208,25 +199,6 @@ function Finance() {
                       <div className={styles.Finance_grid_column}>
                         {logs}
                       </div>
-
-                      <ButtonLink 
-                        className={cn(styles.Finance_grid_column,
-                          styles.Finance_grid_column_product)}
-                        to={`/seller/products/${product.id}`}
-                        type={buttonTypes.TEXT.NEUTRAL}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt={product.name}
-                          className={styles.Finance_grid_column_product_image}
-                          height={60}
-                          src={product.image}
-                          width={60}
-                        />
-                        <Text>
-                          {product.name}  
-                        </Text>
-                      </ButtonLink>
 
                       <ButtonLink
                         className={styles.Finance_grid_column}
@@ -265,7 +237,7 @@ function Finance() {
                           Product:
                         </Text>
 
-                        <Text type={textTypes.HEADING.XXS}>{product.name}</Text>
+                        <Text type={textTypes.HEADING.XXS}>{logs}</Text>
                       </div>
                     </details>
                   )

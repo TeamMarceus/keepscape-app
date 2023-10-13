@@ -42,30 +42,11 @@
         justify-items: flex-start;
         padding: 30px 40px;
       }
-
-      &_product {
-        border-radius: 5px;
-        box-shadow: $shadow-normal;
-        display: flex;
-        padding: 4px !important;
-
-        &_image {
-          margin-right: 8px;
-        }
-
-        &:hover {
-          background-color: $blue-0;
-          box-shadow: $shadow-raised;
-          > p {
-            color: $blue-400;
-          }
-        }
-      }
     }
 
     &_recordGrid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;
