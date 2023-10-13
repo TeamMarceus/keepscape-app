@@ -27,85 +27,79 @@ import { useWindowSize } from '@/hooks';
 
 import GovernmentIdModal from '../GovernmentIdModal';
 
-import PreloaderSellers from './Preloader';
+import PreloaderBuyers from './Preloader';
 
 import styles from './styles.module.scss';
 
-const sellers = [
+const buyers = [
   {
-    id: 'a23e4567-e89b-12d3-a456-426614174000',
-    dateAccepted: '2021-08-01',
+    id: '123e4567-e89b-12d3-a456-426614174000',
+    dateCreated: '2021-08-01',
     fullName: 'John Doe',
     sellerName: 'Burger King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
+    description: 'I am a traveler and want to buy souvenirs',
     isBanned: true,
   },
   {
     id: '2',
-    dateAccepted: '2021-08-01',
+    dateCreated: '2021-08-01',
     fullName: 'Jane Doe',
     sellerName: 'Hotdog King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
+    description: 'I am a traveler and want to buy souvenirs',
     isBanned: true,
   },
   {
     id: '3',
-    dateAccepted: '2021-08-01',
+    dateCreated: '2021-08-01',
     fullName: 'Johnny Deep',
     sellerName: 'Donut King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
+    description: 'I am a traveler and want to buy souvenirs',
     isBanned: false,
   },
 ];
 
-function Sellers() {
+function Buyers() {
   const searchParams = useSearchParams();
-  const sellerIdParam = searchParams.get('id');
-  const sellerNameParam = searchParams.get('name');
+  const buyerIdParam = searchParams.get('id');
 
   const { windowSize } = useWindowSize();
-  const isSellersLoading = false;
+  const isBuyersLoading = false;
 
   const [search, setSearch] = useState('');
   const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
   const [selectedSeller, setSelectedSeller] = useState({})
 
-  const filteredSellers = sellers.filter((seller) => {
+  const filteredBuyers = buyers.filter((buyer) => {
     const searchLowerCase = search.toLowerCase();
 
-    if (sellerIdParam && search === '') {
-      return seller.id === sellerIdParam;
-    }
-
-    if (sellerNameParam && search === '') {
-      return seller.sellerName === sellerNameParam;
+    if (buyerIdParam && search === '') {
+      return buyer.id === buyerIdParam;
     }
 
     return (
-      seller.fullName.toLowerCase().includes(searchLowerCase) ||
-      seller.sellerName.toLowerCase().includes(searchLowerCase) ||
-      seller.emailAddress.toLowerCase().includes(searchLowerCase)
+      buyer.fullName.toLowerCase().includes(searchLowerCase) ||
+      buyer.emailAddress.toLowerCase().includes(searchLowerCase)
     );
   });
 
   return (
     <>
-      <div className={styles.Sellers}>
+      <div className={styles.Buyers}>
         <Text type={textTypes.HEADING.XS}>
-          Sellers
+          Buyers
         </Text>
 
         <ControlledInput
-          className={styles.Sellers_search}
+          className={styles.Buyers_search}
           icon="search"
           name="search"
           placeholder="You can search by Name or Email"
@@ -113,33 +107,33 @@ function Sellers() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {isSellersLoading ? (
-          <PreloaderSellers />
+        {isBuyersLoading ? (
+          <PreloaderBuyers />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
-            {filteredSellers.length ? (
-              <div className={styles.Sellers_grid}>
+            {filteredBuyers.length ? (
+              <div className={styles.Buyers_grid}>
                 {/* Header of OrderGrid starts here */}
                 <Card
                   className={cn(
-                    styles.Sellers_grid_applicationGrid,
-                    styles.Sellers_grid_headers
+                    styles.Buyers_grid_applicationGrid,
+                    styles.Buyers_grid_headers
                   )}
                 >
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column
                     )}
                   >
-                    Date Accepted
+                    Date Created
                   </div>
 
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column
                     )}
                   >
                     Full Name
@@ -147,17 +141,8 @@ function Sellers() {
 
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
-                    )}
-                  >
-                    Seller Name
-                  </div>
-
-                  <div
-                    className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column
                     )}
                   >
                     Email Address
@@ -165,8 +150,8 @@ function Sellers() {
 
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column
                     )}
                   >
                     Mobile Number
@@ -174,8 +159,8 @@ function Sellers() {
 
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column
                     )}
                   >
                     Description
@@ -183,18 +168,9 @@ function Sellers() {
 
                   <div
                     className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column
-                    )}
-                  >
-                    ID
-                  </div>
-
-                  <div
-                    className={cn(
-                      styles.Sellers_grid_header,
-                      styles.Sellers_grid_column,
-                      styles.Sellers_grid_header_action,
+                      styles.Buyers_grid_header,
+                      styles.Buyers_grid_column,
+                      styles.Buyers_grid_header_action,
                     )}
                   >
                     Action
@@ -204,54 +180,37 @@ function Sellers() {
                 </Card>
 
                 {/* Body of OrderGrid starts here */}
-                {filteredSellers.map(
-                  ({ id, dateAccepted, fullName, sellerName, emailAddress, mobileNumber, governmentId, description, isBanned  }) =>
+                {filteredBuyers.map(
+                  ({ id, dateCreated, fullName, emailAddress, mobileNumber, description, isBanned  }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
-                      <Card key={id} className={styles.Sellers_grid_applicationGrid}>
-                        <div className={styles.Sellers_grid_column}>
-                          {dateAccepted}
+                      <Card key={id} className={styles.Buyers_grid_applicationGrid}>
+                        <div className={styles.Buyers_grid_column}>
+                          {dateCreated}
                         </div>
 
-                        <div className={styles.Sellers_grid_column}>
+                        <div className={styles.Buyers_grid_column}>
                           {fullName}
                         </div>
-
-                        <div className={styles.Sellers_grid_column}>
-                          {sellerName}
-                        </div>
                           
-                        <div className={styles.Sellers_grid_column}>
+                        <div className={styles.Buyers_grid_column}>
                           {emailAddress}
                         </div>
 
-                        <div className={styles.Sellers_grid_column}>
+                        <div className={styles.Buyers_grid_column}>
                           {mobileNumber}
                         </div>
 
-                        <div className={styles.Sellers_grid_column}>
+                        <div className={styles.Buyers_grid_column}>
                           {description}
                         </div>
 
-                        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                        <img
-                          alt="Government Id"
-                          className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
-                          height={60}
-                          src={governmentId}
-                          width={60}
-                          onClick={() => {
-                            setIsGovernmentIdModalOpen(true);
-                            setSelectedSeller({ sellerName, governmentId })
-                          }}
-                        />
-
-                        <div className={styles.Sellers_grid_column}>
-                          <div className={styles.Sellers_grid_buttons}>
+                        <div className={styles.Buyers_grid_column}>
+                          <div className={styles.Buyers_grid_buttons}>
                             <IconButton
                               className={cn({
-                                [styles.Sellers_grid_button_unban]: isBanned,
-                                [styles.Sellers_grid_button_ban]: !isBanned,
+                                [styles.Buyers_grid_button_unban]: isBanned,
+                                [styles.Buyers_grid_button_ban]: !isBanned,
                               })}
                               icon={isBanned ? 'how_to_reg' : 'person_off'}
                               type={iconButtonTypes.ICON.MD}
@@ -265,22 +224,22 @@ function Sellers() {
                       // Mobile View
                       <details
                         key={id}
-                        className={styles.Sellers_grid_applicationGrid}
+                        className={styles.Buyers_grid_applicationGrid}
                       >
-                        <summary className={styles.Sellers_grid_title}>
-                          <div className={styles.Sellers_grid_title_info}>
+                        <summary className={styles.Buyers_grid_title}>
+                          <div className={styles.Buyers_grid_title_info}>
                             <Icon
-                              className={styles.Sellers_grid_title_icon}
+                              className={styles.Buyers_grid_title_icon}
                               icon="expand_more"
                             />
 
                             <Text type={textTypes.HEADING.XS}>
-                              {dateAccepted} {fullName}
+                              {dateCreated} {fullName}
                             </Text>
                           </div>
                         </summary>
 
-                        <div className={styles.Sellers_grid_column}>
+                        <div className={styles.Buyers_grid_column}>
                           <Text
                             colorClass={colorClasses.NEUTRAL['400']}
                             type={textTypes.HEADING.XXS}
@@ -288,7 +247,7 @@ function Sellers() {
                             SellerName:
                           </Text>
 
-                          <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
+                          <Text type={textTypes.HEADING.XXS}>{fullName}</Text>
                         </div>
                       </details>
                     )
@@ -297,7 +256,7 @@ function Sellers() {
               </div>
             ) : (
               <NoResults
-                className={styles.Sellers_noResults}
+                className={styles.Buyers_noResults}
                 message="No applications found"
               />
             )}
@@ -317,4 +276,4 @@ function Sellers() {
     </>
   )
 }
-export default Sellers;
+export default Buyers;
