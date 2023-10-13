@@ -64,7 +64,6 @@ function Finance() {
     return (
       record.dateCreated.toLowerCase().includes(searchLowerCase) ||
       record.logs.toLowerCase().includes(searchLowerCase) ||
-      record.product.name.toLowerCase().includes(searchLowerCase) ||
       record.orderId.toLowerCase().includes(searchLowerCase)
     );
   });

@@ -68,7 +68,6 @@ function Finance() {
     return (
       record.sellerId.toLowerCase().includes(searchLowerCase) ||
       record.logs.toLowerCase().includes(searchLowerCase) ||
-      record.product.name.toLowerCase().includes(searchLowerCase) ||
       record.orderId.toLowerCase().includes(searchLowerCase)
     );
   });
@@ -114,7 +113,7 @@ function Finance() {
           className={styles.Finance_search}
           icon="search"
           name="search"
-          placeholder="You can search by Logs, Product, Seller ID or Order ID"
+          placeholder="You can search by Logs, Seller ID or Order ID"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

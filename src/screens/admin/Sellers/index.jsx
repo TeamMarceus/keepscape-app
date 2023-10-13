@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import cn from 'classnames';
 
+import { useSearchParams } from 'next/navigation';
+
 import {
   buttonTypes,
   colorClasses,
@@ -25,70 +27,80 @@ import { useWindowSize } from '@/hooks';
 
 import GovernmentIdModal from '../GovernmentIdModal';
 
-import PreloaderSellerApplications from './Preloader';
+import PreloaderSellers from './Preloader';
 
 import styles from './styles.module.scss';
 
-const applications = [
+const sellers = [
   {
-    id: '1',
-    dateApplied: '2021-08-01',
+    id: 'a23e4567-e89b-12d3-a456-426614174000',
+    dateAccepted: '2021-08-01',
     fullName: 'John Doe',
     sellerName: 'Burger King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
     description: 'I am a burger seller',
+    isBanned: true,
   },
   {
     id: '2',
-    dateApplied: '2021-08-01',
+    dateAccepted: '2021-08-01',
     fullName: 'Jane Doe',
     sellerName: 'Hotdog King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
     description: 'I am a burger seller',
+    isBanned: true,
   },
   {
     id: '3',
-    dateApplied: '2021-08-01',
+    dateAccepted: '2021-08-01',
     fullName: 'Johnny Deep',
     sellerName: 'Donut King',
     emailAddress: 'john@gmail.com',
     mobileNumber: '09123456789',
     governmentId: 'https://picsum.photos/200',
     description: 'I am a burger seller',
+    isBanned: false,
   },
 ];
 
-function SellerApplications() {
+function Sellers() {
+  const searchParams = useSearchParams();
+  const sellerIdParam = searchParams.get('id');
+
   const { windowSize } = useWindowSize();
   const isApplicationsLoading = false;
 
   const [search, setSearch] = useState('');
   const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
-  const [selectedApplication, setSelectedApplication] = useState({})
+  const [selectedSeller, setSelectedSeller] = useState({})
 
-  const filteredApplications = applications.filter((application) => {
+  const filteredSellers = sellers.filter((seller) => {
     const searchLowerCase = search.toLowerCase();
 
+    if (sellerIdParam && search === '') {
+      return seller.id === sellerIdParam;
+    }
+
     return (
-      application.fullName.toLowerCase().includes(searchLowerCase) ||
-      application.sellerName.toLowerCase().includes(searchLowerCase) ||
-      application.emailAddress.toLowerCase().includes(searchLowerCase)
+      seller.fullName.toLowerCase().includes(searchLowerCase) ||
+      seller.sellerName.toLowerCase().includes(searchLowerCase) ||
+      seller.emailAddress.toLowerCase().includes(searchLowerCase)
     );
   });
 
   return (
     <>
-      <div className={styles.SellerApplications}>
+      <div className={styles.Sellers}>
         <Text type={textTypes.HEADING.XS}>
-          Seller Applications
+          Sellers
         </Text>
 
         <ControlledInput
-          className={styles.SellerApplications_search}
+          className={styles.Sellers_search}
           icon="search"
           name="search"
           placeholder="You can search by Name or Email"
@@ -97,32 +109,32 @@ function SellerApplications() {
         />
 
         {isApplicationsLoading ? (
-          <PreloaderSellerApplications />
+          <PreloaderSellers />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
-            {filteredApplications.length ? (
-              <div className={styles.SellerApplications_grid}>
+            {filteredSellers.length ? (
+              <div className={styles.Sellers_grid}>
                 {/* Header of OrderGrid starts here */}
                 <Card
                   className={cn(
-                    styles.SellerApplications_grid_applicationGrid,
-                    styles.SellerApplications_grid_headers
+                    styles.Sellers_grid_applicationGrid,
+                    styles.Sellers_grid_headers
                   )}
                 >
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
-                    Date Applied
+                    Date Accepted
                   </div>
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     Full Name
@@ -130,8 +142,8 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     Seller Name
@@ -139,8 +151,8 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     Email Address
@@ -148,8 +160,8 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     Mobile Number
@@ -157,8 +169,8 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     Description
@@ -166,8 +178,8 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column
                     )}
                   >
                     ID
@@ -175,9 +187,9 @@ function SellerApplications() {
 
                   <div
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column,
-                      styles.SellerApplications_grid_header_action,
+                      styles.Sellers_grid_header,
+                      styles.Sellers_grid_column,
+                      styles.Sellers_grid_header_action,
                     )}
                   >
                     Action
@@ -187,65 +199,56 @@ function SellerApplications() {
                 </Card>
 
                 {/* Body of OrderGrid starts here */}
-                {filteredApplications.map(
-                  ({ id, dateApplied, fullName, sellerName, emailAddress, mobileNumber, governmentId, description  }) =>
+                {filteredSellers.map(
+                  ({ id, dateAccepted, fullName, sellerName, emailAddress, mobileNumber, governmentId, description, isBanned  }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
-                      <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
-                        <div className={styles.SellerApplications_grid_column}>
-                          {dateApplied}
+                      <Card key={id} className={styles.Sellers_grid_applicationGrid}>
+                        <div className={styles.Sellers_grid_column}>
+                          {dateAccepted}
                         </div>
 
-                        <div className={styles.SellerApplications_grid_column}>
+                        <div className={styles.Sellers_grid_column}>
                           {fullName}
                         </div>
 
-                        <ButtonLink
-                          className={styles.SellerApplications_grid_column}
-                          to={`/admin/sellers?name=${sellerName}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
+                        <div className={styles.Sellers_grid_column}>
                           {sellerName}
-                        </ButtonLink>
+                        </div>
                           
-                        <div className={styles.SellerApplications_grid_column}>
+                        <div className={styles.Sellers_grid_column}>
                           {emailAddress}
                         </div>
 
-                        <div className={styles.SellerApplications_grid_column}>
+                        <div className={styles.Sellers_grid_column}>
                           {mobileNumber}
                         </div>
 
-                        <div className={styles.SellerApplications_grid_column}>
+                        <div className={styles.Sellers_grid_column}>
                           {description}
                         </div>
 
                         {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                         <img
                           alt="Government Id"
-                          className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
+                          className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
                           height={60}
                           src={governmentId}
                           width={60}
                           onClick={() => {
                             setIsGovernmentIdModalOpen(true);
-                            setSelectedApplication({ sellerName, governmentId })
+                            setSelectedSeller({ sellerName, governmentId })
                           }}
                         />
 
-                        <div className={styles.SellerApplications_grid_column}>
-                          <div className={styles.SellerApplications_grid_buttons}>
+                        <div className={styles.Sellers_grid_column}>
+                          <div className={styles.Sellers_grid_buttons}>
                             <IconButton
-                              className={styles.SellerApplications_grid_checkButton}
-                              icon="check_circle"
-                              type={iconButtonTypes.ICON.MD}
-                              onClick={() => {
-                              }}
-                            />
-
-                            <IconButton
-                              className={styles.SellerApplications_grid_closeButton}
-                              icon="cancel"
+                              className={cn({
+                                [styles.Sellers_grid_button_unban]: isBanned,
+                                [styles.Sellers_grid_button_ban]: !isBanned,
+                              })}
+                              icon={isBanned ? 'verified' : 'person_off'}
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
                               }}
@@ -257,22 +260,22 @@ function SellerApplications() {
                       // Mobile View
                       <details
                         key={id}
-                        className={styles.SellerApplications_grid_applicationGrid}
+                        className={styles.Sellers_grid_applicationGrid}
                       >
-                        <summary className={styles.SellerApplications_grid_title}>
-                          <div className={styles.SellerApplications_grid_title_info}>
+                        <summary className={styles.Sellers_grid_title}>
+                          <div className={styles.Sellers_grid_title_info}>
                             <Icon
-                              className={styles.SellerApplications_grid_title_icon}
+                              className={styles.Sellers_grid_title_icon}
                               icon="expand_more"
                             />
 
                             <Text type={textTypes.HEADING.XS}>
-                              {dateApplied} {fullName}
+                              {dateAccepted} {fullName}
                             </Text>
                           </div>
                         </summary>
 
-                        <div className={styles.SellerApplications_grid_column}>
+                        <div className={styles.Sellers_grid_column}>
                           <Text
                             colorClass={colorClasses.NEUTRAL['400']}
                             type={textTypes.HEADING.XXS}
@@ -289,7 +292,7 @@ function SellerApplications() {
               </div>
             ) : (
               <NoResults
-                className={styles.SellerApplications_noResults}
+                className={styles.Sellers_noResults}
                 message="No applications found"
               />
             )}
@@ -300,13 +303,13 @@ function SellerApplications() {
 
       {isGovernmentIdModalOpen &&
         <GovernmentIdModal
-          governmentId={selectedApplication.governmentId}
+          governmentId={selectedSeller.governmentId}
           handleClose={() => setIsGovernmentIdModalOpen(false)}
           isOpen={isGovernmentIdModalOpen}
-          title={`${selectedApplication.sellerName} Government ID`}
+          title={`${selectedSeller.sellerName} Government ID`}
         />
       }
     </>
   )
 }
-export default SellerApplications;
+export default Sellers;
