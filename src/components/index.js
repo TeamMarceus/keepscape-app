@@ -8,6 +8,7 @@ export { default as CardImage } from './CardImage';
 export { default as CardLink } from './Card/Link';
 export { default as Checkbox } from './Checkbox';
 export { default as ControlledInput } from './Input/Controlled';
+export { default as ControlledSelect } from './Select/Controlled';
 export { default as ControlledTextArea } from './TextArea/Controlled';
 export { default as DatePicker } from './Input/DatePicker';
 export { default as Icon } from './Icon';

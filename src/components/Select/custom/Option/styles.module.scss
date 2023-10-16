@@ -1,0 +1,15 @@
+.CustomOption {
+  align-items: center;
+  display: flex;
+  
+  &_icon {
+    margin: 0 8px 0 0;
+    width: 18px;
+
+    img,
+    svg {
+      height: auto;
+      width: 18px;
+    }
+  }
+}

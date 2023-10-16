@@ -6,7 +6,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-
 import { useSelector } from 'react-redux';
 
 import { userTypes } from '@/app-globals';

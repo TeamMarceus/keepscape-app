@@ -1,9 +1,12 @@
 export { default as useActionDispatch } from './useActionDispatch';
+export { default as useAddProduct } from './useAddProduct';
 export { default as useCookies } from './useCookies';
 export { default as useInterval } from './useInterval';
 export { default as useNoAuthRoute } from './useNoAuthRoute';
 export { default as useOnClickOutside } from './useOnClickOutside';
 export { default as usePrivateRoute } from './usePrivateRoute';
+export { default as useProductCategories } from './useProductCategories';
+export { default as useProductPlaces } from './useProductPlaces';
 export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
 export { default as useRouterScroll } from './useRouterScroll';

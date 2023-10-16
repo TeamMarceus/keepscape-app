@@ -19,9 +19,13 @@
     &_bottomGrid {
       margin-top: 24px;
 
+      &_left {
+        display: flex;
+        flex-direction: column;
+      }
+
       &_checkbox {
-        justify-self: flex-end;
-        margin-top: 16px;
+        margin-top: 24px;
       }
     }
 

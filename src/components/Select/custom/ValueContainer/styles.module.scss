@@ -1,0 +1,24 @@
+@import '@/styles/mixins.scss';
+
+.CustomValueContainer {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+
+  &_center {
+    align-items: center;
+  }
+
+  &_label {
+    position: absolute;
+    pointer-events: none;
+    transform-origin: bottom left;
+    max-width: calc(100% - 16px);
+    padding: 0 8px;
+    left: -8px;
+    top: 4px;
+    transform: scale(0.75) translateY(-26px);
+    transition: transform 0.25s;
+    @include text-ellipsis;
+  }
+}

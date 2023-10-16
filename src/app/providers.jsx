@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { persistStore } from 'reduxjs-toolkit-persist';
 import { PersistGate } from 'reduxjs-toolkit-persist/integration/react';
+import { Toaster } from 'sonner';
 
 import ScreenLoader from '@/components/ScreenLoader';
 
@@ -25,6 +26,7 @@ export default function Providers({children}) {
         persistor={persistStore(store)}
       >
         <AppEffects> {children} </AppEffects>
+        <Toaster />
       </PersistGate>
     </Provider>
   );

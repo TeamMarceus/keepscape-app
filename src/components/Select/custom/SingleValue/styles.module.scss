@@ -1,0 +1,16 @@
+.CustomSingleValue {
+  display: flex;
+
+  &_icon {
+    align-items: center;
+    display: flex;
+    margin: 0 8px 0 0;
+    width: 18px;
+
+    img,
+    svg {
+      height: auto;
+      width: 18px;
+    }
+  }
+}

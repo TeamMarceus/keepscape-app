@@ -38,10 +38,12 @@
     "react-range": "^1.8.14",
     "react-redux": "^8.1.2",
     "react-scroll": "^1.8.9",
+    "react-select": "^5.7.7",
     "react-slick": "^0.29.0",
     "redux": "^4.2.1",
     "reduxjs-toolkit-persist": "^7.2.1",
     "slick-carousel": "^1.8.1",
+    "sonner": "^1.0.3",
     "universal-cookie": "^6.1.1"
   },
   "devDependencies": {

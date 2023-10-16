@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
+import { toast } from 'sonner';
 
 import {
 
@@ -23,11 +24,17 @@ import {
   Spinner,
   Text,
   Checkbox,
-  Grid
+  Grid,
+  ControlledSelect,
+  ScreenLoader
 } from '@/components';
 
 
 import { textAreaTypes } from '@/components/TextArea/constants';
+
+import { useAddProduct, useProductCategories, useProductPlaces } from '@/hooks';
+
+import { ProductsService } from '@/services';
 
 import styles from './styles.module.scss';
 
@@ -42,20 +49,43 @@ const validate = (values) => {
     errors.description = 'This field is required.';
   }
 
-  if (!values.image1) {
+  if (!values.image1 && !values.image2 && !values.image3 && !values.image4 && !values.image5) {
     errors.image1 = 'Atleast 1 image is required.';
+  }
+
+  if (!values.place) {
+    errors.place = 'This field is required.';
+  }
+
+  if (isEmpty(values.categories)) {
+    errors.categories = 'This field is required.';
+  }
+
+  if (!values.quantity) {
+    errors.quantity = 'This field is required.';
   }
 
   if (!values.price) {
     errors.price = 'This field is required.';
-    errors.overall = 'Please fill in all required fields.';
+  } else if (values.price < 0) {
+    errors.price = 'Price must be greater than 0.';
+  } else if (values.price > 1000000) {
+    errors.price = 'Price must be less than 1,000,000.';
   }
 
   return errors;
 };
 
 function AddProduct() {
-  const [isAdding, setIsAdding] = useState(false);
+
+  const {isLoading: isProductCategoriesLoading, productCategories} = useProductCategories();
+  const {isLoading: isProductPlacesLoading, productPlaces} = useProductPlaces();
+
+  const {isAdding: isAddingProduct, addProduct } = useAddProduct();
+
+  if (isProductCategoriesLoading || isProductPlacesLoading) {
+    return <ScreenLoader/>;
+  }
 
   return (
     <div className={styles.AddProduct}>
@@ -73,20 +103,30 @@ function AddProduct() {
             image3: '',
             image4: '',
             image5: '',
+            place: '',
+            categories: '',
+            quantity: '',
             isCustomizable: false,
             price: '',
           }}
-          onSubmit={async (values, { setErrors }) => {
+          onSubmit={async (values, { setErrors, setFieldValue }) => {
             const currentFormValues = {
               name: values.name,
               description: values.description,
-              image1: values.image1,
-              image2: values.image2,
-              image3: values.image3,
-              image4: values.image4,
-              image5: values.image5,
-              price: values.price,
+              placeId: values.place.value,
+              categoryIds: !isEmpty(values.categories) && values.categories.map((category) => category.value),
+              quantity: values.quantity,
+              isCustomizable: values.isCustomizable,
+              price: values.price * 1.05,
+              productImages: [
+                values.image1,
+                values.image2,
+                values.image3,
+                values.image4,
+                values.image5,
+              ].filter((image) =>  image !== '' && image !== null),
             };
+
 
             const errors = validate(values);
             if (!isEmpty(errors)) {
@@ -94,17 +134,73 @@ function AddProduct() {
               return;
             }
 
-            setIsAdding(true);
+            const { responseCode: addProductResponseCode } = await addProduct(currentFormValues);
 
-            
-            // try {
-            // } catch (error) {
-            //   setIsAdding(false);
-            // }
+            const addProductCallbacks = {
+              created: () => {
+                toast.success('Product created successfully.', {
+                  style: {
+                    backgroundColor: '#48CFAD',
+                    color: '#fff',
+                  },
+                });
 
-              setIsAdding(false);
+                // Reset form values
+                setFieldValue('name', '');
+                setFieldValue('description', '');
+                setFieldValue('place', '');
+                setFieldValue('categories', '');
+                setFieldValue('quantity', '');
+                setFieldValue('isCustomizable', false);
+                setFieldValue('price', '');
+                setFieldValue('image1', '');
+                setFieldValue('image2', '');
+                setFieldValue('image3', '');
+                setFieldValue('image4', '');
+                setFieldValue('image5', '');
+                
+              },
+              invalidFields: () => {
+                toast.error('Invalid fields.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+
+                errors.overall = 'Invalid fields.'
+                setErrors(errors);
+              },
+              internalError: () => {
+                toast.error('Oops, something went wrong.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+                errors.overall = 'Oops, something went wrong.'
+                setErrors(errors);
+              },
+            };
+
+            switch (addProductResponseCode) {
+              case 201:
+                addProductCallbacks.created();
+                break;
+              case 400:
+                addProductCallbacks.invalidFields();
+                break;
+              case 401:
+                addProductCallbacks.internalError();
+                break;
+              case 500:
+                addProductCallbacks.internalError();
+                break;
+              default:
+                break;
             }
-          }
+         
+          }}
         >
           {({ errors, values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
@@ -124,6 +220,33 @@ function AddProduct() {
                 type={textAreaTypes.FORM}
                 value={values.description}
                 onChange={(e) => setFieldValue('description', e.target.value)}
+              />
+
+              <ControlledSelect
+                className={styles.AddProduct_content_withMargin}
+                error={errors.place}
+                name="type"
+                options={ productPlaces.map((place) => ({
+                    label: place.name,
+                    value: place.id,
+                  }))}
+                placeholder="Choose a place*"
+                value={values.place}
+                onChange={(val) => setFieldValue('place', val)}
+              />
+
+              <ControlledSelect
+                isMulti
+                className={styles.AddProduct_content_withMargin}
+                error={errors.categories}
+                name="type"
+                options={productCategories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                  }))}
+                placeholder="Choose categories*"
+                value={values.categories}
+                onChange={(val) => setFieldValue('categories', val)}
               />
 
               <Text 
@@ -181,15 +304,26 @@ function AddProduct() {
               </Grid>
               
               <Grid className={styles.AddProduct_content_bottomGrid}>
-                <Checkbox
-                  checked={values.isCustomizable}
-                  className={styles.AddProduct_content_bottomGrid_checkbox}
-                  label="Is this product customizable?"
-                  name="isCustomizable"
-                  onChange={() => {
-                    setFieldValue('isCustomizable', !values.isCustomizable);
-                  }}
-                />
+                <div className={styles.AddProduct_content_bottomGrid_left}>
+                  <ControlledInput
+                    error={errors.quantity}
+                    kind={inputKinds.NUMBER}
+                    name="quantity"
+                    placeholder="How many is available?*"
+                    value={values.quantity}
+                    onChange={(e) => setFieldValue('quantity', e.target.value)}
+                  />
+
+                  <Checkbox
+                    checked={values.isCustomizable}
+                    className={styles.AddProduct_content_bottomGrid_checkbox}
+                    label="Is this product customizable?"
+                    name="isCustomizable"
+                    onChange={() => {
+                      setFieldValue('isCustomizable', !values.isCustomizable);
+                    }}
+                  />
+                </div>
 
                 <div className={styles.AddProduct_content_price}>
                   <ControlledInput
@@ -237,7 +371,7 @@ function AddProduct() {
                   <div className={styles.AddProduct_content_buttonGroup}>
                     <Button
                       className={styles.AddProduct_content_addButton}
-                      disabled={isAdding}
+                      disabled={isAddingProduct}
                       kind={buttonKinds.SUBMIT}
                       onClick={() => {}}
                     >
@@ -245,7 +379,7 @@ function AddProduct() {
                         className={styles.AddProduct_content_buttonGroup_buttonText}
                       >
                         Add Product
-                        {isAdding && (
+                        {isAddingProduct && (
                           <Spinner
                             className={styles.AddProduct_content_buttonGroup_spinner}
                             colorName={colorNames.WHITE}
@@ -261,7 +395,6 @@ function AddProduct() {
           )}
         </Formik>
       </div>
-
     </div>
   )
 }

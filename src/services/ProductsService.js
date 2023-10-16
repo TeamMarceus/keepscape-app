@@ -5,7 +5,7 @@ import config from './config';
 const BASE_URL = `${config.API_URL}/api/products`;
 
 const UsersService = {
-  create: (body) => axios.post(`${BASE_URL}`, body, {
+  add: (body) => axios.post(`${BASE_URL}`, body, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -36,7 +36,7 @@ const UsersService = {
     },
   }),
   retrieveCategories: () => axios.get(`${BASE_URL}/categories`),
-  retrieveProvinces: () => axios.get(`${BASE_URL}/places`),
+  retrievePlaces: () => axios.get(`${BASE_URL}/places`),
   retrieve: (productId) => axios.get(`${BASE_URL}/${productId}`),
   update: (productId, body) => axios.put(`${BASE_URL}/${productId}`, body, {
     headers: {
