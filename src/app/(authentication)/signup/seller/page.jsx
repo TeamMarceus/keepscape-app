@@ -25,9 +25,6 @@ import {
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-import { getGeneralQuestions, getNewQuestions, getSuggestions } from '@/ducks';
-import { actions as questionsAction } from '@/ducks/reducers/questions';
-import { actions as productsActions } from '@/ducks/reducers/suggestions';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
 import { TokensService, QuestionnairesService, UsersService } from '@/services';
@@ -63,16 +60,14 @@ const validate = (values) => {
     errors.email = 'This field is required.';
   } else if (!isValidEmail(values.email)) {
     errors.email = 'This must be a valid email address.';
-  } else if (values.email.length > 50) {
-    errors.email = 'This field can have at most 50 characters.';
+  } 
+
+  if (!values.phoneNumber) {
+    errors.phoneNumber = 'This field is required.';
   }
 
-  if (!values.mobileNumber) {
-    errors.mobileNumber = 'This field is required.';
-  }
-
-  if (!values.governmentId) {
-    errors.governmentId = 'Image is required.';
+  if (!values.baseImage) {
+    errors.baseImage = 'Image is required.';
   }
 
   if (!values.description) {
@@ -99,17 +94,6 @@ const validate = (values) => {
 export default function SellerSignUpPage() {
   const { redirect } = useSubdomainRedirect();
   const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
-  const productsRestart = useActionDispatch(
-    productsActions.productActions.productRestart
-  );
-
-  const questionsRestart = useActionDispatch(
-    questionsAction.questionActions.questionRestart
-  );
-
-  const generalQuestions = useSelector((store) => getGeneralQuestions(store));
-  const newQuestions = useSelector((store) => getNewQuestions(store));
-  const suggestions = useSelector((store) => getSuggestions(store));
 
   const [isSigningUp, setIsSigningUp] = useState(false);
 
@@ -130,8 +114,8 @@ export default function SellerSignUpPage() {
             lastName: '',
             sellerName: '',
             email: '',
-            mobileNumber: '',
-            governmentId: '',
+            phoneNumber: '',
+            baseImage: '',
             description: '',
             password: '',
             confirmPassword: '',
@@ -140,11 +124,11 @@ export default function SellerSignUpPage() {
             const currentFormValues = {
               firstName: values.firstName,
               lastName: values.lastName,
-              // sellerName: values.sellerName,
+              sellerName: values.sellerName,
               email: values.email,
-              // mobileNumber: values.mobileNumber,
-              // governmentId: values.governmentId,
-              // description: values.description,
+              phoneNumber: values.phoneNumber,
+              baseImage: values.baseImage,
+              description: values.description,
               password: values.password,
               confirmPassword: values.confirmPassword,
             };
@@ -157,51 +141,17 @@ export default function SellerSignUpPage() {
 
             setIsSigningUp(true);
 
-            // Sign up the user
+            // Sign up the seller
             try {
-              const { data: signUpResponse } = await UsersService.signup(
+              const { data: signUpResponse } = await UsersService.signupSeller(
                 currentFormValues
               );
 
-              // If the creation of the user is successful
-              // then we need to log the user in
-
-             // Call the Acquire Tokens endpoint to set the tokens
-             const { data: acquireResponse } = await TokensService.acquire({
-              email: currentFormValues.email,
-              password: currentFormValues.password,
-            });
-
-            // Update login
-            loginUpdate({
-              user: signUpResponse,
-              access_token: acquireResponse.accessToken,
-              refresh_token: acquireResponse.refreshToken,
-            });
-
-
-            // Create questionnaire and suggestions if they exist in the store
-            if (generalQuestions.length !== 0 &&
-              newQuestions.length !== 0 &&
-              suggestions.length !== 0) {
-
-            // Create the questionnaire with the recipient's name
-            const { data: questionnaireDataResponse } =
-              await QuestionnairesService.create(generalQuestions[0].answer);
-
-            // Update the suggestions with the questionnaire's guid
-            await QuestionnairesService.updateSuggestions(questionnaireDataResponse.guid, suggestions);
-
-            // Restart the products and questions store
-            productsRestart();
-            questionsRestart();
-          }
-
-             // Redirect the user
+             // Redirect the seller
              redirect(
               signUpResponse, 
-              acquireResponse.accessToken, 
-              acquireResponse.refreshToken);
+              null, 
+              null);
 
             } catch (error) {
               setIsSigningUp(false);
@@ -293,20 +243,21 @@ export default function SellerSignUpPage() {
 
               <ControlledInput
                 className={styles.SellerSignUpPage_content_withMargin}
-                error={errors.mobileNumber}
-                name="mobileNumber"
+                error={errors.phoneNumber}
+                kind={inputKinds.NUMBER}
+                name="phoneNumber"
                 placeholder="Mobile Number*"
-                value={values.email}
-                onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
+                value={values.phoneNumber}
+                onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
               />
 
               <ImageDropzone
                 className={styles.SellerSignUpPage_content_withMargin}
-                error={errors.governmentId}
+                error={errors.baseImage}
                 text="Upload Government ID"
-                value={values.governmentId}
+                value={values.baseImage}
                 onChange={(image) => {
-                  setFieldValue('governmentId', image);
+                  setFieldValue('baseImage', image);
                 }}
               />
 

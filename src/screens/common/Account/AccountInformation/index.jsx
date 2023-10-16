@@ -25,7 +25,7 @@ import styles from './styles.module.scss';
 function AccountInformation() {
   // const alert = useAlert();
   const user = useSelector((store) => getUser(store));
-  const userType = 'seller';
+  const userType = 'buyer';
 
   const isUserUpdating = false;
   const isVerifyingPassword = false;
@@ -209,9 +209,10 @@ function AccountInformation() {
             <ControlledInput
               className={styles.AccountInformation_input}
               error={errors.mobileNumber}
+              kind={inputKinds.NUMBER}
               name="mobileNumber"
               placeholder="Mobile Number*"
-              value={values.email}
+              value={values.mobileNumber}
               onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
             />
 

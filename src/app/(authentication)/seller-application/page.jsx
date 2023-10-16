@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 
 
 export default function SellerApplication() {
-  const status = 'denied';
+  const status = 'pending';
 
   return (
     <section className={styles.SellerApplication}>

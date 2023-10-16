@@ -25,7 +25,7 @@ const products = [
     seller: 'Butanding Shop',
     status: 'On Going',
     dateOrdered: '2021-08-01',
-    qrCode: 'https://picsum.photos/300',
+    qrCode: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg',
     customization: 'I want it to be blue and more cute so that I can give it to my girlfriend'
   },
   {
@@ -38,7 +38,7 @@ const products = [
     seller: 'Fish Shop',
     status: 'Delivered',
     dateOrdered: '2021-08-01',
-    qrCode: 'https://picsum.photos/300',
+    qrCode: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg',
     customization: 'I want it to be blue and more cute so that I can give it to my girlfriend'
   },
   {
@@ -51,7 +51,7 @@ const products = [
     seller: 'Dolphin Shop',
     status: 'Cancelled',
     dateOrdered: '2021-08-01',
-    qrCode: 'https://picsum.photos/300',
+    qrCode: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg',
     customization: 'I want it to be blue and more cute so that I can give it to my girlfriend'
   },
   {
@@ -64,7 +64,7 @@ const products = [
     seller: 'Shark Shop',
     status: 'Pending',
     dateOrdered: '2021-08-01',
-    qrCode: 'https://picsum.photos/300',
+    qrCode: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg',
     customization: 'I want it to be blue and more cute so that I can give it to my girlfriend'
   },
 ]

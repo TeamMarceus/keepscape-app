@@ -1,0 +1,30 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.Announcements {
+  padding-top: 24px;
+  
+  &_button {
+    margin: 32px 0 16px auto !important;
+  }
+
+  &_content {
+    padding: 24px 24px 8px;
+    
+    &_text {
+      background-color: $neutral-50;
+      border-radius: 5px;
+      margin-bottom: 16px;
+      padding: 16px;
+    }
+
+    &_title {
+      @include flex-between;
+      margin-bottom: 16px;
+    }
+
+    &_icon {
+      color: $red-400 !important;
+    }
+  }
+}

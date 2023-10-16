@@ -61,8 +61,8 @@ function Filters({
   const minimumPriceParam = newSearchParams.get('minimumPrice');
   const maximumPriceParam = newSearchParams.get('maximumPrice');
 
-  const [ minimumPrice, setMinimumPrice ] = useState(minimumPriceParam || 0);
-  const [ maximumPrice, setMaximumPrice ] = useState(maximumPriceParam || 0);
+  const [ minimumPrice, setMinimumPrice ] = useState(minimumPriceParam || '');
+  const [ maximumPrice, setMaximumPrice ] = useState(maximumPriceParam || '');
   const [ errors, setErrors ] = useState({});
 
   return (

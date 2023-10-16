@@ -347,7 +347,7 @@ function Main() {
         </div>
       </div>
 
-      {user.guid &&
+      {user.id &&
         <>
           <Text
               className={styles.Main_suggestions_title}  

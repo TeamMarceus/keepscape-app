@@ -4,32 +4,34 @@ import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { actions as questionsActions } from '@/ducks/reducers/questions';
-import { actions as productsActions } from '@/ducks/reducers/suggestions';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch } from '@/hooks';
+import { UsersService } from '@/services';
 
 export default function LogoutPage() {
   const loginRestart = useActionDispatch(
     usersActions.loginActions.loginRestart
   );
 
-  const productsRestart = useActionDispatch(
-    productsActions.productActions.productRestart
-  );
-
-  const questionsRestart = useActionDispatch(
-    questionsActions.questionActions.questionRestart
-  );
-
   const router = useRouter();
 
   useEffect(() => {
-    loginRestart();
-    productsRestart();
-    questionsRestart();
 
-    router.push('/login');
+    const logoutUser = async () => {
+      try {
+        const { status } = await UsersService.logout();
+
+        if (status === 200) {
+          loginRestart();  
+          router.push('/login');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
+    logoutUser();
+
   }, []);
 
   return null;

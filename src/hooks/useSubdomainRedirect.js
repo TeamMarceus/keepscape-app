@@ -1,7 +1,9 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { AUTHENTICATION_ROUTES } from '@/app/(authentication)/routes';
 import { ADMIN_ROUTES } from '@/app/admin/routes';
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
+import { SELLER_ROUTES } from '@/app/seller/routes';
 import { userTypes } from '@/app-globals';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import useActionDispatch from '@/hooks/useActionDispatch';
@@ -22,12 +24,14 @@ const useSubdomainRedirect = () => {
   };
 
   const redirect = (user, accessToken, refreshToken) => {
-    const { role: userType } = user || {};
+    const { userType } = user || {};
 
     if (userType === userTypes.ADMIN && !next) {
       next = ADMIN_ROUTES.DASHBOARD;
     } else if (userType === userTypes.BUYER && !next) {
       next = PUBLIC_ROUTES.MAIN_PAGE;
+    } else if (userType === userTypes.SELLER && !next) {
+      next = AUTHENTICATION_ROUTES.SELLER_APPLICATION;
     }
     
     // let subdomain = null;

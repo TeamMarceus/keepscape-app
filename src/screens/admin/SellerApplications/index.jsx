@@ -180,7 +180,7 @@ function SellerApplications() {
                       styles.SellerApplications_grid_header_action,
                     )}
                   >
-                    Action
+                    Actions
                   </div>
                   
                   {/* Header of OrderGrid ends here */}

@@ -17,7 +17,7 @@ import styles from './styles.module.scss';
 function Account() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('activeTab');
-  const userType = 'seller'
+  const userType = 'user'
 
   const buyerTabs = [
     {

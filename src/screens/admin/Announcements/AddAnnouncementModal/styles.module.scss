@@ -1,9 +1,11 @@
+
+@import '@/styles/variables.scss';
 @import '@/styles/mixins.scss';
 
-.QrCodeModal {
-  &_qrCode {
-    display: flex;
-    margin: 0 auto !important;
+.AddAnnouncementModal {
+
+  &_input {
+    margin-top: 10px;
   }
 
   &_button {

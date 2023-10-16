@@ -22,14 +22,15 @@ function Navbar() {
   const ref = useRef();
   const router = useRouter();
   const pathname = usePathname();
+
   const [isDropdownToggled, toggleDropdown] = useState(false);
   useOnClickOutside(ref, () => toggleDropdown(false));
+
   const user = useSelector((store) => getUser(store));
+  const { userType, id: userId } = user;
+
   const [search, setSearch] = useState('');
-  const userType = user.role; 
-  // const userType = 'seller';
-  // user.guid = '123';
-  // user.sellerName = 'Butanding Seller';
+  
   const isSellerOrAdmin = userType === userTypes.SELLER || userType === userTypes.ADMIN;
 
   return (
@@ -43,7 +44,7 @@ function Navbar() {
           <div className={styles.Navbar_links_scrollLinks}>
             {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
               <>
-                {user.role === userTypes.BUYER &&
+                {userType === userTypes.BUYER &&
                   <>
                     <LinkScroll
                     key="preferences"
@@ -141,7 +142,7 @@ function Navbar() {
           }
           </div>
           
-          {user.guid ?
+          {userId ?
             ( 
               <div
                 ref={ref}
@@ -157,7 +158,7 @@ function Navbar() {
                       className={styles.Navbar_navUser_accountIcon}
                       icon="account_circle"
                     />
-                    {userType === userTypes.BUYER || userType === userTypes.ADMIN && 
+                    {(userType === userTypes.BUYER || userType === userTypes.ADMIN) && 
                       <span className={styles.Navbar_navUser_name}>{user.firstName}</span>}
 
                     {userType === userTypes.SELLER && <span className={styles.Navbar_navUser_name}>{user.sellerName}</span>}
@@ -176,7 +177,7 @@ function Navbar() {
                   {userType !== userTypes.ADMIN &&
                     <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href={`/${userType}/account?activeTab=information`}
+                    href="/buyer/account?activeTab=information"
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                     >
                       <Icon

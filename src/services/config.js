@@ -1,10 +1,9 @@
 import { isLocal } from '../utils/destinations';
 
-// Url of the API in Azure
 let apiUrl = null;
 
 if (isLocal) {
-  apiUrl = 'https://localhost:7175';
+  apiUrl = 'https://localhost:7104';
 }
 
 const config = {

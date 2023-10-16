@@ -1,7 +1,7 @@
 export const USER_TYPES = {
-  ADMIN: 'admin',
-  BUYER: 'user',
-  SELLER: 'seller'
+  ADMIN: 'Admin',
+  BUYER: 'Buyer',
+  SELLER: 'Seller'
 };
 
 export default USER_TYPES;

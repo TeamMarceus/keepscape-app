@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { ADMIN_ROUTES } from '@/app/admin/routes';
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
+import { SELLER_ROUTES } from '@/app/seller/routes';
 import { userTypes } from '@/app-globals';
 
 import { getUser } from '../ducks';
@@ -18,8 +19,8 @@ const useNoAuthRoute = () => {
   const next = searchParams.get('next');
 
   const {
-    guid: userId,
-    role: userType,
+    id: userId,
+    userType,
     firstName,
     lastName,
   } = user || {};
@@ -42,6 +43,11 @@ const useNoAuthRoute = () => {
       // redirect the admin to the admin homepage
       if (userType === userTypes.ADMIN) {
         router.replace(ADMIN_ROUTES.DASHBOARD);
+      }
+
+      // redirect the admin to the seller homepage
+      if (userType === userTypes.SELLER) {
+        router.replace(SELLER_ROUTES.DASHBOARD);
       }
     };
 

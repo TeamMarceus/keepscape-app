@@ -19,6 +19,7 @@ function TabLink({
   closeAction = null,
   id = null,
 }) {
+
   return <Link
     className={cn(className, {
       [styles[`Tab___${type}___active`]]: active,

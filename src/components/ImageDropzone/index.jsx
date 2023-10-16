@@ -11,12 +11,6 @@ import Icon from '@/components/Icon';
 import Spinner from '@/components/Spinner';
 import Text from '@/components/Text';
 
-import { FileService } from '@/services';
-
-import config from '@/services/config';
-
-import { convertImageToBase64 } from '@/utils/images';
-
 import styles from './styles.module.scss';
 
 function ImageDropzone({
@@ -40,25 +34,9 @@ function ImageDropzone({
       preview: URL.createObjectURL(file),
     });
 
-    if (isUploaded) {
-      const formData = new FormData();
-
-      formData.append('file', file);
-
-      setIsUploading(true);
-
-      const { data: imageUrl } = await FileService.upload({
-        body: formData,
-      });
-
-      setIsUploading(false);
-
-      onChange(`${config.GCS_BUCKET_URL}/${imageUrl}`);
-    } else {
-      convertImageToBase64(file, (base64Image) => {
-        onChange(base64Image);
-      });
-    }
+    const formData = new FormData();
+    formData.append('file', file);
+    onChange(formData.get('file'));
   };
 
   const onDropRejected = (e) => {

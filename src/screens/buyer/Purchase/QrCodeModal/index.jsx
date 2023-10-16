@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { modalPositions, modalSizes } from '@/app-globals';
 
-import { Modal } from '@/components';
+import { Button, Modal } from '@/components';
 
 import styles from './styles.module.scss';
 
@@ -29,7 +29,14 @@ function QrCodeModal({
         className={styles.QrCodeModal_qrCode}
         src={qrCode}
       />
-    </Modal>
+
+      <Button
+        className={styles.QrCodeModal_button}
+        onClick={() => {}}
+      >
+        Share QR Code
+      </Button>
+  </Modal>
   )
 }
 

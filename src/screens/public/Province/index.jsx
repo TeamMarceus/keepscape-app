@@ -132,7 +132,7 @@ function Province({ province }) {
           province={province}
           route={`/keepscape/province/${province}`}
           title="All Products"
-          type="By Province"
+          type="By Category"
         />
 
         <div className={cn(styles.Province_products, {

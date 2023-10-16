@@ -27,14 +27,11 @@
     } @else if $state == selected {
       color: $blue-300;
       border-bottom: 2px solid $blue-300;
+      background-color: transparentize($blue-300, 0.8);
     }
 
     &:hover {
       background-color: transparentize($blue-300, 0.9);
-    }
-
-    &:active {
-      background-color: transparentize($blue-300, 0.8);
     }
   }
 }

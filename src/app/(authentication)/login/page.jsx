@@ -118,23 +118,6 @@ export default function LoginPage() {
                   refresh_token: acquireResponse.refreshToken,
                 });
 
-                // Create questionnaire and suggestions if they exist in the store
-                if (generalQuestions.length !== 0 &&
-                    newQuestions.length !== 0 &&
-                    suggestions.length !== 0) {
-
-                  // Create the questionnaire with the recipient's name
-                  const { data: questionnaireDataResponse } =
-                    await QuestionnairesService.create(generalQuestions[0].answer);
-
-                  // Update the suggestions with the questionnaire's guid
-                  await QuestionnairesService.updateSuggestions(questionnaireDataResponse.guid, suggestions);
-
-                  // Restart the products and questions store
-                  productsRestart();
-                  questionsRestart();
-                }
-
                 // Redirect the user
                 redirect(
                   LoginPageResponse, 

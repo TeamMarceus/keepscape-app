@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { AUTHENTICATION_ROUTES } from '@/app/(authentication)/routes';
 import { ADMIN_ROUTES } from '@/app/admin/routes';
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
+import { SELLER_ROUTES } from '@/app/seller/routes';
 import { userTypes } from '@/app-globals';
 
 import { getUser } from '../ducks';
@@ -22,7 +23,7 @@ const usePrivateRoute = ({ forUserType }) => {
       ? `${pathname}?${searchParams.toString()}`
       : pathname;
 
-  const { guid: userId, role: userType } = user || {};
+  const { id: userId, userType } = user || {};
 
   useEffect(() => {
     const checkAccess = () => {
@@ -31,6 +32,8 @@ const usePrivateRoute = ({ forUserType }) => {
         (userType != null && !!userId) &&
         (userType === userTypes.BUYER &&
           forUserType === userTypes.BUYER) ||
+        (userType === userTypes.SELLER &&
+          forUserType === userTypes.SELLER) ||
         (userType === userTypes.ADMIN &&
           forUserType === userTypes.ADMIN)
       ) {
@@ -40,11 +43,13 @@ const usePrivateRoute = ({ forUserType }) => {
       /**
        *   Table for pages that can be accessed by the different user types
        *    -----------------------------
-       *   | Type | Buyer      | Admin  |
-       *    -----------------------------
-       *   |  G   |    /       |    x   |   
-       *    -----------------------------
-       *   |  A   |    x       |    /   |  
+       *    | Type | Buyer      | Seller  | Admin
+       *     -----------------------------
+       *    |  B   |    /       |    x    |   x  
+       *     -----------------------------
+       *    |  S   |    x       |    /    |  x 
+       *    ----------------------------- 
+       *    |  A   |    x       |    x    |  /
        *    -----------------------------
        */
       if (
@@ -54,6 +59,15 @@ const usePrivateRoute = ({ forUserType }) => {
         router.replace(PUBLIC_ROUTES.MAIN_PAGE);
         return;
       }
+
+      if (
+        userType === userTypes.SELLER &&
+        forUserType !== userTypes.SELLER
+      ) {
+        router.replace(SELLER_ROUTES.DASHBOARD);
+        return;
+      }
+
 
       if (
         userType === userTypes.ADMIN &&

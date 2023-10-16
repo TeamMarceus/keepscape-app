@@ -24,12 +24,9 @@ import {
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-import { getGeneralQuestions, getNewQuestions, getSuggestions } from '@/ducks';
-import { actions as questionsAction } from '@/ducks/reducers/questions';
-import { actions as productsActions } from '@/ducks/reducers/suggestions';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
-import { TokensService, QuestionnairesService, UsersService } from '@/services';
+import { TokensService, UsersService } from '@/services';
 import { isValidEmail } from '@/utils/string';
 
 
@@ -58,12 +55,10 @@ const validate = (values) => {
     errors.email = 'This field is required.';
   } else if (!isValidEmail(values.email)) {
     errors.email = 'This must be a valid email address.';
-  } else if (values.email.length > 50) {
-    errors.email = 'This field can have at most 50 characters.';
-  }
+  } 
 
-  if (!values.mobileNumber) {
-    errors.mobileNumber = 'This field is required.';
+  if (!values.phoneNumber) {
+    errors.phoneNumber = 'This field is required.';
   }
 
   if (!values.preferences) {
@@ -98,17 +93,6 @@ const validate = (values) => {
 export default function BuyerSignUpPage() {
   const { redirect } = useSubdomainRedirect();
   const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
-  const productsRestart = useActionDispatch(
-    productsActions.productActions.productRestart
-  );
-
-  const questionsRestart = useActionDispatch(
-    questionsAction.questionActions.questionRestart
-  );
-
-  const generalQuestions = useSelector((store) => getGeneralQuestions(store));
-  const newQuestions = useSelector((store) => getNewQuestions(store));
-  const suggestions = useSelector((store) => getSuggestions(store));
 
   const [isSigningUp, setIsSigningUp] = useState(false);
 
@@ -128,24 +112,24 @@ export default function BuyerSignUpPage() {
             firstName: '',
             lastName: '',
             email: '',
-            mobileNumber: '',
+            password: '',
+            confirmPassword: '',
+            phoneNumber: '',
             preferences: '',
             interests: '',
             description: '',
-            password: '',
-            confirmPassword: '',
           }}
           onSubmit={async (values, { setErrors }) => {
             const currentFormValues = {
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.email,
-              // mobileNumber: values.mobileNumber,
-              // preferences: values.preferences,
-              // interests: values.interests,
-              // description: values.description,
               password: values.password,
               confirmPassword: values.confirmPassword,
+              phoneNumber: values.phoneNumber,
+              preferences: values.preferences,
+              interests: values.interests,
+              description: values.description,
             };
 
             const errors = validate(values);
@@ -156,9 +140,9 @@ export default function BuyerSignUpPage() {
 
             setIsSigningUp(true);
 
-            // Sign up the user
+            // Sign up the buyer
             try {
-              const { data: signUpResponse } = await UsersService.signup(
+              const { data: signUpResponse } = await UsersService.signupBuyer(
                 currentFormValues
               );
 
@@ -178,25 +162,7 @@ export default function BuyerSignUpPage() {
               refresh_token: acquireResponse.refreshToken,
             });
 
-
-            // Create questionnaire and suggestions if they exist in the store
-            if (generalQuestions.length !== 0 &&
-              newQuestions.length !== 0 &&
-              suggestions.length !== 0) {
-
-            // Create the questionnaire with the recipient's name
-            const { data: questionnaireDataResponse } =
-              await QuestionnairesService.create(generalQuestions[0].answer);
-
-            // Update the suggestions with the questionnaire's guid
-            await QuestionnairesService.updateSuggestions(questionnaireDataResponse.guid, suggestions);
-
-            // Restart the products and questions store
-            productsRestart();
-            questionsRestart();
-          }
-
-             // Redirect the user
+             // Redirect the buyer
              redirect(
               signUpResponse, 
               acquireResponse.accessToken, 
@@ -283,11 +249,12 @@ export default function BuyerSignUpPage() {
 
               <ControlledInput
                 className={styles.BuyerSignUpPage_content_withMargin}
-                error={errors.mobileNumber}
-                name="mobileNumber"
+                error={errors.phoneNumber}
+                kind={inputKinds.NUMBER}
+                name="phoneNumber"
                 placeholder="Mobile Number*"
-                value={values.mobileNumber}
-                onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
+                value={values.phoneNumber}
+                onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
               />
 
               <Text 
