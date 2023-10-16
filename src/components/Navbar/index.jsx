@@ -177,7 +177,7 @@ function Navbar() {
                   {userType !== userTypes.ADMIN &&
                     <Link
                     className={styles.Navbar_navUser_dropdown_link}
-                    href="/buyer/account?activeTab=information"
+                    href={`/${(user.userType).toLowerCase()}/account?activeTab=information`}
                     onClick={() => toggleDropdown(!isDropdownToggled)}
                     >
                       <Icon

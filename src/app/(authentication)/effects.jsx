@@ -35,7 +35,7 @@ export default function AuthenticationEffects({ children }) {
 
   const next = searchParams.get('next');
 
-  const userTypeParam = user.role;
+  const userTypeParam = user.userType;
 
   const [isRedirectedLoggingIn, setIsRedirectedLoggingIn] = useState(
     !!accessToken && !!refreshToken

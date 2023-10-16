@@ -28,17 +28,17 @@
 
     &_pendingIcon {
       margin-right: 8px;
-      color: $neutral-400;
+      color: $neutral-400 !important;
     }
 
     &_ongoingIcon {
       margin-right: 8px;
-      color: $blue-400;
+      color: $blue-400 !important;
     }
 
     &_completedIcon {
       margin-right: 8px;
-      color: $green-400;
+      color: $green-400 !important;
     }
   }
 

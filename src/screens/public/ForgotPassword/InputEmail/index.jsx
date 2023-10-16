@@ -21,7 +21,7 @@ import {
   Text
  } from '@/components';
 
- import { ConfirmationCodesService } from '@/services';
+ import { UsersService } from '@/services';
 
 import styles from './styles.module.scss';
 
@@ -67,7 +67,7 @@ function InputEmail() {
             // This API will also verify if the user exists
             const {
               status: sendConfirmationCodeResponseStatus,
-            } = await ConfirmationCodesService.acquire(values.emailAddress);
+            } = await UsersService.acquireCode(values.emailAddress);
 
             if (sendConfirmationCodeResponseStatus === 200) {
               router.push(`/forgot-password/code?email=${values.emailAddress}`);

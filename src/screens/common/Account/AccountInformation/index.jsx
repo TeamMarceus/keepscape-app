@@ -10,6 +10,7 @@ import {
   textTypes,
   spinnerSizes,
   inputKinds,
+  userTypes,
 } from '@/app-globals';
 
 import { Button, ControlledInput, Text, Spinner, ControlledTextArea, ImageDropzone } from '@/components';
@@ -25,7 +26,6 @@ import styles from './styles.module.scss';
 function AccountInformation() {
   // const alert = useAlert();
   const user = useSelector((store) => getUser(store));
-  const userType = 'buyer';
 
   const isUserUpdating = false;
   const isVerifyingPassword = false;
@@ -63,12 +63,46 @@ function AccountInformation() {
       errors.email = 'The maximum length of this field is 50 characters.';
     }
 
-    if (!values.username) {
-      errors.username = 'This field is required.';
-    } else if (values.username.length > 50) {
-      errors.username = 'The maximum length of this field is 50 characters.';
-    } else if (values.username.length < 5) {
-      errors.username = 'The minimum length of this field is five characters.';
+    if (!values.phoneNumber) {
+      errors.phoneNumber = 'This field is required.';
+    }
+
+    if (!values.description) {
+      errors.description = 'This field is required.';
+    } else if (values.description.length > 500) {
+      errors.description = 'The maximum length of this field is 500 characters.';
+    } else if (values.description.length < 10) {
+      errors.description = 'The minimum length of this field is 10 characters.';
+    }
+
+    // Seller only
+    if (user.userType === userTypes.SELLER) {
+      if (!values.sellerName) {
+        errors.sellerName = 'This field is required.';
+      } else if (values.sellerName.length > 50) {
+        errors.sellerName = 'The maximum length of this field is 50 characters.';
+      } else if (values.sellerName.length < 2) {
+        errors.sellerName = 'The minimum length of this field is two characters.';
+      }
+    }
+
+    // Buyer only
+    if (user.userType === userTypes.BUYER) {
+      if (!values.preferences) {
+        errors.preferences = 'This field is required.';
+      } else if (values.preferences.length > 500) {
+        errors.preferences = 'The maximum length of this field is 500 characters.';
+      } else if (values.preferences.length < 10) {
+        errors.preferences = 'The minimum length of this field is 10 characters.';
+      }
+
+      if (!values.interests) {
+        errors.interests = 'This field is required.';
+      } else if (values.interests.length > 500) {
+        errors.interests = 'The maximum length of this field is 500 characters.';
+      } else if (values.interests.length < 10) {
+        errors.interests = 'The minimum length of this field is 10 characters.';
+      }
     }
 
     if (!values.confirmPassword) {
@@ -92,17 +126,16 @@ function AccountInformation() {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          mobileNumber: '',
+          phoneNumber: '',
           confirmPassword: '',
-          description: '',
+          description: user.description,
 
           // Buyer Only
-          preferences: '',
-          interests: '',
+          preferences: user.preferences,
+          interests: user.interests,
 
           // Seller only
-          sellerName: '',
-          governmentId: '',
+          sellerName: user.sellerName,
 
         }}
         onSubmit={async (values, { setErrors }) => {
@@ -110,17 +143,16 @@ function AccountInformation() {
             firstName: values.firstName,
             lastName: values.lastName,
             email: values.email,
-            // mobileNumber: values.mobileNumber,
+            phoneNumber: values.phoneNumber,
             password: values.confirmPassword,
-            // description: values.description,
+            description: values.description,
 
             // Buyer Only
-            // preferences: values.preferences,
-            // interests: values.interests,
+            preferences: values.preferences,
+            interests: values.interests,
 
             // Seller only
-            // sellerName: values.sellerName,
-            // governmentId: values.governmentId,
+            sellerName: values.sellerName,
           };
 
           const errors = validate(values);
@@ -186,7 +218,7 @@ function AccountInformation() {
               onChange={(e) => setFieldValue('lastName', e.target.value)}
             />
 
-            { userType === 'seller' &&
+            { user.userType === userTypes.SELLER &&
               <ControlledInput
                 className={styles.AccountInformation_input}
                 error={errors.sellerName}
@@ -208,15 +240,15 @@ function AccountInformation() {
 
             <ControlledInput
               className={styles.AccountInformation_input}
-              error={errors.mobileNumber}
+              error={errors.phoneNumber}
               kind={inputKinds.NUMBER}
-              name="mobileNumber"
+              name="phoneNumber"
               placeholder="Mobile Number*"
-              value={values.mobileNumber}
-              onChange={(e) => setFieldValue('mobileNumber', e.target.value)}
+              value={values.phoneNumber}
+              onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
             />
 
-            { userType === 'buyer' &&
+            {user.userType === userTypes.BUYER &&
               <>
                 <ControlledTextArea
                   className={styles.AccountInformation_input}
@@ -240,23 +272,11 @@ function AccountInformation() {
               </>
             }
 
-            { userType === 'seller' &&
-              <ImageDropzone
-                  className={styles.AccountInformation_input}
-                  error={errors.governmentId}
-                  text="Upload Government ID"
-                  value={values.governmentId}
-                  onChange={(image) => {
-                    setFieldValue('governmentId', image);
-                  }}
-                />
-            }
-
             <ControlledTextArea
               className={styles.AccountInformation_input}
               error={errors.description}
               name="description"
-              placeholder={userType === 'buyer' ? 
+              placeholder={user.userType === userTypes.BUYER ? 
                 'Yourself (e.g. personality, likes, dislikes)' : 
                 'What do you sell and why you want to be a seller?'}
               type={textAreaTypes.FORM}

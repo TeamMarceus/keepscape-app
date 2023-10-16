@@ -31,11 +31,11 @@ export default function BuyerEffects({ children }) {
   usePrivateRoute({ forUserType: userTypes.BUYER });
 
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken && user.role === userTypes.BUYER,
+    !!accessToken && !!refreshToken && user.userType === userTypes.BUYER,
   );
 
   useEffect(() => {
-    if (!user.guid) {
+    if (!user.id) {
       setIsRedirectSuccessful(false);
     }
     

@@ -13,7 +13,7 @@ const UsersService = {
   }),
   login: (body) => axios.post(`${BASE_URL}/login`, body),
   logout: () => axios.post(`${BASE_URL}/logout`),
-  acquireCode: (email) => axios.get(`${BASE_URL}/passwords/codes`,  null, {
+  acquireCode: (email) => axios.get(`${BASE_URL}/passwords/codes`, {
     params: {
       email,
     },

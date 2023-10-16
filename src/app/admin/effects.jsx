@@ -25,11 +25,11 @@ export default function AdminEffects({ children }) {
   usePrivateRoute({ forUserType: userTypes.ADMIN });
 
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken && user.role === userTypes.ADMIN,
+    !!accessToken && !!refreshToken && user.userType === userTypes.ADMIN,
   );
 
   useEffect(() => {
-    if (!user.guid) {
+    if (!user.id) {
       setIsRedirectSuccessful(false);
     }
     

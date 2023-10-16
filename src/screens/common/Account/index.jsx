@@ -3,8 +3,11 @@ import React from 'react';
 import cn from 'classnames';
 import { useSearchParams } from 'next/navigation';
 
+import { useSelector } from 'react-redux';
+
 import { colorClasses, tabKinds, tabTypes, textTypes, userTypes } from '@/app-globals';
 import { Card, Tabs, Text } from '@/components';
+import { getUser } from '@/ducks';
 
 import Purchase from '../../buyer/Purchase';
 
@@ -17,7 +20,8 @@ import styles from './styles.module.scss';
 function Account() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('activeTab');
-  const userType = 'user'
+
+  const user = useSelector((store) => getUser(store));
 
   const buyerTabs = [
     {
@@ -57,14 +61,14 @@ function Account() {
 
   return (
     <div className={cn(styles.Account,{
-      [styles.Account_seller]: userType === userTypes.SELLER,
+      [styles.Account_seller]: user.userType === userTypes.SELLER,
     })}>
       <div className={cn(styles.Account_tabs, {
-        [styles.Account_tabs_seller]: userType === userTypes.SELLER,
+        [styles.Account_tabs_seller]: user.userType === userTypes.SELLER,
       })}>
         <Text
           className={styles.Account_title}
-          colorClass={ userType === userTypes.SELLER ? 
+          colorClass={ user.userType === userTypes.SELLER ? 
             colorClasses.NEUTRAL['800'] :
             colorClasses.NEUTRAL['300']
           }
@@ -74,8 +78,8 @@ function Account() {
         </Text>
         <Tabs
           activeTab={activeTab}
-          tabs={userType === userTypes.BUYER ? buyerTabs : sellerTabs}
-          type={userType === userTypes.BUYER ? tabTypes.VERTICAL.LG : tabTypes.HORIZONTAL.LG}
+          tabs={user.userType === userTypes.BUYER ? buyerTabs : sellerTabs}
+          type={user.userType === userTypes.BUYER ? tabTypes.VERTICAL.LG : tabTypes.HORIZONTAL.LG}
         />
       </div>
         

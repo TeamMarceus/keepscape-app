@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { userTypes } from '@/app-globals';
-import { Footer, Navbar } from '@/components';
+import { Navbar } from '@/components';
 import SellerSidebar from '@/components/SellerSidebar';
 import { getUser, getAccessToken, getRefreshToken } from '@/ducks';
 import { usePrivateRoute } from '@/hooks';
@@ -26,19 +26,18 @@ export default function SellerEffects({ children }) {
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));
 
-  // usePrivateRoute({ forUserType: userTypes.BUYER });
+  usePrivateRoute({ forUserType: userTypes.SELLER });
+  
+  const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
+    !!accessToken && !!refreshToken && user.userType === userTypes.SELLER,
+  );
 
-  const isRedirectSuccessful = true;
-  // const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-  //   !!accessToken && !!refreshToken && user.role === userTypes.SELLER,
-  // );
-
-  // useEffect(() => {
-  //   if (!user.guid) {
-  //     setIsRedirectSuccessful(false);
-  //   }
+  useEffect(() => {
+    if (!user.id) {
+      setIsRedirectSuccessful(false);
+    }
     
-  // }, [user]);
+  }, [user]);
 
   if (!isRedirectSuccessful) {
     return <RedirectPreloader />;
