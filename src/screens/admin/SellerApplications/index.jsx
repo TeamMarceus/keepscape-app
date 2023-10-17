@@ -173,32 +173,28 @@ function SellerApplications() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredApplications.map(
-                    ({ id, dateApplied, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
                           <div className={styles.SellerApplications_grid_column}>
-                            {/* {dateApplied} */} 2021-08-01
+                            {dateTimeCreated.split('T')[0]}
                           </div>
 
                           <div className={styles.SellerApplications_grid_column}>
                             {firstName} {lastName}
                           </div>
 
-                          <ButtonLink
-                            className={styles.SellerApplications_grid_column}
-                            to={`/admin/sellers?name=${sellerName}`}
-                            type={buttonTypes.TEXT.NEUTRAL}
-                          >
+                          <div className={styles.SellerApplications_grid_column}>
                             {sellerName}
-                          </ButtonLink>
+                          </div>
                             
                           <div className={styles.SellerApplications_grid_column}>
                             {email}
                           </div>
 
                           <div className={styles.SellerApplications_grid_column}>
-                            {/* {phoneNumber} */} 09123456789
+                            {phoneNumber}
                           </div>
 
                           <div className={styles.SellerApplications_grid_column}>

@@ -17,7 +17,7 @@ const useSellerApplications = ({ page, pageSize }) => {
 
     if (updateSellerApplicationStatus === 200) {
       if (status === userStatus.APPROVED) {
-        toast.success('Seller Application Approved.', {
+        toast.success('Seller application approved.', {
           style: {
             backgroundColor: '#1ab394',
             color: '#fff',
@@ -26,7 +26,7 @@ const useSellerApplications = ({ page, pageSize }) => {
       }
 
       if (status === userStatus.REJECTED) {
-        toast.error('Seller Application Rejected.', {
+        toast.error('Seller application rejected.', {
           style: {
             backgroundColor: '#ed5565',
             color: '#fff',

@@ -203,7 +203,6 @@ function Main() {
     slidesToScroll: 1,
   };
   
-
   const {isLoading: isProductsLoading, products, totalPages } = useProducts({ page });
 
   return (

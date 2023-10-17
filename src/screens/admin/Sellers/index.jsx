@@ -8,6 +8,7 @@ import {
   colorClasses,
   iconButtonTypes,
   textTypes,
+  userStatus,
 } from '@/app-globals';
 
 import { 
@@ -20,7 +21,7 @@ import {
   Pagination, 
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useSellers, useWindowSize } from '@/hooks';
 
 import GovernmentIdModal from '../GovernmentIdModal';
 
@@ -28,54 +29,23 @@ import PreloaderSellers from './Preloader';
 
 import styles from './styles.module.scss';
 
-const sellers = [
-  {
-    id: 'a23e4567-e89b-12d3-a456-426614174000',
-    dateAccepted: '2021-08-01',
-    fullName: 'John Doe',
-    sellerName: 'Burger King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-    isBanned: true,
-  },
-  {
-    id: '2',
-    dateAccepted: '2021-08-01',
-    fullName: 'Jane Doe',
-    sellerName: 'Hotdog King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-    isBanned: true,
-  },
-  {
-    id: '3',
-    dateAccepted: '2021-08-01',
-    fullName: 'Johnny Deep',
-    sellerName: 'Donut King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-    isBanned: false,
-  },
-];
-
 function Sellers() {
+  const router = useRouter();
+  const { windowSize } = useWindowSize();
   const searchParams = useSearchParams();
+
   const sellerIdParam = searchParams.get('id');
   const sellerNameParam = searchParams.get('name');
-  const router = useRouter();
-
-  const { windowSize } = useWindowSize();
-  const isSellersLoading = false;
-
+  
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
-  const totalPages = 10;
+
+  const {
+    isLoading: isSellersLoading, 
+    sellers, 
+    totalPages,
+    updateSellerStatus
+   } = useSellers({ page, pageSize: 10 });
 
   const [search, setSearch] = useState('');
   const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
@@ -93,9 +63,10 @@ function Sellers() {
     }
 
     return (
-      seller.fullName.toLowerCase().includes(searchLowerCase) ||
+      seller.firstName.toLowerCase().includes(searchLowerCase) ||
+      seller.lastName.toLowerCase().includes(searchLowerCase) ||
       seller.sellerName.toLowerCase().includes(searchLowerCase) ||
-      seller.emailAddress.toLowerCase().includes(searchLowerCase)
+      seller.email.toLowerCase().includes(searchLowerCase)
     );
   });
 
@@ -208,16 +179,16 @@ function Sellers() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredSellers.map(
-                    ({ id, dateAccepted, fullName, sellerName, emailAddress, mobileNumber, governmentId, description, isBanned  }) =>
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idUrl, description, isBanned  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Sellers_grid_sellerGrid}>
                           <div className={styles.Sellers_grid_column}>
-                            {dateAccepted}
+                            {dateTimeCreated.split('T')[0]}
                           </div>
 
                           <div className={styles.Sellers_grid_column}>
-                            {fullName}
+                            {firstName} {lastName}
                           </div>
 
                           <div className={styles.Sellers_grid_column}>
@@ -225,11 +196,11 @@ function Sellers() {
                           </div>
                             
                           <div className={styles.Sellers_grid_column}>
-                            {emailAddress}
+                            {email}
                           </div>
 
                           <div className={styles.Sellers_grid_column}>
-                            {mobileNumber}
+                            {phoneNumber} 
                           </div>
 
                           <div className={styles.Sellers_grid_column}>
@@ -241,11 +212,11 @@ function Sellers() {
                             alt="Government Id"
                             className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
                             height={60}
-                            src={governmentId}
+                            src={idUrl}
                             width={60}
                             onClick={() => {
                               setIsGovernmentIdModalOpen(true);
-                              setSelectedSeller({ sellerName, governmentId })
+                              setSelectedSeller({ sellerName, idUrl })
                             }}
                           />
 
@@ -259,6 +230,11 @@ function Sellers() {
                                 icon={isBanned ? 'how_to_reg' : 'person_off'}
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
+                                  if (isBanned) {
+                                    updateSellerStatus(id, userStatus.ACTIVE);
+                                  } else {
+                                    updateSellerStatus(id, userStatus.BANNED);
+                                  }
                                 }}
                               />
                             </div>
@@ -278,7 +254,7 @@ function Sellers() {
                               />
 
                               <Text type={textTypes.HEADING.XS}>
-                                {dateAccepted} {fullName}
+                                {dateTimeCreated.split('T')[0]} {firstName}
                               </Text>
                             </div>
                           </summary>
@@ -323,10 +299,10 @@ function Sellers() {
 
       {isGovernmentIdModalOpen &&
         <GovernmentIdModal
-          governmentId={selectedSeller.governmentId}
+          governmentId={selectedSeller.idUrl}
           handleClose={() => setIsGovernmentIdModalOpen(false)}
           isOpen={isGovernmentIdModalOpen}
-          title={`${selectedSeller.sellerName} Government ID`}
+          title={`${selectedSeller.sellerName} ID`}
         />
       }
     </>

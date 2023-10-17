@@ -1,5 +1,6 @@
 export { default as useActionDispatch } from './useActionDispatch';
 export { default as useAddProduct } from './useAddProduct';
+export { default as useBuyers } from './useBuyers';
 export { default as useCookies } from './useCookies';
 export { default as useInterval } from './useInterval';
 export { default as useNoAuthRoute } from './useNoAuthRoute';
@@ -13,5 +14,6 @@ export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
 export { default as useRouterScroll } from './useRouterScroll';
 export { default as useSellerApplications } from './useSellerApplications';
+export { default as useSellers } from './useSellers';
 export { default as useSubdomainRedirect } from './useSubdomainRedirect';
 export { default as useWindowSize } from './useWindowSize';
