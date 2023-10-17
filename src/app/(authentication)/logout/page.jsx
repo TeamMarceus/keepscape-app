@@ -16,7 +16,6 @@ export default function LogoutPage() {
   const router = useRouter();
 
   useEffect(() => {
-
     const logoutUser = async () => {
       try {
         const { status } = await UsersService.logout();

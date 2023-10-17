@@ -11,11 +11,19 @@
   &_choices {
    display: flex;
    margin-top: 24px;
+
+   @include breakpoint(xs) {
+     flex-direction: column;
+   }
   }
 
   &_choice {
     padding: 24px;
     margin-bottom: 40px;
+
+    @include breakpoint(xs) {
+      margin-bottom: 0;
+    }
 
     &_card {
       padding: 40px;
