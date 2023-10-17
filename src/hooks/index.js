@@ -10,5 +10,6 @@ export { default as useProductPlaces } from './useProductPlaces';
 export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
 export { default as useRouterScroll } from './useRouterScroll';
+export { default as useSellerApplications } from './useSellerApplications';
 export { default as useSubdomainRedirect } from './useSubdomainRedirect';
 export { default as useWindowSize } from './useWindowSize';

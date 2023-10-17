@@ -83,6 +83,20 @@ function InputEmail() {
                 });
                 break;
 
+              case 401:
+                toggleIsVerifying(false);
+                setErrors({
+                  emailAddress: 'The user is pending.',
+                });
+                break;
+
+              case 403:
+                toggleIsVerifying(false);
+                setErrors({
+                  emailAddress: 'The user is banned.',
+                });
+                break;
+
               case 404:
                 toggleIsVerifying(false);
                 setErrors({

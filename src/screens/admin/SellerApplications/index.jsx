@@ -21,7 +21,7 @@ import {
   IconLink
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useSellerApplications, useWindowSize } from '@/hooks';
 
 import GovernmentIdModal from '../GovernmentIdModal';
 
@@ -64,19 +64,25 @@ const applications = [
 
 function SellerApplications() {
   const { windowSize } = useWindowSize();
-  const isApplicationsLoading = false;
-
   const [search, setSearch] = useState('');
   const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
+
+  const {
+    isLoading: isApplicationsLoading, 
+    sellerApplications, 
+    updateSellerApplication 
+  } = useSellerApplications();
+
   const [selectedApplication, setSelectedApplication] = useState({})
 
-  const filteredApplications = applications.filter((application) => {
+  const filteredApplications = sellerApplications.filter((application) => {
     const searchLowerCase = search.toLowerCase();
 
     return (
-      application.fullName.toLowerCase().includes(searchLowerCase) ||
+      application.firstName.toLowerCase().includes(searchLowerCase) ||
+      application.lastName.toLowerCase().includes(searchLowerCase) ||
       application.sellerName.toLowerCase().includes(searchLowerCase) ||
-      application.emailAddress.toLowerCase().includes(searchLowerCase)
+      application.email.toLowerCase().includes(searchLowerCase)
     );
   });
 
@@ -188,16 +194,16 @@ function SellerApplications() {
 
                 {/* Body of OrderGrid starts here */}
                 {filteredApplications.map(
-                  ({ id, dateApplied, fullName, sellerName, emailAddress, mobileNumber, governmentId, description  }) =>
+                  ({ id, dateApplied, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
                       <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
                         <div className={styles.SellerApplications_grid_column}>
-                          {dateApplied}
+                          {/* {dateApplied} */} 2021-08-01
                         </div>
 
                         <div className={styles.SellerApplications_grid_column}>
-                          {fullName}
+                          {firstName} {lastName}
                         </div>
 
                         <ButtonLink
@@ -209,11 +215,11 @@ function SellerApplications() {
                         </ButtonLink>
                           
                         <div className={styles.SellerApplications_grid_column}>
-                          {emailAddress}
+                          {email}
                         </div>
 
                         <div className={styles.SellerApplications_grid_column}>
-                          {mobileNumber}
+                          {/* {phoneNumber} */} 09123456789
                         </div>
 
                         <div className={styles.SellerApplications_grid_column}>
@@ -225,11 +231,11 @@ function SellerApplications() {
                           alt="Government Id"
                           className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
                           height={60}
-                          src={governmentId}
+                          src={idUrl}
                           width={60}
                           onClick={() => {
                             setIsGovernmentIdModalOpen(true);
-                            setSelectedApplication({ sellerName, governmentId })
+                            setSelectedApplication({ sellerName, idUrl })
                           }}
                         />
 
@@ -240,6 +246,7 @@ function SellerApplications() {
                               icon="check_circle"
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
+                                updateSellerApplication(id, 'Approved');
                               }}
                             />
 
@@ -248,6 +255,7 @@ function SellerApplications() {
                               icon="cancel"
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
+                                updateSellerApplication(id, 'Denied');
                               }}
                             />
                           </div>
@@ -267,7 +275,7 @@ function SellerApplications() {
                             />
 
                             <Text type={textTypes.HEADING.XS}>
-                              {dateApplied} {fullName}
+                              {/* {dateApplied} {fullName} */}
                             </Text>
                           </div>
                         </summary>
@@ -300,10 +308,10 @@ function SellerApplications() {
 
       {isGovernmentIdModalOpen &&
         <GovernmentIdModal
-          governmentId={selectedApplication.governmentId}
+          governmentId={selectedApplication.idUrl}
           handleClose={() => setIsGovernmentIdModalOpen(false)}
           isOpen={isGovernmentIdModalOpen}
-          title={`${selectedApplication.sellerName} Government ID`}
+          title={`${selectedApplication.sellerName} ID`}
         />
       }
     </>

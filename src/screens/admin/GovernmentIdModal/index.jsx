@@ -27,7 +27,9 @@ function GovernmentIdModal({
       <img 
         alt="Government Id"
         className={styles.GovernmentIdModal_id}
+        height={400}
         src={governmentId}
+        width={400}
       />
     </Modal>
   )

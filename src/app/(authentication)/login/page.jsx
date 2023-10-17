@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 import {
   buttonKinds,
@@ -25,12 +25,9 @@ import {
   ButtonLink,
 } from '@/components';
 
-import { getGeneralQuestions, getNewQuestions, getSuggestions } from '@/ducks';
-import { actions as questionsAction } from '@/ducks/reducers/questions';
-import { actions as productsActions } from '@/ducks/reducers/suggestions';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
-import { TokensService, QuestionnairesService, UsersService } from '@/services';
+import { TokensService, UsersService } from '@/services';
 
 import styles from './styles.module.scss';
 
@@ -50,22 +47,12 @@ const validate = (values) => {
 
 
 export default function LoginPage() {
+  const router = useRouter();
   const { redirect } = useSubdomainRedirect();
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
 
-  const productsRestart = useActionDispatch(
-    productsActions.productActions.productRestart
-  );
-
-  const questionsRestart = useActionDispatch(
-    questionsAction.questionActions.questionRestart
-  );
-
-  const generalQuestions = useSelector((store) => getGeneralQuestions(store));
-  const newQuestions = useSelector((store) => getNewQuestions(store));
-  const suggestions = useSelector((store) => getSuggestions(store));
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -135,12 +122,22 @@ export default function LoginPage() {
                       overall: 'Invalid email and/or password.',
                     });
                     break;
+
                   case 401:
                     setIsLoggingIn(false);
                     setErrors({
-                      overall: 'Oops, something went wrong.',
+                      overall: 'The user is pending.',
                     });
+                    router.push('/seller-application?status=pending')
                     break;
+
+                  case 403:
+                    setIsLoggingIn(false);
+                    setErrors({
+                      overall: 'The user is banned.',
+                    });
+                  break;
+
                   case 500:
                     setIsLoggingIn(false);
                     setErrors({

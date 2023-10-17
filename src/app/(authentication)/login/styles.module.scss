@@ -24,7 +24,7 @@
       }
 
       &_errorMessage {
-        margin-top: 8px;
+        margin-top: 8px !important;
         text-align: left;
       }
     }
@@ -52,6 +52,7 @@
 
       &_spinner {
         margin-left: 12px;
+        width: unset !important;
       }
     }
 

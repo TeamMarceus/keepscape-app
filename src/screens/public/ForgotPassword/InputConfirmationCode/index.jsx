@@ -23,11 +23,9 @@ import {
 } from '@/components';
 
 import { useInterval } from '@/hooks';
-import { ConfirmationCodesService } from '@/services';
+import { UsersService } from '@/services';
 
 import styles from './styles.module.scss';
-
-
 
 
 const RESEND_VERIFICATION_COOLDOWN = 30;
@@ -52,7 +50,7 @@ function InputConfirmationCode() {
   const resendVerification = () => {
     setResendCooldown(RESEND_VERIFICATION_COOLDOWN);
 
-    ConfirmationCodesService.acquire(email);
+    UsersService.acquireCode(email);
   };
 
   useInterval(() => {
@@ -89,15 +87,14 @@ function InputConfirmationCode() {
           try {
             // Verify the confirmation code
             const {
-              data: verifyConfirmationCodeData,
               status: verifyConfirmationCodeStatus,
-            } = await ConfirmationCodesService.verify({
+            } = await UsersService.verifyCode({
               email,
-              confirmationCode: values.code,
+              code: values.code,
             });
 
             if (verifyConfirmationCodeStatus === 200) {
-              router.push(`/forgot-password/password?email=${email}&code=${verifyConfirmationCodeData}`);
+              router.push(`/forgot-password/password?email=${email}&code=${values.code}`);
             }
           } catch (error) {
             const {status} = error.response;
@@ -110,12 +107,26 @@ function InputConfirmationCode() {
                 });
                 break;
 
-                case 404:
-                  setIsSubmitting(false);
-                  setErrors({
-                    code: 'The user does not exist.',
-                  });
-                  break;
+              case 401:
+                setIsSubmitting(false);
+                setErrors({
+                  code: 'The user is pending.',
+                });
+                break;
+
+              case 403:
+                setIsSubmitting(false);
+                setErrors({
+                  code: 'The user is banned.',
+                });
+              break;
+
+              case 404:
+                setIsSubmitting(false);
+                setErrors({
+                  code: 'The user does not exist.',
+                });
+              break;
 
               case 500:
                 setIsSubmitting(false);
@@ -150,7 +161,7 @@ function InputConfirmationCode() {
             {errors.overall && (
               <Text
                 className={styles.InputConfirmationCode_withMarginTop}
-                colorClass={colorClasses.BLUE['400']}
+                colorClass={colorClasses.RED['400']}
                 type={textTypes.BODY.XS}
               >
                 {errors.overall}

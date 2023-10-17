@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 import { textTypes, userStatus } from '@/app-globals';
 import { ButtonLink, Text } from '@/components';
 
@@ -9,7 +11,8 @@ import styles from './styles.module.scss';
 
 
 export default function SellerApplication() {
-  const status = 'pending';
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
 
   return (
     <section className={styles.SellerApplication}>

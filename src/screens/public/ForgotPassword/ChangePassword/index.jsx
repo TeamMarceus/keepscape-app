@@ -71,10 +71,10 @@ function ChangePassword() {
           }
 
           const userToBeUpdated = {
-            codeGuid: code,
+            code,
             email,
             newPassword: values.newPassword,
-            confirmPassword: values.confirmPassword,
+            confirmNewPassword: values.confirmPassword,
           };
 
           setIsUpdatingPassword(true);
@@ -97,6 +97,13 @@ function ChangePassword() {
                   overall: 'Invalid input. Please try again.',
                 });
                 break;
+
+              case 403:
+                setIsUpdatingPassword(false);
+                setErrors({
+                  overall: 'The user is banned.',
+                });
+              break;
 
               case 401:
                 setIsUpdatingPassword(false);
@@ -142,7 +149,7 @@ function ChangePassword() {
             {errors.overall && (
               <Text
                 className={styles.ChangePassword_withMarginTop}
-                colorClass={colorClasses.BLUE['400']}
+                colorClass={colorClasses.RED['400']}
                 type={textTypes.BODY.XS}
               >
                 {errors.overall}
