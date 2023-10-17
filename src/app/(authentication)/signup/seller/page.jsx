@@ -262,6 +262,7 @@ export default function SellerSignUpPage() {
               />
 
               <ControlledTextArea
+                error={errors.description}
                 inputClassName={styles.SellerSignUpPage_content_withMargin}
                 name="description"
                 placeholder="What do you sell and why you want to be a seller?"
