@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -10,11 +10,14 @@ import 'slick-carousel/slick/slick-theme.css';
 import Souvenir1 from '%/images/Beaches/souvenir1.png';
 import Souvenir2 from '%/images/Beaches/souvenir2.png';
 import { colorClasses, textTypes } from '@/app-globals';
-import { Button, CardImage, Text } from '@/components'
+import { Button, CardImage, Preloader, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
+import { useProducts } from '@/hooks';
+
 import { beaches } from '../constants/beaches';
+import { categories } from '../constants/categories';
 import { provinces } from '../constants/provinces';
 
 import styles from './styles.module.scss'
@@ -162,134 +165,12 @@ const suggestions = [
   }
 ];
 
-const categories = [
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/210/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/220/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/230/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/240/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/250/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/260/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/270/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/280/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/290/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/210/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  },
-  {
-    name: 'necklace',
-    image: 'https://picsum.photos/200/300'
-  }
-]
-
-const products = [
-  {
-    id: 1,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/310',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 2,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/320',
-    price: 100,
-    rating: 5,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 3,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/330',
-    price: 100,
-    rating: 3,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 4,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/340',
-    price: 100,
-    rating: 2,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 5,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/350',
-    price: 100,
-    rating: 1,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 6,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/360',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 7,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/370',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 8,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/380',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-]
-
 const productSliderSettings = {
   lazyLoad: true,
   dots: false,
   infinite: false,
   speed: 100,
-  slidesToShow: 5.5,
+  slidesToShow: 5,
   slidesToScroll: 1,
 };
 
@@ -306,8 +187,10 @@ const bannerSliderSettings = {
 function Main() {
   const router = useRouter();
   const user = useSelector((store) => getUser(store));
+  const [page, setPage] = useState(1);
 
-  
+  const {isLoading: isProductsLoading, products, totalPages } = useProducts({ page });
+
   return (
     <div className={styles.Main}>
       <div className={styles.Main_banner}>
@@ -429,7 +312,7 @@ function Main() {
         <div className={styles.Main_provinces_list}>
           {provinces.map((province, index) => (
             <CardImage
-             key={index}
+              key={index}
               isClickable
               className={styles.Main_provinces_item}
               image={province.image}
@@ -437,7 +320,7 @@ function Main() {
               imageWidth={180}
               name={province.name}
               onClick={() => 
-                  router.push(`/keepscape/province/${province.name}`)
+                router.push(`/keepscape/province/${province.name}`)
               }
             />
           ))}
@@ -460,12 +343,12 @@ function Main() {
                 key={index}
                 isClickable
                 className={styles.Main_categories_item}
-                imageHeight={120}
-                imageString={category.image}
-                imageWidth={130}
+                image={category.image}
+                imageHeight={180}
+                imageWidth={180}
                 name={category.name}
                 onClick={() => 
-                    router.push(`/keepscape/category/${category.name}`)
+                  router.push(`/keepscape/category/${category.name}`)
                 }
               />
             ))}
@@ -482,28 +365,34 @@ function Main() {
             DAILY DISCOVER
           </Text>
         </div>
-
-        <div className={styles.Main_discover_products}>
-           {products.map((product, index) => (
-              <ProductCard
-                key={index}
-                isClickable
-                className={styles.Main_discover_products_item}
-                id={product.id}
-                image={product.image}
-                name={product.name}
-                place={product.place}
-                price={product.price}
-                rating={product.rating}
-                userId={user?.guid}
-              />
-            ))}
-        </div>  
+        
+        {isProductsLoading ? (
+          <Preloader />
+        ) : (
+          <div className={styles.Main_discover_products}>
+            {products.length > 0 && products.map((product, index) => (
+                <ProductCard
+                  key={index}
+                  isClickable
+                  className={styles.Main_discover_products_item}
+                  id={product.id}
+                  image={product.image}
+                  name={product.name}
+                  place={product.province.name}
+                  price={product.price}
+                  rating={product.stars}
+                  userId={user?.id}
+                />
+              ))}
+          </div>  
+        )}
 
         <Button
           className={styles.Main_discover_button}
-          disabled={false}
-          onClick={() => {}}
+          disabled={isProductsLoading || page === totalPages}
+          onClick={() => {
+            setPage(page + 1);
+          }}
         >
           See More
         </Button> 

@@ -25,6 +25,7 @@ import {
   IconButton, 
   RatingStars, 
   ReviewCard, 
+  ScreenLoader, 
   SellerCard, 
   Text 
 } from '@/components'
@@ -32,30 +33,30 @@ import {
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { getUser, getDeliveryDetails } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
-import { useActionDispatch } from '@/hooks';
+import { useActionDispatch, useProduct } from '@/hooks';
 
 import styles from './styles.module.scss'
 
-const product =
-{
-  id: '1',
-  name: 'Butanding Keychain',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies.',
-  images: [
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/400',
-    'https://picsum.photos/200/500',
-    'https://picsum.photos/200/600',
-    'https://picsum.photos/200/700',
-    'https://picsum.photos/200/800',
-  ],
-  price: 100,
-  rating: 4,
-  place: 'Cebu, Oslob',
-  numOfReviews: 100,
-  totalSold: 1000,
-  isCustomizable: true,
-}
+// const product =
+// {
+//   id: '1',
+//   name: 'Butanding Keychain',
+//   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies.',
+//   images: [
+//     'https://picsum.photos/200/300',
+//     'https://picsum.photos/200/400',
+//     'https://picsum.photos/200/500',
+//     'https://picsum.photos/200/600',
+//     'https://picsum.photos/200/700',
+//     'https://picsum.photos/200/800',
+//   ],
+//   price: 100,
+//   rating: 4,
+//   place: 'Cebu, Oslob',
+//   numOfReviews: 100,
+//   totalSold: 1000,
+//   isCustomizable: true,
+// }
 
 const seller = {
   id: '1',
@@ -72,7 +73,7 @@ const sliderSettings = {
   dots: false,
   infinite: false,
   speed: 500,
-  slidesToShow: 5,
+  slidesToShow: 4,
   slidesToScroll: 1,
 };
 
@@ -152,8 +153,14 @@ function Product({ id }) {
   const [customInput, setCustomInput] = useState('')
   const [clickedRating, setClickedRating] = useState(0)
 
+  const { isLoading: isProductLoading, product } = useProduct(id);
+
   const filteredReviews = clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) :
     reviews.filter((review) => review.rating === clickedRating)
+
+  if (isProductLoading) {
+    return <ScreenLoader/>
+  }
 
   return (
     <div className={styles.Product}>
@@ -269,14 +276,14 @@ function Product({ id }) {
                   {quantity}
                 </Text>
                 <IconButton 
-                  disabled={quantity >= 10}
+                  disabled={quantity >= product.quantity}
                   icon="add"
                   type={iconButtonTypes.OUTLINE.LG}
                   onClick={()=> setQuantity(quantity + 1)}
                 />
               </div>
               <Text colorClass={colorClasses.NEUTRAL['500']}>
-                10 pieces available
+                {product.quantity} pieces available
               </Text>
             </div>
 
@@ -320,10 +327,12 @@ function Product({ id }) {
         </Card>
         <div className={styles.Product_seller}>
           <SellerCard
-            contactNumber={seller.contactNumber}
-            description={seller.description}
-            email={seller.email}
-            name={seller.name}
+            contactNumber={product.seller.phone}
+            description={product.seller.description}
+            email={product.seller.email}
+            name={product.seller.name}
+
+            // TODO: replace with actual rating
             rating={seller.rating}
             sellerId={seller.id}
             totalSold={seller.totalSold}
@@ -331,6 +340,7 @@ function Product({ id }) {
 
           <ButtonLink
             className={styles.Product_seller_button}
+            // TODO: replace with actual ID
             to={`/buyer/seller-products?id=${seller.id}`}
             type={buttonTypes.SECONDARY.BLUE}
           >

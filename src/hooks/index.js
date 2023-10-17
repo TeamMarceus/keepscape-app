@@ -5,6 +5,8 @@ export { default as useInterval } from './useInterval';
 export { default as useNoAuthRoute } from './useNoAuthRoute';
 export { default as useOnClickOutside } from './useOnClickOutside';
 export { default as usePrivateRoute } from './usePrivateRoute';
+export { default as useProduct } from './useProduct';
+export { default as useProducts } from './useProducts';
 export { default as useProductCategories } from './useProductCategories';
 export { default as useProductPlaces } from './useProductPlaces';
 export { default as useQuestionnaires } from './useQuestionnaires';

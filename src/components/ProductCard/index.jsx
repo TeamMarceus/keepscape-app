@@ -16,7 +16,7 @@ function ProductCard({
   rating,
   place,
   id,
-  userGuid = null,
+  userId = null,
 }) {
   const router = useRouter();
 
@@ -28,9 +28,7 @@ function ProductCard({
       )}
       isClickable={isClickable}
       onClick={() => {
-    
           router.push(`/buyer/product/${id}`);
-        
       }}
     >
 
@@ -85,7 +83,7 @@ ProductCard.propTypes = {
   rating: PropTypes.number.isRequired,
   place: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  userGuid: PropTypes.string,
+  userId: PropTypes.string,
 };
 
 export default ProductCard;

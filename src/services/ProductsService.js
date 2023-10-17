@@ -20,8 +20,8 @@ const UsersService = {
     maxPrice,
     page,
     pageSize,
-    decending,
-  }) => axios.get(`${BASE_URL}/products`, {
+    descending,
+  }) => axios.get(`${BASE_URL}`, {
     params: {
       search,
       province,
@@ -32,7 +32,7 @@ const UsersService = {
       maxPrice,
       page,
       pageSize,
-      decending,
+      descending,
     },
   }),
   retrieveCategories: () => axios.get(`${BASE_URL}/categories`),

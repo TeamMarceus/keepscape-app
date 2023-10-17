@@ -7,6 +7,7 @@ import {
   colorClasses,
   iconButtonTypes,
   textTypes,
+  userStatus,
 } from '@/app-globals';
 
 import { 
@@ -246,7 +247,7 @@ function SellerApplications() {
                               icon="check_circle"
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
-                                updateSellerApplication(id, 'Approved');
+                                updateSellerApplication(id, userStatus.APPROVED);
                               }}
                             />
 
@@ -255,7 +256,7 @@ function SellerApplications() {
                               icon="cancel"
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
-                                updateSellerApplication(id, 'Denied');
+                                updateSellerApplication(id, userStatus.REJECTED);
                               }}
                             />
                           </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { toast } from 'sonner';
 
+import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
 const useSellerApplications = () => {
@@ -14,12 +15,23 @@ const useSellerApplications = () => {
     );
 
     if (updateSellerApplicationStatus === 200) {
-      toast.error('Seller Application Denied.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      if (status === userStatus.APPROVED) {
+        toast.success('Seller Application Approved.', {
+          style: {
+            backgroundColor: '#1ab394',
+            color: '#fff',
+          },
+        });
+      }
+
+      if (status === userStatus.REJECTED) {
+        toast.error('Seller Application Rejected.', {
+          style: {
+            backgroundColor: '#ed5565',
+            color: '#fff',
+          },
+        });
+      }
 
       setSellerApplications((prevSellerApplications) =>
         prevSellerApplications.filter((prevSellerApplication) => prevSellerApplication.id !== sellerApplicationId)

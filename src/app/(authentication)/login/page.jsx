@@ -15,6 +15,7 @@ import {
   inputKinds,
   spinnerSizes,
   textTypes,
+  userStatus,
 } from '@/app-globals';
 
 import {
@@ -44,7 +45,6 @@ const validate = (values) => {
 
   return errors;
 };
-
 
 export default function LoginPage() {
   const router = useRouter();
@@ -113,30 +113,24 @@ export default function LoginPage() {
                 );                
               } catch (error) {
                 setIsLoggingIn(false);
-                const {status} = error.response;
-
+                const { status } = error.response;
+                const { data } = error.response;
+     
                 switch (status) {
                   case 400:
                     setIsLoggingIn(false);
-                    setErrors({
-                      overall: 'Invalid email and/or password.',
-                    });
+                    if (data.userStatus === userStatus.PENDING) {
+                      router.push('/seller-application?status=Pending');
+                    } else if (data.userStatus === userStatus.REJECTED) {
+                      router.push('/seller-application?status=Rejected');
+                    } else if (data.userStatus === userStatus.BANNED) {
+                      router.push('/seller-application?status=Banned');
+                    } else {
+                      setErrors({
+                        overall: 'Invalid email and/or password.',
+                      });
+                    }
                     break;
-
-                  case 401:
-                    setIsLoggingIn(false);
-                    setErrors({
-                      overall: 'The user is pending.',
-                    });
-                    router.push('/seller-application?status=pending')
-                    break;
-
-                  case 403:
-                    setIsLoggingIn(false);
-                    setErrors({
-                      overall: 'The user is banned.',
-                    });
-                  break;
 
                   case 500:
                     setIsLoggingIn(false);

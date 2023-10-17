@@ -6,78 +6,80 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import {  Filters, NoResults, Pagination, RatingStars, Text } from '@/components'
+import {  Filters, NoResults, Pagination, Preloader, RatingStars, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
+import { useProducts } from '@/hooks';
+
 import styles from './styles.module.scss'
 
-const products = [
-  {
-    id: 1,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/310',
-    price: 100,
-    rating: 4,
-    place: 'Negros Oriental'
-  },
-  {
-    id: 2,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/320',
-    price: 100,
-    rating: 5,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 3,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/330',
-    price: 100,
-    rating: 3,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 4,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/340',
-    price: 100,
-    rating: 2,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 5,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/350',
-    price: 100,
-    rating: 1,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 6,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/360',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 7,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/370',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-  {
-    id: 8,
-    name: 'Butanding Keychain',
-    image: 'https://picsum.photos/200/380',
-    price: 100,
-    rating: 4,
-    place: 'Cebu, Oslob'
-  },
-]
+// const products = [
+//   {
+//     id: 1,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/310',
+//     price: 100,
+//     rating: 4,
+//     place: 'Negros Oriental'
+//   },
+//   {
+//     id: 2,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/320',
+//     price: 100,
+//     rating: 5,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 3,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/330',
+//     price: 100,
+//     rating: 3,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 4,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/340',
+//     price: 100,
+//     rating: 2,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 5,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/350',
+//     price: 100,
+//     rating: 1,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 6,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/360',
+//     price: 100,
+//     rating: 4,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 7,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/370',
+//     price: 100,
+//     rating: 4,
+//     place: 'Cebu, Oslob'
+//   },
+//   {
+//     id: 8,
+//     name: 'Butanding Keychain',
+//     image: 'https://picsum.photos/200/380',
+//     price: 100,
+//     rating: 4,
+//     place: 'Cebu, Oslob'
+//   },
+// ]
 
 function SellerProducts({ id }) {
   const user = useSelector(getUser);
@@ -85,6 +87,15 @@ function SellerProducts({ id }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams.toString());
+
+  const {isLoading: isProductsLoading, products } = 
+  useProducts({ 
+    page: newSearchParams.get('page'),
+    sellerId: id, 
+    minPrice: newSearchParams.get('minimumPrice'),
+    maxPrice: newSearchParams.get('maximumPrice'),
+    rating: newSearchParams.get('rating'),
+  });
 
   return (
     <div className={styles.SellerProducts}>
@@ -138,49 +149,52 @@ function SellerProducts({ id }) {
           route="/buyer/seller-products"
           title="All Products"
         />
+        {isProductsLoading ? (
+            <Preloader/>
+          ) : (
+          <div className={cn(styles.SellerProducts_products, {
+            [styles.SellerProducts_products_empty]: products.length === 0
+          })}>
+            {products.length > 0 ?
+              <>
+                <div className={styles.SellerProducts_products_list}>
+                  {products.map((product, index) => (
+                    <ProductCard
+                      key={index}
+                      isClickable
+                      className={styles.Province_products_item}
+                      id={product.id}
+                      image={product.image}
+                      name={product.name}
+                      place={product.place}
+                      price={product.price}
+                      rating={product.rating}
+                      userGuid={user?.guid}
+                    />
+                  ))}
+                </div>
 
-        <div className={cn(styles.SellerProducts_products, {
-          [styles.SellerProducts_products_empty]: products.length === 0
-        })}>
-          {products.length > 0 ?
-            <>
-              <div className={styles.SellerProducts_products_list}>
-                {products.map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    isClickable
-                    className={styles.Province_products_item}
-                    id={product.id}
-                    image={product.image}
-                    name={product.name}
-                    place={product.place}
-                    price={product.price}
-                    rating={product.rating}
-                    userGuid={user?.guid}
-                  />
-                ))}
-              </div>
-
-              <Pagination 
-                className={styles.SellerProducts_pagination}
-                currentPage={currentPage}
-                pageJump={(value) => {
-                  setCurrentPage(value);
-                  
-                  newSearchParams.delete('page');
-                  newSearchParams.append('page', value);
-                  router.push(`/buyer/seller-products?${newSearchParams.toString()}`, { scroll: false })
-                }}
-                totalPages={10}
+                <Pagination 
+                  className={styles.SellerProducts_pagination}
+                  currentPage={currentPage}
+                  pageJump={(value) => {
+                    setCurrentPage(value);
+                    
+                    newSearchParams.delete('page');
+                    newSearchParams.append('page', value);
+                    router.push(`/buyer/seller-products?${newSearchParams.toString()}`, { scroll: false })
+                  }}
+                  totalPages={10}
+                />
+              </>
+            :
+              <NoResults 
+                className={styles.SellerProducts_noResults}
+                message="No products found"
               />
-            </>
-          :
-            <NoResults 
-              className={styles.SellerProducts_noResults}
-              message="No products found"
-            />
-          }
-        </div>
+            }
+          </div>
+        )}
 
       </div>
     </div>

@@ -3,5 +3,5 @@ export const AUTHENTICATION_ROUTES = {
   PAGE_NOT_FOUND: '/page-not-found',
   SIGNUP: '/signup',
   LOGOUT: '/logout',
-  SELLER_APPLICATION: '/seller-application',
+  SELLER_APPLICATION: '/seller-application?status=Pending',
 };

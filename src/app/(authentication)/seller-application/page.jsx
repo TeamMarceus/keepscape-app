@@ -21,7 +21,8 @@ export default function SellerApplication() {
           type={textTypes.HEADING.MD}
         >
            {status === userStatus.PENDING && 'Seller Application'}
-           {status === userStatus.DENIED && 'Application Denied'}
+           {status === userStatus.REJECTED && 'Application Denied'}
+           {status === userStatus.BANNED && 'Account Banned'}
         </Text>
 
         <Text 
@@ -31,8 +32,8 @@ export default function SellerApplication() {
           {status === userStatus.PENDING &&
            'Your application has been sent. We will contact you via email about the status of your application as soon as possible.'}
 
-          {status === userStatus.DENIED  &&
-            'If you believe this is mistaken, please contact us through our email with your appeal, and refer us with the ID: 1234567890'}
+          {(status === userStatus.REJECTED || status === userStatus.BANNED ) &&
+            'If you believe this is mistaken, please contact us through our email keepscale.ecommerce@gmail.com with your appeal '}
         </Text>
 
         <ButtonLink
