@@ -8,9 +8,12 @@ import Logo from '%/images/Logo/logo-name.svg'
 import ph from '%/images/Misc/ph.png'
 import { Text } from '@/components';
 
+import { useWindowSize } from '@/hooks';
+
 import styles from './styles.module.scss';
 
 function Footer() {
+  const { windowSize } = useWindowSize();
   return (
     <footer className={styles.Footer}>
       <div className={styles.Footer_container}>
@@ -30,9 +33,9 @@ function Footer() {
         </Link>
 
           <Text className={styles.Footer_info_text}>
-            Contact us at keepscape.ecommerce@gmail.com | All Rights Reserved 2023{' '}
+            {windowSize.width > 575 && 'Contact us at keepscape.ecommerce@gmail.com | '} All Rights Reserved 2023{' '}
             <Image
-              alt="🇵🇭"
+              alt="🇵🇭" 
               className={styles.Footer_info_text_flag}
               height={16}
               src={ph}

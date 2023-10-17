@@ -14,7 +14,7 @@ import { Button, CardImage, Preloader, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
-import { useProducts } from '@/hooks';
+import { useProducts, useWindowSize } from '@/hooks';
 
 import { beaches } from '../constants/beaches';
 import { categories } from '../constants/categories';
@@ -165,15 +165,6 @@ const suggestions = [
   }
 ];
 
-const productSliderSettings = {
-  lazyLoad: true,
-  dots: false,
-  infinite: false,
-  speed: 100,
-  slidesToShow: 5,
-  slidesToScroll: 1,
-};
-
 const bannerSliderSettings = {
   autoplay: true,
   autoplaySpeed: 2000,
@@ -186,8 +177,32 @@ const bannerSliderSettings = {
 
 function Main() {
   const router = useRouter();
+  const { windowSize } = useWindowSize();
   const user = useSelector((store) => getUser(store));
   const [page, setPage] = useState(1);
+
+  let slidesToShow = null;
+  if (windowSize.width >= 991 && windowSize.width < 1199) {
+    slidesToShow = 4;
+  } else if (windowSize.width >= 767 && windowSize.width < 991) {
+    slidesToShow = 3;
+  } else if (windowSize.width >= 575 && windowSize.width < 767) {
+    slidesToShow = 2;
+  } else if (windowSize.width < 575) {
+    slidesToShow = 1;
+  } else {
+    slidesToShow = 5;
+  }
+ 
+  const productSliderSettings = {
+    lazyLoad: true,
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow,
+    slidesToScroll: 1,
+  };
+  
 
   const {isLoading: isProductsLoading, products, totalPages } = useProducts({ page });
 

@@ -10,9 +10,19 @@
     @include flex-center;
     gap: 4px;
     margin-bottom: 40px;
+
+    @include breakpoint(lg) {
+      display: block;
+      width: 100%;
+    }
     
     &_slider {
       max-width: 750px;
+
+      @include breakpoint(lg) {
+        max-width: 100%;
+        width: 100%;
+      }
       
       > div {
         > ul {
@@ -27,12 +37,34 @@
 
     &_image {
       height: 250px;
+
+      > img {
+        @include breakpoint(lg) {
+          width: 900px;
+        }
+
+        @include breakpoint(md) {
+          width: 600px;
+        }
+
+        @include breakpoint(sm) {
+          width: 300px;
+        }
+
+        // @include breakpoint(xs) {
+        //   width: 100px;
+        // }
+      }
     }
 
     &_right {
       display: flex;
       flex-direction: column;
       gap: 4px;
+
+      @include breakpoint(lg) {
+        display: none;
+      }
     }
   }
 
@@ -134,12 +166,19 @@
     padding: 32px 24px;
     
     &_list {
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      padding: 0 24px;
-      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      place-items: center;
+      gap: 20px;
       margin-top: 24px;
+
+      @include breakpoint(md) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @include breakpoint(xs) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 
@@ -164,6 +203,14 @@
       margin-top: 24px;
       row-gap: 12px;
 
+      @include breakpoint(md) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       &_item {
         &:hover {
           scale: 1.05;
@@ -175,6 +222,14 @@
       align-self: center;
       margin-top: 40px;
       width: 15%;
+
+      @include breakpoint(md) {
+        width: 30%;
+      }
+
+      @include breakpoint(sm) {
+        width: 50%;
+      }
     }
   }
 }

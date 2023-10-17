@@ -5,9 +5,10 @@ import { toast } from 'sonner';
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
-const useSellerApplications = () => {
+const useSellerApplications = ({ page, pageSize }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [sellerApplications, setSellerApplications] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   const updateSellerApplication = async (sellerApplicationId, status) => {
     const { status: updateSellerApplicationStatus } = await UsersService.updateSellerApplication(
@@ -49,19 +50,20 @@ const useSellerApplications = () => {
 
   useEffect(() => {
     const getSellerApplications = async () => {
-      const { data: getSellerApplicationsResponse } = await UsersService.retrieveSellerApplications({status: 'Pending', page: 1});
+      const { data: getSellerApplicationsResponse } = await UsersService.retrieveSellerApplications({status: 'Pending', page, pageSize});
 
       if (getSellerApplicationsResponse) {
-        setSellerApplications(getSellerApplicationsResponse);
+        setSellerApplications(getSellerApplicationsResponse.sellerApplications);
+        setTotalPages(getSellerApplicationsResponse.totalPages);
       }
 
       setIsLoading(false);
     };
 
     getSellerApplications();
-  }, []);
+  }, [page, pageSize]);
 
-  return { isLoading, sellerApplications, updateSellerApplication };
+  return { isLoading, sellerApplications, totalPages, updateSellerApplication };
 };
 
 export default useSellerApplications;

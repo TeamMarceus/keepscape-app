@@ -54,6 +54,10 @@
     &_scrollLinks {
       display: flex;
       align-items: center;
+
+      @include breakpoint(xs) {
+        display: none;
+      }
     }
 
     &_link {
@@ -83,11 +87,7 @@
     justify-content: center;
 
     @include breakpoint(sm) {
-      width: 300px;
-    }
-
-    @include breakpoint(xs) {
-      width: 145px;
+      display: none;
     }
 
     &_icon {
@@ -103,9 +103,10 @@
   &_search {
     @include flex-center;
     margin: 0 12px;
+    width: 100%;
 
     &_input {
-      width: 900px;
+      width: 100%;
 
       > input {
         border-radius: 4px 0 0 4px;
@@ -159,6 +160,10 @@
     justify-content: flex-end;
     position: relative;
 
+    @include breakpoint(xs) {
+      margin-left: auto;
+    }
+
     &_accountIcon {
       color: $neutral-0 !important;
       margin: 0 4px 0 0;
@@ -173,17 +178,6 @@
     &_name {
       @include heading(1rem, 1.67);
       color: $neutral-0;
-
-      @include breakpoint(sm) {
-        max-width: 150px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      @include breakpoint(xs) {
-        max-width: 50px;
-      }
     }
 
     &_button {

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import cn from 'classnames';
 
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import {
   buttonTypes,
   colorClasses,
@@ -9,6 +11,7 @@ import {
   textTypes,
   userStatus,
 } from '@/app-globals';
+
 
 import { 
   IconButton, 
@@ -19,7 +22,8 @@ import {
   Icon, 
   NoResults, 
   Text, 
-  IconLink
+  IconLink,
+  Pagination
 } from '@/components';
 
 import { useSellerApplications, useWindowSize } from '@/hooks';
@@ -30,49 +34,22 @@ import PreloaderSellerApplications from './Preloader';
 
 import styles from './styles.module.scss';
 
-const applications = [
-  {
-    id: '1',
-    dateApplied: '2021-08-01',
-    fullName: 'John Doe',
-    sellerName: 'Burger King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-  },
-  {
-    id: '2',
-    dateApplied: '2021-08-01',
-    fullName: 'Jane Doe',
-    sellerName: 'Hotdog King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-  },
-  {
-    id: '3',
-    dateApplied: '2021-08-01',
-    fullName: 'Johnny Deep',
-    sellerName: 'Donut King',
-    emailAddress: 'john@gmail.com',
-    mobileNumber: '09123456789',
-    governmentId: 'https://picsum.photos/200',
-    description: 'I am a burger seller',
-  },
-];
-
 function SellerApplications() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
   const [search, setSearch] = useState('');
   const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
 
+  const page = searchParams.get('page') || 1;
+  const [currentPage, setCurrentPage] = useState(page);
+
   const {
     isLoading: isApplicationsLoading, 
     sellerApplications, 
+    totalPages,
     updateSellerApplication 
-  } = useSellerApplications();
+  } = useSellerApplications({ page: currentPage, pageSize: 10});
 
   const [selectedApplication, setSelectedApplication] = useState({})
 
@@ -109,193 +86,206 @@ function SellerApplications() {
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredApplications.length ? (
-              <div className={styles.SellerApplications_grid}>
-                {/* Header of OrderGrid starts here */}
-                <Card
-                  className={cn(
-                    styles.SellerApplications_grid_applicationGrid,
-                    styles.SellerApplications_grid_headers
-                  )}
-                >
-                  <div
+              <>
+                <div className={styles.SellerApplications_grid}>
+                  {/* Header of OrderGrid starts here */}
+                  <Card
                     className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
+                      styles.SellerApplications_grid_applicationGrid,
+                      styles.SellerApplications_grid_headers
                     )}
                   >
-                    Date Applied
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Date Applied
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    Full Name
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Full Name
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    Seller Name
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Seller Name
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    Email Address
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Email Address
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    Mobile Number
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Mobile Number
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    Description
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Description
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column
-                    )}
-                  >
-                    ID
-                  </div>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      ID
+                    </div>
 
-                  <div
-                    className={cn(
-                      styles.SellerApplications_grid_header,
-                      styles.SellerApplications_grid_column,
-                      styles.SellerApplications_grid_header_action,
-                    )}
-                  >
-                    Actions
-                  </div>
-                  
-                  {/* Header of OrderGrid ends here */}
-                </Card>
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column,
+                        styles.SellerApplications_grid_header_action,
+                      )}
+                    >
+                      Actions
+                    </div>
+                    
+                    {/* Header of OrderGrid ends here */}
+                  </Card>
 
-                {/* Body of OrderGrid starts here */}
-                {filteredApplications.map(
-                  ({ id, dateApplied, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
-                    windowSize.width > 767 ? (
-                      // Desktop View
-                      <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
-                        <div className={styles.SellerApplications_grid_column}>
-                          {/* {dateApplied} */} 2021-08-01
-                        </div>
-
-                        <div className={styles.SellerApplications_grid_column}>
-                          {firstName} {lastName}
-                        </div>
-
-                        <ButtonLink
-                          className={styles.SellerApplications_grid_column}
-                          to={`/admin/sellers?name=${sellerName}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {sellerName}
-                        </ButtonLink>
-                          
-                        <div className={styles.SellerApplications_grid_column}>
-                          {email}
-                        </div>
-
-                        <div className={styles.SellerApplications_grid_column}>
-                          {/* {phoneNumber} */} 09123456789
-                        </div>
-
-                        <div className={styles.SellerApplications_grid_column}>
-                          {description}
-                        </div>
-
-                        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                        <img
-                          alt="Government Id"
-                          className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
-                          height={60}
-                          src={idUrl}
-                          width={60}
-                          onClick={() => {
-                            setIsGovernmentIdModalOpen(true);
-                            setSelectedApplication({ sellerName, idUrl })
-                          }}
-                        />
-
-                        <div className={styles.SellerApplications_grid_column}>
-                          <div className={styles.SellerApplications_grid_buttons}>
-                            <IconButton
-                              className={styles.SellerApplications_grid_checkButton}
-                              icon="check_circle"
-                              type={iconButtonTypes.ICON.MD}
-                              onClick={() => {
-                                updateSellerApplication(id, userStatus.APPROVED);
-                              }}
-                            />
-
-                            <IconButton
-                              className={styles.SellerApplications_grid_closeButton}
-                              icon="cancel"
-                              type={iconButtonTypes.ICON.MD}
-                              onClick={() => {
-                                updateSellerApplication(id, userStatus.REJECTED);
-                              }}
-                            />
+                  {/* Body of OrderGrid starts here */}
+                  {filteredApplications.map(
+                    ({ id, dateApplied, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
+                      windowSize.width > 767 ? (
+                        // Desktop View
+                        <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
+                          <div className={styles.SellerApplications_grid_column}>
+                            {/* {dateApplied} */} 2021-08-01
                           </div>
-                        </div>
-                      </Card>
-                    ) : (
-                      // Mobile View
-                      <details
-                        key={id}
-                        className={styles.SellerApplications_grid_applicationGrid}
-                      >
-                        <summary className={styles.SellerApplications_grid_title}>
-                          <div className={styles.SellerApplications_grid_title_info}>
-                            <Icon
-                              className={styles.SellerApplications_grid_title_icon}
-                              icon="expand_more"
-                            />
 
-                            <Text type={textTypes.HEADING.XS}>
-                              {/* {dateApplied} {fullName} */}
-                            </Text>
+                          <div className={styles.SellerApplications_grid_column}>
+                            {firstName} {lastName}
                           </div>
-                        </summary>
 
-                        <div className={styles.SellerApplications_grid_column}>
-                          <Text
-                            colorClass={colorClasses.NEUTRAL['400']}
-                            type={textTypes.HEADING.XXS}
+                          <ButtonLink
+                            className={styles.SellerApplications_grid_column}
+                            to={`/admin/sellers?name=${sellerName}`}
+                            type={buttonTypes.TEXT.NEUTRAL}
                           >
-                            SellerName:
-                          </Text>
+                            {sellerName}
+                          </ButtonLink>
+                            
+                          <div className={styles.SellerApplications_grid_column}>
+                            {email}
+                          </div>
 
-                          <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
-                        </div>
-                      </details>
-                    )
-                )}
-                {/* Body of OrderGrid ends here */}
-              </div>
+                          <div className={styles.SellerApplications_grid_column}>
+                            {/* {phoneNumber} */} 09123456789
+                          </div>
+
+                          <div className={styles.SellerApplications_grid_column}>
+                            {description}
+                          </div>
+
+                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          <img
+                            alt="Government Id"
+                            className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
+                            height={60}
+                            src={idUrl}
+                            width={60}
+                            onClick={() => {
+                              setIsGovernmentIdModalOpen(true);
+                              setSelectedApplication({ sellerName, idUrl })
+                            }}
+                          />
+
+                          <div className={styles.SellerApplications_grid_column}>
+                            <div className={styles.SellerApplications_grid_buttons}>
+                              <IconButton
+                                className={styles.SellerApplications_grid_checkButton}
+                                icon="check_circle"
+                                type={iconButtonTypes.ICON.MD}
+                                onClick={() => {
+                                  updateSellerApplication(id, userStatus.APPROVED);
+                                }}
+                              />
+
+                              <IconButton
+                                className={styles.SellerApplications_grid_closeButton}
+                                icon="cancel"
+                                type={iconButtonTypes.ICON.MD}
+                                onClick={() => {
+                                  updateSellerApplication(id, userStatus.REJECTED);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Card>
+                      ) : (
+                        // Mobile View
+                        <details
+                          key={id}
+                          className={styles.SellerApplications_grid_applicationGrid}
+                        >
+                          <summary className={styles.SellerApplications_grid_title}>
+                            <div className={styles.SellerApplications_grid_title_info}>
+                              <Icon
+                                className={styles.SellerApplications_grid_title_icon}
+                                icon="expand_more"
+                              />
+
+                              <Text type={textTypes.HEADING.XS}>
+                                {/* {dateApplied} {fullName} */}
+                              </Text>
+                            </div>
+                          </summary>
+
+                          <div className={styles.SellerApplications_grid_column}>
+                            <Text
+                              colorClass={colorClasses.NEUTRAL['400']}
+                              type={textTypes.HEADING.XXS}
+                            >
+                              SellerName:
+                            </Text>
+
+                            <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
+                          </div>
+                        </details>
+                      )
+                  )}
+                  {/* Body of OrderGrid ends here */}
+                </div>
+
+                <Pagination 
+                  className={styles.SellerApplications_pagination}
+                  currentPage={currentPage}
+                  pageJump={(value) => {
+                    setCurrentPage(value);
+
+                    router.push(`/admin/seller-applications?page=${value}`, { scroll: false })
+                  }}
+                  totalPages={totalPages}
+                />
+              </>
             ) : (
               <NoResults
                 className={styles.SellerApplications_noResults}
@@ -304,7 +294,6 @@ function SellerApplications() {
             )}
           </>
         )}
-
       </div>
 
       {isGovernmentIdModalOpen &&

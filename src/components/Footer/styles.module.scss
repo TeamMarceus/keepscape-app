@@ -25,6 +25,7 @@
   &_info {
     &_text {
       @include flex-center;
+      text-align: center;
 
       @include breakpoint(xs) {
         font-size: 12px;

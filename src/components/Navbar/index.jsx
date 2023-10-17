@@ -47,19 +47,19 @@ function Navbar() {
                 {userType === userTypes.BUYER &&
                   <>
                     <LinkScroll
-                    key="preferences"
-                    smooth
-                    className={styles.Navbar_links_link}
-                    duration={700}
-                    offset={-200}
-                    to="preferences"
-                  >
-                    <Text
-                      className={styles.Navbar_links_link_text}
-                      colorClass={colorClasses.NEUTRAL['0']}
+                      key="preferences"
+                      smooth
+                      className={styles.Navbar_links_link}
+                      duration={300}
+                  offset={-200}
+                      to="preferences"
                     >
-                      Shop by Preferences
-                    </Text>
+                      <Text
+                        className={styles.Navbar_links_link_text}
+                        colorClass={colorClasses.NEUTRAL['0']}
+                      >
+                        Shop by Preferences
+                      </Text>
                     </LinkScroll>
                     |
                   </>
@@ -68,7 +68,7 @@ function Navbar() {
                   key="province"
                   smooth
                   className={styles.Navbar_links_link}
-                  duration={700}
+                  duration={300}
                   offset={-200}
                   to="province"
                 >
@@ -84,7 +84,7 @@ function Navbar() {
                   key="category"
                   smooth
                   className={styles.Navbar_links_link}
-                  duration={700}
+                  duration={300}
                   offset={-200}
                   to="category"
                 >
@@ -100,7 +100,7 @@ function Navbar() {
                   key="discover"
                   smooth
                   className={styles.Navbar_links_link}
-                  duration={700}
+                  duration={300}
                   offset={-200}
                   to="discover"
                 >

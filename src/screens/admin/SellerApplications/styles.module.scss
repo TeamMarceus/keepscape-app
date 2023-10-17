@@ -39,6 +39,7 @@
     &_applicationGrid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;
@@ -124,6 +125,10 @@
     &_closeButton {
       color: $red-400 !important;
     }
+  }
+
+  &_pagination {
+    margin-top: 60px;
   }
 
   &_noResults {
