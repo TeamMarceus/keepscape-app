@@ -8,15 +8,15 @@ import { Modal } from '@/components';
 
 import styles from './styles.module.scss';
 
-function GovernmentIdModal({
+function IdModal({
   isOpen,
   handleClose,
-  governmentId,
+  image,
   title,
 }) {
   return (
     <Modal
-      className={styles.GovernmentIdModal}
+      className={styles.IdModal}
       handleClose={handleClose}
       isOpen={isOpen}
       position={modalPositions.CENTER}
@@ -25,21 +25,21 @@ function GovernmentIdModal({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img 
-        alt="Government Id"
-        className={styles.GovernmentIdModal_id}
+        alt={title}
+        className={styles.IdModal_id}
         height={400}
-        src={governmentId}
+        src={image}
         width={400}
       />
     </Modal>
   )
 }
 
-GovernmentIdModal.propTypes = {
+IdModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  governmentId: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 }
 
-export default GovernmentIdModal;
+export default IdModal;

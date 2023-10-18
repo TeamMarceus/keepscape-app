@@ -7,54 +7,64 @@ import { UsersService } from '@/services';
 
 const useBuyers = ({page, pageSize}) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [buyers, setBuyers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
   const updateBuyerStatus = async (userId, status) => {
-    const { status: updateBuyerStatusStatus } = await UsersService.updateUserStatus(
-      userId, { status }
-    );
 
-    if (updateBuyerStatusStatus === 200) {
-      if (status === userStatus.BANNED) {
-        toast.error('Buyer successfully banned.', {
-          style: {
-            backgroundColor: '#ed5565',
-            color: '#fff',
-          },
-        });
-      }
+    setIsUpdating(true);
 
-      if (status === userStatus.ACTIVE) {
-        toast.success('Buyer successfully unbanned.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
-      }
-
-      // Update the seller isBanned status
-      setBuyers((prevBuyers) =>
-        prevBuyers.map((prevBuyer) => {
-          if (prevBuyer.id === userId) {
-            return {
-              ...prevBuyer,
-              isBanned: status === userStatus.BANNED,
-            };
-          }
-
-          return prevBuyer;
-        })
+    try {
+      const { status: updateBuyerStatusStatus } = await UsersService.updateUserStatus(
+        userId, { status }
       );
+  
+      if (updateBuyerStatusStatus === 200) {
+        if (status === userStatus.BANNED) {
+          toast.error('Buyer successfully banned.', {
+            style: {
+              backgroundColor: '#ed5565',
+              color: '#fff',
+            },
+          });
+        }
+  
+        if (status === userStatus.ACTIVE) {
+          toast.success('Buyer successfully unbanned.', {
+            style: {
+              backgroundColor: '#1ab394',
+              color: '#fff',
+            },
+          });
+        }
+  
+        // Update the seller isBanned status
+        setBuyers((prevBuyers) =>
+          prevBuyers.map((prevBuyer) => {
+            if (prevBuyer.id === userId) {
+              return {
+                ...prevBuyer,
+                isBanned: status === userStatus.BANNED,
+              };
+            }
+  
+            return prevBuyer;
+          })
+        );
+  
+      } 
 
-    } else {
+      setIsUpdating(false);
+    } catch (error) {
       toast.error('Oops Something Went Wrong.', {
         style: {
           backgroundColor: '#ed5565',
           color: '#fff',
         },
       });
+      
+      setIsUpdating(false);
     }
   };
 
@@ -76,7 +86,7 @@ const useBuyers = ({page, pageSize}) => {
     getBuyers();
   }, [page, pageSize]);
 
-  return { isLoading, buyers, totalPages, updateBuyerStatus };
+  return { isLoading, buyers, totalPages, isUpdating, updateBuyerStatus };
 };
 
 export default useBuyers;

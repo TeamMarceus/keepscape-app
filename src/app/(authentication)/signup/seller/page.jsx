@@ -66,8 +66,12 @@ const validate = (values) => {
     errors.phoneNumber = 'This field is required.';
   }
 
-  if (!values.baseImage) {
-    errors.baseImage = 'Image is required.';
+  if (!values.idImage) {
+    errors.idImage = 'Image is required.';
+  }
+
+  if (!values.businessPermitImage) {
+    errors.businessPermitImage = 'Image is required.';
   }
 
   if (!values.description) {
@@ -115,7 +119,8 @@ export default function SellerSignUpPage() {
             sellerName: '',
             email: '',
             phoneNumber: '',
-            baseImage: '',
+            idImage: '',
+            businessPermitImage: '',
             description: '',
             password: '',
             confirmPassword: '',
@@ -127,7 +132,8 @@ export default function SellerSignUpPage() {
               sellerName: values.sellerName,
               email: values.email,
               phoneNumber: values.phoneNumber,
-              baseImage: values.baseImage,
+              idImage: values.idImage,
+              businessPermitImage: values.businessPermitImage,
               description: values.description,
               password: values.password,
               confirmPassword: values.confirmPassword,
@@ -253,11 +259,21 @@ export default function SellerSignUpPage() {
 
               <ImageDropzone
                 className={styles.SellerSignUpPage_content_withMargin}
-                error={errors.baseImage}
-                text="Upload Government ID"
-                value={values.baseImage}
+                error={errors.idImage}
+                text="Upload Valid ID"
+                value={values.idImage}
                 onChange={(image) => {
-                  setFieldValue('baseImage', image);
+                  setFieldValue('idImage', image);
+                }}
+              />
+
+              <ImageDropzone
+                className={styles.SellerSignUpPage_content_withMargin}
+                error={errors.businessPermitImage}
+                text="Upload Business Permit"
+                value={values.businessPermitImage}
+                onChange={(image) => {
+                  setFieldValue('businessPermitImage', image);
                 }}
               />
 

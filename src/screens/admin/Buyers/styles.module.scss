@@ -13,6 +13,8 @@
 
     &_column {
       text-align: center;
+      max-width: 150px;
+      word-wrap: break-word;
 
       @include breakpoint(sm) {
         border: unset;

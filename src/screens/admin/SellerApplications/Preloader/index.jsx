@@ -14,11 +14,13 @@ function PreloaderFinance() {
       <Shine className={styles.PreloaderFinance_header_shine} />
       <Shine className={styles.PreloaderFinance_header_shine} />
       <Shine className={styles.PreloaderFinance_header_shine} />
+      <Shine className={styles.PreloaderFinance_header_shine} />
     </div>
 
     <Separator className={styles.PreloaderFinance_separator} />
 
     <div className={styles.PreloaderFinance_body}>
+      <Shine className={styles.PreloaderFinance_body_shine} />
       <Shine className={styles.PreloaderFinance_body_shine} />
       <Shine className={styles.PreloaderFinance_body_shine} />
       <Shine className={styles.PreloaderFinance_body_shine} />

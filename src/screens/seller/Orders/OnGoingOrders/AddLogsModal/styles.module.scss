@@ -15,4 +15,13 @@
     width: 100% !important;
     margin: 40px auto 0 !important;
   }
+
+  &_buttonText {
+    display: flex;
+  }
+  
+  &_spinner {
+    margin-left: 12px;
+    width: unset !important;
+  }
 }

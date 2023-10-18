@@ -28,7 +28,9 @@ import {
 
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
-import GovernmentIdModal from '../GovernmentIdModal';
+import IdModal from '../Modals/IdModal';
+
+import ReasonModal from '../Modals/ReasonModal';
 
 import PreloaderSellerApplications from './Preloader';
 
@@ -39,7 +41,9 @@ function SellerApplications() {
   const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
   const [search, setSearch] = useState('');
-  const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
+  const [isIdModalOpen, setIsIdModalOpen] = useState(false);
+  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
+  const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
 
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
@@ -48,6 +52,7 @@ function SellerApplications() {
     isLoading: isApplicationsLoading, 
     sellerApplications, 
     totalPages,
+    isUpdating,
     updateSellerApplication 
   } = useSellerApplications({ page: currentPage, pageSize: 10});
 
@@ -161,6 +166,15 @@ function SellerApplications() {
                     <div
                       className={cn(
                         styles.SellerApplications_grid_header,
+                        styles.SellerApplications_grid_column
+                      )}
+                    >
+                      Permit
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.SellerApplications_grid_header,
                         styles.SellerApplications_grid_column,
                         styles.SellerApplications_grid_header_action,
                       )}
@@ -173,7 +187,7 @@ function SellerApplications() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredApplications.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idUrl, description  }) =>
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
@@ -201,16 +215,29 @@ function SellerApplications() {
                             {description}
                           </div>
 
-                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                          <img
-                            alt="Government Id"
+                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                           <img
+                            alt="Valid Id"
                             className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
                             height={60}
-                            src={idUrl}
+                            src={idImageUrl}
                             width={60}
                             onClick={() => {
-                              setIsGovernmentIdModalOpen(true);
-                              setSelectedApplication({ sellerName, idUrl })
+                              setIsIdModalOpen(true);
+                              setSelectedApplication({ sellerName, idImageUrl })
+                            }}
+                          />
+
+                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          <img
+                            alt="Business Permit"
+                            className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
+                            height={60}
+                            src={businessPermitUrl}
+                            width={60}
+                            onClick={() => {
+                              setIsBusinessPermitModalOpen(true);
+                              setSelectedApplication({ sellerName, businessPermitUrl })
                             }}
                           />
 
@@ -230,7 +257,8 @@ function SellerApplications() {
                                 icon="cancel"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
-                                  updateSellerApplication(id, userStatus.REJECTED);
+                                  setSelectedApplication({ sellerName, id});
+                                  setIsReasonModalOpen(true);
                                 }}
                               />
                             </div>
@@ -292,12 +320,33 @@ function SellerApplications() {
         )}
       </div>
 
-      {isGovernmentIdModalOpen &&
-        <GovernmentIdModal
-          governmentId={selectedApplication.idUrl}
-          handleClose={() => setIsGovernmentIdModalOpen(false)}
-          isOpen={isGovernmentIdModalOpen}
+      {isIdModalOpen &&
+        <IdModal
+          handleClose={() => setIsIdModalOpen(false)}
+          image={selectedApplication.idImageUrl}
+          isOpen={isIdModalOpen}
           title={`${selectedApplication.sellerName} ID`}
+        />
+      }
+
+      {isBusinessPermitModalOpen &&
+        <IdModal
+          handleClose={() => setIsBusinessPermitModalOpen(false)}
+          image={selectedApplication.businessPermitUrl}
+          isOpen={isBusinessPermitModalOpen}
+          title={`${selectedApplication.sellerName} Business Permit`}
+        />
+      }
+
+      {isReasonModalOpen &&
+        <ReasonModal
+          handleClose={() => setIsReasonModalOpen(false)}
+          isOpen={isReasonModalOpen}
+          isUpdating={isUpdating}
+          status={userStatus.REJECTED}
+          title={`Reason for Rejecting ${selectedApplication.sellerName}`}
+          updateUser={updateSellerApplication}
+          userId={selectedApplication.id}
         />
       }
     </>

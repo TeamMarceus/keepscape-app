@@ -7,44 +7,52 @@ import { UsersService } from '@/services';
 
 const useSellerApplications = ({ page, pageSize }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false); 
   const [sellerApplications, setSellerApplications] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const updateSellerApplication = async (sellerApplicationId, status) => {
-    const { status: updateSellerApplicationStatus } = await UsersService.updateSellerApplication(
-      sellerApplicationId, { status }
-    );
+  const updateSellerApplication = async (sellerApplicationId, status, reason) => {
+    
+    setIsUpdating(true);
 
-    if (updateSellerApplicationStatus === 200) {
-      if (status === userStatus.APPROVED) {
-        toast.success('Seller application approved.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
-      }
-
-      if (status === userStatus.REJECTED) {
-        toast.error('Seller application rejected.', {
-          style: {
-            backgroundColor: '#ed5565',
-            color: '#fff',
-          },
-        });
-      }
-
-      setSellerApplications((prevSellerApplications) =>
-        prevSellerApplications.filter((prevSellerApplication) => prevSellerApplication.id !== sellerApplicationId)
+    try {
+      const { status: updateSellerApplicationStatus } = await UsersService.updateSellerApplication(
+        sellerApplicationId, { status, reason }
       );
+  
+      if (updateSellerApplicationStatus === 200) {
+        if (status === userStatus.APPROVED) {
+          toast.success('Seller application approved.', {
+            style: {
+              backgroundColor: '#1ab394',
+              color: '#fff',
+            },
+          });
+        }
+  
+        if (status === userStatus.REJECTED) {
+          toast.error('Seller application rejected.', {
+            style: {
+              backgroundColor: '#ed5565',
+              color: '#fff',
+            },
+          });
+        }
+  
+        setSellerApplications((prevSellerApplications) =>
+          prevSellerApplications.filter((prevSellerApplication) => prevSellerApplication.id !== sellerApplicationId)
+        );
+      } 
 
-    } else {
+      setIsUpdating(false);
+    } catch (error) {
       toast.error('Oops Something Went Wrong.', {
         style: {
           backgroundColor: '#ed5565',
           color: '#fff',
         },
       });
+      setIsUpdating(false);
     }
   };
 
@@ -63,7 +71,7 @@ const useSellerApplications = ({ page, pageSize }) => {
     getSellerApplications();
   }, [page, pageSize]);
 
-  return { isLoading, sellerApplications, totalPages, updateSellerApplication };
+  return { isLoading, sellerApplications, totalPages, isUpdating, updateSellerApplication };
 };
 
 export default useSellerApplications;

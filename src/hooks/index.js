@@ -10,6 +10,7 @@ export { default as useProduct } from './useProduct';
 export { default as useProducts } from './useProducts';
 export { default as useProductCategories } from './useProductCategories';
 export { default as useProductPlaces } from './useProductPlaces';
+export { default as useUpdateUserStatus } from './useUpdateUserStatus';
 export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
 export { default as useRouterScroll } from './useRouterScroll';

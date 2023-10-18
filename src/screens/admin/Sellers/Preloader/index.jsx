@@ -14,11 +14,13 @@ function PreloaderSellers() {
       <Shine className={styles.PreloaderSellers_header_shine} />
       <Shine className={styles.PreloaderSellers_header_shine} />
       <Shine className={styles.PreloaderSellers_header_shine} />
+      <Shine className={styles.PreloaderSellers_header_shine} />
     </div>
 
     <Separator className={styles.PreloaderSellers_separator} />
 
     <div className={styles.PreloaderSellers_body}>
+      <Shine className={styles.PreloaderSellers_body_shine} />
       <Shine className={styles.PreloaderSellers_body_shine} />
       <Shine className={styles.PreloaderSellers_body_shine} />
       <Shine className={styles.PreloaderSellers_body_shine} />

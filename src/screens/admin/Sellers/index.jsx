@@ -23,7 +23,9 @@ import {
 
 import { useSellers, useWindowSize } from '@/hooks';
 
-import GovernmentIdModal from '../GovernmentIdModal';
+import IdModal from '../Modals/IdModal';
+
+import ReasonModal from '../Modals/ReasonModal';
 
 import PreloaderSellers from './Preloader';
 
@@ -44,11 +46,14 @@ function Sellers() {
     isLoading: isSellersLoading, 
     sellers, 
     totalPages,
+    isUpdating,
     updateSellerStatus
    } = useSellers({ page, pageSize: 10 });
 
   const [search, setSearch] = useState('');
-  const [isGovernmentIdModalOpen, setIsGovernmentIdModalOpen] = useState(false);
+  const [isIdModalOpen, setIsIdModalOpen] = useState(false);
+  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
+  const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
   const [selectedSeller, setSelectedSeller] = useState({})
 
   const filteredSellers = sellers.filter((seller) => {
@@ -167,6 +172,15 @@ function Sellers() {
                     <div
                       className={cn(
                         styles.Sellers_grid_header,
+                        styles.Sellers_grid_column
+                      )}
+                    >
+                      Permit
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.Sellers_grid_header,
                         styles.Sellers_grid_column,
                         styles.Sellers_grid_header_action,
                       )}
@@ -179,7 +193,7 @@ function Sellers() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredSellers.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idUrl, description, isBanned  }) =>
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, description, idImageUrl, businessPermitUrl, isBanned  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Sellers_grid_sellerGrid}>
@@ -212,11 +226,24 @@ function Sellers() {
                             alt="Government Id"
                             className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
                             height={60}
-                            src={idUrl}
+                            src={idImageUrl}
                             width={60}
                             onClick={() => {
-                              setIsGovernmentIdModalOpen(true);
-                              setSelectedSeller({ sellerName, idUrl })
+                              setIsIdModalOpen(true);
+                              setSelectedSeller({ sellerName, idImageUrl })
+                            }}
+                          />
+
+                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          <img
+                            alt="Business Permit"
+                            className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
+                            height={60}
+                            src={businessPermitUrl}
+                            width={60}
+                            onClick={() => {
+                              setIsBusinessPermitModalOpen(true);
+                              setSelectedSeller({ sellerName, businessPermitUrl })
                             }}
                           />
 
@@ -233,7 +260,8 @@ function Sellers() {
                                   if (isBanned) {
                                     updateSellerStatus(id, userStatus.ACTIVE);
                                   } else {
-                                    updateSellerStatus(id, userStatus.BANNED);
+                                    setSelectedSeller({ id, sellerName });
+                                    setIsReasonModalOpen(true);
                                   }
                                 }}
                               />
@@ -297,12 +325,33 @@ function Sellers() {
 
       </div>
 
-      {isGovernmentIdModalOpen &&
-        <GovernmentIdModal
-          governmentId={selectedSeller.idUrl}
-          handleClose={() => setIsGovernmentIdModalOpen(false)}
-          isOpen={isGovernmentIdModalOpen}
+      {isIdModalOpen &&
+        <IdModal
+          handleClose={() => setIsIdModalOpen(false)}
+          image={selectedSeller.idImageUrl}
+          isOpen={isIdModalOpen}
           title={`${selectedSeller.sellerName} ID`}
+        />
+      }
+
+      {isBusinessPermitModalOpen &&
+        <IdModal
+          handleClose={() => setIsBusinessPermitModalOpen(false)}
+          image={selectedSeller.businessPermitUrl}
+          isOpen={isBusinessPermitModalOpen}
+          title={`${selectedSeller.sellerName} Business Permit`}
+        />
+      }
+
+      {isReasonModalOpen &&
+        <ReasonModal
+          handleClose={() => setIsReasonModalOpen(false)}
+          isOpen={isReasonModalOpen}
+          isUpdating={isUpdating}
+          status={userStatus.BANNED}
+          title={`Reason for Banning ${selectedSeller.sellerName}`}
+          updateUser={updateSellerStatus}
+          userId={selectedSeller.id}
         />
       }
     </>

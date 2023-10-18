@@ -5,22 +5,20 @@ import { toast } from 'sonner';
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
-const useSellers = ({page, pageSize}) => {
+const useUpdateUserStatus = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [sellers, setSellers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const updateSellerStatus = async (userId, status, reason) => {
-
-    setIsUpdating(true);
+  const updateSellerStatus = async (userId, status) => {
 
     try {
+      setIsLoading(true);
 
       const { status: updateSellerStatusStatus } = await UsersService.updateUserStatus(
-        userId, { status, reason }
+        userId, { status }
       );
-  
+
       if (updateSellerStatusStatus === 200) {
         if (status === userStatus.BANNED) {
           toast.error('Seller successfully banned.', {
@@ -53,11 +51,9 @@ const useSellers = ({page, pageSize}) => {
             return prevSeller;
           })
         );
-  
-      } 
+      }
 
-      setIsUpdating(false);
-
+      setIsLoading(false);
     } catch (error) {
       toast.error('Oops Something Went Wrong.', {
         style: {
@@ -66,29 +62,13 @@ const useSellers = ({page, pageSize}) => {
         },
       });
 
-      setIsUpdating(false);
+      setIsLoading(false);
     }
+
   };
 
-  useEffect(() => {
-    const getSellers = async () => {
-      const { data: getSellersResponse } = await UsersService.retrieveSellers({
-        page,
-        pageSize
-      });
 
-      if (getSellersResponse) {
-        setSellers(getSellersResponse.sellers);
-        setTotalPages(getSellersResponse.pageCount);
-      }
-
-      setIsLoading(false);
-    };
-
-    getSellers();
-  }, [page, pageSize]);
-
-  return { isLoading, sellers, totalPages, isUpdating, updateSellerStatus };
+  return { isLoading, updateSellerStatus };
 };
 
-export default useSellers;
+export default useUpdateUserStatus;
