@@ -390,7 +390,7 @@ function Main() {
                   isClickable
                   className={styles.Main_discover_products_item}
                   id={product.id}
-                  image={product.image}
+                  image={product.imageUrl}
                   name={product.name}
                   place={product.province.name}
                   price={product.price}

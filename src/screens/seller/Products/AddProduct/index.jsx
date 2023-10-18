@@ -118,15 +118,7 @@ function AddProduct() {
               quantity: values.quantity,
               isCustomizable: values.isCustomizable,
               price: values.price * 1.05,
-              productImages: [
-                values.image1,
-                values.image2,
-                values.image3,
-                values.image4,
-                values.image5,
-              ].filter((image) =>  image !== '' && image !== null),
             };
-
 
             const errors = validate(values);
             if (!isEmpty(errors)) {
@@ -134,11 +126,37 @@ function AddProduct() {
               return;
             }
 
-            const { responseCode: addProductResponseCode } = await addProduct(currentFormValues);
+            const images = [
+              values.image1,
+              values.image2,
+              values.image3,
+              values.image4,
+              values.image5,
+            ];
+            
+            const filteredImages = {};
+            
+            let index = 1; // Initialize the index for property names
+
+            for (const image of images) {
+              const propertyName = `image${index}`;
+              
+              if (!isEmpty(image)) {
+                filteredImages[propertyName] = image;
+                index++; // Increment the index only when a non-empty image is found
+              }
+            }
+            
+            const productTobeAdded = {
+              ...currentFormValues,
+              ...filteredImages,
+            };
+
+            const { responseCode: addProductResponseCode } = await addProduct(productTobeAdded);
 
             const addProductCallbacks = {
               created: () => {
-                toast.success('Product created successfully.', {
+                toast.success('Product successfully added.', {
                   style: {
                     backgroundColor: '#48CFAD',
                     color: '#fff',
@@ -149,7 +167,7 @@ function AddProduct() {
                 setFieldValue('name', '');
                 setFieldValue('description', '');
                 setFieldValue('place', '');
-                setFieldValue('categories', '');
+                setFieldValue('categories', []);
                 setFieldValue('quantity', '');
                 setFieldValue('isCustomizable', false);
                 setFieldValue('price', '');
@@ -167,9 +185,6 @@ function AddProduct() {
                     color: '#fff',
                   },
                 });
-
-                errors.overall = 'Invalid fields.'
-                setErrors(errors);
               },
               internalError: () => {
                 toast.error('Oops, something went wrong.', {
@@ -178,13 +193,11 @@ function AddProduct() {
                     color: '#fff',
                   },
                 });
-                errors.overall = 'Oops, something went wrong.'
-                setErrors(errors);
               },
             };
 
             switch (addProductResponseCode) {
-              case 201:
+              case 200:
                 addProductCallbacks.created();
                 break;
               case 400:
