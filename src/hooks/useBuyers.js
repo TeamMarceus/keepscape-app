@@ -11,13 +11,13 @@ const useBuyers = ({page, pageSize}) => {
   const [buyers, setBuyers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const updateBuyerStatus = async (userId, status) => {
+  const updateBuyerStatus = async (userId, status, reason) => {
 
     setIsUpdating(true);
 
     try {
       const { status: updateBuyerStatusStatus } = await UsersService.updateUserStatus(
-        userId, { status }
+        userId, { status, reason }
       );
   
       if (updateBuyerStatusStatus === 200) {
