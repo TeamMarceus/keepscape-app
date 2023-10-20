@@ -16,7 +16,9 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { Card, Icon, Text } from '@/components';
+import { Card, Icon, ScreenLoader, Text } from '@/components';
+
+import { useAnalytics } from '@/hooks';
 
 import styles from './styles.module.scss';
 
@@ -37,36 +39,42 @@ ChartJS.register(
     },
     title: {
       display: true,
-      text: 'Daily Comparison',
+      text: 'Monthly Comparison',
     },
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 function Dashboard() {
+
+  const {isLoading: isAnnalyticsLoading, analytics} = useAnalytics('admin');
+  
+  if (isAnnalyticsLoading) {
+    return (<ScreenLoader />)
+  }  
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'Revenue', 
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        label: 'Products',
+        data: labels.map((month) => analytics.monthlyStatistics[month].products),
         backgroundColor: '#48CFAD',
       },
       {
         label: 'Buyers',
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        data: labels.map((month) => analytics.monthlyStatistics[month].buyers),
         backgroundColor: '#ED5565',
       },
       {
-        label: 'Sellers', 
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        label: 'Sellers',
+        data: labels.map((month) => analytics.monthlyStatistics[month].sellers),
         backgroundColor: '#4FC1E9',
       },
     ],
   };
-
+  
   return <div className={styles.Dashboard}>
     <Text type={textTypes.HEADING.XS}>
       Dashboard
@@ -78,7 +86,7 @@ function Dashboard() {
           colorClass={colorClasses.NEUTRAL['400']} 
           type={textTypes.HEADING.MD}
         >
-          100
+          {analytics.sellerApplications}
         </Text>
 
         <div className={styles.Dashboard_statistics_text}>
@@ -101,7 +109,7 @@ function Dashboard() {
           colorClass={colorClasses.BLUE['400']} 
           type={textTypes.HEADING.MD}
         >
-          50
+          {analytics.ongoingOrders}
         </Text>
 
         <div className={styles.Dashboard_statistics_text}>
@@ -124,7 +132,7 @@ function Dashboard() {
           colorClass={colorClasses.GREEN['400']} 
           type={textTypes.HEADING.MD}
         >
-          200
+          {analytics.products}
         </Text>
 
         <div className={styles.Dashboard_statistics_text}>

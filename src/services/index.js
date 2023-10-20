@@ -1,3 +1,4 @@
+export { default as AnalyticsService } from './AnalyticsService';
 export { default as AnnouncementsService } from './AnnouncementsService';
 export { default as ConfirmationCodesService } from './ConfirmationCodesService';
 export { default as QuestionnairesService } from './QuestionnairesService';

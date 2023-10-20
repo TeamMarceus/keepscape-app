@@ -1,6 +1,7 @@
 export { default as useActionDispatch } from './useActionDispatch';
 export { default as useAddAnnouncement } from './useAddAnnouncement';
 export { default as useAddProduct } from './useAddProduct';
+export { default as useAnalytics } from './useAnalytics';
 export { default as useBuyers } from './useBuyers';
 export { default as useCookies } from './useCookies';
 export { default as useInterval } from './useInterval';
