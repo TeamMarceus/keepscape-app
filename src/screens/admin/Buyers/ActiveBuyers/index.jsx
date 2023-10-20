@@ -23,13 +23,13 @@ import {
 
 import { useBuyers, useWindowSize } from '@/hooks';
 
-import ReasonModal from '../Modals/ReasonModal';
+import ReasonModal from '../../Modals/ReasonModal';
 
-import PreloaderBuyers from './Preloader';
+import PreloaderActiveBuyers from '../Preloader';
 
 import styles from './styles.module.scss';
 
-function Buyers() {
+function ActiveBuyers() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const buyerIdParam = searchParams.get('id');
@@ -38,19 +38,20 @@ function Buyers() {
 
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
-  const {
-    isLoading: isBuyersLoading, 
+  const [search, setSearch] = useState('');
+
+   const {
+    isLoading: isActiveBuyersLoading, 
     buyers, 
     totalPages,
     isUpdating,
     updateBuyerStatus
-   } = useBuyers({ page, pageSize: 10 });
+   } = useBuyers({ page, pageSize: 10, isBanned: false, search, userId: buyerIdParam });
 
-  const [search, setSearch] = useState('');
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
   const [selectedBuyer, setSelectedBuyer] = useState({})
 
-  const filteredBuyers = buyers.filter((buyer) => {
+  const filteredActiveBuyers = buyers.filter((buyer) => {
     const searchLowerCase = search.toLowerCase();
 
     if (buyerIdParam && search === '') {
@@ -66,39 +67,39 @@ function Buyers() {
 
   return (
     <>
-      <div className={styles.Buyers}>
+      <div className={styles.ActiveBuyers}>
         <Text type={textTypes.HEADING.XS}>
-          Buyers
+          ActiveBuyers
         </Text>
 
         <ControlledInput
-          className={styles.Buyers_search}
+          className={styles.ActiveBuyers_search}
           icon="search"
           name="search"
-          placeholder="You can search by Name or Email"
+          placeholder="You can search by Name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {isBuyersLoading ? (
-          <PreloaderBuyers />
+        {isActiveBuyersLoading ? (
+          <PreloaderActiveBuyers />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
-            {filteredBuyers.length ? (
+            {filteredActiveBuyers.length ? (
               <> 
-                <div className={styles.Buyers_grid}>
+                <div className={styles.ActiveBuyers_grid}>
                   {/* Header of OrderGrid starts here */}
                   <Card
                     className={cn(
-                      styles.Buyers_grid_buyerGrid,
-                      styles.Buyers_grid_headers
+                      styles.ActiveBuyers_grid_buyerGrid,
+                      styles.ActiveBuyers_grid_headers
                     )}
                   >
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column
                       )}
                     >
                       Date Created
@@ -106,8 +107,8 @@ function Buyers() {
 
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column
                       )}
                     >
                       Full Name
@@ -115,8 +116,8 @@ function Buyers() {
 
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column
                       )}
                     >
                       Email Address
@@ -124,8 +125,8 @@ function Buyers() {
 
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column
                       )}
                     >
                       Mobile Number
@@ -133,8 +134,8 @@ function Buyers() {
 
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column
                       )}
                     >
                       Description
@@ -142,9 +143,9 @@ function Buyers() {
 
                     <div
                       className={cn(
-                        styles.Buyers_grid_header,
-                        styles.Buyers_grid_column,
-                        styles.Buyers_grid_header_action,
+                        styles.ActiveBuyers_grid_header,
+                        styles.ActiveBuyers_grid_column,
+                        styles.ActiveBuyers_grid_header_action,
                       )}
                     >
                       Actions
@@ -154,47 +155,40 @@ function Buyers() {
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
-                  {filteredBuyers.map(
-                    ({ id, dateTimeCreated, firstName, lastName, email, phoneNumber, description, isBanned  }) =>
+                  {filteredActiveBuyers.map(
+                    ({ id, dateTimeCreated, firstName, lastName, email, phoneNumber, description }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.Buyers_grid_buyerGrid}>
-                          <div className={styles.Buyers_grid_column}>
+                        <Card key={id} className={styles.ActiveBuyers_grid_buyerGrid}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                          <div className={styles.Buyers_grid_column}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             {firstName} {lastName}
                           </div>
                             
-                          <div className={styles.Buyers_grid_column}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             {email}
                           </div>
 
-                          <div className={styles.Buyers_grid_column}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             {phoneNumber} 
                           </div>
 
-                          <div className={styles.Buyers_grid_column}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             {description}
                           </div>
 
-                          <div className={styles.Buyers_grid_column}>
-                            <div className={styles.Buyers_grid_buttons}>
+                          <div className={styles.ActiveBuyers_grid_column}>
+                            <div className={styles.ActiveBuyers_grid_buttons}>
                               <IconButton
-                                className={cn({
-                                  [styles.Buyers_grid_button_unban]: isBanned,
-                                  [styles.Buyers_grid_button_ban]: !isBanned,
-                                })}
-                                icon={isBanned ? 'how_to_reg' : 'person_off'}
+                                className={styles.ActiveBuyers_grid_button_ban}
+                                icon="person_off"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
-                                  if (isBanned) {
-                                    updateBuyerStatus(id, userStatus.ACTIVE);
-                                  } else {
-                                    setSelectedBuyer({ id, firstName, lastName});
-                                    setIsReasonModalOpen(true);
-                                  }
+                                  setSelectedBuyer({ id, firstName, lastName});
+                                  setIsReasonModalOpen(true);
                                 }}
                               />
                             </div>
@@ -204,12 +198,12 @@ function Buyers() {
                         // Mobile View
                         <details
                           key={id}
-                          className={styles.Buyers_grid_buyerGrid}
+                          className={styles.ActiveBuyers_grid_buyerGrid}
                         >
-                          <summary className={styles.Buyers_grid_title}>
-                            <div className={styles.Buyers_grid_title_info}>
+                          <summary className={styles.ActiveBuyers_grid_title}>
+                            <div className={styles.ActiveBuyers_grid_title_info}>
                               <Icon
-                                className={styles.Buyers_grid_title_icon}
+                                className={styles.ActiveBuyers_grid_title_icon}
                                 icon="expand_more"
                               />
 
@@ -219,7 +213,7 @@ function Buyers() {
                             </div>
                           </summary>
 
-                          <div className={styles.Buyers_grid_column}>
+                          <div className={styles.ActiveBuyers_grid_column}>
                             <Text
                               colorClass={colorClasses.NEUTRAL['400']}
                               type={textTypes.HEADING.XXS}
@@ -236,19 +230,19 @@ function Buyers() {
                 </div>
 
                 <Pagination 
-                  className={styles.Buyers_pagination}
+                  className={styles.ActiveBuyers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/buyers?page=${value}`, { scroll: false })
+                    router.push(`/admin/buyers/active?page=${value}`, { scroll: false })
                   }}
                   totalPages={totalPages}
                 />
               </>
             ) : (
               <NoResults
-                className={styles.Buyers_noResults}
+                className={styles.ActiveBuyers_noResults}
                 message="No buyers found"
               />
             )}
@@ -270,4 +264,4 @@ function Buyers() {
     </>
   )
 }
-export default Buyers;
+export default ActiveBuyers;

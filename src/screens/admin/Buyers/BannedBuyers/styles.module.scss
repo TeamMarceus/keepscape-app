@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Buyers {
+.BannedBuyers {
   padding-top: 24px;
 
   &_search {
@@ -127,7 +127,7 @@
   }
 
   &_pagination {
-    margin-top: 60px;
+    margin-top: 60px !important;
   }
 
   &_noResults {

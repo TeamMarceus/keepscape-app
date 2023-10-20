@@ -5,7 +5,6 @@ import cn from 'classnames';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
-  buttonTypes,
   colorClasses,
   iconButtonTypes,
   textTypes,
@@ -14,29 +13,26 @@ import {
 
 
 import { 
-  IconButton, 
-  Button,
-  ButtonLink, 
+  IconButton,  
   Card, 
   ControlledInput, 
   Icon, 
   NoResults, 
   Text, 
-  IconLink,
   Pagination
 } from '@/components';
 
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
-import IdModal from '../Modals/IdModal';
+import IdModal from '../../Modals/IdModal';
 
-import ReasonModal from '../Modals/ReasonModal';
+import ReasonModal from '../../Modals/ReasonModal';
 
-import PreloaderSellerApplications from './Preloader';
+import PreloaderPendingSellers from '../Preloader';
 
 import styles from './styles.module.scss';
 
-function SellerApplications() {
+function PendingSellers() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
@@ -54,7 +50,7 @@ function SellerApplications() {
     totalPages,
     isUpdating,
     updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10});
+  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Pending'});
 
   const [selectedApplication, setSelectedApplication] = useState({})
 
@@ -71,13 +67,13 @@ function SellerApplications() {
 
   return (
     <>
-      <div className={styles.SellerApplications}>
+      <div className={styles.PendingSellers}>
         <Text type={textTypes.HEADING.XS}>
-          Seller Applications
+          Pending Seller Applications
         </Text>
 
         <ControlledInput
-          className={styles.SellerApplications_search}
+          className={styles.PendingSellers_search}
           icon="search"
           name="search"
           placeholder="You can search by Name or Email"
@@ -86,24 +82,24 @@ function SellerApplications() {
         />
 
         {isApplicationsLoading ? (
-          <PreloaderSellerApplications />
+          <PreloaderPendingSellers />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredApplications.length ? (
               <>
-                <div className={styles.SellerApplications_grid}>
+                <div className={styles.PendingSellers_grid}>
                   {/* Header of OrderGrid starts here */}
                   <Card
                     className={cn(
-                      styles.SellerApplications_grid_applicationGrid,
-                      styles.SellerApplications_grid_headers
+                      styles.PendingSellers_grid_applicationGrid,
+                      styles.PendingSellers_grid_headers
                     )}
                   >
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Date Applied
@@ -111,8 +107,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Full Name
@@ -120,8 +116,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Seller Name
@@ -129,8 +125,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Email Address
@@ -138,8 +134,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Mobile Number
@@ -147,8 +143,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Description
@@ -156,8 +152,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       ID
@@ -165,8 +161,8 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column
                       )}
                     >
                       Permit
@@ -174,9 +170,9 @@ function SellerApplications() {
 
                     <div
                       className={cn(
-                        styles.SellerApplications_grid_header,
-                        styles.SellerApplications_grid_column,
-                        styles.SellerApplications_grid_header_action,
+                        styles.PendingSellers_grid_header,
+                        styles.PendingSellers_grid_column,
+                        styles.PendingSellers_grid_header_action,
                       )}
                     >
                       Actions
@@ -190,35 +186,35 @@ function SellerApplications() {
                     ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.SellerApplications_grid_applicationGrid}>
-                          <div className={styles.SellerApplications_grid_column}>
+                        <Card key={id} className={styles.PendingSellers_grid_applicationGrid}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {firstName} {lastName}
                           </div>
 
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {sellerName}
                           </div>
                             
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {email}
                           </div>
 
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {phoneNumber}
                           </div>
 
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             {description}
                           </div>
 
                            {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                            <img
                             alt="Valid Id"
-                            className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
+                            className={cn(styles.PendingSellers_grid_column, styles.PendingSellers_grid_column_id)}
                             height={60}
                             src={idImageUrl}
                             width={60}
@@ -231,7 +227,7 @@ function SellerApplications() {
                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.SellerApplications_grid_column, styles.SellerApplications_grid_column_id)}
+                            className={cn(styles.PendingSellers_grid_column, styles.PendingSellers_grid_column_id)}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
@@ -241,10 +237,10 @@ function SellerApplications() {
                             }}
                           />
 
-                          <div className={styles.SellerApplications_grid_column}>
-                            <div className={styles.SellerApplications_grid_buttons}>
+                          <div className={styles.PendingSellers_grid_column}>
+                            <div className={styles.PendingSellers_grid_buttons}>
                               <IconButton
-                                className={styles.SellerApplications_grid_checkButton}
+                                className={styles.PendingSellers_grid_checkButton}
                                 icon="check_circle"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
@@ -253,7 +249,7 @@ function SellerApplications() {
                               />
 
                               <IconButton
-                                className={styles.SellerApplications_grid_closeButton}
+                                className={styles.PendingSellers_grid_closeButton}
                                 icon="cancel"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
@@ -268,12 +264,12 @@ function SellerApplications() {
                         // Mobile View
                         <details
                           key={id}
-                          className={styles.SellerApplications_grid_applicationGrid}
+                          className={styles.PendingSellers_grid_applicationGrid}
                         >
-                          <summary className={styles.SellerApplications_grid_title}>
-                            <div className={styles.SellerApplications_grid_title_info}>
+                          <summary className={styles.PendingSellers_grid_title}>
+                            <div className={styles.PendingSellers_grid_title_info}>
                               <Icon
-                                className={styles.SellerApplications_grid_title_icon}
+                                className={styles.PendingSellers_grid_title_icon}
                                 icon="expand_more"
                               />
 
@@ -283,7 +279,7 @@ function SellerApplications() {
                             </div>
                           </summary>
 
-                          <div className={styles.SellerApplications_grid_column}>
+                          <div className={styles.PendingSellers_grid_column}>
                             <Text
                               colorClass={colorClasses.NEUTRAL['400']}
                               type={textTypes.HEADING.XXS}
@@ -300,19 +296,19 @@ function SellerApplications() {
                 </div>
 
                 <Pagination 
-                  className={styles.SellerApplications_pagination}
+                  className={styles.PendingSellers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/seller-applications?page=${value}`, { scroll: false })
+                    router.push(`/admin/seller-applications/pending?page=${value}`, { scroll: false })
                   }}
                   totalPages={totalPages}
                 />
               </>
             ) : (
               <NoResults
-                className={styles.SellerApplications_noResults}
+                className={styles.PendingSellers_noResults}
                 message="No applications found"
               />
             )}
@@ -352,4 +348,4 @@ function SellerApplications() {
     </>
   )
 }
-export default SellerApplications;
+export default PendingSellers;

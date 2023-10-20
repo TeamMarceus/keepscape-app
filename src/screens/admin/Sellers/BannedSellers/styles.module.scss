@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.SellerApplications {
+.BannedSellers {
   padding-top: 24px;
 
   &_search {
@@ -38,7 +38,7 @@
       }
     }
 
-    &_applicationGrid {
+    &_sellerGrid {
       display: grid;
       grid-template-columns: repeat(9, 1fr);
       gap: 4px;
@@ -55,7 +55,7 @@
       }
     }
 
-    &_applicationGrid[open] {
+    &_sellerGrid[open] {
       > summary {
         > div {
           > i {
@@ -115,17 +115,10 @@
       }
     }
 
-    &_buttons {
-      @include flex-center;
-      gap: 2px;
-    }
-
-    &_checkButton {
-      color: $green-400 !important;
-    }
-
-    &_closeButton {
-      color: $red-400 !important;
+    &_button {
+      &_unban {
+        color: $green-400 !important;
+      }
     }
   }
 

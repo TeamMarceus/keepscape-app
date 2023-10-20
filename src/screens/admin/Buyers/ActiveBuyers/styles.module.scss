@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Sellers {
+.ActiveBuyers {
   padding-top: 24px;
 
   &_search {
@@ -38,11 +38,11 @@
       }
     }
 
-    &_sellerGrid {
+    &_buyerGrid {
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      gap: 4px;
+      grid-template-columns: repeat(6, 1fr);
       place-items: center;
+      gap: 4px;
       margin-top: 12px;
       padding: 20px 8px;
 
@@ -55,7 +55,7 @@
       }
     }
 
-    &_sellerGrid[open] {
+    &_buyerGrid[open] {
       > summary {
         > div {
           > i {
@@ -127,7 +127,7 @@
   }
 
   &_pagination {
-    margin-top: 60px;
+    margin-top: 60px !important;
   }
 
   &_noResults {

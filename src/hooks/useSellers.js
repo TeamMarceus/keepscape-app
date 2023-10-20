@@ -5,14 +5,13 @@ import { toast } from 'sonner';
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
-const useSellers = ({page, pageSize}) => {
+const useSellers = ({page, pageSize, isBanned, search, sellerId}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [sellers, setSellers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
   const updateSellerStatus = async (userId, status, reason) => {
-
     setIsUpdating(true);
 
     try {
@@ -40,20 +39,10 @@ const useSellers = ({page, pageSize}) => {
           });
         }
   
-        // Update the seller isBanned status
+        // Update the seller that will remove it from the list
         setSellers((prevSellers) =>
-          prevSellers.map((prevSeller) => {
-            if (prevSeller.id === userId) {
-              return {
-                ...prevSeller,
-                isBanned: status === userStatus.BANNED,
-              };
-            }
-  
-            return prevSeller;
-          })
+          prevSellers.filter((seller) => seller.id !== userId)
         );
-  
       } 
 
       setIsUpdating(false);
@@ -72,9 +61,14 @@ const useSellers = ({page, pageSize}) => {
 
   useEffect(() => {
     const getSellers = async () => {
+      setIsLoading(true);
+      
       const { data: getSellersResponse } = await UsersService.retrieveSellers({
         page,
-        pageSize
+        pageSize,
+        isBanned,
+        search,
+        userId: sellerId,
       });
 
       if (getSellersResponse) {
@@ -86,7 +80,7 @@ const useSellers = ({page, pageSize}) => {
     };
 
     getSellers();
-  }, [page, pageSize]);
+  }, [page, pageSize, isBanned, search, sellerId]);
 
   return { isLoading, sellers, totalPages, isUpdating, updateSellerStatus };
 };

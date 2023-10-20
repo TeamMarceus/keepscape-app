@@ -1,3 +1,5 @@
+import { ADMIN_ROUTES } from '@/app/admin/routes';
+
 const navLinks = {
   HOME: {
     label: 'Home',
@@ -7,6 +9,20 @@ const navLinks = {
   SELLER_APPLICATIONS: {
     label: 'Seller Applications',
     icon: 'assignment',
+    subLinks: [
+      {
+        label: 'Pending Sellers',
+        to: ADMIN_ROUTES.SELLER_APPLICATIONS_PENDING,
+      },
+      {
+        label: 'Approved Sellers',
+        to: ADMIN_ROUTES.SELLER_APPLICATIONS_APPROVED,
+      },
+      {
+        label: 'Rejected Sellers',
+        to: ADMIN_ROUTES.SELLER_APPLICATIONS_REJECTED,
+      }
+    ]
   },
   
   REVIEW_ORDERS: {
@@ -22,11 +38,31 @@ const navLinks = {
   SELLERS: {
     label: 'Sellers',
     icon: 'storefront',
+    subLinks: [
+      {
+        label: 'Active Sellers',
+        to: ADMIN_ROUTES.SELLERS_ACTIVE,
+      },
+      {
+        label: 'Banned Sellers',
+        to: ADMIN_ROUTES.SELLERS_BANNED,
+      }
+    ]
   },
   
   BUYERS: {
     label: 'Buyers',
     icon: 'people',
+    subLinks: [
+      {
+        label: 'Active Buyers',
+        to: ADMIN_ROUTES.BUYERS_ACTIVE,
+      },
+      {
+        label: 'Banned Buyers',
+        to: ADMIN_ROUTES.BUYERS_BANNED,
+      }
+    ]
   },
 
   FINANCE: {

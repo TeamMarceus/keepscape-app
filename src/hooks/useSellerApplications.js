@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
-const useSellerApplications = ({ page, pageSize }) => {
+const useSellerApplications = ({ page, pageSize, applicationStatus }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false); 
   const [sellerApplications, setSellerApplications] = useState([]);
@@ -57,8 +57,11 @@ const useSellerApplications = ({ page, pageSize }) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    
     const getSellerApplications = async () => {
-      const { data: getSellerApplicationsResponse } = await UsersService.retrieveSellerApplications({status: 'Pending', page, pageSize});
+      const { data: getSellerApplicationsResponse } =
+       await UsersService.retrieveSellerApplications({status: applicationStatus, page, pageSize});
 
       if (getSellerApplicationsResponse) {
         setSellerApplications(getSellerApplicationsResponse.sellerApplications);

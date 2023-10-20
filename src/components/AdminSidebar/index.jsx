@@ -23,9 +23,9 @@ function AdminSidebar() {
 
       <SidebarLink
         icon={navLinks.SELLER_APPLICATIONS.icon}
-        isActive={pathname === ADMIN_ROUTES.SELLER_APPLICATIONS}
+        isActive={pathname.includes(`/admin/seller-applications`)}
         label={navLinks.SELLER_APPLICATIONS.label}
-        to={ADMIN_ROUTES.SELLER_APPLICATIONS}
+        subLinks={navLinks.SELLER_APPLICATIONS.subLinks}
       />
 
       <SidebarLink
@@ -44,16 +44,16 @@ function AdminSidebar() {
 
       <SidebarLink
         icon={navLinks.SELLERS.icon}
-        isActive={pathname === ADMIN_ROUTES.SELLERS}
+        isActive={pathname.includes(`/admin/sellers`)}
         label={navLinks.SELLERS.label}
-        to={ADMIN_ROUTES.SELLERS}
+        subLinks={navLinks.SELLERS.subLinks}
       />
 
       <SidebarLink
         icon={navLinks.BUYERS.icon}
-        isActive={pathname === ADMIN_ROUTES.BUYERS}
+        isActive={pathname.includes(`/admin/buyers`)}
         label={navLinks.BUYERS.label}
-        to={ADMIN_ROUTES.BUYERS}
+        subLinks={navLinks.BUYERS.subLinks}
       />
 
       <SidebarLink

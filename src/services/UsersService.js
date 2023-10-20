@@ -36,16 +36,42 @@ const UsersService = {
   updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),
 
   // Users
-  retrieveSellers: ({page, pageSize}) => axios.get(`${BASE_URL}/sellers`, {
+  retrieveSellers: ({
+    page, 
+    pageSize,
+    isBanned,
+    search,
+    isDescending,
+    orderBy,
+    userId,
+  }) => axios.get(`${BASE_URL}/sellers`, {
     params: {
       page,
       pageSize,
+      isBanned,
+      search,
+      isDescending,
+      orderBy,
+      userId,
     },
   }),
-  retrieveBuyers: ({page, pageSize}) => axios.get(`${BASE_URL}/buyers`, {
+  retrieveBuyers: ({
+    page, 
+    pageSize,
+    isBanned,
+    search,
+    isDescending,
+    orderBy,
+    userId,
+  }) => axios.get(`${BASE_URL}/buyers`, {
     params: {
-      page,
+      page, 
       pageSize,
+      isBanned,
+      search,
+      isDescending,
+      orderBy,
+      userId,
     },
   }),
   updateUserStatus: (id, body) => axios.put(`${BASE_URL}/${id}`, body),

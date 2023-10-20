@@ -23,15 +23,13 @@ import {
 
 import { useSellers, useWindowSize } from '@/hooks';
 
-import IdModal from '../Modals/IdModal';
+import IdModal from '../../Modals/IdModal';
 
-import ReasonModal from '../Modals/ReasonModal';
-
-import PreloaderSellers from './Preloader';
+import PreloaderBannedSellers from '../Preloader';
 
 import styles from './styles.module.scss';
 
-function Sellers() {
+function BannedSellers() {
   const router = useRouter();
   const { windowSize } = useWindowSize();
   const searchParams = useSearchParams();
@@ -41,22 +39,20 @@ function Sellers() {
   
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
+  const [search, setSearch] = useState('');
 
   const {
-    isLoading: isSellersLoading, 
-    sellers, 
-    totalPages,
-    isUpdating,
-    updateSellerStatus
-   } = useSellers({ page, pageSize: 10 });
+  isLoading: isBannedSellersLoading, 
+  sellers, 
+  totalPages,
+  updateSellerStatus
+  } = useSellers({ page, pageSize: 10, isBanned: true, search, userId: sellerIdParam });
 
-  const [search, setSearch] = useState('');
   const [isIdModalOpen, setIsIdModalOpen] = useState(false);
   const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
-  const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
   const [selectedSeller, setSelectedSeller] = useState({})
 
-  const filteredSellers = sellers.filter((seller) => {
+  const filteredBannedSellers = sellers.filter((seller) => {
     const searchLowerCase = search.toLowerCase();
 
     if (sellerIdParam && search === '') {
@@ -77,13 +73,13 @@ function Sellers() {
 
   return (
     <>
-      <div className={styles.Sellers}>
+      <div className={styles.BannedSellers}>
         <Text type={textTypes.HEADING.XS}>
-          Sellers
+          Banned Sellers
         </Text>
 
         <ControlledInput
-          className={styles.Sellers_search}
+          className={styles.BannedSellers_search}
           icon="search"
           name="search"
           placeholder="You can search by Name or Email"
@@ -91,25 +87,25 @@ function Sellers() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {isSellersLoading ? (
-          <PreloaderSellers />
+        {isBannedSellersLoading ? (
+          <PreloaderBannedSellers />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
-            {filteredSellers.length ? (
+            {filteredBannedSellers.length ? (
               <>
-                <div className={styles.Sellers_grid}>
+                <div className={styles.BannedSellers_grid}>
                   {/* Header of OrderGrid starts here */}
                   <Card
                     className={cn(
-                      styles.Sellers_grid_sellerGrid,
-                      styles.Sellers_grid_headers
+                      styles.BannedSellers_grid_sellerGrid,
+                      styles.BannedSellers_grid_headers
                     )}
                   >
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Date Accepted
@@ -117,8 +113,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Full Name
@@ -126,8 +122,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Seller Name
@@ -135,8 +131,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Email Address
@@ -144,8 +140,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Mobile Number
@@ -153,8 +149,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Description
@@ -162,8 +158,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       ID
@@ -171,8 +167,8 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column
                       )}
                     >
                       Permit
@@ -180,9 +176,9 @@ function Sellers() {
 
                     <div
                       className={cn(
-                        styles.Sellers_grid_header,
-                        styles.Sellers_grid_column,
-                        styles.Sellers_grid_header_action,
+                        styles.BannedSellers_grid_header,
+                        styles.BannedSellers_grid_column,
+                        styles.BannedSellers_grid_header_action,
                       )}
                     >
                       Actions
@@ -192,39 +188,40 @@ function Sellers() {
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
-                  {filteredSellers.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, description, idImageUrl, businessPermitUrl, isBanned  }) =>
+                  {filteredBannedSellers.map(
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, 
+                      phoneNumber, description, idImageUrl, businessPermitUrl }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.Sellers_grid_sellerGrid}>
-                          <div className={styles.Sellers_grid_column}>
+                        <Card key={id} className={styles.BannedSellers_grid_sellerGrid}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {firstName} {lastName}
                           </div>
 
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {sellerName}
                           </div>
                             
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {email}
                           </div>
 
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {phoneNumber} 
                           </div>
 
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             {description}
                           </div>
 
                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Government Id"
-                            className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
+                            className={cn(styles.BannedSellers_grid_column, styles.BannedSellers_grid_column_id)}
                             height={60}
                             src={idImageUrl}
                             width={60}
@@ -237,7 +234,7 @@ function Sellers() {
                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.Sellers_grid_column, styles.Sellers_grid_column_id)}
+                            className={cn(styles.BannedSellers_grid_column, styles.BannedSellers_grid_column_id)}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
@@ -247,22 +244,14 @@ function Sellers() {
                             }}
                           />
 
-                          <div className={styles.Sellers_grid_column}>
-                            <div className={styles.Sellers_grid_buttons}>
+                          <div className={styles.BannedSellers_grid_column}>
+                            <div className={styles.BannedSellers_grid_buttons}>
                               <IconButton
-                                className={cn({
-                                  [styles.Sellers_grid_button_unban]: isBanned,
-                                  [styles.Sellers_grid_button_ban]: !isBanned,
-                                })}
-                                icon={isBanned ? 'how_to_reg' : 'person_off'}
+                                className={styles.BannedSellers_grid_button_unban}
+                                icon='how_to_reg'
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
-                                  if (isBanned) {
-                                    updateSellerStatus(id, userStatus.ACTIVE);
-                                  } else {
-                                    setSelectedSeller({ id, sellerName });
-                                    setIsReasonModalOpen(true);
-                                  }
+                                  updateSellerStatus(id, userStatus.ACTIVE);
                                 }}
                               />
                             </div>
@@ -272,12 +261,12 @@ function Sellers() {
                         // Mobile View
                         <details
                           key={id}
-                          className={styles.Sellers_grid_sellerGrid}
+                          className={styles.BannedSellers_grid_sellerGrid}
                         >
-                          <summary className={styles.Sellers_grid_title}>
-                            <div className={styles.Sellers_grid_title_info}>
+                          <summary className={styles.BannedSellers_grid_title}>
+                            <div className={styles.BannedSellers_grid_title_info}>
                               <Icon
-                                className={styles.Sellers_grid_title_icon}
+                                className={styles.BannedSellers_grid_title_icon}
                                 icon="expand_more"
                               />
 
@@ -287,7 +276,7 @@ function Sellers() {
                             </div>
                           </summary>
 
-                          <div className={styles.Sellers_grid_column}>
+                          <div className={styles.BannedSellers_grid_column}>
                             <Text
                               colorClass={colorClasses.NEUTRAL['400']}
                               type={textTypes.HEADING.XXS}
@@ -304,19 +293,19 @@ function Sellers() {
                 </div>
 
                 <Pagination 
-                  className={styles.Sellers_pagination}
+                  className={styles.BannedSellers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/sellers?page=${value}`, { scroll: false })
+                    router.push(`/admin/sellers/banned?page=${value}`, { scroll: false })
                   }}
                   totalPages={totalPages}
                 />
               </>
             ) : (
               <NoResults
-                className={styles.Sellers_noResults}
+                className={styles.BannedSellers_noResults}
                 message="No applications found"
               />
             )}
@@ -342,19 +331,7 @@ function Sellers() {
           title={`${selectedSeller.sellerName} Business Permit`}
         />
       }
-
-      {isReasonModalOpen &&
-        <ReasonModal
-          handleClose={() => setIsReasonModalOpen(false)}
-          isOpen={isReasonModalOpen}
-          isUpdating={isUpdating}
-          status={userStatus.BANNED}
-          title={`Reason for Banning ${selectedSeller.sellerName}`}
-          updateUser={updateSellerStatus}
-          userId={selectedSeller.id}
-        />
-      }
     </>
   )
 }
-export default Sellers;
+export default BannedSellers;
