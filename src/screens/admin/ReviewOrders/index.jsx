@@ -126,7 +126,7 @@ function ReviewOrders() {
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  // const {isLoading: isOrdersReportLoading, ordersReport } = useOrdersReport({page: 1, pageSize: 10});
+  const {isLoading: isOrdersReportLoading, ordersReport } = useOrdersReport({page: 1, pageSize: 10});
 
   const filteredOrders = orders.filter((order) => {
     const { product, buyer, status } = order;

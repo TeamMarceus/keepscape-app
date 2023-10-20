@@ -30,6 +30,8 @@ import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
 import { TokensService, UsersService } from '@/services';
 
+import { AUTHENTICATION_ROUTES } from '../routes';
+
 import styles from './styles.module.scss';
 
 const validate = (values) => {
@@ -119,12 +121,17 @@ export default function LoginPage() {
                 switch (status) {
                   case 400:
                     setIsLoggingIn(false);
-                    if (data.userStatus === userStatus.PENDING) {
-                      router.push('/seller-application?status=Pending');
-                    } else if (data.userStatus === userStatus.REJECTED) {
-                      router.push('/seller-application?status=Rejected');
-                    } else if (data.userStatus === userStatus.BANNED) {
-                      router.push('/seller-application?status=Banned');
+                    
+                    if (data.userStatus === userStatus.PENDING || 
+                      data.userStatus === userStatus.REJECTED || 
+                      data.userStatus === userStatus.BANNED) {
+
+                        loginUpdate({
+                          user: data,
+                        });
+
+                        router.push(AUTHENTICATION_ROUTES.SELLER_APPLICATION);
+
                     } else {
                       setErrors({
                         overall: 'Invalid email and/or password.',

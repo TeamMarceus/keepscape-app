@@ -153,6 +153,12 @@ export default function SellerSignUpPage() {
                 currentFormValues
               );
 
+              loginUpdate({
+                user: {
+                  userStatus: 'Pending'
+                },
+              });
+
              // Redirect the seller
              redirect(
               signUpResponse, 

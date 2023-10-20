@@ -12,7 +12,16 @@
     margin-bottom: 40px !important;
   }
 
+  &_reason {
+    margin-bottom: 32px !important;
+  }
+
   &_body {
     margin-bottom: 60px !important;
+  }
+
+  &_span {
+    color: $blue-400;
+    font-weight: 600;
   }
 }

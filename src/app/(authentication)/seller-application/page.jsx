@@ -2,17 +2,19 @@
 
 import React from 'react';
 
-import { useSearchParams } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
-import { textTypes, userStatus } from '@/app-globals';
+import { colorClasses, textTypes, userStatus } from '@/app-globals';
 import { ButtonLink, Text } from '@/components';
+
+import { getUser } from '@/ducks';
 
 import styles from './styles.module.scss';
 
 
 export default function SellerApplication() {
-  const searchParams = useSearchParams();
-  const status = searchParams.get('status');
+  const user = useSelector((store) => getUser(store));
+  console.log(user)
 
   return (
     <section className={styles.SellerApplication}>
@@ -20,20 +22,37 @@ export default function SellerApplication() {
           className={styles.SellerApplication_header}
           type={textTypes.HEADING.MD}
         >
-           {status === userStatus.PENDING && 'Seller Application'}
-           {status === userStatus.REJECTED && 'Application Denied'}
-           {status === userStatus.BANNED && 'Account Banned'}
+           {user.userStatus === userStatus.PENDING && 'Seller Application'}
+           {user.userStatus === userStatus.REJECTED && 'Application Rejected'}
+           {user.userStatus === userStatus.BANNED && 'Account Banned'}
+        </Text>
+
+        <Text
+          className={styles.SellerApplication_reason}
+          colorClass={colorClasses.NEUTRAL['400']}
+          type={textTypes.HEADING.XXS}
+        >
+          {user.reason}
         </Text>
 
         <Text 
            className={styles.SellerApplication_body}
           type={textTypes.BODY.LG}
         >
-          {status === userStatus.PENDING &&
+          {user.userStatus === userStatus.PENDING &&
            'Your application has been sent. We will contact you via email about the status of your application as soon as possible.'}
 
-          {(status === userStatus.REJECTED || status === userStatus.BANNED ) &&
-            'If you believe this is mistaken, please contact us through our email keepscale.ecommerce@gmail.com with your appeal '}
+          {(user.userStatus === userStatus.REJECTED || user.userStatus === userStatus.BANNED ) &&
+              (
+                <>
+                  If you believe this is mistaken, please contact us through our email {' '}
+                  <span className={styles.SellerApplication_span}>
+                    keepscale.ecommerce@gmail.com   
+                  </span> {' '}
+                  with your appeal 
+                </>
+              )
+            }
         </Text>
 
         <ButtonLink
