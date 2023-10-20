@@ -1,0 +1,30 @@
+
+@import '@/styles/variables.scss';
+
+.ProductReportsModal {
+  &_report {
+    padding: 24px;
+    margin-bottom: 24px;
+
+    &_reporter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    
+    &_info {
+      display: flex;
+      align-items: center;
+    }
+
+    &_icon {
+      color: $blue-400 !important;
+      font-size: 24px !important;
+    }
+
+    &_name {
+      margin-left: 12px !important;
+    }
+  }
+}

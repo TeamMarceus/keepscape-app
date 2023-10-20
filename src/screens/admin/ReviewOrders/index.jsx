@@ -19,7 +19,7 @@ import {
   Text 
 } from '@/components';
 
-import { useOrdersReport, useWindowSize } from '@/hooks';
+import { useReportedOrders, useWindowSize } from '@/hooks';
 
 import DeliveryLogsModal from './DeliveryLogsModal';
 
@@ -126,7 +126,7 @@ function ReviewOrders() {
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const {isLoading: isOrdersReportLoading, ordersReport } = useOrdersReport({page: 1, pageSize: 10});
+  const {isLoading: isReportedOrdersLoading, reportedOrders } = useReportedOrders({page: 1, pageSize: 10});
 
   const filteredOrders = orders.filter((order) => {
     const { product, buyer, status } = order;

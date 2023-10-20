@@ -9,6 +9,7 @@ const useSellers = ({page, pageSize, isBanned, search, sellerId}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [sellers, setSellers] = useState([]);
+  const [seller, setSeller] = useState({});
   const [totalPages, setTotalPages] = useState(0);
 
   const updateSellerStatus = async (userId, status, reason) => {
@@ -66,14 +67,18 @@ const useSellers = ({page, pageSize, isBanned, search, sellerId}) => {
       const { data: getSellersResponse } = await UsersService.retrieveSellers({
         page,
         pageSize,
+        userId: sellerId,
         isBanned,
         search,
-        userId: sellerId,
       });
 
       if (getSellersResponse) {
         setSellers(getSellersResponse.sellers);
         setTotalPages(getSellersResponse.pageCount);
+      }
+
+      if (getSellersResponse && sellerId) {
+        setSeller(getSellersResponse);
       }
 
       setIsLoading(false);
@@ -82,7 +87,7 @@ const useSellers = ({page, pageSize, isBanned, search, sellerId}) => {
     getSellers();
   }, [page, pageSize, isBanned, search, sellerId]);
 
-  return { isLoading, sellers, totalPages, isUpdating, updateSellerStatus };
+  return { isLoading, sellers, seller, totalPages, isUpdating, updateSellerStatus };
 };
 
 export default useSellers;

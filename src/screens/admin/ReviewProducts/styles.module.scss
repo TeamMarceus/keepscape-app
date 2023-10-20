@@ -30,7 +30,7 @@
 
         > div {
           > button {
-            width: 65px !important;
+            width: 60px !important;
 
             &::before {
               font-size: 28px !important;
@@ -105,6 +105,15 @@
       @include breakpoint(sm) {
         display: none;
       }
+    }
+
+    &_buttons {
+      @include flex-center;
+      gap: 2px;
+    }
+
+    &_resolveButton {
+      color: $green-400 !important;
     }
 
     &_deleteButton {

@@ -30,7 +30,6 @@ import styles from './styles.module.scss';
 function BannedBuyers() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const buyerIdParam = searchParams.get('id');
 
   const { windowSize } = useWindowSize();
 
@@ -43,14 +42,10 @@ function BannedBuyers() {
    buyers, 
    totalPages,
    updateBuyerStatus
-  } = useBuyers({ page, pageSize: 10, isBanned: true, search, userId: buyerIdParam });
+  } = useBuyers({ page, pageSize: 10, isBanned: true, search });
 
   const filteredBannedBuyers = buyers.filter((buyer) => {
     const searchLowerCase = search.toLowerCase();
-
-    if (buyerIdParam && search === '') {
-      return buyer.id === buyerIdParam;
-    }
 
     return (
       buyer.firstName.toLowerCase().includes(searchLowerCase) ||

@@ -32,7 +32,6 @@ import styles from './styles.module.scss';
 function ActiveBuyers() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const buyerIdParam = searchParams.get('id');
 
   const { windowSize } = useWindowSize();
 
@@ -46,17 +45,13 @@ function ActiveBuyers() {
     totalPages,
     isUpdating,
     updateBuyerStatus
-   } = useBuyers({ page, pageSize: 10, isBanned: false, search, userId: buyerIdParam });
+   } = useBuyers({ page, pageSize: 10, isBanned: false, search});
 
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
   const [selectedBuyer, setSelectedBuyer] = useState({})
 
   const filteredActiveBuyers = buyers.filter((buyer) => {
     const searchLowerCase = search.toLowerCase();
-
-    if (buyerIdParam && search === '') {
-      return buyer.id === buyerIdParam;
-    }
 
     return (
       buyer.firstName.toLowerCase().includes(searchLowerCase) ||

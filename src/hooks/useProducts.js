@@ -2,7 +2,18 @@ import { useState, useEffect } from 'react';
 
 import { ProductsService } from '@/services';
 
-const useProducts = ({search, province, category, sellerId, rating, minPrice, maxPrice, isDescending, page, pageSize}) => {
+const useProducts = ({
+  search,
+  province, 
+  category, 
+  sellerId, 
+  rating, 
+  minPrice, 
+  maxPrice, 
+  isDescending, 
+  page, 
+  pageSize}) => {
+
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -31,7 +42,17 @@ const useProducts = ({search, province, category, sellerId, rating, minPrice, ma
     };
 
     getProducts();
-  }, [search, province, category, sellerId, rating, minPrice, maxPrice, isDescending, page, pageSize]);
+  }, [
+    search, 
+    province, 
+    category, 
+    sellerId, 
+    rating, 
+    minPrice, 
+    maxPrice, 
+    isDescending, 
+    page, 
+    pageSize]);
 
   return { isLoading, products, totalPages };
 };

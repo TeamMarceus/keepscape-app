@@ -34,9 +34,6 @@ function BannedSellers() {
   const { windowSize } = useWindowSize();
   const searchParams = useSearchParams();
 
-  const sellerIdParam = searchParams.get('id');
-  const sellerNameParam = searchParams.get('name');
-  
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
   const [search, setSearch] = useState('');
@@ -46,7 +43,7 @@ function BannedSellers() {
   sellers, 
   totalPages,
   updateSellerStatus
-  } = useSellers({ page, pageSize: 10, isBanned: true, search, userId: sellerIdParam });
+  } = useSellers({ page, pageSize: 10, isBanned: true, search});
 
   const [isIdModalOpen, setIsIdModalOpen] = useState(false);
   const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
@@ -54,14 +51,6 @@ function BannedSellers() {
 
   const filteredBannedSellers = sellers.filter((seller) => {
     const searchLowerCase = search.toLowerCase();
-
-    if (sellerIdParam && search === '') {
-      return seller.id === sellerIdParam;
-    }
-
-    if (sellerNameParam && search === '') {
-      return seller.sellerName === sellerNameParam;
-    }
 
     return (
       seller.firstName.toLowerCase().includes(searchLowerCase) ||

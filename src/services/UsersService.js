@@ -54,10 +54,10 @@ const UsersService = {
       page,
       pageSize,
       isBanned,
-      search,
       isDescending,
       orderBy,
       userId,
+      search,
     },
   }),
   retrieveBuyers: ({

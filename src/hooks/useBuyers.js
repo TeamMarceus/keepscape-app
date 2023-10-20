@@ -9,6 +9,7 @@ const useBuyers = ({page, pageSize, isBanned, search, buyerId}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [buyers, setBuyers] = useState([]);
+  const [buyer, setBuyer] = useState({});
   const [totalPages, setTotalPages] = useState(0);
 
   const updateBuyerStatus = async (userId, status, reason) => {
@@ -61,7 +62,7 @@ const useBuyers = ({page, pageSize, isBanned, search, buyerId}) => {
 
   useEffect(() => {
     setIsLoading(true);
-    
+    console.log(buyerId)
     const getBuyers = async () => {
       const { data: getBuyersResponse } = await UsersService.retrieveBuyers({
         page,
@@ -76,13 +77,17 @@ const useBuyers = ({page, pageSize, isBanned, search, buyerId}) => {
         setTotalPages(getBuyersResponse.pageCount);
       }
 
+      if (getBuyersResponse && buyerId) {
+        setBuyer(getBuyersResponse);
+      }
+
       setIsLoading(false);
     };
 
     getBuyers();
   }, [page, pageSize, isBanned, search, buyerId]);
 
-  return { isLoading, buyers, totalPages, isUpdating, updateBuyerStatus };
+  return { isLoading, buyers, buyer, totalPages, isUpdating, updateBuyerStatus };
 };
 
 export default useBuyers;
