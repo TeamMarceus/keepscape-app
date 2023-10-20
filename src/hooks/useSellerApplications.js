@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
 
-const useSellerApplications = ({ page, pageSize, applicationStatus }) => {
+const useSellerApplications = ({ page, pageSize, applicationStatus, search }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false); 
   const [sellerApplications, setSellerApplications] = useState([]);
@@ -61,7 +61,7 @@ const useSellerApplications = ({ page, pageSize, applicationStatus }) => {
     
     const getSellerApplications = async () => {
       const { data: getSellerApplicationsResponse } =
-       await UsersService.retrieveSellerApplications({status: applicationStatus, page, pageSize});
+       await UsersService.retrieveSellerApplications({status: applicationStatus, page, pageSize, search});
 
       if (getSellerApplicationsResponse) {
         setSellerApplications(getSellerApplicationsResponse.sellerApplications);
@@ -72,7 +72,7 @@ const useSellerApplications = ({ page, pageSize, applicationStatus }) => {
     };
 
     getSellerApplications();
-  }, [page, pageSize]);
+  }, [page, pageSize, search]);
 
   return { isLoading, sellerApplications, totalPages, isUpdating, updateSellerApplication };
 };

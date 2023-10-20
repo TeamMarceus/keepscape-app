@@ -46,7 +46,7 @@ function RejectedSellers() {
     sellerApplications, 
     totalPages,
     updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Rejected'});
+  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Rejected', search});
 
   const [selectedApplication, setSelectedApplication] = useState({})
 

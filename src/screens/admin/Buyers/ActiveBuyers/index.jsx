@@ -76,7 +76,7 @@ function ActiveBuyers() {
           className={styles.ActiveBuyers_search}
           icon="search"
           name="search"
-          placeholder="You can search by Name"
+          placeholder="You can search by Name or Email"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

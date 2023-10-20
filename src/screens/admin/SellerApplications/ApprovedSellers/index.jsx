@@ -50,7 +50,7 @@ function ApprovedSellers() {
     totalPages,
     isUpdating,
     updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Approved'});
+  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Approved', search});
 
   const [selectedApplication, setSelectedApplication] = useState({})
 

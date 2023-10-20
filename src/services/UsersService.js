@@ -26,11 +26,16 @@ const UsersService = {
   updatePassword: (body) => axios.put(`${BASE_URL}/passwords/update`, body),
 
   // Seller Applications
-  retrieveSellerApplications: ({status, page, pageSize}) => axios.get(`${BASE_URL}/sellers/applications`, {
+  retrieveSellerApplications: ({
+    status, 
+    page, 
+    pageSize, 
+    search}) => axios.get(`${BASE_URL}/sellers/applications`, {
     params: {
       status,
       page,
       pageSize,
+      search,
     },
   }),
   updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),

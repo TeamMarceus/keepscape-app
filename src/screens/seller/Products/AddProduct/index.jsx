@@ -34,8 +34,6 @@ import { textAreaTypes } from '@/components/TextArea/constants';
 
 import { useAddProduct, useProductCategories, useProductPlaces } from '@/hooks';
 
-import { ProductsService } from '@/services';
-
 import styles from './styles.module.scss';
 
 const validate = (values) => {
@@ -117,7 +115,8 @@ function AddProduct() {
               categoryIds: !isEmpty(values.categories) && values.categories.map((category) => category.value),
               quantity: values.quantity,
               isCustomizable: values.isCustomizable,
-              price: values.price * 1.05,
+              sellerPrice: values.price,
+              buyerPrice: values.price * 1.05,
             };
 
             const errors = validate(values);

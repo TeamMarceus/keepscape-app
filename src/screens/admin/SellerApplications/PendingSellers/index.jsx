@@ -50,7 +50,7 @@ function PendingSellers() {
     totalPages,
     isUpdating,
     updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Pending'});
+  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Pending', search});
 
   const [selectedApplication, setSelectedApplication] = useState({})
 
