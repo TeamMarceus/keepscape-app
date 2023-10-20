@@ -13,6 +13,7 @@
 
     &_column {
       text-align: center;
+      gap: 12px;
 
       @include breakpoint(sm) {
         border: unset;
@@ -25,10 +26,12 @@
       }
 
       &_images {
-        max-width: 160px !important;
+        max-width: 120px !important;
 
         > div {
           > button {
+            width: 65px !important;
+
             &::before {
               font-size: 28px !important;
             }
@@ -43,7 +46,7 @@
 
     &_productGrid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(8, 1fr);
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;

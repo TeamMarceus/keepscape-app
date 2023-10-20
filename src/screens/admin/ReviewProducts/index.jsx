@@ -24,86 +24,41 @@ import {
   IconLink
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useProductsReport, useWindowSize } from '@/hooks';
 
 import PreloaderProducts from './Preloader';
 
 import styles from './styles.module.scss';
-
-const products = [
-  {
-    id: '1111-e89b-12d3-a456-426614174000',
-    dateCreated: '2021-08-01',
-    name: 'Butanding Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/300',
-      'https://picsum.photos/300',
-    ],
-    totalSold: 10,
-    sellerId: 'a23e4567-e89b-12d3-a456-426614174000',
-  },
-  {
-    id: '2',
-    dateCreated: '2021-08-01',
-    name: 'Butanding Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-    ],
-    totalSold: 10,
-    sellerId: '123e4567-e89b-12d3-a456-426614174000'
-  },
-  {
-    id: '3',
-    dateCreated: '2021-08-01',
-    name: 'Dolphin Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-    ],
-    totalSold: 10,
-    sellerId: '123e4567-e89b-12d3-a456-426614174000'
-  },
-];
 
 const sliderSettings = {
   lazyLoad: true,
   dots: false,
   infinite: false,
   speed: 500,
-  slidesToShow: 3,
+  slidesToShow: 2,
   slidesToScroll: 1,
 };
 
 function ReviewProducts() {
   const { windowSize } = useWindowSize();
-  const isProductsLoading = false;
+
   const searchParams = useSearchParams();
   const productIdParam = searchParams.get('id');
   const [search, setSearch] = useState('');
   const [selectedProduct, setSelectedProduct] = useState({});
 
-  const filteredProducts = products.filter((product) => {
-    const { name } = product;
+  const {isLoading: isProductsReportLoading, productsReport } = useProductsReport({page: 1, pageSize: 10});
+
+  if (isProductsReportLoading) return;
+
+  const filteredProducts =productsReport.filter((product) => {
 
     if (productIdParam && search === '') {
       return product.id === productIdParam;
     }
 
-    return name.toLowerCase().includes(search.toLowerCase()) ||
-      product.sellerId.toLowerCase().includes(search.toLowerCase());
+    return product.name.toLowerCase().includes(search.toLowerCase()) ||
+      product.sellerUserGuid.toLowerCase().includes(search.toLowerCase());
   });
 
   return (
@@ -121,7 +76,7 @@ function ReviewProducts() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {isProductsLoading ? (
+      {isProductsReportLoading ? (
         <PreloaderProducts />
       ) : (
         // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -177,6 +132,15 @@ function ReviewProducts() {
                     styles.ReviewProducts_grid_column
                   )}
                 >
+                  Seller ID
+                </div>
+
+                <div
+                  className={cn(
+                    styles.ReviewProducts_grid_header,
+                    styles.ReviewProducts_grid_column
+                  )}
+                >
                   Total Sold
                 </div>
 
@@ -186,7 +150,7 @@ function ReviewProducts() {
                     styles.ReviewProducts_grid_column
                   )}
                 >
-                  Seller ID
+                  Total Reports
                 </div>
 
                 <div
@@ -204,12 +168,12 @@ function ReviewProducts() {
 
               {/* Body of OrderGrid starts here */}
               {filteredProducts.map(
-                ({ id, dateCreated, name, quantity, images, totalSold, sellerId  }) =>
+                ({ id, dateTimeCreated, name, quantity, imageUrls, totalSold, totalReports, sellerUserGuid  }) =>
                   windowSize.width > 767 ? (
                     // Desktop View
                     <Card key={id} className={styles.ReviewProducts_grid_productGrid}>
                       <div className={styles.ReviewProducts_grid_column}>
-                        {dateCreated}
+                        {dateTimeCreated.split('T')[0]}
                       </div>
 
                       <div className={styles.ReviewProducts_grid_column}>
@@ -224,7 +188,7 @@ function ReviewProducts() {
                         styles.ReviewProducts_grid_column_images
                       )}>
                          <Slider {...sliderSettings}>
-                          {images.map((image, index) => (
+                          {imageUrls.map((image, index) => (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               key={index}
@@ -238,16 +202,24 @@ function ReviewProducts() {
                          </Slider>
                       </div>
 
+                      <ButtonLink
+                        className={styles.ReviewProducts_grid_column}
+                        to={`/admin/sellers?id=${sellerUserGuid}`}
+                        type={buttonTypes.TEXT.NEUTRAL}
+                      >
+                        {sellerUserGuid}
+                      </ButtonLink>
+
                       <div className={styles.ReviewProducts_grid_column}>
                         {totalSold}
                       </div>
 
                       <ButtonLink
                         className={styles.ReviewProducts_grid_column}
-                        to={`/admin/sellers?id=${sellerId}`}
-                        type={buttonTypes.TEXT.NEUTRAL}
+                        to={`/admin/products/${id}/reports`}
+                        type={buttonTypes.TEXT.BLUE}
                       >
-                        {sellerId}
+                        {totalReports}
                       </ButtonLink>
 
                       <div className={styles.ReviewProducts_grid_column}>
@@ -275,7 +247,7 @@ function ReviewProducts() {
                           />
 
                           <Text type={textTypes.HEADING.XS}>
-                            {dateCreated} {name}
+                            {dateTimeCreated.split('T')[0]} {name}
                           </Text>
                         </div>
                       </summary>
