@@ -22,9 +22,9 @@ const useBuyers = ({page, pageSize}) => {
   
       if (updateBuyerStatusStatus === 200) {
         if (status === userStatus.BANNED) {
-          toast.error('Buyer successfully banned.', {
+          toast.success('Buyer successfully banned.', {
             style: {
-              backgroundColor: '#ed5565',
+              backgroundColor: '#1ab394',
               color: '#fff',
             },
           });

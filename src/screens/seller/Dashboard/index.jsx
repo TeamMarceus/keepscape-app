@@ -2,13 +2,16 @@ import {
   colorClasses,
   textTypes,
 } from '@/app-globals';
-import { Card, Icon, Text } from '@/components';
+import { Card, Icon, NoResults, Text } from '@/components';
+
+import useAnnouncements from '@/hooks/useAnnouncements';
+
+import PreloaderAnnouncement from '@/screens/admin/Announcements/Preloader';
 
 import styles from './styles.module.scss';
 
-
-
 function Dashboard() {
+  const {isLoading: isAnnouncementsLoading, announcements } = useAnnouncements({page: 1, pageSize: 10});
 
   return (
     <div className={styles.Dashboard}>
@@ -92,49 +95,36 @@ function Dashboard() {
         Announcements
       </Text>
 
-      <Card className={styles.Dashboard_announcements}>
-        <div className={styles.Dashboard_announcements_text}>
-          <Text
-            className={styles.Dashboard_announcements_title}
-            colorClass={colorClasses.BLUE['400']}
-            type={textTypes.HEADING.XXS}
-          >
-            Change of Terms and Conditions
-          </Text>
-
-          <Text>
-            Hey Keeypscape sellers! We have updated our terms and conditions. Please read them carefully before proceeding.
-            The following changes have been made:
-            <br />
-            1. Sellers are now required to ship their orders within 3 days of receiving the order.
-            <br />
-            2. Sellers are now required to provide a tracking number for their orders.
-            <br />
-            3. Sellers are now required to provide a tracking number for their orders.
-          </Text>
-        </div>
-
-        <div className={styles.Dashboard_announcements_text}>
-          <Text
-            className={styles.Dashboard_announcements_title}
-            colorClass={colorClasses.BLUE['400']}
-            type={textTypes.HEADING.XXS}
-          >
-            Change of Terms and Conditions
-          </Text>
-
-          <Text>
-            Hey Keeypscape sellers! We have updated our terms and conditions. Please read them carefully before proceeding.
-            The following changes have been made:
-            <br />
-            1. Sellers are now required to ship their orders within 3 days of receiving the order.
-            <br />
-            2. Sellers are now required to provide a tracking number for their orders.
-            <br />
-            3. Sellers are now required to provide a tracking number for their orders.
-          </Text>
-        </div>
-      </Card>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {isAnnouncementsLoading ? (
+        <PreloaderAnnouncement/>
+        ) : (
+          announcements.length > 0 ? (
+            announcements.map((announcement) => (
+              <Card key={announcement.id} className={styles.Dashboard_announcements}>
+                <div className={styles.Dashboard_announcements_text}>
+                  <Text
+                    className={styles.Dashboard_announcements_title}
+                    colorClass={colorClasses.BLUE['400']}
+                    type={textTypes.HEADING.XXS}
+                  >
+                    {announcement.title}
+                  </Text>
+  
+                  <Text>
+                    {announcement.description}
+                  </Text>
+                </div>
+              </Card>
+            ))
+          ) : (
+            <NoResults
+              className={styles.Buyers_noResults}
+              message="No Annoucements"
+            />
+          )
+        )
+      }
     </div>
   )
 }

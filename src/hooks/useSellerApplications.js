@@ -31,9 +31,9 @@ const useSellerApplications = ({ page, pageSize }) => {
         }
   
         if (status === userStatus.REJECTED) {
-          toast.error('Seller application rejected.', {
+          toast.success('Seller application rejected.', {
             style: {
-              backgroundColor: '#ed5565',
+              backgroundColor: '#1ab394',
               color: '#fff',
             },
           });

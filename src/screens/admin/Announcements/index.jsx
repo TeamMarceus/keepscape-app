@@ -8,26 +8,21 @@ import {
 } from '@/app-globals';
 import { Button, Card, IconButton, Text } from '@/components';
 
-import AddAnnouncementModal from './AddAnnouncementModal';
-import styles from './styles.module.scss';
+import useAnnouncements from '@/hooks/useAnnouncements';
 
-const announcements = [
-  {
-    title: 'Change of Terms and Conditions',
-    text: 'Hey Keeypscape sellers! We have updated our terms and conditions. Please read them carefully before proceeding. The following changes have been made: 1. Sellers are now required to ship their orders within 3 days of receiving the order. 2. Sellers are now required to provide a tracking number for their orders. 3. Sellers are now required to provide a tracking number for their orders.',
-  },
-  {
-    title: 'Change of Terms and Conditions',
-    text: 'Hey Keeypscape sellers! We have updated our terms and conditions. Please read them carefully before proceeding. The following changes have been made: 1. Sellers are now required to ship their orders within 3 days of receiving the order. 2. Sellers are now required to provide a tracking number for their orders. 3. Sellers are now required to provide a tracking number for their orders.',
-  },
-  {
-    title: 'Change of Terms and Conditions',
-    text: 'Hey Keeypscape sellers! We have updated our terms and conditions. Please read them carefully before proceeding. The following changes have been made: 1. Sellers are now required to ship their orders within 3 days of receiving the order. 2. Sellers are now required to provide a tracking number for their orders. 3. Sellers are now required to provide a tracking number for their orders.',
-  },
-]
+import AddAnnouncementModal from './AddAnnouncementModal';
+import PreloaderAnnouncement from './Preloader';
+import styles from './styles.module.scss';
 
 function Announcements() {
   const [isAddAnnouncementModalOpen, setIsAddAnnouncementModalOpen] = useState(false);
+
+  const {isLoading: isAnnouncementsLoading, 
+    announcements,
+    totalPage, 
+    setAnnouncements,
+    deleteAnnouncement 
+  } = useAnnouncements({page: 1, pageSize: 10});
 
   return (
     <>
@@ -43,36 +38,44 @@ function Announcements() {
         >
           New Announcement
         </Button>
-        <Card className={styles.Announcements_content}>
-          {announcements.map((announcement, index) => (
-            <div key={index} className={styles.Announcements_content_text}>
-              <div className={styles.Announcements_content_title}>
-                <Text
-                  colorClass={colorClasses.BLUE['400']}
-                  type={textTypes.HEADING.XXS}
-                >
-                  {announcement.title}
-                </Text>
 
-                <IconButton
-                  icon="delete"
-                  iconClassName={styles.Announcements_content_icon}
-                  type={iconButtonTypes.ICON.MD}
-                />
-              </div>
+        {isAnnouncementsLoading ? (
+            <PreloaderAnnouncement />
+          ) : (
+            <Card className={styles.Announcements_content}>
+              {announcements.map((announcement, index) => (
+                <div key={index} className={styles.Announcements_content_text}>
+                  <div className={styles.Announcements_content_title}>
+                    <Text
+                      colorClass={colorClasses.BLUE['400']}
+                      type={textTypes.HEADING.XXS}
+                    >
+                      {announcement.title}
+                    </Text>
 
-              <Text>
-                {announcement.text}
-              </Text>
-            </div>
-          ))}
-        </Card>
+                    <IconButton
+                      icon="delete"
+                      iconClassName={styles.Announcements_content_icon}
+                      type={iconButtonTypes.ICON.MD}
+                      onClick={() => deleteAnnouncement(announcement.id)}
+                    />
+                  </div>
+
+                  <Text>
+                    {announcement.description}
+                  </Text>
+                </div>
+              ))}
+            </Card>
+          )
+        }
       </div>
 
       {isAddAnnouncementModalOpen && (
         <AddAnnouncementModal
           handleClose={() => setIsAddAnnouncementModalOpen(false)}
           isOpen={isAddAnnouncementModalOpen}
+          setAnnouncements={setAnnouncements}
         />
       )}
     </>
