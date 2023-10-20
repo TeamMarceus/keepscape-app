@@ -69,7 +69,7 @@ function ActiveBuyers() {
     <>
       <div className={styles.ActiveBuyers}>
         <Text type={textTypes.HEADING.XS}>
-          ActiveBuyers
+          Active Buyers
         </Text>
 
         <ControlledInput

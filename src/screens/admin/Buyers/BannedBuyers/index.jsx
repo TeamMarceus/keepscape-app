@@ -62,7 +62,7 @@ function BannedBuyers() {
   return (
     <div className={styles.BannedBuyers}>
       <Text type={textTypes.HEADING.XS}>
-        BannedBuyers
+        Banne dBuyers
       </Text>
 
       <ControlledInput
