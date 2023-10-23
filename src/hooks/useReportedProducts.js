@@ -4,10 +4,10 @@ import { toast } from 'sonner';
 
 import { ProductsService, ReportsService } from '@/services';
 
-const useReportedProducts = ({page, pageSize}) => {
+const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [reportedProducts, setReportedProducts] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   const deleteProduct = async (productId) => {
     try {
@@ -67,21 +67,21 @@ const useReportedProducts = ({page, pageSize}) => {
   useEffect(() => {
     const getProductsReports = async () => {
       const { data: getProductsReportResponse } = await ReportsService.productList(
-        // {page, pageSize}
+        {page, pageSize, sellerName, productName}
       );
 
       if (getProductsReportResponse) {
-        setReportedProducts(getProductsReportResponse);
-        // setTotalPage(getProductsReportResponse.totalPage);
+        setReportedProducts(getProductsReportResponse.products);
+        setTotalPages(getProductsReportResponse.pageCount);
       }
 
       setIsLoading(false);
     };
 
     getProductsReports();
-  }, []);
+  }, [page, pageSize, sellerName, productName]);
 
-  return { isLoading, reportedProducts, totalPage, deleteProduct, resolveProductReports };
+  return { isLoading, reportedProducts, totalPages, deleteProduct, resolveProductReports };
 };
 
 export default useReportedProducts;

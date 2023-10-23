@@ -44,8 +44,7 @@ function ProductReportsModal({
                 className={styles.ProductReportsModal_report_name}
                 type={textTypes.HEADING.XXS}
               >
-                {/* {productReport.name} */}
-                Mark Pausanos
+                {productReport.buyerName}
               </Text>
             </div>
 

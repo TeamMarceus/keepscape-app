@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import cn from 'classnames';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
   buttonTypes,
   colorClasses,
+  iconButtonTypes,
   textTypes,
 } from '@/app-globals';
 
@@ -15,11 +16,17 @@ import {
   Card, 
   ControlledInput, 
   Icon, 
+  IconButton, 
   NoResults, 
+  Pagination, 
   Text 
 } from '@/components';
 
 import { useReportedOrders, useWindowSize } from '@/hooks';
+
+import BuyerModal from '../Modals/BuyerModal';
+import OrderReportModal from '../Modals/OrderReportModal';
+import SellerModal from '../Modals/SellerModal';
 
 import DeliveryLogsModal from './DeliveryLogsModal';
 
@@ -27,121 +34,34 @@ import PreloaderOrders from './Preloader';
 
 import styles from './styles.module.scss';
 
-const orders = [
-  {
-    id: '11113e4567-e89b-12d3-a456-426614174000',
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 1,
-        name: 'Buntanding KeyChain 1',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      name: 'Buyer 1',
-      deliveryDetails: {
-        fullName: 'Buyer 1',
-        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 1,
-    sellerId: '123e4567-e89b-12d3-a456-426614174000',
-    status: 'On Going',
-  },
-  {
-    id: 2,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 1,
-        name: 'Buntanding KeyChain 1',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: '123e4567-e89b-12d3-a456-426614174000',
-      name: 'Buyer 1',
-      deliveryDetails: {
-        fullName: 'Buyer 1',
-        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 1,
-    sellerId: '123e4567-e89b-12d3-a456-426614174000',
-    status: 'Delivered',
-  },
-  {
-    id: 4,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 1,
-        name: 'Buntanding KeyChain 1',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 1,
-      name: 'Buyer 1',
-      deliveryDetails: {
-        fullName: 'Buyer 1',
-        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 1,
-    sellerId: 1,
-    status: 'Pending',
-  },
-  {
-    id: 3,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 1,
-        name: 'Buntanding KeyChain 1',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 1,
-      name: 'Buyer 1',
-      deliveryDetails: {
-        fullName: 'Buyer 1',
-        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 1,
-    sellerId: 1,
-    status: 'Cancelled',
-  },
-]
 
 function ReviewOrders() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const orderIdParam = searchParams.get('id');
-
   const { windowSize } = useWindowSize();
 
-  const isOrdersLoading = false;
+  const page = searchParams.get('page') || 1;
 
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1)
+
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
+  const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
+  const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
+  const [isOrderReportModalOpen, setIsOrderReportModalOpen] = useState(false);
+
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const {isLoading: isReportedOrdersLoading, reportedOrders } = useReportedOrders({page: 1, pageSize: 10});
+  const {
+    isLoading: isReportedOrdersLoading, 
+    reportedOrders,
+    resolveOrderReports,
+    totalPages, 
+  } = useReportedOrders({ page, pageSize: 10 });
 
-  const filteredOrders = orders.filter((order) => {
-    const { product, buyer, status } = order;
-
-    if (orderIdParam && search === '') {
-      return order.id === orderIdParam;
-    }
-
-    return (
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      buyer.name.toLowerCase().includes(search.toLowerCase()) ||
-      status.toLowerCase().includes(search.toLowerCase()) ||
-      order.dateOrdered.toLowerCase().includes(search.toLowerCase())
-    );
-  });
+  const filteredOrders = reportedOrders.filter((order) => (
+        order
+    ));
 
   return (
     <>
@@ -155,204 +75,219 @@ function ReviewOrders() {
           className={styles.ReviewOrders_search}
           icon="search"
           name="search"
-          placeholder="You can search by Date Ordered, Product, Buyer, or Status"
+          placeholder="You can search by Date Ordered, Seller, Buyer, or Status"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {isOrdersLoading ? (
+        {isReportedOrdersLoading ? (
           <PreloaderOrders />
         ) : (
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredOrders.length ? (
-              <div className={styles.ReviewOrders_grid}>
-                {/* Header of OrderGrid starts here */}
-                <Card
-                  className={cn(
-                    styles.ReviewOrders_grid_orderGrid,
-                    styles.ReviewOrders_grid_headers
-                  )}
-                >
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column
-                    )}
-                  >
-                    Date Ordered
-                  </div>
+              <>
+                <div className={styles.ReviewOrders_orders}>
+                  {filteredOrders.map(
+                    ({ id, seller, buyer, dateTimeCreated, report, items, totalPrice, status}) =>
+                      windowSize.width > 767 ? (
+                        // Desktop View
+                        <Card key={id} className={styles.ReviewOrders_order}>
+                          <div className={styles.ReviewOrders}>
+                            <div className={styles.ReviewOrders_info}>
+                              <div className={styles.ReviewOrders_info_left}>
+                                <Button
+                                  className={styles.ReviewOrders_info_text}
+                                  icon="storefront"
+                                  type={buttonTypes.TEXT.BLUE}
+                                  onClick={() => {
+                                    setSelectedOrder({id, seller});
+                                    setIsSellerModalOpen(true);
+                                  }}
+                                >
+                                  <Text type={textTypes.HEADING.XXXS}>
+                                    {seller.sellerName}
+                                  </Text>
+                                </Button>
 
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column
-                    )}
-                  >
-                    Product
-                  </div>
+                                <Button
+                                  className={styles.ReviewOrders_info_text}
+                                  icon="person"
+                                  type={buttonTypes.TEXT.BLUE}
+                                  onClick={() => {
+                                    setSelectedOrder({id, buyer});
+                                    setIsBuyerModalOpen(true)
+                                  }}
+                                >
+                                  <Text type={textTypes.HEADING.XXXS}>
+                                    {buyer.firstName} {buyer.lastName}
+                                  </Text>
+                                </Button>
 
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column
-                    )}
-                  >
-                    Quantity
-                  </div>
+                                <div className={styles.ReviewOrders_info_date}>
+                                  Date Ordered: 
 
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column
-                    )}
-                  >
-                    Buyer ID
-                  </div>
+                                  <Text
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXXS}
+                                  >
+                                    {dateTimeCreated.split('T')[0]}
+                                  </Text>
+                                </div>
+                              </div>
 
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column
-                    )}
-                  >
-                    Seller ID
-                  </div>
+                              <div className={styles.ReviewOrders_info_buttons}>
+                                <Button
+                                  className={styles.ReviewOrders_info_statusButton}
+                                  icon={
+                                    (() => {
+                                      if (status === 'Pending') {
+                                        return 'pending';
+                                      } if (status === 'Delivered') {
+                                        return 'check';
+                                      } if ('Cancelled' === 'Cancelled') {
+                                        return 'close';
+                                      } 
+                                        return 'local_shipping';
+                                    })()
+                                  }
+                                  type={
+                                    (() => {
+                                      if (status === 'Pending') {
+                                        return buttonTypes.TEXT.NEUTRAL;
+                                      } if (status === 'Delivered') {
+                                        return buttonTypes.TEXT.GREEN;
+                                      } if ('Cancelled' === 'Cancelled') {
+                                        return buttonTypes.TEXT.RED;
+                                      } 
+                                        return buttonTypes.TEXT.BLUE;
+                                    })()
+                                  }
+                                  onClick={() => {
+                                    setSelectedOrder({id, buyer});
+                                    setIsDeliveryLogsModalOpen(true);
+                                  }}
+                                >
+                                  Cancelled
+                                </Button>
 
-                  <div
-                    className={cn(
-                      styles.ReviewOrders_grid_header,
-                      styles.ReviewOrders_grid_column,
-                      styles.ReviewOrders_grid_header_action
-                    )}
-                  >
-                    Status
-                  </div>
+                                <IconButton
+                                  className={styles.ReviewOrders_info_reportsButton}
+                                  icon="flag"
+                                  type={iconButtonTypes.OUTLINE.XS}
+                                  onClick={() => {
+                                    setSelectedOrder({id, buyer, report});
+                                    setIsOrderReportModalOpen(true);
+                                  }}
+                                />
+                              </div>
+                              
+                            </div>
 
-                  
-                  {/* Header of OrderGrid ends here */}
-                </Card>
+                            {items.map(
+                              ({ productId, image, productName, price, quantity, customizedMessage }) => (
+                            
+                              <div key={productId} className={styles.ReviewOrders_item}>
+                                <div className={styles.ReviewOrders_product}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt={image}
+                                    className={styles.ReviewOrders_product_image}
+                                    height={60}
+                                    src="https://picsum.photos/200"
+                                    width={60}
+                                  />
 
-                {/* Body of OrderGrid starts here */}
-                {filteredOrders.map(
-                  ({ id, dateOrdered, product, quantity, buyer, sellerId, status }) =>
-                    windowSize.width > 767 ? (
-                      // Desktop View
-                      <Card key={id} className={styles.ReviewOrders_grid_orderGrid}>
-                        <div className={styles.ReviewOrders_grid_column}>
-                          {dateOrdered}
-                        </div>
+                                  <div>
+                                    <Text 
+                                      className={styles.ReviewOrders_product_text}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      {productName}
+                                    </Text>
+                                    x{quantity}
+                                  </div>
+                                </div>
+                              
+                                {customizedMessage &&
+                                  <Text 
+                                    className={styles.ReviewOrders_customizationText}
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                  >
+                                    {customizedMessage}
+                                  </Text>
+                                }
 
-                        <ButtonLink 
-                          className={cn(styles.ReviewOrders_grid_column,
-                            styles.ReviewOrders_grid_column_product)}
-                          to={`/admin/review-products?id=${product.id}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            alt={product.name}
-                            className={styles.ReviewOrders_grid_column_product_image}
-                            height={60}
-                            src={product.image}
-                            width={60}
-                          />
-                          <Text>
-                            {product.name}  
-                          </Text>
-                        </ButtonLink>
-
-                        <div className={styles.ReviewOrders_grid_column}>
-                          {quantity}
-                        </div>
-
-                        <ButtonLink 
-                          className={styles.ReviewOrders_grid_column}
-                          to={`/admin/buyers?id=${buyer.id}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {buyer.id}
-                        </ButtonLink>
-
-                        <ButtonLink 
-                          className={styles.ReviewOrders_grid_column}
-                          to={`/admin/sellers?id=${sellerId}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {sellerId}
-                        </ButtonLink>
-
-                        <Button
-                          className={styles.ReviewOrders_grid_column}
-                          icon={
-                            (() => {
-                              if (status === 'Pending') {
-                                return 'pending';
-                              } if (status === 'Delivered') {
-                                return 'check';
-                              } if (status === 'Cancelled') {
-                                return 'close';
-                              } 
-                                return 'local_shipping';
-                            })()
-                          }
-                          type={
-                            (() => {
-                              if (status === 'Pending') {
-                                return buttonTypes.TEXT.NEUTRAL;
-                              } if (status === 'Delivered') {
-                                return buttonTypes.TEXT.GREEN;
-                              } if (status === 'Cancelled') {
-                                return buttonTypes.TEXT.RED;
-                              } 
-                                return buttonTypes.TEXT.BLUE;
-                            })()
-                          }
-                          onClick={() => {
-                            if (status === 'Cancelled' || status === 'Pending') {
-                              return;
-                            }
-                            setSelectedOrder({ id, product, buyer });
-                            setIsDeliveryLogsModalOpen(true);
-                          }}
-                        >
-                          {status}
-                        </Button>
-                      </Card>
-                    ) : (
-                      // Mobile View
-                      <details
-                        key={id}
-                        className={styles.ReviewOrders_grid_orderGrid}
-                      >
-                        <summary className={styles.ReviewOrders_grid_title}>
-                          <div className={styles.ReviewOrders_grid_title_info}>
-                            <Icon
-                              className={styles.ReviewOrders_grid_title_icon}
-                              icon="expand_more"
-                            />
-
-                            <Text type={textTypes.HEADING.XS}>
-                              {dateOrdered} {product.name}
-                            </Text>
+                                <div className={styles.ReviewOrders_price}>
+                                  <Text
+                                    className={styles.ReviewOrders_price_text}
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    ₱{price}
+                                  </Text>
+                                </div>
+                              </div>
+                              )
+                            )}
                           </div>
-                        </summary>
 
-                        <div className={styles.ReviewOrders_grid_column}>
-                          <Text
-                            colorClass={colorClasses.NEUTRAL['400']}
-                            type={textTypes.HEADING.XXS}
-                          >
-                            Buyer Name:
-                          </Text>
+                          <div className={styles.ReviewOrders_orderTotal}>
+                            <div className={styles.ReviewOrders_orderTotal_text}>
+                              <Text 
+                                colorClass={colorClasses.NEUTRAL['400']}
+                                type={textTypes.HEADING.XXXS}
+                              >
+                                Order Total:
+                              </Text>
 
-                          <Text type={textTypes.HEADING.XXS}>{buyer.name}</Text>
-                        </div>
-                      </details>
-                    )
-                )}
-                {/* Body of OrderGrid ends here */}
-              </div>
+                              <Text 
+                                colorClass={colorClasses.BLUE['300']}
+                                type={textTypes.HEADING.XXS}
+                              >
+                                ₱{totalPrice}
+                              </Text>    
+                            </div> 
+
+                            <div className={styles.ReviewOrders_orderTotal_buttons}> 
+                              <Button
+                                  className={styles.ReviewOrders_orderTotal_buttons_button}
+                                  onClick={() => {
+                                
+                                  }}
+                                >
+                                Resolve
+                              </Button>
+
+                              <Button
+                                className={styles.ReviewOrders_orderTotal_buttons_button}
+                                type={buttonTypes.SECONDARY.BLUE}
+                                onClick={() => {}}
+                              >
+
+                                Refund
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ) : (
+                        // Mobile View
+                        <>
+                        </>
+                      )
+                  )}
+                </div>
+
+                <Pagination 
+                  className={styles.ReviewOrders_pagination}
+                  currentPage={currentPage}
+                  pageJump={(value) => {
+                    setCurrentPage(value);
+                    router.push(`/admin/review-orders?page=${value}`, { scroll: false })
+                  }}
+                  totalPages={totalPages}
+                />
+              </>
             ) : (
               <NoResults
                 className={styles.ReviewOrders_noResults}
@@ -363,12 +298,47 @@ function ReviewOrders() {
         )}
 
       </div>
+
       {isDeliveryLogsModalOpen &&
         <DeliveryLogsModal
-          deliveryDetails={selectedOrder.buyer.deliveryDetails}
+          deliveryDetails={
+            (() => ({
+              fullName: selectedOrder.buyer.deliveryFullName,
+              contactNumber: selectedOrder.buyer.altMobileNumber,
+              fullAddress: selectedOrder.buyer.deliveryAddress,
+            }))()
+          }
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
-          title={`${selectedOrder.product.name} Delivery Details`}
+          title="Order Delivery Details"
+        />
+      }
+
+      {isSellerModalOpen && (
+        <SellerModal
+          handleClose={() => setIsSellerModalOpen(false)}
+          isOpen={isSellerModalOpen}
+          sellerId={selectedOrder.seller.id}
+          title="Seller Details"
+        />
+      )}
+
+      {isBuyerModalOpen && (
+        <BuyerModal
+          buyer={selectedOrder.buyer}
+          handleClose={() => setIsBuyerModalOpen(false)}
+          isOpen={isBuyerModalOpen}
+          title="Buyer Details"
+        />
+      )}
+
+      {isOrderReportModalOpen &&
+        <OrderReportModal
+          buyer={selectedOrder.buyer}
+          handleClose={() => setIsOrderReportModalOpen(false)}
+          isOpen={isOrderReportModalOpen}
+          report={selectedOrder.report}
+          title="Order Report Details"
         />
       }
     </>

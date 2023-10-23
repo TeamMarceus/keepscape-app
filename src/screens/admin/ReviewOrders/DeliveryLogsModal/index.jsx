@@ -7,7 +7,6 @@ import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globa
 
 import { Modal, Text } from '@/components';
 
-
 import styles from './styles.module.scss';
 
 function DeliveryLogsModal({

@@ -21,7 +21,7 @@ import {
   IconLink
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useWindowSize, useWithdrawals } from '@/hooks';
 
 import PreloaderFinance from './Preloader';
 
@@ -61,6 +61,9 @@ function Finance() {
   const isRecordsLoading = false;
   const [search, setSearch] = useState('');
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+  
+  const {isLoading, withdrawals } = useWithdrawals({page: 1, pageSize: 10})
+  console.log(withdrawals)
 
   const filteredRecords = records.filter((record) => {
     const searchLowerCase = search.toLowerCase();

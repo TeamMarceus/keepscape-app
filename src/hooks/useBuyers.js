@@ -62,7 +62,6 @@ const useBuyers = ({page, pageSize, isBanned, search, buyerId}) => {
 
   useEffect(() => {
     setIsLoading(true);
-    console.log(buyerId)
     const getBuyers = async () => {
       const { data: getBuyersResponse } = await UsersService.retrieveBuyers({
         page,

@@ -1,0 +1,52 @@
+
+@import '@/styles/variables.scss';
+
+.BuyerModal {
+  &_profile {
+    padding: 24px;
+    margin-bottom: 24px;
+
+    &_icon {
+      color: $blue-400 !important;
+      font-size: 60px !important;
+    }
+    
+    &_info {
+      display: flex;
+      margin-bottom: 12px;
+    }
+
+    &_name {
+      margin-left: 24px;
+    }
+
+    &_buyerName {
+      margin-bottom: 12px !important;
+    }
+  }
+
+  &_info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &_additionalContainer {
+    padding: 12px 12px 0;
+  }
+
+
+  &_additionalInfo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    place-items: flex-start;
+    gap: 12px;
+    padding: 8px;
+    border-bottom: 1px solid $neutral-200;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

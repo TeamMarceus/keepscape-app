@@ -4,13 +4,15 @@ import {
 } from '@/app-globals';
 import { Card, Icon, NoResults, Text } from '@/components';
 
+import { useAnalytics } from '@/hooks';
 import useAnnouncements from '@/hooks/useAnnouncements';
 
-import PreloaderAnnouncement from '@/screens/admin/Announcements/Preloader';
+import Preloader from '@/screens/admin/Announcements/Preloader';
 
 import styles from './styles.module.scss';
 
 function Dashboard() {
+  const {isLoading: isAnnalyticsLoading, analytics} = useAnalytics('seller');
   const {isLoading: isAnnouncementsLoading, announcements } = useAnnouncements({page: 1, pageSize: 10});
 
   return (
@@ -19,85 +21,90 @@ function Dashboard() {
         Order Statistics
       </Text>
 
-      <Card className={styles.Dashboard_statistics}>
-        <div className={styles.Dashboard_statistics_details}>
-          <Text
-            colorClass={colorClasses.NEUTRAL['400']} 
-            type={textTypes.HEADING.MD}
-          >
-            100
-          </Text>
-
-          <div className={styles.Dashboard_statistics_text}>
-            <Icon
-              className={styles.Dashboard_statistics_pendingIcon}
-              icon="pending"
-            />
-
-            <Text 
-              colorClass={colorClasses.NEUTRAL['400']}  
-              type={textTypes.HEADING.XXXS}
+      {isAnnalyticsLoading ? (
+        <Preloader/>
+      ) : (
+        <Card className={styles.Dashboard_statistics}>
+          <div className={styles.Dashboard_statistics_details}>
+            <Text
+              colorClass={colorClasses.NEUTRAL['400']} 
+              type={textTypes.HEADING.MD}
             >
-              Pending Orders
+              {analytics?.pendingOrders}
             </Text>
+
+            <div className={styles.Dashboard_statistics_text}>
+              <Icon
+                className={styles.Dashboard_statistics_pendingIcon}
+                icon="pending"
+              />
+
+              <Text 
+                colorClass={colorClasses.NEUTRAL['400']}  
+                type={textTypes.HEADING.XXXS}
+              >
+                Pending Orders
+              </Text>
+            </div>
           </div>
-        </div>
-   
-        <div className={styles.Dashboard_statistics_details}>
-          <Text
-            colorClass={colorClasses.BLUE['400']} 
-            type={textTypes.HEADING.MD}
-          >
-            50
-          </Text>
-
-          <div className={styles.Dashboard_statistics_text}>
-            <Icon
-              className={styles.Dashboard_statistics_ongoingIcon}
-              icon="local_shipping"
-            />
-
-            <Text 
-              colorClass={colorClasses.BLUE['400']}
-              type={textTypes.HEADING.XXXS}
+    
+          <div className={styles.Dashboard_statistics_details}>
+            <Text
+              colorClass={colorClasses.BLUE['400']} 
+              type={textTypes.HEADING.MD}
             >
-              On-going Orders
+              {analytics?.ongoingOrders}
             </Text>
+
+            <div className={styles.Dashboard_statistics_text}>
+              <Icon
+                className={styles.Dashboard_statistics_ongoingIcon}
+                icon="local_shipping"
+              />
+
+              <Text 
+                colorClass={colorClasses.BLUE['400']}
+                type={textTypes.HEADING.XXXS}
+              >
+                On-going Orders
+              </Text>
+            </div>
           </div>
-        </div>
-        
-        <div className={styles.Dashboard_statistics_details}>
-          <Text
-            colorClass={colorClasses.GREEN['400']} 
-            type={textTypes.HEADING.MD}
-          >
-            200
-          </Text>
-
-          <div className={styles.Dashboard_statistics_text}>
-            <Icon
-              className={styles.Dashboard_statistics_completedIcon}
-              icon="done"
-            />
-
-            <Text 
-              colorClass={colorClasses.GREEN['400']}
-              type={textTypes.HEADING.XXXS}
+          
+          <div className={styles.Dashboard_statistics_details}>
+            <Text
+              colorClass={colorClasses.GREEN['400']} 
+              type={textTypes.HEADING.MD}
             >
-            Completed Orders
-          </Text>
+              {analytics?.completedOrders}
+            </Text>
+
+            <div className={styles.Dashboard_statistics_text}>
+              <Icon
+                className={styles.Dashboard_statistics_completedIcon}
+                icon="done"
+              />
+
+              <Text 
+                colorClass={colorClasses.GREEN['400']}
+                type={textTypes.HEADING.XXXS}
+              >
+              Completed Orders
+            </Text>
+            </div>
           </div>
-        </div>
 
-      </Card>
+        </Card>
+      )}
 
-      <Text className={styles.Dashboard_withMargin} type={textTypes.HEADING.XS}>
+
+      <Text className={styles.Dashboard_announcementText} type={textTypes.HEADING.XS}>
         Announcements
       </Text>
 
       {/* eslint-disable-next-line no-nested-ternary */}
       {isAnnouncementsLoading ? (
-        <PreloaderAnnouncement/>
+        <Preloader/>
         ) : (
           announcements.length > 0 ? (
             announcements.map((announcement) => (

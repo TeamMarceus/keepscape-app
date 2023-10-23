@@ -23,3 +23,4 @@ export { default as useSellerApplications } from './useSellerApplications';
 export { default as useSellers } from './useSellers';
 export { default as useSubdomainRedirect } from './useSubdomainRedirect';
 export { default as useWindowSize } from './useWindowSize';
+export { default as useWithdrawals } from './useWithdrawals';

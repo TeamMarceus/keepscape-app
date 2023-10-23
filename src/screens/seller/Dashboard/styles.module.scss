@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: space-around;
     padding: 100px 24px;
-    margin: 32px 0 40px;
+    margin-top: 32px;
 
     &_details {
       text-align: center;
@@ -40,6 +40,10 @@
       margin-right: 8px;
       color: $green-400 !important;
     }
+  }
+
+  &_announcementText {
+    margin-top: 40px !important;
   }
 
   &_announcements {
