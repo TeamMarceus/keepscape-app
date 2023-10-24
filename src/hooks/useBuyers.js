@@ -42,7 +42,7 @@ const useBuyers = ({page, pageSize, isBanned, search, buyerId}) => {
   
        // Update the seller that will remove it from the list
       setBuyers((prevBuyers) =>
-        prevBuyers.filter((buyer) => buyer.id !== userId)
+        prevBuyers.filter((b) => b.id !== userId)
       );
     
       } 
