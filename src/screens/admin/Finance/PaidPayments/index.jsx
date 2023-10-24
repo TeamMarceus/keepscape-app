@@ -262,7 +262,7 @@ function PaidPayments() {
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/finance/pending?page=${value}`, { scroll: false })
+                    router.push(`/admin/finance/piad?page=${value}`, { scroll: false })
                   }}
                   totalPages={totalPages}
                 />
