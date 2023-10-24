@@ -58,20 +58,16 @@ const records = [
 
 function Finance() {
   const { windowSize } = useWindowSize();
-  const isRecordsLoading = false;
   const [search, setSearch] = useState('');
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   
-  const {isLoading, withdrawals } = useWithdrawals({page: 1, pageSize: 10})
-  console.log(withdrawals)
+  const {isLoading: isRecordsLoading, withdrawals } = useWithdrawals({page: 1, pageSize: 10})
 
-  const filteredRecords = records.filter((record) => {
+  const filteredRecords = withdrawals.filter((record) => {
     const searchLowerCase = search.toLowerCase();
 
     return (
-      record.sellerId.toLowerCase().includes(searchLowerCase) ||
-      record.logs.toLowerCase().includes(searchLowerCase) ||
-      record.orderId.toLowerCase().includes(searchLowerCase)
+     record
     );
   });
 
@@ -141,7 +137,7 @@ function Finance() {
                       styles.Finance_grid_column
                     )}
                   >
-                    Date Created
+                    Seller Name
                   </div>
 
                   <div
@@ -150,7 +146,7 @@ function Finance() {
                       styles.Finance_grid_column
                     )}
                   >
-                    Logs
+                    Full Name
                   </div>
                   
                   <div
@@ -159,8 +155,36 @@ function Finance() {
                       styles.Finance_grid_column
                     )}
                   >
-                    Seller ID
+                    Amount
                   </div>
+
+                  <div
+                    className={cn(
+                      styles.Finance_grid_header,
+                      styles.Finance_grid_column
+                    )}
+                  >
+                    Payment Method
+                  </div>
+
+                  <div
+                    className={cn(
+                      styles.Finance_grid_header,
+                      styles.Finance_grid_column
+                    )}
+                  >
+                    Remarks
+                  </div>
+
+                  <div
+                    className={cn(
+                      styles.Finance_grid_header,
+                      styles.Finance_grid_column
+                    )}
+                  >
+                    Status
+                  </div>
+
 
                   <div
                     className={cn(
@@ -169,7 +193,7 @@ function Finance() {
                       styles.Finance_grid_header_action,
                     )}
                   >
-                    Order ID
+                    Actions
                   </div>
                   
                   {/* Header of OrderGrid ends here */}
@@ -177,33 +201,34 @@ function Finance() {
 
                 {/* Body of OrderGrid starts here */}
                 {filteredRecords.map(
-                  ({ id, dateCreated, logs, sellerId, orderId  }) =>
+                  ({ id, balanceId, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
+                    paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
                       <Card key={id} className={styles.Finance_grid_recordGrid}>
                         <div className={styles.Finance_grid_column}>
-                          {dateCreated}
+                          {sellerName}
                         </div>
 
                         <div className={styles.Finance_grid_column}>
-                          {logs}
+                          {fullName}
                         </div>
 
-                        <ButtonLink
-                          className={styles.Finance_grid_column}
-                          to={`/admin/sellers?id=${sellerId}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {sellerId}
-                        </ButtonLink>
+                        <div className={styles.Finance_grid_column}>
+                          {amount}
+                        </div>
 
-                        <ButtonLink
-                          className={styles.Finance_grid_column}
-                          to={`/admin/review-orders?id=${orderId}`}
-                          type={buttonTypes.TEXT.BLUE}
-                        >
-                          {orderId}
-                        </ButtonLink>
+                        <div className={styles.Finance_grid_column}>
+                          {paymentMethod}
+                        </div>
+
+                        <div className={styles.Finance_grid_column}>
+                          {remarks}
+                        </div>
+
+                        <div className={styles.Finance_grid_column}>
+                          {status}
+                        </div>
                           
                         
                       </Card>
@@ -221,7 +246,7 @@ function Finance() {
                             />
 
                             <Text type={textTypes.HEADING.XS}>
-                              {dateCreated} {logs}
+                              {sellerName}
                             </Text>
                           </div>
                         </summary>
@@ -234,7 +259,7 @@ function Finance() {
                             Product:
                           </Text>
 
-                          <Text type={textTypes.HEADING.XXS}>{logs}</Text>
+                          <Text type={textTypes.HEADING.XXS}>{fullName}</Text>
                         </div>
                       </details>
                     )

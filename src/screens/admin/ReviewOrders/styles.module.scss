@@ -5,13 +5,17 @@
   padding-top: 24px;
 
   &_search {
-    margin-top: 32px;
+    margin-top: 20px;
   }
 
   &_orders {
     display: flex;
     flex-direction: column;
     padding: 20px 0 12px;
+  }
+
+  &_order {
+    margin-top: 12px;
   }
 
   &_info {
@@ -58,7 +62,7 @@
   &_product {
     display: flex;
     align-items: center;
-    grid-column: 1/7;
+    grid-column: 2/6;
     place-self: normal;
     gap: 12px;
 
@@ -67,28 +71,28 @@
     }
   }
 
+  &_quantity {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 6/8;
+  }
+
   &_customizationText {
     @include flex-center;
-    width: 200px !important;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 250px !important;
+    text-align: center;
   }
   
   &_price {
-    grid-column: 8/11;
-  }
-
-  &_qrCode {
-    cursor: pointer;
-    grid-column: 12/13;
-    
-    &_image {
-      box-shadow: $shadow-normal;
-      border-radius: 5px;
-
-      &:hover {
-        border: 1px solid $blue-400;
-        box-shadow: $shadow-raised;
-      }
-    }
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 9/11;
   }
 
   &_orderTotal {
@@ -104,7 +108,13 @@
       gap: 12px;
 
       &_button {
+        @include flex-center;
         width: 180px !important;
+
+        &_spinner {
+          margin-left: 12px;
+          width: unset !important;
+        }
       }
     }
 

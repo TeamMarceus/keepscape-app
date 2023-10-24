@@ -1,0 +1,30 @@
+@import '@/styles/mixins';
+
+.ConfirmModal {
+  @include breakpoint(xs) {
+    flex-direction: column;
+    width: 320px;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    width: 100%;
+
+    @include breakpoint(xs) {
+      padding: 16px 40px 40px 40px;
+    }
+  }
+
+  &_text {
+    margin: 0 0 32px 0;
+    text-align: center;
+
+    &_info {
+      margin-top: 16px !important;
+      word-break: break-word;
+    }
+  }
+}

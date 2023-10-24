@@ -14,80 +14,10 @@ function DeliveryLogsModal({
   handleClose,
   title,
   deliveryDetails,
+  deliveryLogs,
+  deliveryFeeProofImageUrl,
+  deliveryFee,
 }) {
-
-  const deliveryLogs = [
-    {
-      id: '11',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been delivered',
-    },
-    {
-      id: '12',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is out for delivery',
-    },
-    {
-      id: '13',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is being prepared',
-    },
-    {
-      id: '14',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been approved',
-    },
-    {
-      id: '1',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been delivered',
-    },
-    {
-      id: '2',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is out for delivery',
-    },
-    {
-      id: '3',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is being prepared',
-    },
-    {
-      id: '4',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been approved',
-    },
-    {
-      id: '5',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been ordered',
-    },
-    {
-      id: '6',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been delivered',
-    },
-    {
-      id: '7',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is out for delivery',
-    },
-    {
-      id: '8',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product is being prepared',
-    },
-    {
-      id: '9',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been approved',
-    },
-    {
-      id: '10',
-      dateTime: '2021-08-01 12:00:00',
-      description: 'Product has been ordered',
-    }
-  ]
 
   return (
     <Modal
@@ -95,7 +25,7 @@ function DeliveryLogsModal({
       handleClose={handleClose}
       isOpen={isOpen}
       position={modalPositions.CENTER}
-      size={modalSizes.MD}
+      size={modalSizes.LG}
       title={title}
     >
       <div className={styles.DeliveryLogsModal_content}>
@@ -111,18 +41,18 @@ function DeliveryLogsModal({
             className={styles.DeliveryLogsModal_delivery_name}
             type={textTypes.HEADING.XXXS}
           >
-            {deliveryDetails.fullName}
+            {deliveryDetails.fullName} Stephine Sinoy
           </Text>
 
           <Text 
             className={styles.DeliveryLogsModal_delivery_number}
             colorClass={colorClasses.NEUTRAL['400']}
           >
-            {deliveryDetails?.contactNumber} 
+            {deliveryDetails?.contactNumber} 09060264692
           </Text>
 
           <Text colorClass={colorClasses.NEUTRAL['400']}>
-            {deliveryDetails.fullAddress}
+            {deliveryDetails.fullAddress} Zone 5 Sitio Letmon Brgy Dumlog Talisay City Cebu
           </Text>
         </div>
 
@@ -138,7 +68,7 @@ function DeliveryLogsModal({
 
               <div className={styles.DeliveryLogsModal_logs_log_dateTime}>
                 <Text>
-                  {log.dateTime}
+                  {log.dateTime.replace('T', ' ')}
                 </Text>
               </div>
 
@@ -146,13 +76,35 @@ function DeliveryLogsModal({
                 <Text
                   colorClass={colorClasses.NEUTRAL['400']}
                 >
-                  {log.description}
+                  {log.log}
                 </Text>
               </div>
             </div>
-          ))
+          ))}
+        </div>
 
-          }
+        <div className={styles.DeliveryLogsModal_proof}>
+          <Text
+            className={styles.DeliveryLogsModal_proof_title}
+            type={textTypes.HEADING.XXS}
+          >
+            Delivery Fee Proof
+          </Text>
+
+          <div className={styles.DeliveryLogsModal_proof_image}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              alt="Delivery Fee Proof" 
+              src="https://picsum.photos/200"
+            />
+          </div>
+
+          <Text
+            className={styles.DeliveryLogsModal_proof_fee}
+            type={textTypes.HEADING.XXS}
+          >
+            Delivery Fee: <span className={styles.DeliveryLogsModal_proof_fee_span}>₱{deliveryFee}</span>
+          </Text>
         </div>
       </div>
     </Modal>
@@ -164,6 +116,12 @@ DeliveryLogsModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   deliveryDetails: PropTypes.object.isRequired,
+  deliveryLogs: PropTypes.arrayOf(PropTypes.shape({
+    dateTime: PropTypes.string.isRequired,
+    log: PropTypes.string.isRequired,
+  })).isRequired,
+  deliveryFeeProofImageUrl: PropTypes.string.isRequired,
+  deliveryFee: PropTypes.number.isRequired,
 }
 
 export default DeliveryLogsModal;

@@ -6,11 +6,14 @@ import { ProductsService, ReportsService } from '@/services';
 
 const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
+  const [isResolvingLoading, setIsResolvingLoading] = useState(false);
   const [reportedProducts, setReportedProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
   const deleteProduct = async (productId) => {
     try {
+      setIsDeletingLoading(true);
       const { status: deleteProductStatus } = await ProductsService.delete(productId);
   
       if (deleteProductStatus === 200) {
@@ -27,7 +30,9 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
         );
       } 
 
+      setIsDeletingLoading(false);
     } catch (error) {
+      setIsDeletingLoading(false);
       toast.error('Oops Something Went Wrong.', {
         style: {
           backgroundColor: '#ed5565',
@@ -39,6 +44,7 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
 
   const resolveProductReports = async (productId) => {
     try {
+      setIsResolvingLoading(true);
       const { status: resolveProductReportsStatus } = await ReportsService.resolveProductReports(productId);
   
       if (resolveProductReportsStatus === 200) {
@@ -54,7 +60,9 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
         );
       } 
 
+      setIsResolvingLoading(false);
     } catch (error) {
+      setIsResolvingLoading(false);
       toast.error('Oops Something Went Wrong.', {
         style: {
           backgroundColor: '#ed5565',
@@ -81,7 +89,15 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
     getProductsReports();
   }, [page, pageSize, sellerName, productName]);
 
-  return { isLoading, reportedProducts, totalPages, deleteProduct, resolveProductReports };
+  return {
+    isLoading,
+    isDeletingLoading,
+    isResolvingLoading,
+    reportedProducts, 
+    totalPages, 
+    deleteProduct, 
+    resolveProductReports 
+  };
 };
 
 export default useReportedProducts;

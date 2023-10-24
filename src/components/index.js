@@ -7,6 +7,7 @@ export { default as Card } from './Card';
 export { default as CardImage } from './CardImage';
 export { default as CardLink } from './Card/Link';
 export { default as Checkbox } from './Checkbox';
+export { default as ConfirmModal } from './ConfirmModal';
 export { default as ControlledInput } from './Input/Controlled';
 export { default as ControlledSelect } from './Select/Controlled';
 export { default as ControlledTextArea } from './TextArea/Controlled';

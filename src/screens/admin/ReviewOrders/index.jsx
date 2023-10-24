@@ -6,7 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import {
   buttonTypes,
   colorClasses,
+  colorNames,
   iconButtonTypes,
+  spinnerSizes,
   textTypes,
 } from '@/app-globals';
 
@@ -14,11 +16,13 @@ import {
   Button, 
   ButtonLink, 
   Card, 
+  ConfirmModal, 
   ControlledInput, 
   Icon, 
   IconButton, 
   NoResults, 
   Pagination, 
+  Spinner, 
   Text 
 } from '@/components';
 
@@ -49,24 +53,29 @@ function ReviewOrders() {
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
   const [isOrderReportModalOpen, setIsOrderReportModalOpen] = useState(false);
+  const [isRefundConfirmationToggled, toggleRefundConfirmation] = useState(false);
 
   const [selectedOrder, setSelectedOrder] = useState({});
 
   const {
     isLoading: isReportedOrdersLoading, 
+    isResolvingLoading,
+    isRefundingLoading,
     reportedOrders,
     resolveOrderReports,
+    refundOrder,
     totalPages, 
-  } = useReportedOrders({ page, pageSize: 10 });
+  } = useReportedOrders({ page, pageSize: 10, search });
 
   const filteredOrders = reportedOrders.filter((order) => (
-        order
-    ));
+    order.seller.sellerName.toLowerCase().includes(search.toLowerCase()) ||
+    order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+    order.buyer.lastName.toLowerCase().includes(search.toLowerCase())
+  ));
 
   return (
     <>
       <div className={styles.ReviewOrders}>
-        
         <Text type={textTypes.HEADING.XS}>
           Review Orders
         </Text>
@@ -75,7 +84,7 @@ function ReviewOrders() {
           className={styles.ReviewOrders_search}
           icon="search"
           name="search"
-          placeholder="You can search by Date Ordered, Seller, Buyer, or Status"
+          placeholder="You can search by Seller or Buyer"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -89,7 +98,8 @@ function ReviewOrders() {
               <>
                 <div className={styles.ReviewOrders_orders}>
                   {filteredOrders.map(
-                    ({ id, seller, buyer, dateTimeCreated, report, items, totalPrice, status}) =>
+                    ({ id, seller, buyer, dateTimeCreated, report, items, totalPrice, status,
+                      deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.ReviewOrders_order}>
@@ -139,36 +149,14 @@ function ReviewOrders() {
                               <div className={styles.ReviewOrders_info_buttons}>
                                 <Button
                                   className={styles.ReviewOrders_info_statusButton}
-                                  icon={
-                                    (() => {
-                                      if (status === 'Pending') {
-                                        return 'pending';
-                                      } if (status === 'Delivered') {
-                                        return 'check';
-                                      } if ('Cancelled' === 'Cancelled') {
-                                        return 'close';
-                                      } 
-                                        return 'local_shipping';
-                                    })()
-                                  }
-                                  type={
-                                    (() => {
-                                      if (status === 'Pending') {
-                                        return buttonTypes.TEXT.NEUTRAL;
-                                      } if (status === 'Delivered') {
-                                        return buttonTypes.TEXT.GREEN;
-                                      } if ('Cancelled' === 'Cancelled') {
-                                        return buttonTypes.TEXT.RED;
-                                      } 
-                                        return buttonTypes.TEXT.BLUE;
-                                    })()
-                                  }
+                                  icon='pending'
+                                  type={buttonTypes.TEXT.BLUE}
                                   onClick={() => {
-                                    setSelectedOrder({id, buyer});
+                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
                                     setIsDeliveryLogsModalOpen(true);
                                   }}
                                 >
-                                  Cancelled
+                                  Awaiting Confirmation
                                 </Button>
 
                                 <IconButton
@@ -205,20 +193,41 @@ function ReviewOrders() {
                                     >
                                       {productName}
                                     </Text>
-                                    x{quantity}
                                   </div>
                                 </div>
-                              
-                                {customizedMessage &&
+
+                                <div className={styles.ReviewOrders_quantity}>
+                                  Quantity:
                                   <Text 
-                                    className={styles.ReviewOrders_customizationText}
                                     colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
                                   >
-                                    {customizedMessage}
+                                    {quantity}
                                   </Text>
-                                }
+                                </div>
+
+                                <div className={styles.ReviewOrders_customizationText}>
+                                  Customization:
+                                  {customizedMessage ? (
+                                    <Text 
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXXS}
+                                    >
+                                      {customizedMessage} 
+                                    </Text>
+                                    ) : (
+                                    <Text 
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      No Customization
+                                    </Text>
+                                  )}
+                                </div>
+                              
 
                                 <div className={styles.ReviewOrders_price}>
+                                  Price:
                                   <Text
                                     className={styles.ReviewOrders_price_text}
                                     colorClass={colorClasses.NEUTRAL['400']}
@@ -252,19 +261,31 @@ function ReviewOrders() {
                             <div className={styles.ReviewOrders_orderTotal_buttons}> 
                               <Button
                                   className={styles.ReviewOrders_orderTotal_buttons_button}
-                                  onClick={() => {
-                                
+                                  disabled={isResolvingLoading && id === selectedOrder.id}
+                                  onClick={ async () => {
+                                    setSelectedOrder({id});
+                                    await resolveOrderReports(id);
                                   }}
                                 >
-                                Resolve
+                                {(isResolvingLoading && id === selectedOrder.id) ? 'Resolving' : 'Resolve'}
+                                {(isResolvingLoading && id === selectedOrder.id) && (
+                                  <Spinner
+                                    className={styles.ReviewOrders_orderTotal_buttons_button_spinner}
+                                    colorName={colorNames.WHITE}
+                                    size={spinnerSizes.XS}
+                                  />
+                                )}
                               </Button>
 
                               <Button
                                 className={styles.ReviewOrders_orderTotal_buttons_button}
+                                disabled={isRefundingLoading && id === selectedOrder.id}
                                 type={buttonTypes.SECONDARY.BLUE}
-                                onClick={() => {}}
+                                onClick={() => {
+                                  setSelectedOrder({id});
+                                  toggleRefundConfirmation(true);
+                                }}
                               >
-
                                 Refund
                               </Button>
                             </div>
@@ -308,6 +329,9 @@ function ReviewOrders() {
               fullAddress: selectedOrder.buyer.deliveryAddress,
             }))()
           }
+          deliveryFee={selectedOrder.deliveryFee}
+          deliveryFeeProofImageUrl={selectedOrder.deliveryFeeProofImageUrl}
+          deliveryLogs={selectedOrder.deliveryLogs}
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
           title="Order Delivery Details"
@@ -341,6 +365,34 @@ function ReviewOrders() {
           title="Order Report Details"
         />
       }
+
+      <ConfirmModal
+        actions={[
+          {
+            id: 'refundConfirmButton',
+            text: 'Confirm',
+            type: buttonTypes.PRIMARY.BLUE,
+            onClick: async () => {
+      
+              await refundOrder(selectedOrder.id);
+              toggleRefundConfirmation(false);
+            },
+            disabled: isRefundingLoading,
+          },
+          {
+            id: 'refundConfirmButton',
+            text: 'Back',
+            type: buttonTypes.SECONDARY.BLUE,
+            onClick: () => toggleRefundConfirmation(false),
+          },
+        ]}
+        body="Are you sure you want to refund this order"
+        handleClose={() => {
+          toggleRefundConfirmation(false);
+        }}
+        isOpen={isRefundConfirmationToggled}
+        title="Refund?"
+      />
     </>
 )
 }

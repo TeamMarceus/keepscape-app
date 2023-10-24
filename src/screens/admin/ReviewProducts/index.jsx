@@ -9,7 +9,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import {
   buttonTypes,
   colorClasses,
+  colorNames,
   iconButtonTypes,
+  spinnerSizes,
   textTypes,
 } from '@/app-globals';
 
@@ -21,7 +23,9 @@ import {
   NoResults, 
   Text, 
   Button,
-  Pagination
+  Pagination,
+  ConfirmModal,
+  Spinner
 } from '@/components';
 
 import { useReportedProducts, useWindowSize } from '@/hooks';
@@ -56,11 +60,14 @@ function ReviewProducts() {
   
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isProductReportsModalOpen, setIsProductReportsModalOpen] = useState(false);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const {
     isLoading: isReportedProductsLoading, 
+    isDeletingLoading,
+    isResolvingLoading,
     reportedProducts,
     deleteProduct,
     resolveProductReports,
@@ -248,13 +255,15 @@ function ReviewProducts() {
                           />
 
                           <div className={styles.ReviewProducts_grid_column}>
-                            <div className={styles.ReviewProducts_grid_buttons}>
+                            {!isResolvingLoading &&
+                              <div className={styles.ReviewProducts_grid_buttons}>
                                 <IconButton
                                   className={styles.ReviewProducts_grid_resolveButton}
                                   icon="check_circle_outline"
                                   type={iconButtonTypes.ICON.MD}
-                                  onClick={() => {
-                                    resolveProductReports(id);
+                                  onClick={ async () => {
+                                    setSelectedProduct({ id });
+                                    await resolveProductReports(id);
                                   }}
                                 />
 
@@ -263,11 +272,19 @@ function ReviewProducts() {
                                   icon="delete"
                                   type={iconButtonTypes.ICON.MD}
                                   onClick={() => {
-                                    setSelectedProduct({ id, name });
-                                    deleteProduct(id);
+                                    setSelectedProduct({ id });
+                                    toggleDeleteConfirmation(true);
                                   }}
-                                />
-                            </div>
+                                  />
+                              </div>
+                            }
+                            {(isResolvingLoading && selectedProduct.id === id) &&
+                              <Spinner
+                                className={styles.ReviewProducts_grid_buttons_spinner}
+                                colorName={colorNames.BLUE}
+                                size={spinnerSizes.MD}
+                              />
+                            }
                           </div>
                         </Card>
                       ) : (
@@ -342,6 +359,33 @@ function ReviewProducts() {
           title={`${selectedProduct.name} Seller`}
         />
       )}
+
+      <ConfirmModal
+        actions={[
+          {
+            id: 'deleteProductConfirmButton',
+            text: 'Delete',
+            type: buttonTypes.PRIMARY.RED,
+            onClick: async () => {
+              await deleteProduct(selectedProduct.id);
+              toggleDeleteConfirmation(false);
+            },
+            disabled: isDeletingLoading,
+          },
+          {
+            id: 'deleteProductConfirmButton',
+            text: 'Back',
+            type: buttonTypes.SECONDARY.RED,
+            onClick: () => toggleDeleteConfirmation(false),
+          },
+        ]}
+        body="Are you sure you want to delete this product?"
+        handleClose={() => {
+          toggleDeleteConfirmation(false);
+        }}
+        isOpen={isDeleteConfirmationToggled}
+        title="Delete?"
+      />
     </>
   )
 }
