@@ -174,7 +174,7 @@ function ReviewOrders() {
                             </div>
 
                             {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizedMessage }) => (
+                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
                             
                               <div key={productId} className={styles.ReviewOrders_item}>
                                 <div className={styles.ReviewOrders_product}>
@@ -209,12 +209,12 @@ function ReviewOrders() {
 
                                 <div className={styles.ReviewOrders_customizationText}>
                                   Customization:
-                                  {customizedMessage ? (
+                                  {customizationMessage  ? (
                                     <Text 
                                       colorClass={colorClasses.NEUTRAL['400']}
                                       type={textTypes.HEADING.XXXS}
                                     >
-                                      {customizedMessage} 
+                                      {customizationMessage } 
                                     </Text>
                                     ) : (
                                     <Text 
