@@ -23,7 +23,7 @@ import {
 
 import { useSellers, useWindowSize } from '@/hooks';
 
-import IdModal from '../../Modals/IdModal';
+import IdModal from '../../CommonModals/IdModal';
 
 import PreloaderBannedSellers from '../Preloader';
 

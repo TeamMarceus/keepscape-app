@@ -68,6 +68,20 @@ const navLinks = {
   FINANCE: {
     label: 'Finance',
     icon: 'monetization_on',
+    subLinks: [
+      {
+        label: 'Pending Payments',
+        to: ADMIN_ROUTES.FINANCE_PENDING,
+      },
+      {
+        label: 'Paid Payments',
+        to: ADMIN_ROUTES.FINANCE_PAID,
+      },
+      {
+        label: 'Rejected Payments',
+        to: ADMIN_ROUTES.FINANCE_REJECTED,
+      }
+    ]
   },
 
   ANNOUNCEMENTS: {

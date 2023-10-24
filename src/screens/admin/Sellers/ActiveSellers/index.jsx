@@ -23,9 +23,9 @@ import {
 
 import { useSellers, useWindowSize } from '@/hooks';
 
-import IdModal from '../../Modals/IdModal';
+import IdModal from '../../CommonModals/IdModal';
 
-import ReasonModal from '../../Modals/ReasonModal';
+import ReasonModal from '../../CommonModals/ReasonModal';
 
 import PreloaderActiveSellers from '../Preloader';
 
@@ -331,7 +331,7 @@ function ActiveSellers() {
           isOpen={isReasonModalOpen}
           isUpdating={isUpdating}
           status={userStatus.BANNED}
-          title={`Reason for Banning ${selectedSeller.sellerName}`}
+          title={`Ban ${selectedSeller.sellerName}`}
           updateUser={updateSellerStatus}
           userId={selectedSeller.id}
         />

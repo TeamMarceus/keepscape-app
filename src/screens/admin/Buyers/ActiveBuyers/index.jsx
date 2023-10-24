@@ -23,7 +23,7 @@ import {
 
 import { useBuyers, useWindowSize } from '@/hooks';
 
-import ReasonModal from '../../Modals/ReasonModal';
+import ReasonModal from '../../CommonModals/ReasonModal';
 
 import PreloaderActiveBuyers from '../Preloader';
 
@@ -251,7 +251,7 @@ function ActiveBuyers() {
           isOpen={isReasonModalOpen}
           isUpdating={isUpdating}
           status={userStatus.BANNED}
-          title={`Reason for Banning ${selectedBuyer.firstName} ${selectedBuyer.lastName}`}
+          title={`Ban ${selectedBuyer.firstName} ${selectedBuyer.lastName}`}
           updateUser={updateBuyerStatus}
           userId={selectedBuyer.id}
         />

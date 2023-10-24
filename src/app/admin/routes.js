@@ -11,6 +11,8 @@ export const ADMIN_ROUTES = {
   SELLERS_BANNED: `${BASE_ROUTE}/sellers/banned`,
   BUYERS_ACTIVE: `${BASE_ROUTE}/buyers/active`,
   BUYERS_BANNED: `${BASE_ROUTE}/buyers/banned`,
-  FINANCE: `${BASE_ROUTE}/finance`,
+  FINANCE_PENDING: `${BASE_ROUTE}/finance/pending`,
+  FINANCE_PAID: `${BASE_ROUTE}/finance/paid`,
+  FINANCE_REJECTED: `${BASE_ROUTE}/finance/rejected`,
   ANNOUNCEMENTS: `${BASE_ROUTE}/announcements`,
 };

@@ -24,7 +24,7 @@ import {
 
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
-import IdModal from '../../Modals/IdModal';
+import IdModal from '../../CommonModals/IdModal';
 
 import PreloaderRejectedSellers from '../Preloader';
 

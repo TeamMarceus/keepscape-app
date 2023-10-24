@@ -31,10 +31,11 @@ import {
 import { useReportedProducts, useWindowSize } from '@/hooks';
 
 
-import ProductReportsModal from '../Modals/ProductReportsModal';
-import SellerModal from '../Modals/SellerModal';
+import SellerModal from '../CommonModals/SellerModal';
 
 import PreloaderProducts from './Preloader';
+import ProductReportsModal from './ProductReportsModal';
+
 
 import styles from './styles.module.scss';
 

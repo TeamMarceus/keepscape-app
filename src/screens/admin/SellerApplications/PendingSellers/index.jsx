@@ -24,9 +24,9 @@ import {
 
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
-import IdModal from '../../Modals/IdModal';
+import IdModal from '../../CommonModals/IdModal';
 
-import ReasonModal from '../../Modals/ReasonModal';
+import ReasonModal from '../../CommonModals/ReasonModal';
 
 import PreloaderPendingSellers from '../Preloader';
 
@@ -340,7 +340,7 @@ function PendingSellers() {
           isOpen={isReasonModalOpen}
           isUpdating={isUpdating}
           status={userStatus.REJECTED}
-          title={`Reason for Rejecting ${selectedApplication.sellerName}`}
+          title={`Reject ${selectedApplication.sellerName}`}
           updateUser={updateSellerApplication}
           userId={selectedApplication.id}
         />

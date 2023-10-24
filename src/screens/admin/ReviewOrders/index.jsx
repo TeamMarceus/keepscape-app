@@ -28,11 +28,12 @@ import {
 
 import { useReportedOrders, useWindowSize } from '@/hooks';
 
-import BuyerModal from '../Modals/BuyerModal';
-import OrderReportModal from '../Modals/OrderReportModal';
-import SellerModal from '../Modals/SellerModal';
+import BuyerModal from '../CommonModals/BuyerModal';
+import SellerModal from '../CommonModals/SellerModal';
 
 import DeliveryLogsModal from './DeliveryLogsModal';
+import OrderReportModal from './OrderReportModal';
+
 
 import PreloaderOrders from './Preloader';
 
@@ -173,16 +174,16 @@ function ReviewOrders() {
                             </div>
 
                             {items.map(
-                              ({ productId, image, productName, price, quantity, customizedMessage }) => (
+                              ({ productId, productImageUrl, productName, price, quantity, customizedMessage }) => (
                             
                               <div key={productId} className={styles.ReviewOrders_item}>
                                 <div className={styles.ReviewOrders_product}>
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
                                   <img
-                                    alt={image}
+                                    alt="Product"
                                     className={styles.ReviewOrders_product_image}
                                     height={60}
-                                    src="https://picsum.photos/200"
+                                    src={productImageUrl}
                                     width={60}
                                   />
 

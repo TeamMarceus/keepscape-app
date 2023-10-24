@@ -1,0 +1,27 @@
+@import '@/styles/variables.scss';
+
+.PaymentModal {
+  &_content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_text {
+    background-color: $neutral-50;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem !important;
+
+    &_span {
+      color: $blue-400;
+    }
+  }
+
+  &_proof {
+    margin: 12px 0 !important;
+  }
+
+  &_image {
+    margin: 0 auto !important;
+  }
+}

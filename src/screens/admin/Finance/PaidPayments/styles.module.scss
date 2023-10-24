@@ -1,23 +1,8 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Finance {
+.PaidPayments {
   padding-top: 24px;
-
-  &_header {
-    margin-top: 32px;
-    text-align: center;
-
-    &_balance {
-      margin: 12px 0 24px;
-    }
-
-    
-    &_button {
-      margin-top: 16px;
-      width: 25%;
-    }
-  }
 
   &_search {
     margin-top: 40px;
@@ -37,6 +22,17 @@
         align-items: center;
         justify-items: flex-start;
         padding: 30px 40px;
+      }
+
+      &_proof {
+        cursor: pointer;
+        box-shadow: $shadow-normal;
+        border-radius: 5px;
+  
+        &:hover {
+          border: 1px solid $blue-400;
+          box-shadow: $shadow-raised;
+        }
       }
     }
 
@@ -116,6 +112,23 @@
         color: $neutral-700;
       }
     }
+
+    &_buttons {
+      @include flex-center;
+      gap: 2px;
+    }
+
+    &_payButton {
+      color: $green-400 !important;
+    }
+
+    &_cancelButton {
+      color: $red-400 !important;
+    }
+  }
+
+  &_pagination {
+    margin-top: 60px;
   }
 
   &_noResults {

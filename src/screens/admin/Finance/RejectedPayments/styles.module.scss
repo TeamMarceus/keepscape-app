@@ -1,0 +1,137 @@
+@import '@/styles/variables';
+@import '@/styles/mixins';
+
+.RejectedPayments {
+  padding-top: 24px;
+
+  &_search {
+    margin-top: 40px;
+  }
+
+  &_grid {
+    margin-top: 24px;
+
+    &_column {
+      text-align: center;
+
+      @include breakpoint(sm) {
+        border: unset;
+        border-bottom: 0.5px solid $border-200;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-items: flex-start;
+        padding: 30px 40px;
+      }
+
+      &_proof {
+        cursor: pointer;
+        box-shadow: $shadow-normal;
+        border-radius: 5px;
+  
+        &:hover {
+          border: 1px solid $blue-400;
+          box-shadow: $shadow-raised;
+        }
+      }
+    }
+
+    &_recordGrid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      place-items: center;
+      margin-top: 12px;
+      padding: 20px 8px;
+      gap: 8px;
+
+      @include breakpoint(sm) {
+        background-color: $neutral-0;
+        box-shadow: $shadow-normal;
+        display: flex;
+        flex-direction: column;
+        margin-top: 16px;
+      }
+    }
+
+    &_recordGrid[open] {
+      > summary {
+        > div {
+          > i {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    &_title {
+      align-items: center;
+      border-bottom: 2px solid $violet-400;
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      padding: 16px 24px;
+      @include flex-between;
+
+      &_info {
+        @include flex-center;
+        gap: 30px;
+
+        @include breakpoint(xs) {
+          gap: 16px;
+        }
+      }
+
+      &_icon {
+        background-color: $blue-400;
+        border-radius: 100px;
+        color: $neutral-0;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 10px;
+      }
+    }
+
+    &_headers {
+      padding: 18px 8px;
+      margin-bottom: 12px;
+
+      @include breakpoint(sm) {
+        display: none;
+      }
+    }
+
+    &_header {
+      color: $neutral-400;
+      font-weight: 600;
+
+      @include breakpoint(sm) {
+        padding: 8px;
+      }
+
+      &_action {
+        color: $neutral-700;
+      }
+    }
+
+    &_buttons {
+      @include flex-center;
+      gap: 2px;
+    }
+
+    &_payButton {
+      color: $green-400 !important;
+    }
+
+    &_cancelButton {
+      color: $red-400 !important;
+    }
+  }
+
+  &_pagination {
+    margin-top: 60px;
+  }
+
+  &_noResults {
+    margin-top: 40px;
+  }
+}

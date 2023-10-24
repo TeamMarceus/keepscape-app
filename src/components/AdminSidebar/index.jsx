@@ -58,9 +58,9 @@ function AdminSidebar() {
 
       <SidebarLink
         icon={navLinks.FINANCE.icon}
-        isActive={pathname === ADMIN_ROUTES.FINANCE}
+        isActive={pathname.includes(`/admin/finance`)}
         label={navLinks.FINANCE.label}
-        to={ADMIN_ROUTES.FINANCE}
+        subLinks={navLinks.FINANCE.subLinks}
       />
 
       <SidebarLink
