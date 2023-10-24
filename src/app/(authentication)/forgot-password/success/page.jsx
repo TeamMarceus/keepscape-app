@@ -4,6 +4,5 @@ import ForgotPasswordSuccess from '@/screens/public/ForgotPassword/ForgotPasswor
 
 export default function PassowrdPage() {
   
-
   return <ForgotPasswordSuccess/>;
 }

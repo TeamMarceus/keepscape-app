@@ -11,6 +11,7 @@ function ForgotPasswordSuccess() {
     <div className={styles.ForgotPasswordSuccess}>
       <Image
         alt='Success'
+        className={styles.ForgotPasswordSuccess_image}
         src={Success}
       />
 
