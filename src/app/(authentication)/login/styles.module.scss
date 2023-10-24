@@ -60,6 +60,11 @@
       @include flex-between;
       margin-top: 30px;
 
+      @include breakpoint(xs) {
+        flex-direction: column;
+        gap: 12px;
+      }
+
       &_signUp {
         color: $blue-400;
         font-weight: 700;
