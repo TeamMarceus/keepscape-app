@@ -31,11 +31,11 @@
     }
 
     &_updateButton {
-      margin-left: auto;
+      margin-left: auto !important;
       max-width: 265px;
 
       @include breakpoint(xs) {
-        margin: 0 auto;
+        margin: 0 auto !important;
         width: 100%;
       }
     }

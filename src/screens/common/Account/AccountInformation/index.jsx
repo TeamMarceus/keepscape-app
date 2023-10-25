@@ -1,8 +1,9 @@
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
-// import { useAlert } from 'react-alert';
 
 import { useSelector } from 'react-redux';
+
+import { toast } from 'sonner';
 
 import {
   buttonKinds,
@@ -13,28 +14,31 @@ import {
   userTypes,
 } from '@/app-globals';
 
-import { Button, ControlledInput, Text, Spinner, ControlledTextArea, ImageDropzone } from '@/components';
+import { 
+  Button,
+  ControlledInput, 
+  Text, 
+  Spinner, 
+  ControlledTextArea 
+} from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { getUser } from '@/ducks';
 
-// import { useUpdateUser } from '@/hooks';
-import { isValidEmail } from '@/utils/string';
+import { actions as usersActions } from '@/ducks/reducers/users';
+import { useUpdateUser } from '@/hooks';
+import useActionDispatch from '@/hooks/useActionDispatch';
 
 import styles from './styles.module.scss';
 
 function AccountInformation() {
-  // const alert = useAlert();
   const user = useSelector((store) => getUser(store));
+  const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
 
-  const isUserUpdating = false;
-  const isVerifyingPassword = false;
-  const updateUser = () => {};
-  // const {
-  //   isUpdating: isUserUpdating,
-  //   isVerifyingPassword,
-  //   updateUser,
-  // } = useUpdateUser();
+  const {
+    isUpdating: isUserUpdating,
+    updateAccount,
+  } = useUpdateUser();
 
   const validate = (values) => {
     const errors = {};
@@ -53,14 +57,6 @@ function AccountInformation() {
       errors.lastName = 'The maximum length of this field is 50 characters.';
     } else if (values.lastName.length < 2) {
       errors.lastName = 'The minimum length of this field is two characters.';
-    }
-
-    if (!values.email) {
-      errors.email = 'This field is required.';
-    } else if (!isValidEmail(values.email)) {
-      errors.email = 'This must be a valid email address.';
-    } else if (values.email.length > 50) {
-      errors.email = 'The maximum length of this field is 50 characters.';
     }
 
     if (!values.phoneNumber) {
@@ -105,10 +101,6 @@ function AccountInformation() {
       }
     }
 
-    if (!values.confirmPassword) {
-      errors.confirmPassword = 'This field is required.';
-    }
-
     return errors;
   };
 
@@ -123,14 +115,12 @@ function AccountInformation() {
 
       <Formik
         initialValues={{
+          phoneNumber: user.phoneNumber,
+          description: user.description,
+          
+          // Buyer Only
           firstName: user.firstName,
           lastName: user.lastName,
-          email: user.email,
-          phoneNumber: '',
-          confirmPassword: '',
-          description: user.description,
-
-          // Buyer Only
           preferences: user.preferences,
           interests: user.interests,
 
@@ -139,84 +129,107 @@ function AccountInformation() {
 
         }}
         onSubmit={async (values, { setErrors }) => {
-          const currentFormValues = {
+          const buyerFormValues = {
             firstName: values.firstName,
             lastName: values.lastName,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            password: values.confirmPassword,
-            description: values.description,
-
-            // Buyer Only
             preferences: values.preferences,
             interests: values.interests,
+            phoneNumber: values.phoneNumber,
+            description: values.description,
+          }
 
-            // Seller only
+          const sellerFormValues = {
             sellerName: values.sellerName,
-          };
+            phoneNumber: values.phoneNumber,
+            description: values.description,
+          }
 
           const errors = validate(values);
           if (!isEmpty(errors)) {
             setErrors(errors);
-            // return;
+            return;
           }
 
-          // const { responseCode: updateUserResponseCode, errors: updateErrors } =
-          //   await updateUser(user.id, currentFormValues);
+          const userType = user.userType === userTypes.BUYER ? 'buyers' : 'sellers';
+          const currentFormValues = user.userType === userTypes.BUYER ? buyerFormValues : sellerFormValues;
 
-          // const updateUserCallbacks = {
-          //   updated: () => {
-          //     alert.success('Account updated successfully.');
+          const { responseCode: updateAccountResponseCode} =
+            await updateAccount(userType, currentFormValues);
 
-          //     loginUpdate({
-          //       ...user,
-          //       ...currentFormValues,
-          //     });
-          //   },
-          //   invalidFields: () => {
-          //     alert.error('Invalid fields.');
-          //     errors.email = updateErrors.email;
-          //     errors.username = updateErrors.username;
-          //     errors.confirmPassword = updateErrors.password;
-          //     setErrors(errors);
-          //   },
-          //   internalError: () => alert.error('Oops, something went wrong.'),
-          // };
+          const updateAccountCallbacks = {
+            updated: () => {
+              toast.success('Account updated successfully.', {
+                style: {
+                  backgroundColor: '#48CFAD',
+                  color: '#fff',
+                },
+              });
 
-          // switch (updateUserResponseCode) {
-          //   case 200:
-          //     updateUserCallbacks.updated();
-          //     break;
-          //   case 400:
-          //     updateUserCallbacks.invalidFields();
-          //     break;
-          //   case 500:
-          //     updateUserCallbacks.internalError();
-          //     break;
-          //   default:
-          //     break;
-          // }
+              loginUpdate({
+                user: {
+                  ...user,
+                  ...currentFormValues,
+                },
+              });
+            },
+            invalidFields: () => {
+              toast.error('Invalid fields.', {
+                style: {
+                  backgroundColor: '#ed5565',
+                  color: '#fff',
+                },
+              });
+              setErrors(errors);
+            },
+            internalError: () => {
+              toast.error('Oops, something went wrong.', {
+                style: {
+                  backgroundColor: '#ed5565',
+                  color: '#fff',
+                },
+              });
+            },
+          };
+
+          switch (updateAccountResponseCode) {
+            case 200:
+              updateAccountCallbacks.updated();
+              break;
+            case 400:
+              updateAccountCallbacks.invalidFields();
+              break;
+            case 500:
+              updateAccountCallbacks.internalError();
+              break;
+            default:
+              break;
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
-            <ControlledInput
-              className={styles.AccountInformation_input}
-              error={errors.firstName}
-              name="firstName"
-              placeholder="First Name*"
-              value={values.firstName}
-              onChange={(e) => setFieldValue('firstName', e.target.value)}
-            />
+            {user.userType === userTypes.BUYER && (
+              <>
+                <ControlledInput
+                  className={styles.AccountInformation_input}
+                  error={errors.firstName}
+                  name="firstName"
+                  placeholder="First Name*"
+                  value={values.firstName}
+                  onChange={(e) => setFieldValue('firstName', e.target.value)}
+                />
+              
 
-            <ControlledInput
-              className={styles.AccountInformation_input}
-              error={errors.lastName}
-              name="lastName"
-              placeholder="Last Name*"
-              value={values.lastName}
-              onChange={(e) => setFieldValue('lastName', e.target.value)}
-            />
+                <ControlledInput
+                  className={styles.AccountInformation_input}
+                  error={errors.lastName}
+                  name="lastName"
+                  placeholder="Last Name*"
+                  value={values.lastName}
+                  onChange={(e) => setFieldValue('lastName', e.target.value)}
+                />
+              </>
+            )}
 
             { user.userType === userTypes.SELLER &&
               <ControlledInput
@@ -228,15 +241,6 @@ function AccountInformation() {
                 onChange={(e) => setFieldValue('sellerName', e.target.value)}
               />
             }
-
-            <ControlledInput
-              className={styles.AccountInformation_input}
-              error={errors.email}
-              name="email"
-              placeholder="Email Address*"
-              value={values.email}
-              onChange={(e) => setFieldValue('email', e.target.value)}
-            />
 
             <ControlledInput
               className={styles.AccountInformation_input}
@@ -284,16 +288,6 @@ function AccountInformation() {
               onChange={(e) => setFieldValue('description', e.target.value)}
             />
 
-            <ControlledInput
-              className={styles.AccountInformation_input}
-              error={errors.confirmPassword}
-              kind={inputKinds.PASSWORD}
-              name="confirmPassword"
-              placeholder="Confirm Password*"
-              value={values.confirmPassword}
-              onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
-            />
-
             <div className={styles.AccountInformation_buttonGroup}>
               <Button
                 className={styles.AccountInformation_buttonGroup_updateButton}
@@ -305,7 +299,7 @@ function AccountInformation() {
                   className={styles.AccountInformation_buttonGroup_buttonText}
                 >
                   Update
-                  {isVerifyingPassword && isUserUpdating && (
+                  {isUserUpdating && (
                     <Spinner
                       className={styles.AccountInformation_buttonGroup_spinner}
                       colorName={colorNames.WHITE}

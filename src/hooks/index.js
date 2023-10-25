@@ -16,6 +16,7 @@ export { default as useProductReports } from './useProductReports';
 export { default as useUpdateUserStatus } from './useUpdateUserStatus';
 export { default as useQuestionnaires } from './useQuestionnaires';
 export { default as useQuestionnaire } from './useQuestionnaire';
+export { default as useUpdateUser } from './useUpdateUser';
 export { default as useRouterScroll } from './useRouterScroll';
 export { default as useReportedOrders } from './useReportedOrders';
 export { default as useReportedProducts } from './useReportedProducts';
