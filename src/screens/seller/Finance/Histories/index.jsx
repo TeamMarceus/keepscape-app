@@ -226,7 +226,7 @@ function Histories() {
                               />
 
                               <Text type={textTypes.HEADING.XS}>
-                                {dateCreated} {amount}
+                                {dateTimeCreated} {amount}
                               </Text>
                             </div>
                           </summary>
