@@ -6,8 +6,24 @@ import PropTypes from 'prop-types';
 
 import { toast } from 'sonner';
 
-import { buttonKinds, colorNames, inputKinds, modalPositions, modalSizes, spinnerSizes } from '@/app-globals';
-import { Button, ControlledInput, ControlledSelect, ControlledTextArea, ImageDropzone, Modal, Spinner } from '@/components';
+import { 
+  buttonKinds, 
+  colorNames, 
+  inputKinds, 
+  modalPositions, 
+  modalSizes, 
+  spinnerSizes 
+} from '@/app-globals';
+
+import { 
+  Button, 
+  ControlledInput, 
+  ControlledSelect, 
+  ControlledTextArea, 
+  ImageDropzone, 
+  Modal, 
+  Spinner 
+} from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { useRequestWithdraw } from '@/hooks';
@@ -291,7 +307,6 @@ function RequestModal({
                   value={values.qrCode}
                   onChange={(e) => setFieldValue('qrCode', e.target.value)}
                 />
-    
               </>
             )}
 

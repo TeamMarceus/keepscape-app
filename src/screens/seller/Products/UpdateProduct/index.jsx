@@ -141,14 +141,10 @@ function UpdateProduct({id}) {
             
             const filteredImages = {};
             
-            let index = 0; 
+            let index = 1; 
 
             for (const image of images) {
-              let propertyName;
-              if (product.images[index] !== undefined && product.images[index] !== null)
-                propertyName = product.images[index];
-              else
-                propertyName = `new${index}`;
+              const propertyName = `image${index}`;
               
               if (!isEmpty(image) && image instanceof File) {
                 filteredImages[propertyName] = image;
@@ -159,12 +155,12 @@ function UpdateProduct({id}) {
             
             const productTobeUpdated = {
               ...currentFormValues,
-              images: filteredImages,
+              ...filteredImages,
             };
 
             const { responseCode: updateProductResponseCode } = await updateProduct(id, productTobeUpdated);
 
-            const addProductCallbacks = {
+            const updateProductCallbacks = {
               updated: () => {
                 toast.success('Product successfully updated.', {
                   style: {
@@ -195,16 +191,16 @@ function UpdateProduct({id}) {
 
             switch (updateProductResponseCode) {
               case 200:
-                addProductCallbacks.updated();
+                updateProductCallbacks.updated();
                 break;
               case 400:
-                addProductCallbacks.invalidFields();
+                updateProductCallbacks.invalidFields();
                 break;
               case 401:
-                addProductCallbacks.internalError();
+                updateProductCallbacks.internalError();
                 break;
               case 500:
-                addProductCallbacks.internalError();
+                updateProductCallbacks.internalError();
                 break;
               default:
                 break;
@@ -379,7 +375,7 @@ function UpdateProduct({id}) {
 
                   <div className={styles.UpdateProduct_content_buttonGroup}>
                     <Button
-                      className={styles.UpdateProduct_content_addButton}
+                      className={styles.UpdateProduct_content_updateButton}
                       disabled={isUpdatingProduct}
                       kind={buttonKinds.SUBMIT}
                       onClick={() => {}}
