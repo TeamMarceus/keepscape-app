@@ -140,7 +140,7 @@ function OnGoingOrders() {
       <div className={styles.OnGoingOrders}>
         
         <Text type={textTypes.HEADING.XS}>
-          On Going Orders
+          Ongoing Orders
         </Text>
 
         <ControlledInput

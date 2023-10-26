@@ -16,8 +16,8 @@ const navLinks = {
       icon: 'shopping_cart',
       subLinks: [
         {
-          label: 'My Orders',
-          to: SELLER_ROUTES.MY_ORDERS,
+          label: 'Onhold Orders',
+          to: SELLER_ROUTES.ON_HOLD_ORDERS,
         },
         {
           label: 'Pending Orders',

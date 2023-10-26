@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const metadata = {
-  title: 'OnGoing Orders | Seller',
+  title: 'Ongoing Orders | Seller',
 };
 
 export default function OnGoingOrdersLayout({ children }) {

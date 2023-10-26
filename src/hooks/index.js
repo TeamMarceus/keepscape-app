@@ -26,6 +26,7 @@ export { default as useReportedProducts } from './useReportedProducts';
 export { default as useRouterScroll } from './useRouterScroll';
 export { default as useSellerApplications } from './useSellerApplications';
 export { default as useSellerLogs } from './useSellerLogs';
+export { default as useSellerOrders } from './useSellerOrders';
 export { default as useSellerProducts } from './useSellerProducts';
 export { default as useSellers } from './useSellers';
 export { default as useSellerWithdrawals } from './useSellerWithdrawals';

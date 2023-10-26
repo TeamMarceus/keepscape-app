@@ -25,7 +25,7 @@ import { useWindowSize, useAdminWithdrawals } from '@/hooks';
 import IdModal from '../../CommonModals/IdModal';
 import SellerModal from '../../CommonModals/SellerModal';
 
-import PaymentModal from '../PaymentModal';
+import PaymentModal from '../../../common/Modals/PaymentModal';
 
 import PreloaderRejectedPayments from '../Preloader';
 

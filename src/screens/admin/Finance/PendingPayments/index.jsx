@@ -29,7 +29,7 @@ import { useWindowSize, useAdminWithdrawals } from '@/hooks';
 
 import SellerModal from '../../CommonModals/SellerModal';
 
-import PaymentModal from '../PaymentModal';
+import PaymentModal from '../../../common/Modals/PaymentModal';
 
 import PreloaderPendingPayments from '../Preloader';
 

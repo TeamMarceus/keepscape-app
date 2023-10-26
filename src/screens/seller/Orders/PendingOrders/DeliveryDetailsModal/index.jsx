@@ -12,7 +12,10 @@ import styles from './styles.module.scss';
 function DeliveryDetailsModal({
   isOpen,
   handleClose,
-  deliveryDetails,
+  fullName,
+  fullAddress,
+  contactNumber,
+  altNumber,
 }) {
 
   return (
@@ -30,18 +33,18 @@ function DeliveryDetailsModal({
           className={styles.DeliveryDetailsModal_delivery_name}
           type={textTypes.HEADING.XXS}
         >
-          {deliveryDetails?.fullName}
+          {fullName} 
         </Text>
 
         <Text 
           className={styles.DeliveryDetailsModal_delivery_number}
           colorClass={colorClasses.NEUTRAL['400']}
         >
-          {deliveryDetails?.contactNumber} 
+          {contactNumber} {altNumber && `| ${altNumber}`}
         </Text>
 
         <Text colorClass={colorClasses.NEUTRAL['400']}>
-          {deliveryDetails.fullAddress}
+          {fullAddress}
         </Text>
       </div>
     </Modal>
@@ -51,7 +54,10 @@ function DeliveryDetailsModal({
 DeliveryDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  deliveryDetails: PropTypes.object.isRequired,
+  fullName: PropTypes.string.isRequired,
+  fullAddress: PropTypes.string.isRequired,
+  contactNumber: PropTypes.string.isRequired,
+  altNumber: PropTypes.string,
 }
 
 export default DeliveryDetailsModal;

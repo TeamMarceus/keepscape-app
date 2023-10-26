@@ -22,7 +22,7 @@ import {
 
 import { useSellerWithdrawals, useWindowSize } from '@/hooks';
 
-import PaymentModal from '@/screens/admin/Finance/PaymentModal';
+import PaymentModal from '@/screens/common/Modals/PaymentModal';
 
 import PreloaderWithdrawals from '../Preloader';
 

@@ -284,7 +284,7 @@ function MyProducts() {
           {
             id: 'deleteProductConfirmButton',
             text: 'Delete',
-            type: buttonTypes.PRIMARY.RED,
+            type: buttonTypes.PRIMARY.BLUE,
             onClick: async () => {
               await deleteProduct(selectedProduct.id);
               toggleDeleteConfirmation(false);
@@ -294,7 +294,7 @@ function MyProducts() {
           {
             id: 'deleteProductConfirmButton',
             text: 'Back',
-            type: buttonTypes.SECONDARY.RED,
+            type: buttonTypes.SECONDARY.BLUE,
             onClick: () => toggleDeleteConfirmation(false),
           },
         ]}

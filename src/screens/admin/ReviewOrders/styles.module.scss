@@ -53,10 +53,12 @@
   }
 
   &_item {
+    box-shadow: $shadow-normal;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     place-items: center;
     padding: 12px 24px;
+    margin: 8px;
   }
 
   &_product {

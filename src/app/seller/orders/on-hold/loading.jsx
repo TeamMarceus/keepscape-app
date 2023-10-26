@@ -4,6 +4,6 @@ import React from 'react';
 
 import ScreenLoader from '@/components/ScreenLoader';
 
-export default function MyOrdersLoading() {
+export default function OnHoldOrdersLoading() {
   return <ScreenLoader />;
 }

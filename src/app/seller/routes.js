@@ -6,7 +6,7 @@ export const SELLER_ROUTES = {
   MY_PRODUCTS: `${BASE_ROUTE}/products`,
   ADD_PRODUCT: `${BASE_ROUTE}/products/add`,
   HIDDEN_PRODUCTS: `${BASE_ROUTE}/products/hidden`,
-  MY_ORDERS: `${BASE_ROUTE}/orders`,
+  ON_HOLD_ORDERS: `${BASE_ROUTE}/orders/on-hold`,
   PENDING_ORDERS: `${BASE_ROUTE}/orders/pending`,
   ON_GOING_ORDERS: `${BASE_ROUTE}/orders/on-going`,
   ORDER_HISTORY: `${BASE_ROUTE}/orders/history`,

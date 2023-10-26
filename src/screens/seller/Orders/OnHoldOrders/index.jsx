@@ -115,7 +115,7 @@ const orders = [
   },
 ]
 
-function MyOrders() {
+function OnHoldOrders() {
   const searchParams = useSearchParams();
   const orderIdParam = searchParams.get('orderId');
 
@@ -143,14 +143,13 @@ function MyOrders() {
 
   return (
     <>
-      <div className={styles.MyOrders}>
-        
+      <div className={styles.OnHoldOrders}>
         <Text type={textTypes.HEADING.XS}>
-          My Orders
+          Onhold Orders
         </Text>
 
         <ControlledInput
-          className={styles.MyOrders_search}
+          className={styles.OnHoldOrders_search}
           icon="search"
           name="search"
           placeholder="You can search by Product Name, Buyer Name, or Order Status"
@@ -164,18 +163,18 @@ function MyOrders() {
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredOrders.length ? (
-              <div className={styles.MyOrders_grid}>
+              <div className={styles.OnHoldOrders_grid}>
                 {/* Header of OrderGrid starts here */}
                 <Card
                   className={cn(
-                    styles.MyOrders_grid_orderGrid,
-                    styles.MyOrders_grid_headers
+                    styles.OnHoldOrders_grid_orderGrid,
+                    styles.OnHoldOrders_grid_headers
                   )}
                 >
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column
                     )}
                   >
                     Date Ordered
@@ -183,8 +182,8 @@ function MyOrders() {
 
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column
                     )}
                   >
                     Product
@@ -192,8 +191,8 @@ function MyOrders() {
 
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column
                     )}
                   >
                     Buyer
@@ -201,8 +200,8 @@ function MyOrders() {
 
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column
                     )}
                   >
                     Quantity
@@ -210,8 +209,8 @@ function MyOrders() {
 
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column
                     )}
                   >
                     Customization
@@ -219,9 +218,9 @@ function MyOrders() {
 
                   <div
                     className={cn(
-                      styles.MyOrders_grid_header,
-                      styles.MyOrders_grid_column,
-                      styles.MyOrders_grid_header_action
+                      styles.OnHoldOrders_grid_header,
+                      styles.OnHoldOrders_grid_column,
+                      styles.OnHoldOrders_grid_header_action
                     )}
                   >
                     Status
@@ -236,21 +235,21 @@ function MyOrders() {
                   ({ id, dateOrdered, product, buyer, quantity, customization, status }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
-                      <Card key={id} className={styles.MyOrders_grid_orderGrid}>
-                        <div className={styles.MyOrders_grid_column}>
+                      <Card key={id} className={styles.OnHoldOrders_grid_orderGrid}>
+                        <div className={styles.OnHoldOrders_grid_column}>
                           {dateOrdered}
                         </div>
 
                         <ButtonLink 
-                          className={cn(styles.MyOrders_grid_column,
-                            styles.MyOrders_grid_column_product)}
+                          className={cn(styles.OnHoldOrders_grid_column,
+                            styles.OnHoldOrders_grid_column_product)}
                           to={`/seller/products/${product.id}`}
                           type={buttonTypes.TEXT.NEUTRAL}
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             alt={product.name}
-                            className={styles.MyOrders_grid_column_product_image}
+                            className={styles.OnHoldOrders_grid_column_product_image}
                             height={60}
                             src={product.image}
                             width={60}
@@ -260,22 +259,22 @@ function MyOrders() {
                           </Text>
                         </ButtonLink>
 
-                        <div className={styles.MyOrders_grid_column}>
+                        <div className={styles.OnHoldOrders_grid_column}>
                           {buyer.name}
                         </div>
 
-                        <div className={styles.MyOrders_grid_column}>
+                        <div className={styles.OnHoldOrders_grid_column}>
                           {quantity}
                         </div>
 
-                        <div className={cn(styles.MyOrders_grid_column,
-                          styles.MyOrders_grid_column_customization
+                        <div className={cn(styles.OnHoldOrders_grid_column,
+                          styles.OnHoldOrders_grid_column_customization
                         )}>
                           {customization}
                         </div>
 
                         <Button
-                          className={styles.MyOrders_grid_column}
+                          className={styles.OnHoldOrders_grid_column}
                           icon={
                             (() => {
                               if (status === 'Pending') {
@@ -315,12 +314,12 @@ function MyOrders() {
                       // Mobile View
                       <details
                         key={id}
-                        className={styles.MyOrders_grid_orderGrid}
+                        className={styles.OnHoldOrders_grid_orderGrid}
                       >
-                        <summary className={styles.MyOrders_grid_title}>
-                          <div className={styles.MyOrders_grid_title_info}>
+                        <summary className={styles.OnHoldOrders_grid_title}>
+                          <div className={styles.OnHoldOrders_grid_title_info}>
                             <Icon
-                              className={styles.MyOrders_grid_title_icon}
+                              className={styles.OnHoldOrders_grid_title_icon}
                               icon="expand_more"
                             />
 
@@ -330,7 +329,7 @@ function MyOrders() {
                           </div>
                         </summary>
 
-                        <div className={styles.MyOrders_grid_column}>
+                        <div className={styles.OnHoldOrders_grid_column}>
                           <Text
                             colorClass={colorClasses.NEUTRAL['400']}
                             type={textTypes.HEADING.XXS}
@@ -347,7 +346,7 @@ function MyOrders() {
               </div>
             ) : (
               <NoResults
-                className={styles.MyOrders_noResults}
+                className={styles.OnHoldOrders_noResults}
                 message="No orders found"
               />
             )}
@@ -366,4 +365,4 @@ function MyOrders() {
     </>
 )
 }
-export default MyOrders;
+export default OnHoldOrders;

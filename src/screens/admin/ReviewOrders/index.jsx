@@ -28,7 +28,7 @@ import {
 
 import { useReportedOrders, useWindowSize } from '@/hooks';
 
-import BuyerModal from '../CommonModals/BuyerModal';
+import BuyerModal from '../../common/Modals/BuyerModal';
 import SellerModal from '../CommonModals/SellerModal';
 
 import DeliveryLogsModal from './DeliveryLogsModal';
@@ -234,7 +234,7 @@ function ReviewOrders() {
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    ₱{price}
+                                    ₱{price.toFixed(2)}
                                   </Text>
                                 </div>
                               </div>
@@ -255,7 +255,7 @@ function ReviewOrders() {
                                 colorClass={colorClasses.BLUE['300']}
                                 type={textTypes.HEADING.XXS}
                               >
-                                ₱{totalPrice}
+                                ₱{totalPrice.toFixed(2)}
                               </Text>    
                             </div> 
 
@@ -387,7 +387,7 @@ function ReviewOrders() {
             onClick: () => toggleRefundConfirmation(false),
           },
         ]}
-        body="Are you sure you want to refund this order"
+        body="Are you sure you want to refund this order?"
         handleClose={() => {
           toggleRefundConfirmation(false);
         }}
