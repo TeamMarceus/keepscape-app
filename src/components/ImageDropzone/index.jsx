@@ -18,11 +18,12 @@ function ImageDropzone({
   text = 'Upload Image Here',
   value,
   error,
+  uploaded = null,
   isUploaded = false,
   onChange = () => {},
 }) {
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(uploaded);
   const [dropzoneError, setDropzoneError] = useState(null);
 
   const onDropAccepted = async (acceptedFiles) => {
@@ -139,6 +140,7 @@ ImageDropzone.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
   error: PropTypes.string,
+  uploaded: PropTypes.object,
   isUploaded: PropTypes.bool,
 };
 

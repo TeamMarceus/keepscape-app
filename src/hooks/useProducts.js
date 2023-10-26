@@ -3,31 +3,34 @@ import { useState, useEffect } from 'react';
 import { ProductsService } from '@/services';
 
 const useProducts = ({
+  sellerProfileId,
   search,
-  province, 
-  category, 
-  sellerId, 
+  provinces, 
+  categories,  
   rating, 
   minPrice, 
   maxPrice, 
+  isHidden,
   isDescending, 
   page, 
-  pageSize}) => {
-
+  pageSize
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
+    setIsLoading(true)
     const getProducts = async () => {
-      const { data: getProductsResponse } = await ProductsService.filterList({
+      const { data: getProductsResponse } = await ProductsService.productList({
+        sellerProfileId,
         search,
-        province,
-        category,
-        sellerId,
+        provinces,
+        categories,
         rating,
         minPrice,
         maxPrice,
+        isHidden,
         page,
         pageSize,
         descending: isDescending,
@@ -43,13 +46,14 @@ const useProducts = ({
 
     getProducts();
   }, [
+    sellerProfileId,
     search, 
-    province, 
-    category, 
-    sellerId, 
+    provinces,
+    categories,
     rating, 
     minPrice, 
     maxPrice, 
+    isHidden,
     isDescending, 
     page, 
     pageSize]);

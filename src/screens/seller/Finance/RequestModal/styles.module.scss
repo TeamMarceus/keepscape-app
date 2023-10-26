@@ -1,0 +1,26 @@
+
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
+
+.RequestModal {
+
+  &_withMargin {
+    margin-top: 10px !important;
+  }
+
+  &_button {
+    @include flex-center;
+    width: 100% !important;
+    margin: 40px auto 0 !important;
+    
+    &_buttonText {
+      display: flex;
+    }
+    
+    &_spinner {
+      margin-left: 12px;
+      width: unset !important;
+    }
+  }
+
+}

@@ -16,6 +16,7 @@ const useAddProduct = () => {
       responseCode = response.status;
     } catch (error) {
       responseCode = error.response.status;
+      setIsAdding(false);
     }
 
     setIsAdding(false);

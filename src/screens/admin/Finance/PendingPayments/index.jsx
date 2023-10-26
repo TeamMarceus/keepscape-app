@@ -25,14 +25,13 @@ import {
   Pagination
 } from '@/components';
 
-import { useWindowSize, useWithdrawals } from '@/hooks';
+import { useWindowSize, useAdminWithdrawals } from '@/hooks';
 
 import SellerModal from '../../CommonModals/SellerModal';
 
 import PaymentModal from '../PaymentModal';
 
 import PreloaderPendingPayments from '../Preloader';
-
 
 import RejectModal from '../RejectModal';
 import TrasnferModal from '../TransferModal';
@@ -62,7 +61,7 @@ function PendingPayments() {
     withdrawals,
     totalPages, 
     updateWithdrawal,
-  } = useWithdrawals({
+  } = useAdminWithdrawals({
     page,
     pageSize: 10,
     paymentStatus: 'Pending',

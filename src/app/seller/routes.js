@@ -10,5 +10,6 @@ export const SELLER_ROUTES = {
   PENDING_ORDERS: `${BASE_ROUTE}/orders/pending`,
   ON_GOING_ORDERS: `${BASE_ROUTE}/orders/on-going`,
   ORDER_HISTORY: `${BASE_ROUTE}/orders/history`,
-  FINANCE: `${BASE_ROUTE}/finance`,
+  FINANCE_HISTORIES: `${BASE_ROUTE}/finance/histories`,
+  FINANCE_WITHDRAWALS: `${BASE_ROUTE}/finance/withdrawals`,
 };

@@ -20,7 +20,7 @@ import {
   Pagination
 } from '@/components';
 
-import { useWindowSize, useWithdrawals } from '@/hooks';
+import { useWindowSize, useAdminWithdrawals } from '@/hooks';
 
 import IdModal from '../../CommonModals/IdModal';
 import SellerModal from '../../CommonModals/SellerModal';
@@ -51,7 +51,7 @@ function PaidPayments() {
     isLoading: isRecordsLoading,
     withdrawals,
     totalPages, 
-  } = useWithdrawals({
+  } = useAdminWithdrawals({
     page,
     pageSize: 10,
     paymentStatus: 'Paid',

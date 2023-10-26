@@ -1,7 +1,7 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.Finance {
+.Histories {
   padding-top: 24px;
 
   &_header {
@@ -9,7 +9,7 @@
     text-align: center;
 
     &_balance {
-      margin: 12px 0 24px;
+      margin: 12px 0 24px !important;
     }
 
     &_buttons {
@@ -119,6 +119,10 @@
         color: $neutral-700;
       }
     }
+  }
+
+  &_pagination {
+    margin-top: 60px !important;
   }
 
   &_noResults {

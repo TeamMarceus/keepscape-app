@@ -43,10 +43,10 @@ function SellerSidebar() {
       />
 
       <SidebarLink
-        icon={navLinks.FINANCE.icon} 
-        isActive={pathname === SELLER_ROUTES.FINANCE}
+        icon={navLinks.FINANCE.icon}
+        isActive={pathname.includes(`/seller/finance`)}
         label={navLinks.FINANCE.label}
-        to={SELLER_ROUTES.FINANCE}
+        subLinks={navLinks.FINANCE.subLinks}
       />
     </nav>
   );

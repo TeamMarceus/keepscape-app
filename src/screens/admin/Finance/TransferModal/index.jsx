@@ -26,7 +26,6 @@ function TrasnferModal({
   updateWithdrawal,
   balanceWithdrawalId,
   isUpdating,
-
 }) {
   return (
     <Modal
@@ -53,7 +52,6 @@ function TrasnferModal({
           if (!isUpdating) {
             handleClose();
           }
-
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (

@@ -1,8 +1,10 @@
-import React, { useState }  from 'react';
+import React from 'react';
 
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
+import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
+import { toast } from 'sonner';
 
 import {
   buttonKinds,
@@ -15,6 +17,7 @@ import {
 } from '@/app-globals';
 
 import { 
+
   Button,
   ControlledInput,
   ControlledTextArea,
@@ -22,11 +25,15 @@ import {
   Spinner,
   Text,
   Checkbox,
-  Grid
+  Grid,
+  ControlledSelect,
+  ScreenLoader
 } from '@/components';
 
-
 import { textAreaTypes } from '@/components/TextArea/constants';
+
+import {  useProduct, useProductCategories, useProductPlaces, useUpdateProduct } from '@/hooks';
+
 
 import styles from './styles.module.scss';
 
@@ -41,32 +48,48 @@ const validate = (values) => {
     errors.description = 'This field is required.';
   }
 
-  if (!values.image1) {
+  if (!values.image1 && !values.image2 && !values.image3 && !values.image4 && !values.image5) {
     errors.image1 = 'Atleast 1 image is required.';
+  }
+
+  if (!values.place) {
+    errors.place = 'This field is required.';
+  }
+
+  if (isEmpty(values.categories)) {
+    errors.categories = 'This field is required.';
+  }
+
+  if (!values.quantity) {
+    errors.quantity = 'This field is required.';
   }
 
   if (!values.price) {
     errors.price = 'This field is required.';
-    errors.overall = 'Please fill in all required fields.';
+  } else if (values.price < 0) {
+    errors.price = 'Price must be greater than 0.';
+  } else if (values.price > 1000000) {
+    errors.price = 'Price must be less than 1,000,000.';
   }
 
   return errors;
 };
 
-const product = {
-  name: 'Butanding Keychain',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget aliquam ultricies, nunc nisl ultricies nunc, eget ultricies nisl nisl eget.',
-  image1: 'https://picsum.photos/200',
-  image2: 'https://picsum.photos/300',
-  image3: 'https://picsum.photos/400',
-  image4: 'https://picsum.photos/500',
-  image5: 'https://picsum.photos/600',
-  isCustomizable: true,
-  price: 200,
-};
+function UpdateProduct({id}) {
+  const router = useRouter();
+  const {isLoading: isProductCategoriesLoading, productCategories} = useProductCategories();
+  const {isLoading: isProductPlacesLoading, productPlaces} = useProductPlaces();
 
-function UpdateProduct({ id }) {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const { isUpdating: isUpdatingProduct, updateProduct} = useUpdateProduct();
+
+  const { 
+    isLoading: isProductLoading, 
+    product,
+  } = useProduct(id);
+
+  if (isProductLoading ||isProductCategoriesLoading || isProductPlacesLoading) {
+    return <ScreenLoader/>;
+  }
 
   return (
     <div className={styles.UpdateProduct}>
@@ -79,11 +102,14 @@ function UpdateProduct({ id }) {
           initialValues={{
             name: product.name,
             description: product.description,
-            image1: product.image1,
-            image2: product.image2,
-            image3: product.image3,
-            image4: product.image4,
-            image5: product.image5,
+            image1: product.images[0] || '',
+            image2: product.images[1] || '',
+            image3: product.images[2] || '',
+            image4: product.images[3] || '',
+            image5: product.images[4] || '',
+            place: {label: product.province.name, value: product.province.id},
+            categories: product.categories.map((category) => ({label: category.name, value: category.id})), 
+            quantity: product.quantity,
             isCustomizable: product.isCustomizable,
             price: product.price,
           }}
@@ -91,12 +117,12 @@ function UpdateProduct({ id }) {
             const currentFormValues = {
               name: values.name,
               description: values.description,
-              image1: values.image1,
-              image2: values.image2,
-              image3: values.image3,
-              image4: values.image4,
-              image5: values.image5,
-              price: values.price,
+              placeId: values.place.value,
+              categoryIds: !isEmpty(values.categories) && values.categories.map((category) => category.value),
+              quantity: values.quantity,
+              isCustomizable: values.isCustomizable,
+              sellerPrice: values.price,
+              buyerPrice: values.price * 1.05,
             };
 
             const errors = validate(values);
@@ -105,17 +131,85 @@ function UpdateProduct({ id }) {
               return;
             }
 
-            setIsUpdating(true);
-
+            const images = [
+              values.image1,
+              values.image2,
+              values.image3,
+              values.image4,
+              values.image5,
+            ];
             
-            // try {
-            // } catch (error) {
-            //   setIsUpdating(false);
-            // }
+            const filteredImages = {};
+            
+            let index = 0; 
 
-              setIsUpdating(false);
+            for (const image of images) {
+              let propertyName;
+              if (product.images[index] !== undefined && product.images[index] !== null)
+                propertyName = product.images[index];
+              else
+                propertyName = `new${index}`;
+              
+              if (!isEmpty(image) && image instanceof File) {
+                filteredImages[propertyName] = image;
+              }
+
+              index++;
             }
-          }
+            
+            const productTobeUpdated = {
+              ...currentFormValues,
+              images: filteredImages,
+            };
+
+            const { responseCode: updateProductResponseCode } = await updateProduct(id, productTobeUpdated);
+
+            const addProductCallbacks = {
+              updated: () => {
+                toast.success('Product successfully updated.', {
+                  style: {
+                    backgroundColor: '#48CFAD',
+                    color: '#fff',
+                  },
+                });
+
+                // router.push(`/seller/products/${id}`);
+              },
+              invalidFields: () => {
+                toast.error('Invalid fields.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+              },
+              internalError: () => {
+                toast.error('Oops, something went wrong.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+              },
+            };
+
+            switch (updateProductResponseCode) {
+              case 200:
+                addProductCallbacks.updated();
+                break;
+              case 400:
+                addProductCallbacks.invalidFields();
+                break;
+              case 401:
+                addProductCallbacks.internalError();
+                break;
+              case 500:
+                addProductCallbacks.internalError();
+                break;
+              default:
+                break;
+            }
+          }}
         >
           {({ errors, values, handleSubmit, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
@@ -135,6 +229,33 @@ function UpdateProduct({ id }) {
                 type={textAreaTypes.FORM}
                 value={values.description}
                 onChange={(e) => setFieldValue('description', e.target.value)}
+              />
+
+              <ControlledSelect
+                className={styles.UpdateProduct_content_withMargin}
+                error={errors.place}
+                name="type"
+                options={ productPlaces.map((place) => ({
+                    label: place.name,
+                    value: place.id,
+                  }))}
+                placeholder="Choose a place*"
+                value={values.place}
+                onChange={(val) => setFieldValue('place', val)}
+              />
+
+              <ControlledSelect
+                isMulti
+                className={styles.UpdateProduct_content_withMargin}
+                error={errors.categories}
+                name="type"
+                options={productCategories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                  }))}
+                placeholder="Choose categories*"
+                value={values.categories}
+                onChange={(val) => {setFieldValue('categories', val)}}
               />
 
               <Text 
@@ -192,15 +313,26 @@ function UpdateProduct({ id }) {
               </Grid>
               
               <Grid className={styles.UpdateProduct_content_bottomGrid}>
-                <Checkbox
-                  checked={values.isCustomizable}
-                  className={styles.UpdateProduct_content_bottomGrid_checkbox}
-                  label="Is this product customizable?"
-                  name="isCustomizable"
-                  onChange={() => {
-                    setFieldValue('isCustomizable', !values.isCustomizable);
-                  }}
-                />
+                <div className={styles.UpdateProduct_content_bottomGrid_left}>
+                  <ControlledInput
+                    error={errors.quantity}
+                    kind={inputKinds.NUMBER}
+                    name="quantity"
+                    placeholder="How many is available?*"
+                    value={values.quantity}
+                    onChange={(e) => setFieldValue('quantity', e.target.value)}
+                  />
+
+                  <Checkbox
+                    checked={values.isCustomizable}
+                    className={styles.UpdateProduct_content_bottomGrid_checkbox}
+                    label="Is this product customizable?"
+                    name="isCustomizable"
+                    onChange={() => {
+                      setFieldValue('isCustomizable', !values.isCustomizable);
+                    }}
+                  />
+                </div>
 
                 <div className={styles.UpdateProduct_content_price}>
                   <ControlledInput
@@ -247,8 +379,8 @@ function UpdateProduct({ id }) {
 
                   <div className={styles.UpdateProduct_content_buttonGroup}>
                     <Button
-                      className={styles.UpdateProduct_content_updateButton}
-                      disabled={isUpdating}
+                      className={styles.UpdateProduct_content_addButton}
+                      disabled={isUpdatingProduct}
                       kind={buttonKinds.SUBMIT}
                       onClick={() => {}}
                     >
@@ -256,7 +388,7 @@ function UpdateProduct({ id }) {
                         className={styles.UpdateProduct_content_buttonGroup_buttonText}
                       >
                         Update Product
-                        {isUpdating && (
+                        {isUpdatingProduct && (
                           <Spinner
                             className={styles.UpdateProduct_content_buttonGroup_spinner}
                             colorName={colorNames.WHITE}
@@ -272,7 +404,6 @@ function UpdateProduct({ id }) {
           )}
         </Formik>
       </div>
-
     </div>
   )
 }

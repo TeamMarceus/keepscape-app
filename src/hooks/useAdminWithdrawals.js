@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import { FinancesService } from '@/services';
 
-const useWithdrawals = ({page, pageSize, paymentMethod, paymentStatus, sellerName, search}) => {
+const useAdminWithdrawals = ({page, pageSize, paymentMethod, paymentStatus, sellerName, search}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [withdrawals, setWithdrawals] = useState([]);
@@ -60,7 +60,7 @@ const useWithdrawals = ({page, pageSize, paymentMethod, paymentStatus, sellerNam
     const getWithdrawals = async () => {
       setIsLoading(true);
       
-      const { data: getWithdrawalsResponse } = await FinancesService.retrieveWithdrawals({
+      const { data: getWithdrawalsResponse } = await FinancesService.retrieveAdminWithdrawals({
         page,
         pageSize,
         sellerName: search,
@@ -82,4 +82,4 @@ const useWithdrawals = ({page, pageSize, paymentMethod, paymentStatus, sellerNam
   return { isLoading, withdrawals, totalPages, isUpdating, updateWithdrawal };
 };
 
-export default useWithdrawals;
+export default useAdminWithdrawals;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import cn from 'classnames';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -20,59 +21,18 @@ import {
   Icon, 
   NoResults, 
   Text, 
-  IconLink
+  Pagination,
+  IconLink,
+  ConfirmModal
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useSellerProducts, useWindowSize } from '@/hooks';
 
 import PreloaderProducts from '../Preloader';
 
+
 import styles from './styles.module.scss';
 
-const products = [
-  {
-    id: '1',
-    dateCreated: '2021-08-01',
-    name: 'Butanding Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/300',
-      'https://picsum.photos/300',
-    ],
-    totalSold: 10,
-  },
-  {
-    id: '2',
-    dateCreated: '2021-08-01',
-    name: 'Butanding Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-    ],
-    totalSold: 10,
-  },
-  {
-    id: '3',
-    dateCreated: '2021-08-01',
-    name: 'Dolphin Keychain',
-    quantity: 1,
-    images: [
-      'https://picsum.photos/200',
-      'https://picsum.photos/300',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-      'https://picsum.photos/400',
-    ],
-    totalSold: 10,
-  },
-];
 
 const sliderSettings = {
   lazyLoad: true,
@@ -84,10 +44,29 @@ const sliderSettings = {
 };
 
 function HiddenProducts() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
-  const isProductsLoading = false;
+
+  const page = searchParams.get('page') || 1;
+  
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
+
+  const {
+    isLoading: isProductsLoading, 
+    products,
+    totalPages,
+    isDeleting,
+    deleteProduct 
+  } = useSellerProducts({ 
+    search, 
+    isHidden: true, 
+    page,
+    pageSize: 10 
+  });
 
   const filteredProducts = products.filter((product) => {
     const { name } = product;
@@ -96,204 +75,231 @@ function HiddenProducts() {
   });
 
   return (
-    <div className={styles.HiddenProducts}>
-      <Text type={textTypes.HEADING.XS}>
-        Hidden Products
-      </Text>
+    <>
+      <div className={styles.HiddenProducts}>
+        <Text type={textTypes.HEADING.XS}>
+          Hidden Products
+        </Text>
 
-      <ControlledInput
-        className={styles.HiddenProducts_search}
-        icon="search"
-        name="search"
-        placeholder="You can search by Product Name"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+        <ControlledInput
+          className={styles.HiddenProducts_search}
+          icon="search"
+          name="search"
+          placeholder="You can search by Product Name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      {isProductsLoading ? (
-        <PreloaderProducts />
-      ) : (
-        // eslint-disable-next-line react/jsx-no-useless-fragment
-        <>
-          {filteredProducts.length ? (
-            <div className={styles.HiddenProducts_grid}>
-              {/* Header of OrderGrid starts here */}
-              <Card
-                className={cn(
-                  styles.HiddenProducts_grid_productGrid,
-                  styles.HiddenProducts_grid_headers
-                )}
-              >
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column
-                  )}
-                >
-                  Date Created
-                </div>
-
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column
-                  )}
-                >
-                  Product Name
-                </div>
-
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column
-                  )}
-                >
-                  Quantity
-                </div>
-
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column
-                  )}
-                >
-                  Images
-                </div>
-
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column
-                  )}
-                >
-                  Total Sold
-                </div>
-
-                <div
-                  className={cn(
-                    styles.HiddenProducts_grid_header,
-                    styles.HiddenProducts_grid_column,
-                    styles.HiddenProducts_grid_header_action
-                  )}
-                >
-                  Actions
-                </div>
-
-                
-                {/* Header of OrderGrid ends here */}
-              </Card>
-
-              {/* Body of OrderGrid starts here */}
-              {filteredProducts.map(
-                ({ id, dateCreated, name, quantity, images, totalSold  }) =>
-                  windowSize.width > 767 ? (
-                    // Desktop View
-                    <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
-                      <div className={styles.HiddenProducts_grid_column}>
-                        {dateCreated}
-                      </div>
-
-                      <ButtonLink
-                        to={`/seller/products/${id}`}
-                        type={buttonTypes.TEXT.NEUTRAL}
-                      >
-                        <div className={styles.MyProducts_grid_column}>
-                          {name}
-                        </div>
-                      </ButtonLink>
-
-                      <div className={styles.HiddenProducts_grid_column}>
-                        {quantity}
-                      </div>
-
-                      <div className={cn(styles.HiddenProducts_grid_column,
-                        styles.HiddenProducts_grid_column_images
-                      )}>
-                         <Slider {...sliderSettings}>
-                          {images.map((image, index) => (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              key={index}
-                              alt="Product"
-                              className={styles.HiddenProducts_grid_image}
-                              height={50}
-                              src={image}
-                              width={50}
-                            />
-                          ))}  
-                         </Slider>
-                      </div>
-
-                      <div className={styles.HiddenProducts_grid_column}>
-                        {totalSold}
-                      </div>
-
-                      <div className={styles.HiddenProducts_grid_column}>
-                        <div className={styles.HiddenProducts_grid_buttons}>
-                          <IconButton
-                            className={styles.HiddenProducts_grid_unhideButton}
-                            icon="visibility"
-                            type={iconButtonTypes.ICON.MD}
-                            onClick={() => {
-                              setSelectedProduct({ id, name });
-                            }}
-                          />
-                        
-                          <IconButton
-                            className={styles.HiddenProducts_grid_deleteButton}
-                            icon="delete"
-                            type={iconButtonTypes.ICON.MD}
-                            onClick={() => {
-                              setSelectedProduct({ id, name });
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </Card>
-                  ) : (
-                    // Mobile View
-                    <details
-                      key={id}
-                      className={styles.HiddenProducts_grid_productGrid}
+        {isProductsLoading ? (
+          <PreloaderProducts />
+        ) : (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>
+            {filteredProducts.length ? (
+              <>
+                <div className={styles.HiddenProducts_grid}>
+                  <Card
+                    className={cn(
+                      styles.HiddenProducts_grid_productGrid,
+                      styles.HiddenProducts_grid_headers
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
                     >
-                      <summary className={styles.HiddenProducts_grid_title}>
-                        <div className={styles.HiddenProducts_grid_title_info}>
-                          <Icon
-                            className={styles.HiddenProducts_grid_title_icon}
-                            icon="expand_more"
-                          />
+                      Date Created
+                    </div>
 
-                          <Text type={textTypes.HEADING.XS}>
-                            {dateCreated} {name}
-                          </Text>
-                        </div>
-                      </summary>
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
+                      Product Name
+                    </div>
 
-                      <div className={styles.HiddenProducts_grid_column}>
-                        <Text
-                          colorClass={colorClasses.NEUTRAL['400']}
-                          type={textTypes.HEADING.XXS}
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
+                      Price
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
+                      Rating
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
+                      Total Sold
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column,
+                        styles.HiddenProducts_grid_header_action
+                      )}
+                    >
+                      Actions
+                    </div>
+
+                  </Card>
+                  {filteredProducts.map(
+                    ({ id, dateCreated, name, quantity, price, totalSold, stars  }) =>
+                      windowSize.width > 767 ? (
+                        // Desktop View
+                        <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
+                          <div className={styles.HiddenProducts_grid_column}>
+                            {/* {dateCreated} */} 2021-09-01
+                          </div>
+
+                          <div className={styles.HiddenProducts_grid_column}>
+                            {name}
+                          </div>
+      
+                          <div className={styles.HiddenProducts_grid_column}>
+                            {quantity}
+                          </div>
+
+                          <div className={styles.HiddenProducts_grid_column}>
+                            ₱{price}
+                          </div>
+                      
+                          <div className={styles.HiddenProducts_grid_column}>
+                            {stars}
+                          </div>
+
+                          <div className={styles.HiddenProducts_grid_column}>
+                            {totalSold}
+                          </div>
+
+                          <div className={styles.HiddenProducts_grid_column}>
+                            <div className={styles.HiddenProducts_grid_buttons}>
+                              <IconLink
+                                className={styles.HiddenProducts_grid_viewButton}
+                                icon="visibility"
+                                to={`/seller/products/${id}`}
+                                type={iconButtonTypes.ICON.MD}
+                              />
+
+                              <IconLink
+                                className={styles.HiddenProducts_grid_editButton}
+                                icon="edit"
+                                to={`/seller/products/${id}/update`}
+                                type={iconButtonTypes.ICON.MD}
+                              />
+
+                              <IconButton
+                                className={styles.HiddenProducts_grid_deleteButton}
+                                icon="delete"
+                                type={iconButtonTypes.ICON.MD}
+                                onClick={() => {
+                                  setSelectedProduct({ id, name });
+                                  toggleDeleteConfirmation(true);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Card>
+                      ) : (
+                        // Mobile View
+                        <details
+                          key={id}
+                          className={styles.HiddenProducts_grid_productGrid}
                         >
-                          Buyer Name:
-                        </Text>
+                          <summary className={styles.HiddenProducts_grid_title}>
+                            <div className={styles.HiddenProducts_grid_title_info}>
+                              <Icon
+                                className={styles.HiddenProducts_grid_title_icon}
+                                icon="expand_more"
+                              />
 
-                        <Text type={textTypes.HEADING.XXS}>{name}</Text>
-                      </div>
-                    </details>
-                  )
-              )}
-              {/* Body of OrderGrid ends here */}
-            </div>
-          ) : (
-            <NoResults
-              className={styles.HiddenProducts_noResults}
-              message="No products found"
-            />
-          )}
-        </>
-      )}
+                              <Text type={textTypes.HEADING.XS}>
+                                {dateCreated} {name}
+                              </Text>
+                            </div>
+                          </summary>
 
-    </div>
+                          <div className={styles.HiddenProducts_grid_column}>
+                            <Text
+                              colorClass={colorClasses.NEUTRAL['400']}
+                              type={textTypes.HEADING.XXS}
+                            >
+                              Buyer Name:
+                            </Text>
+
+                            <Text type={textTypes.HEADING.XXS}>{name}</Text>
+                          </div>
+                        </details>
+                      )
+                  )}
+                </div>
+
+                <Pagination 
+                  className={styles.HiddenProducts_pagination}
+                  currentPage={currentPage}
+                  pageJump={(value) => {
+                    setCurrentPage(value);
+
+                    router.push(`/seller/hidden?page=${value}`, { scroll: false })
+                  }}
+                  totalPages={totalPages}
+                />
+              </>
+            ) : (
+              <NoResults
+                className={styles.HiddenProducts_noResults}
+                message="No products found"
+              />
+            )}
+          </>
+        )}
+
+      </div>
+
+      <ConfirmModal
+        actions={[
+          {
+            id: 'deleteProductConfirmButton',
+            text: 'Delete',
+            type: buttonTypes.PRIMARY.RED,
+            onClick: async () => {
+              await deleteProduct(selectedProduct.id);
+              toggleDeleteConfirmation(false);
+            },
+            disabled: isDeleting,
+          },
+          {
+            id: 'deleteProductConfirmButton',
+            text: 'Back',
+            type: buttonTypes.SECONDARY.RED,
+            onClick: () => toggleDeleteConfirmation(false),
+          },
+        ]}
+        body="Are you sure you want to delete this product?"
+        handleClose={() => {
+          toggleDeleteConfirmation(false);
+        }}
+        isOpen={isDeleteConfirmationToggled}
+        title="Delete?"
+      />
+    </>
   )
 }
 export default HiddenProducts;

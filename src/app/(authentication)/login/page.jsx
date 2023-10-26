@@ -162,6 +162,7 @@ export default function LoginPage() {
                   value={values.email}
                   onChange={(e) => setFieldValue('email', e.target.value)}
                 />
+
                 <ControlledInput
                   className={styles.LoginPage_content_input}
                   error={errors.password}
@@ -171,6 +172,7 @@ export default function LoginPage() {
                   value={values.password}
                   onChange={(e) => setFieldValue('password', e.target.value)}
                 />
+                
                 {errors.overall && (
                   <Text
                     className={styles.LoginPage_content_input_errorMessage}

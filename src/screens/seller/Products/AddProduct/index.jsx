@@ -170,11 +170,11 @@ function AddProduct() {
                 setFieldValue('quantity', '');
                 setFieldValue('isCustomizable', false);
                 setFieldValue('price', '');
-                setFieldValue('image1', '');
-                setFieldValue('image2', '');
-                setFieldValue('image3', '');
-                setFieldValue('image4', '');
-                setFieldValue('image5', '');
+                setFieldValue('image1', null);
+                setFieldValue('image2', null);
+                setFieldValue('image3', null);
+                setFieldValue('image4', null);
+                setFieldValue('image5', null);
                 
               },
               invalidFields: () => {
@@ -211,7 +211,6 @@ function AddProduct() {
               default:
                 break;
             }
-         
           }}
         >
           {({ errors, values, handleSubmit, setFieldValue }) => (

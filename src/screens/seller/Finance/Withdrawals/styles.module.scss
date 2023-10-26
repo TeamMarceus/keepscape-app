@@ -1,11 +1,30 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.MyProducts {
+.Withdrawals {
   padding-top: 24px;
 
-  &_search {
+  &_header {
     margin-top: 32px;
+    text-align: center;
+
+    &_balance {
+      margin: 12px 0 24px;
+    }
+
+    &_buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    &_button {
+      width: 100%;
+    }
+  }
+
+  &_search {
+    margin-top: 40px;
   }
 
   &_grid {
@@ -23,27 +42,11 @@
         justify-items: flex-start;
         padding: 30px 40px;
       }
-
-      &_images {
-        max-width: 160px !important;
-
-        > div {
-          > button {
-            &::before {
-              font-size: 28px !important;
-            }
-          }
-        }
-      }
     }
 
-    &_image {
-      padding: 0 1px;
-    }
-
-    &_productGrid {
+    &_recordGrid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;
@@ -57,7 +60,7 @@
       }
     }
 
-    &_productGrid[open] {
+    &_recordGrid[open] {
       > summary {
         > div {
           > i {
@@ -102,22 +105,6 @@
       @include breakpoint(sm) {
         display: none;
       }
-    }
-
-    &_buttons {
-      @include flex-center;
-    }
-
-    &_viewButton {
-      color: $blue-400 !important;
-    }
-
-    &_editButton {
-      color: $green-400 !important;
-    }
-
-    &_deleteButton {
-      color: $red-400 !important;
     }
 
     &_header {

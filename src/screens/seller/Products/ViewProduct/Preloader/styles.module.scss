@@ -1,7 +1,7 @@
 @import "@/styles/mixins";
 @import "@/styles/variables";
 
-.PreloaderProducts {
+.PreloaderProductReviews {
   @include ease(0.4s);
   margin-top: 24px;
   overflow: hidden;
@@ -9,7 +9,7 @@
   &_header,
   &_body {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 1fr;
 
     @include breakpoint(sm) {
       grid-template-columns: 1fr;
@@ -18,7 +18,7 @@
 
   &_header {
     &_shine {
-      height: 54px !important;
+      height: 120px !important;
 
       @include breakpoint(sm) {
         height: 40px;
@@ -47,34 +47,5 @@
 
   &_separator {
     border-color: $neutral-0;
-  }
-
-  &_body {
-    &_shine {
-      height: 94px !important;
-
-      @include breakpoint(sm) {
-        height: 50px;
-        display: none;
-      }
-
-      &:nth-child(1) {
-        @include breakpoint(sm) {
-          display: block;
-        }
-      }
-
-      &:nth-child(2) {
-        @include breakpoint(sm) {
-          display: block;
-        }
-      }
-
-      &:nth-child(3) {
-        @include breakpoint(sm) {
-          display: block;
-        }
-      }
-    }
   }
 }

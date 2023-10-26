@@ -13,7 +13,7 @@ import styles from './styles.module.scss';
 
 function ReviewCard({
   rating,
-  comment,
+  review,
   name,
   className,
 }) {
@@ -34,9 +34,9 @@ function ReviewCard({
           <RatingStars rating={rating} />
         </div>
 
-        <div className={styles.ReviewCard_comment}>
+        <div className={styles.ReviewCard_review}>
           <Text>
-            {comment}
+            {review}
           </Text>
         </div>
       </div>
@@ -46,7 +46,7 @@ function ReviewCard({
 
 ReviewCard.propTypes = {
   rating: PropTypes.number.isRequired,
-  comment: PropTypes.string.isRequired,
+  review: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   className: PropTypes.string,
 };

@@ -54,8 +54,18 @@ const navLinks = {
     },
 
     FINANCE: {
-      label: 'Finance',
+      label: 'Finances',
       icon: 'monetization_on',
+      subLinks: [
+        {
+          label: 'Transaction Histories',
+          to: SELLER_ROUTES.FINANCE_HISTORIES,
+        },
+        {
+          label: 'Withdrawals Made',
+          to: SELLER_ROUTES.FINANCE_WITHDRAWALS,
+        }
+      ]
     }
 };
 

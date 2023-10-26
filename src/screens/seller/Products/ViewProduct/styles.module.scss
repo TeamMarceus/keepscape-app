@@ -8,13 +8,12 @@
 
   &_content {
     display: flex;
-    justify-content: center;
     padding: 40px;
 
     &_images {
       display: flex !important;
       flex-direction: column !important;
-      max-width: 400px !important;
+      width: 100%;
     }
 
     &_slider {
@@ -44,7 +43,7 @@
       display: flex;
       flex-direction: column;
       margin-left: 30px;
-      width: 390px;
+      width: 100%;
 
       &_name {
         display: flex;
@@ -77,11 +76,24 @@
         border-left: 10px solid $blue-400;
         border-radius: 5px;
         padding: 12px 20px;
-        margin: 24px 0;
+        margin: 24px 0 12px;
+      }
+
+      &_customizable {
+        background-color: $neutral-50;
+        border-radius: 5px;
+        padding: 12px 20px;
       }
   
       &_quantity {
-        margin-top: 40px !important;
+        background-color: $neutral-50;
+        border-radius: 5px;
+        padding: 12px 20px;
+        margin: 12px 0 !important;
+      }
+
+      &_category {
+        color: $blue-400;
       }
 
       &_buttons {
@@ -148,5 +160,13 @@
     &_list {
       margin-top: 24px;
     }
+  }
+
+  &_pagination {
+    margin-top: 60px !important;
+  }
+
+  &_noResults {
+    margin-top: 40px;
   }
 }

@@ -7,13 +7,31 @@
   }
 
   &_text {
+    display: flex;
+    flex-direction: column;
     background-color: $neutral-50;
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1rem !important;
 
-    &_span {
+    &_details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &_method {
       color: $blue-400;
+      padding: 12px 12px 0;
+    }
+
+    &_span {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 12px 0;
+
+      &_detail {
+        color: $blue-400; 
+      }
     }
   }
 
@@ -23,5 +41,6 @@
 
   &_image {
     margin: 0 auto !important;
+    width: 100%;
   }
 }
