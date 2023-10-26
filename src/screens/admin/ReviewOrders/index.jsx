@@ -33,8 +33,6 @@ import SellerModal from '../CommonModals/SellerModal';
 
 import DeliveryLogsModal from './DeliveryLogsModal';
 import OrderReportModal from './OrderReportModal';
-
-
 import PreloaderOrders from './Preloader';
 
 import styles from './styles.module.scss';
