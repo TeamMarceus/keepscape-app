@@ -21,6 +21,14 @@
     &_number {
       margin-bottom: 8px !important;
     }
+
+    &_fee {
+      margin-top: 12px !important;
+
+      &_span {
+        color: $green-300;
+      }
+    }
   }
 
   &_logs {
@@ -53,23 +61,8 @@
     }
 
     &_empty {
-      
-    }
-  }
-
-  &_proof {
-    margin: 0 24px 0 auto;
-
-    &_title {
-      margin-bottom: 12px !important;
-    }
-
-    &_fee {
-      margin-top: 12px !important;
-
-      &_span {
-        color: $green-300;
-      }
+      text-align: center;
+      width: 400px;
     }
   }
 }

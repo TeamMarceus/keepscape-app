@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
 
-import { Modal, NoResults, Text } from '@/components';
+import { Modal, Text } from '@/components';
 
 import styles from './styles.module.scss';
 
@@ -15,7 +15,6 @@ function DeliveryLogsModal({
   title,
   deliveryDetails,
   deliveryLogs,
-  deliveryFeeProofImageUrl,
   deliveryFee,
 }) {
 
@@ -25,7 +24,7 @@ function DeliveryLogsModal({
       handleClose={handleClose}
       isOpen={isOpen}
       position={modalPositions.CENTER}
-      size={deliveryLogs.length > 0 ? modalSizes.LG : modalSizes.MD}
+      size={modalSizes.MD}
       title={title}
     >
       <div className={styles.DeliveryLogsModal_content}>
@@ -54,12 +53,19 @@ function DeliveryLogsModal({
           <Text colorClass={colorClasses.NEUTRAL['400']}>
             {deliveryDetails.fullAddress}
           </Text>
+
+          <Text
+            className={styles.DeliveryLogsModal_delivery_fee}
+            type={textTypes.HEADING.XXXS}
+          >
+            Delivery Fee: <span className={styles.DeliveryLogsModal_delivery_fee_span}>₱{deliveryFee}</span>
+          </Text>
         </div>
 
         {deliveryLogs.length > 0 ? (
 
           <div className={styles.DeliveryLogsModal_logs}>
-            {deliveryLogs.map((log, index) => (
+            {deliveryLogs.slice().reverse().map((log, index) => (
               <div
                 key={log.id}
                 className={styles.DeliveryLogsModal_logs_log}
@@ -89,36 +95,12 @@ function DeliveryLogsModal({
             <Text
               className={styles.DeliveryLogsModal_logs_empty_text}
               colorClass={colorClasses.NEUTRAL['400']}
-              type={textTypes.HEADING.XS}
+              type={textTypes.HEADING.SM}
             >
               No logs yet.
             </Text>
           </div>
         )}
-
-        <div className={styles.DeliveryLogsModal_proof}>
-          <Text
-            className={styles.DeliveryLogsModal_proof_title}
-            type={textTypes.HEADING.XXS}
-          >
-            Delivery Fee Proof
-          </Text>
-
-          <div className={styles.DeliveryLogsModal_proof_image}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              alt="Delivery Fee Proof" 
-              src="https://picsum.photos/200"
-            />
-          </div>
-
-          <Text
-            className={styles.DeliveryLogsModal_proof_fee}
-            type={textTypes.HEADING.XXS}
-          >
-            Delivery Fee: <span className={styles.DeliveryLogsModal_proof_fee_span}>₱{deliveryFee}</span>
-          </Text>
-        </div>
       </div>
     </Modal>
   )
@@ -138,7 +120,6 @@ DeliveryLogsModal.propTypes = {
     dateTime: PropTypes.string.isRequired,
     log: PropTypes.string.isRequired,
   })).isRequired,
-  deliveryFeeProofImageUrl: PropTypes.string.isRequired,
   deliveryFee: PropTypes.number.isRequired,
 }
 

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
+
+import { toast } from 'sonner';
 
 import { 
   buttonKinds, 
@@ -21,6 +23,8 @@ import {
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
+
+import { useAddOrderLogs } from '@/hooks';
 
 import styles from './styles.module.scss';
 
@@ -43,9 +47,13 @@ function AddLogsModal({
   handleClose,
   orderId,
   title,
+  setOrders,
+  orders,
 }) {
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    isAdding,
+    addOrderLogs,
+  } = useAddOrderLogs();
 
   return (
     <Modal
@@ -61,7 +69,7 @@ function AddLogsModal({
           log: '',
           dateTime: dayjs(),
         }}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async (values, { setErrors, setFieldValue }) => {
           const currentFormValues = {
             log: values.log,
             dateTime: values.dateTime,
@@ -73,9 +81,75 @@ function AddLogsModal({
             return;
           }
           
-          console.log(values.dateTime.format('YYYY-MM-DD HH:mm:ss A'));
-          setIsSubmitting(true);
-          setIsSubmitting(false);
+          const { responseCode: addOrderLogsResponseCode } = await addOrderLogs(orderId, currentFormValues);
+
+            const addOrderLogsCallbacks = {
+              created: () => {
+                toast.success('Delivery log successfully added.', {
+                  style: {
+                    backgroundColor: '#48CFAD',
+                    color: '#fff',
+                  },
+                });
+
+                // Set the 
+                const newOrders = orders.map((order) => {
+                  if (order.id === orderId) {
+                    return {
+                      ...order,
+                      deliveryLogs: [
+                        ...order.deliveryLogs,
+                        {
+                          dateTime: currentFormValues.dateTime.format('YYYY-MM-DD HH:mm:ss A'),
+                          log: currentFormValues.log,
+                        },
+                      ],
+                    };
+                  }
+
+                  return order;
+                });
+
+                setOrders(newOrders);
+
+                // Reset form values
+                setFieldValue('log', '');
+                setFieldValue('dateTime', dayjs());
+              },
+              invalidFields: () => {
+                toast.error('Invalid fields.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+              },
+              internalError: () => {
+                toast.error('Oops, something went wrong.', {
+                  style: {
+                    backgroundColor: '#ed5565',
+                    color: '#fff',
+                  },
+                });
+              },
+            };
+
+            switch (addOrderLogsResponseCode) {
+              case 200:
+                addOrderLogsCallbacks.created();
+                break;
+              case 400:
+                addOrderLogsCallbacks.invalidFields();
+                break;
+              case 401:
+                addOrderLogsCallbacks.internalError();
+                break;
+              case 500:
+                addOrderLogsCallbacks.internalError();
+                break;
+              default:
+                break;
+            } 
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
@@ -100,15 +174,15 @@ function AddLogsModal({
                   
             <Button
               className={styles.AddLogsModal_button}
-              disabled={isSubmitting}
+              disabled={isAdding}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
               <span
                 className={styles.AddLogsModal_button_buttonText}
               >
-                Submit
-                {isSubmitting && (
+                Add
+                {isAdding && (
                   <Spinner
                     className={styles.AddLogsModal_button_spinner}
                     colorName={colorNames.WHITE}
@@ -129,6 +203,8 @@ AddLogsModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   orderId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  setOrders: PropTypes.func.isRequired,
+  orders: PropTypes.array.isRequired,
 }
 
 export default AddLogsModal;

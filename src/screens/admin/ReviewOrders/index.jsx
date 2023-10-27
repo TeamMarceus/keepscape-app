@@ -29,9 +29,9 @@ import {
 import { useReportedOrders, useWindowSize } from '@/hooks';
 
 import BuyerModal from '../../common/Modals/BuyerModal';
+import DeliveryLogsModal from './DeliveryLogsModal';
 import SellerModal from '../CommonModals/SellerModal';
 
-import DeliveryLogsModal from './DeliveryLogsModal';
 import OrderReportModal from './OrderReportModal';
 import PreloaderOrders from './Preloader';
 

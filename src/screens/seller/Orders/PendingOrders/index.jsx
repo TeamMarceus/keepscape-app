@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import {
   buttonTypes,
   colorClasses,
+  orderStatus,
   textTypes,
 } from '@/app-globals';
 
@@ -13,7 +14,6 @@ import {
   Card, 
   ConfirmModal, 
   ControlledInput, 
-  ControlledSelect, 
   NoResults, 
   Pagination, 
   Text 
@@ -24,8 +24,9 @@ import { useSellerOrders, useWindowSize } from '@/hooks';
 import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
+import DeliveryDetailsModal from '../CommonModals/DeliveryDetailsModal';
+
 import AddDeliveryFeeModal from './AddDeliveryFeeModal';
-import DeliveryDetailsModal from './DeliveryDetailsModal';
 import styles from './styles.module.scss';
 
 
@@ -36,15 +37,13 @@ function PendingOrders() {
 
   const page = searchParams.get('page') || 1;
 
-  const [searchBy, setSearchBy] = useState('buyerName');
-  const [searchBuyer, setSearchBuyer] = useState('');
-  const [searchProduct, setSearchProduct] = useState('');
+  const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
 
   const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
   const [isAddDeliveryFeeModalOpen, setIsAddDeliveryFeeModalOpen] = useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
-  const [isRefundConfirmationToggled, toggleRefundConfirmation] = useState(false);
+  const [isCancelConfirmationToggled, toggleCancelConfirmation] = useState(false);
 
   const [selectedOrder, setSelectedOrder] = useState({});
 
@@ -57,19 +56,17 @@ function PendingOrders() {
     isCancelling: isCancellingOrder,
     cancelOrder, 
   } = useSellerOrders({
-    status: 'Pending',
-    productName: searchProduct,
-    buyerName: searchBuyer,
+    status: orderStatus.PENDING,
+    search,
     page,
     pageSize: 10,
   });
 
-  console.log(searchBuyer, ' sad ', searchProduct)
-
   const filteredOrders = orders.filter((order) => (
-    order.buyer.firstName.toLowerCase().includes(searchBuyer.toLowerCase()) ||
-    order.buyer.lastName.toLowerCase().includes(searchBuyer.toLowerCase()) ||
-    order.items.some((item) => item.productName.toLowerCase().includes(searchProduct.toLowerCase()))
+    order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+    order.buyer.lastName.toLowerCase().includes(search.toLowerCase()) ||
+    order.items.some((item) => item.productName.toLowerCase().includes(search.toLowerCase())) ||
+    order.dateTimeCreated.split('T')[0].includes(search.toLowerCase())
   ));
 
   return (
@@ -79,35 +76,14 @@ function PendingOrders() {
           Pending Orders
         </Text>
 
-        <div className={styles.PendingOrders_search}>
-          <ControlledInput
-            className={styles.PendingOrders_search_input}
-            icon="search"
-            name="search"
-            placeholder="You can search by Buyer Name or Product Name"
-            value={searchBuyer || searchProduct}
-            onChange={(e) => {
-              if (searchBy.value === 'buyerName') {
-                setSearchBuyer(e.target.value);
-              } else {
-                setSearchProduct(e.target.value);
-              }
-            }}
-          />
-
-          <ControlledSelect
-            className={styles.PendingOrders_search_select}
-            name="type"
-            options={[
-              { label: 'Buyer Name', value: 'buyerName' },
-              { label: 'Product Name', value: 'productName' },
-            ]}
-            placeholder="Search by"
-            value={searchBy}
-            onChange={(val) => {setSearchBy(val)}}
-          />
-        </div>
-
+        <ControlledInput
+          className={styles.PendingOrders_search}
+          icon="search"
+          name="search"
+          placeholder="You can search by Buyer Name, Date Ordered, or Product Name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
         {isOrdersLoading ? (
           <PreloaderOrders />
@@ -118,8 +94,7 @@ function PendingOrders() {
               <>
                 <div className={styles.PendingOrders_orders}>
                   {filteredOrders.map(
-                    ({ id, buyer, dateTimeCreated, items, totalPrice, status,
-                      deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
+                    ({ id, buyer, dateTimeCreated, items, totalPrice}) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PendingOrders_order}>
@@ -271,7 +246,7 @@ function PendingOrders() {
                                 type={buttonTypes.SECONDARY.BLUE}
                                 onClick={() => {
                                   setSelectedOrder({id});
-                                  toggleRefundConfirmation(true);
+                                  toggleCancelConfirmation(true);
                                 }}
                               >
                                 Cancel Order
@@ -347,7 +322,7 @@ function PendingOrders() {
             type: buttonTypes.PRIMARY.BLUE,
             onClick: async () => {
               await cancelOrder(selectedOrder.id);
-              toggleRefundConfirmation(false);
+              toggleCancelConfirmation(false);
             },
             disabled: isCancellingOrder,
           },
@@ -355,14 +330,14 @@ function PendingOrders() {
             id: 'cancelConfirmButton',
             text: 'Back',
             type: buttonTypes.SECONDARY.BLUE,
-            onClick: () => toggleRefundConfirmation(false),
+            onClick: () => toggleCancelConfirmation(false),
           },
         ]}
         body="Are you sure you want to cancel this order?"
         handleClose={() => {
-          toggleRefundConfirmation(false);
+          toggleCancelConfirmation(false);
         }}
-        isOpen={isRefundConfirmationToggled}
+        isOpen={isCancelConfirmationToggled}
         title="Cancel?"
       />
     </>

@@ -1,139 +1,76 @@
 import React, { useState } from 'react';
 
-import cn from 'classnames';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
   buttonTypes,
   colorClasses,
+  orderStatus,
   textTypes,
 } from '@/app-globals';
 
 import { 
   Button, 
-  ButtonLink, 
   Card, 
   ControlledInput, 
-  Icon, 
   NoResults, 
+  Pagination, 
   Text 
 } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { useSellerOrders, useWindowSize } from '@/hooks';
 
-import DeliveryLogsModal from '../DeliveryLogsModal';
+import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
+import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
-import PreloaderOrders from '../Preloader';
+import DeliveryDetailsModal from '../CommonModals/DeliveryDetailsModal';
+
+import DeliveryLogsModal from '../CommonModals/DeliveryLogsModal';
 
 import styles from './styles.module.scss';
 
-const orders = [
-  {
-    id: 1,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 1,
-        name: 'Buntanding KeyChain 1',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 1,
-      name: 'Buyer 1',
-      deliveryDetails: {
-        fullName: 'Buyer 1',
-        fullAddress: 'Zone 5, Barangay 1, City 1, Province 1, 1000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 1,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Delivered',
-  },
-  {
-    id: 2,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 2,
-      name: 'Buyer 2',
-      deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Delivered',
-  },
-  {
-    id: 3,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 2,
-      name: 'Buyer 2',
-      deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Cancelled',
-  },
-  {
-    id: 4,
-    dateOrdered: '2021-08-01',
-    product: {
-        id: 2,
-        name: 'Buntanding KeyChain 2',
-        image: 'https://picsum.photos/200',
-      },
-    buyer: {
-      id: 2,
-      name: 'Buyer 2',
-      deliveryDetails: {
-        fullName: 'Buyer 2',
-        fullAddress: 'Zone 5, Barangay 2, City 2, Province 2, 2000',
-        contactNumber: '09123456789',
-      },
-    },
-    quantity: 2,
-    customization: 'I want this to be blue and red so that it will be more beautiful',
-    status: 'Cancelled',
-  },
-]
 
 function HistoryOrders() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
-  const isOrdersLoading = false;
+
+  const page = searchParams.get('page') || 1;
+
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1)
+
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
+  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
+  const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
+
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const filteredOrders = orders.filter((order) => {
-    const { product, buyer, status } = order;
-
-    return (
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      buyer.name.toLowerCase().includes(search.toLowerCase()) ||
-      status.toLowerCase().includes(search.toLowerCase())
-    );
+  const { 
+    isLoading: isOrdersLoading, 
+    orders,
+    totalPages,
+  } = useSellerOrders({
+    status: orderStatus.COMPLETED,
+    search,
+    page,
+    pageSize: 10,
   });
 
+  const filteredOrders = orders.filter((order) => {
+    const searchTerm = search.toLowerCase();
+  
+    return (
+      order.buyer.firstName.toLowerCase().includes(searchTerm) ||
+      order.buyer.lastName.toLowerCase().includes(searchTerm) || 
+      order.dateTimeCreated.toLowerCase().includes(searchTerm)  ||
+      order.items.some(({ productName }) => productName.toLowerCase().includes(searchTerm)) ||
+      order.status.toLowerCase().includes(searchTerm)
+    );
+  });
   return (
     <>
       <div className={styles.HistoryOrders}>
-        
         <Text type={textTypes.HEADING.XS}>
           Order History
         </Text>
@@ -142,7 +79,7 @@ function HistoryOrders() {
           className={styles.HistoryOrders_search}
           icon="search"
           name="search"
-          placeholder="You can search by Product Name, Buyer Name, or Order Status"
+          placeholder="You can search by Buyer Name, Date Ordered, or Product Name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -153,182 +90,202 @@ function HistoryOrders() {
           // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             {filteredOrders.length ? (
-              <div className={styles.HistoryOrders_grid}>
-                {/* Header of OrderGrid starts here */}
-                <Card
-                  className={cn(
-                    styles.HistoryOrders_grid_orderGrid,
-                    styles.HistoryOrders_grid_headers
-                  )}
-                >
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Date Ordered
-                  </div>
+              <>
+                <div className={styles.HistoryOrders_orders}>
+                  {filteredOrders.map(
+                    ({ id, buyer, dateTimeCreated, items, totalPrice, status,
+                      deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
+                      windowSize.width > 767 ? (
+                        // Desktop View
+                        <Card key={id} className={styles.HistoryOrders_order}>
+                          <div className={styles.HistoryOrders}>
+                            <div className={styles.HistoryOrders_info}>
+                              <div className={styles.HistoryOrders_info_left}>
+                                <Button
+                                  className={styles.HistoryOrders_info_text}
+                                  icon="person"
+                                  type={buttonTypes.TEXT.BLUE}
+                                  onClick={() => {
+                                    setSelectedOrder({id, buyer});
+                                    setIsBuyerModalOpen(true)
+                                  }}
+                                >
+                                  <Text type={textTypes.HEADING.XXXS}>
+                                    {buyer.firstName} {buyer.lastName}
+                                  </Text>
+                                </Button>
 
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Product
-                  </div>
+                                <div className={styles.HistoryOrders_info_date}>
+                                  Date Ordered: 
 
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Buyer
-                  </div>
+                                  <Text
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXXS}
+                                  >
+                                    {dateTimeCreated.split('T')[0]}
+                                  </Text>
+                                </div>
+                              </div>
 
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Quantity
-                  </div>
+                              <div className={styles.HistoryOrders_info_buttons}>
+                                <Button
+                                  className={styles.HistoryOrders_info_statusButton}
+                                  icon={
+                                    (() => {
+                                      if (status === orderStatus.REFUNDED) {
+                                        return 'payments';
+                                      } if (status === orderStatus.DELIVERED) {
+                                        return 'check_circle';
+                                      } 
+                                      return 'cancel';
+                                    })()
+                                  }
+                                  type={
+                                    (() => {
+                                      if (status === orderStatus.REFUNDED) {
+                                        return buttonTypes.TEXT.BLUE;
+                                      } if (status === orderStatus.DELIVERED) {
+                                       return buttonTypes.TEXT.GREEN;
+                                      } 
+                                      return buttonTypes.TEXT.RED;
+                                    })()
+                                  }
+                                  onClick={() => {
+                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
+                                    
+                                    if (status === orderStatus.CANCELLED) {
+                                      setIsDeliveryDetailsModalOpen(true);
+                                    } else {
+                                      setIsDeliveryLogsModalOpen(true);
+                                    }
+                                  }}
+                                >
+                                  {status}
+                                </Button>
+                              </div>
+                              
+                            </div>
 
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column
-                    )}
-                  >
-                    Customization
-                  </div>
+                            {items.map(
+                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                              <div key={productId} className={styles.HistoryOrders_item}>
+                                <div className={styles.HistoryOrders_product}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt="Product"
+                                    className={styles.HistoryOrders_product_image}
+                                    height={60}
+                                    src={productImageUrl}
+                                    width={60}
+                                  />
 
-                  <div
-                    className={cn(
-                      styles.HistoryOrders_grid_header,
-                      styles.HistoryOrders_grid_column,
-                      styles.HistoryOrders_grid_header_action
-                    )}
-                  >
-                    Status
-                  </div>
+                                  <div>
+                                    <Text 
+                                      className={styles.HistoryOrders_product_text}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      {productName}
+                                    </Text>
+                                  </div>
+                                </div>
 
-                  
-                  {/* Header of OrderGrid ends here */}
-                </Card>
+                                <div className={styles.HistoryOrders_quantity}>
+                                  Quantity:
+                                  <Text 
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    {quantity}
+                                  </Text>
+                                </div>
 
-                {/* Body of OrderGrid starts here */}
-                {filteredOrders.map(
-                  ({ id, dateOrdered, product, buyer, quantity, customization, status }) =>
-                    windowSize.width > 767 ? (
-                      // Desktop View
-                      <Card key={id} className={styles.HistoryOrders_grid_orderGrid}>
-                        <div className={styles.HistoryOrders_grid_column}>
-                          {dateOrdered}
-                        </div>
+                                <div className={styles.HistoryOrders_customizationText}>
+                                  Customization:
+                                  {customizationMessage  ? (
+                                    <Text 
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXXS}
+                                    >
+                                      {customizationMessage } 
+                                    </Text>
+                                    ) : (
+                                    <Text 
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      No Customization
+                                    </Text>
+                                  )}
+                                </div>
+                              
 
-                        <ButtonLink 
-                          className={cn(styles.HistoryOrders_grid_column,
-                            styles.HistoryOrders_grid_column_product)}
-                          to={`/seller/products/${product.id}`}
-                          type={buttonTypes.TEXT.NEUTRAL}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            alt={product.name}
-                            className={styles.HistoryOrders_grid_column_product_image}
-                            height={60}
-                            src={product.image}
-                            width={60}
-                          />
-                          <Text>
-                            {product.name}  
-                          </Text>
-                        </ButtonLink>
-
-                        <div className={styles.HistoryOrders_grid_column}>
-                          {buyer.name}
-                        </div>
-
-                        <div className={styles.HistoryOrders_grid_column}>
-                          {quantity}
-                        </div>
-
-                        <div className={cn(styles.HistoryOrders_grid_column,
-                          styles.HistoryOrders_grid_column_customization
-                        )}>
-                          {customization}
-                        </div>
-
-                        <Button
-                          className={styles.HistoryOrders_grid_column}
-                          icon={
-                            (() => {
-                              if (status === 'Delivered') {
-                                return 'check';
-                              } 
-
-                              return 'close';
-                            })()
-                          }
-                          type={
-                            (() => {
-              
-                               if (status === 'Delivered') {
-                                return buttonTypes.TEXT.GREEN;
-                              } 
-                                return buttonTypes.TEXT.RED;
-                            })()
-                          }
-                          onClick={() => {
-                            if (status === 'Cancelled' || status === 'Pending') {
-                              return;
-                            }
-
-                            setSelectedOrder({ id, product, buyer });
-                            setIsDeliveryLogsModalOpen(true);
-                          }}
-                        >
-                          {status}
-                        </Button>
-                      </Card>
-                    ) : (
-                      // Mobile View
-                      <details
-                        key={id}
-                        className={styles.HistoryOrders_grid_orderGrid}
-                      >
-                        <summary className={styles.HistoryOrders_grid_title}>
-                          <div className={styles.HistoryOrders_grid_title_info}>
-                            <Icon
-                              className={styles.HistoryOrders_grid_title_icon}
-                              icon="expand_more"
-                            />
-
-                            <Text type={textTypes.HEADING.XS}>
-                              {dateOrdered} {product.name}
-                            </Text>
+                                <div className={styles.HistoryOrders_price}>
+                                  Price:
+                                  <Text
+                                    className={styles.HistoryOrders_price_text}
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    ₱{price.toFixed(2)}
+                                  </Text>
+                                </div>
+                              </div>
+                              )
+                            )}
                           </div>
-                        </summary>
 
-                        <div className={styles.HistoryOrders_grid_column}>
-                          <Text
-                            colorClass={colorClasses.NEUTRAL['400']}
-                            type={textTypes.HEADING.XXS}
-                          >
-                            Buyer Name:
-                          </Text>
+                          <div className={styles.HistoryOrders_orderTotal}>
+                            <div className={styles.HistoryOrders_orderTotal_text}>
+                              <Text 
+                                colorClass={colorClasses.NEUTRAL['400']}
+                                type={textTypes.HEADING.XXXS}
+                              >
+                                Delivery Fee:
+                              </Text>
 
-                          <Text type={textTypes.HEADING.XXS}>{buyer.name}</Text>
-                        </div>
-                      </details>
-                    )
-                )}
-                {/* Body of OrderGrid ends here */}
-              </div>
+                              <Text 
+                                colorClass={colorClasses.BLUE['300']}
+                                type={textTypes.HEADING.XXXS}
+                              >
+                                ₱{deliveryFee.toFixed(2)}
+                              </Text>    
+                            </div> 
+
+                            <div className={styles.HistoryOrders_orderTotal_text}>
+                              <Text 
+                                colorClass={colorClasses.NEUTRAL['400']}
+                                type={textTypes.HEADING.XXS}
+                              >
+                                Order Total:
+                              </Text>
+
+                              <Text 
+                                colorClass={colorClasses.GREEN['300']}
+                                type={textTypes.HEADING.XS}
+                              >
+                                ₱{totalPrice.toFixed(2)}
+                              </Text>    
+                            </div> 
+                          </div>
+                        </Card>
+                      ) : (
+                        // Mobile View
+                        <>
+                        </>
+                      )
+                  )}
+                </div>
+
+                <Pagination 
+                  className={styles.HistoryOrders_pagination}
+                  currentPage={currentPage}
+                  pageJump={(value) => {
+                    setCurrentPage(value);
+                    router.push(`/seller/orders/history?page=${value}`, { scroll: false })
+                  }}
+                  totalPages={totalPages}
+                />
+              </>
             ) : (
               <NoResults
                 className={styles.HistoryOrders_noResults}
@@ -339,14 +296,45 @@ function HistoryOrders() {
         )}
 
       </div>
+      
       {isDeliveryLogsModalOpen &&
         <DeliveryLogsModal
-          deliveryDetails={selectedOrder.buyer.deliveryDetails}
+          deliveryDetails={
+            (() => ({
+              fullName: selectedOrder.buyer.deliveryFullName,
+              contactNumber: selectedOrder.buyer.phoneNumber,
+              altMobileNumber: selectedOrder.buyer.altMobileNumber,
+              fullAddress: selectedOrder.buyer.deliveryAddress,
+            }))()
+          }
+          deliveryFee={selectedOrder.deliveryFee}
+          deliveryLogs={selectedOrder.deliveryLogs}
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
-          title={`${selectedOrder.product.name} Delivery Details`}
+          title="Order Delivery Details"
         />
       }
+
+
+      {isDeliveryDetailsModalOpen && (
+        <DeliveryDetailsModal
+          altMobileNumber={selectedOrder.buyer.altPhoneNumber}
+          contactNumber={selectedOrder.buyer.phoneNumber}
+          fullAddress={selectedOrder.buyer.deliveryFullAddress}
+          fullName={selectedOrder.buyer.deliveryFullName}
+          handleClose={() => setIsDeliveryDetailsModalOpen(false)}
+          isOpen={isDeliveryDetailsModalOpen}
+        />
+      )}
+
+      {isBuyerModalOpen && (
+        <BuyerModal
+          buyer={selectedOrder.buyer}
+          handleClose={() => setIsBuyerModalOpen(false)}
+          isOpen={isBuyerModalOpen}
+          title="Buyer Details"
+        />
+      )}
     </>
 )
 }

@@ -4,6 +4,7 @@ export { default as buttonTypes } from './buttonTypes';
 export { default as colorClasses } from './colorClasses';
 export { default as colorNames } from './colorNames';
 export { default as colorHexCodes } from './colorHexCodes';
+export { default as orderStatus } from './orderStatus';
 export { default as gridTypes } from './gridTypes';
 export { default as iconButtonSizes } from './iconButtonSizes';
 export { default as iconButtonTypes } from './iconButtonTypes';

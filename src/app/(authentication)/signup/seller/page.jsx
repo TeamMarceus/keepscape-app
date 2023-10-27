@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
 
 import {
   buttonKinds,
@@ -13,6 +12,7 @@ import {
   inputKinds,
   spinnerSizes,
   textTypes,
+  userStatus,
 } from '@/app-globals';
 import {
   ControlledInput,
@@ -27,9 +27,8 @@ import {
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
-import { TokensService, QuestionnairesService, UsersService } from '@/services';
+import { UsersService } from '@/services';
 import { isValidEmail } from '@/utils/string';
-
 
 import styles from './styles.module.scss';
 
@@ -155,7 +154,7 @@ export default function SellerSignUpPage() {
 
               loginUpdate({
                 user: {
-                  userStatus: 'Pending'
+                  userStatus: userStatus.PENDING,
                 },
               });
 

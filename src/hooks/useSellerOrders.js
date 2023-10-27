@@ -6,6 +6,7 @@ import { OrdersService } from '@/services';
 
 const useSellerOrders = ({
   status,
+  search,
   productName,
   buyerName,
   sellerName,
@@ -14,6 +15,7 @@ const useSellerOrders = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
+  const [isSettingDelivered, setIsSettingDelivered] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [orders, setOrders] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -82,11 +84,44 @@ const useSellerOrders = ({
     }
   }
 
+  const setOrderDelivered = async (orderId, body) => {
+    try {
+      setIsSettingDelivered(true);
+      const { status: deliverOrderStatus } = await OrdersService.deliverOrder(orderId, body);
+  
+      if (deliverOrderStatus === 200) {
+      
+        toast.success('Order successfully delivered.', {
+          style: {
+            backgroundColor: '#1ab394',
+            color: '#fff',
+          },
+        });
+
+        setOrders((prevOrders) =>
+          prevOrders.filter((ord) => ord.id !== orderId)
+        );
+
+      } 
+      setIsSettingDelivered(false);
+
+    } catch (error) {
+      setIsSettingDelivered(false);
+      toast.error('Oops Something Went Wrong.', {
+        style: {
+          backgroundColor: '#ed5565',
+          color: '#fff',
+        },
+      });
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true)
     const getSellerOrders = async () => {
       const { data: getSellerOrdersResponse } = await OrdersService.retrieveSellerOrders({
         status,
+        search,
         productName,
         buyerName,
         sellerName,
@@ -105,6 +140,7 @@ const useSellerOrders = ({
     getSellerOrders();
   }, [
       status,
+      search,
       productName,
       buyerName,
       sellerName,
@@ -120,6 +156,9 @@ const useSellerOrders = ({
     addDeliveryFee,
     isCancelling,
     cancelOrder, 
+    setOrders,
+    isSettingDelivered,
+    setOrderDelivered,
   };
 };
 

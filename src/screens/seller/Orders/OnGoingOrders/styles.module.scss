@@ -1,133 +1,134 @@
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-.OnGoingOrders {
+.OngoingOrders {
   padding-top: 24px;
 
   &_search {
-    margin-top: 32px;
+    margin-top: 20px;
   }
 
-  &_grid {
-    margin-top: 24px;
+  &_orders {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 12px;
+  }
 
-    &_column {
-      text-align: center;
+  &_order {
+    margin-top: 12px;
+  }
 
-      @include breakpoint(sm) {
-        border: unset;
-        border-bottom: 0.5px solid $border-200;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        align-items: center;
-        justify-items: flex-start;
-        padding: 30px 40px;
-      }
+  &_info {
+    @include flex-between;
+    border-bottom: 1px solid $neutral-200;
+    padding: 0 32px 20px 24px;
 
-      &_product {
-        border-radius: 5px;
-        box-shadow: $shadow-normal;
-        display: flex;
-        padding: 4px !important;
-
-        &:hover {
-          background-color: $blue-0;
-          box-shadow: $shadow-raised;
-          > p {
-            color: $blue-400;
-          }
-        }
-      }
-    }
-
-    &_orderGrid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      place-items: center;
-      margin-top: 12px;
-      padding: 20px 8px;
-
-      @include breakpoint(sm) {
-        background-color: $neutral-0;
-        box-shadow: $shadow-normal;
-        display: flex;
-        flex-direction: column;
-        margin-top: 16px;
-      }
-    }
-
-    &_orderGrid[open] {
-      > summary {
-        > div {
-          > i {
-            transform: rotate(180deg);
-          }
-        }
-      }
-    }
-
-    &_title {
-      align-items: center;
-      border-bottom: 2px solid $violet-400;
+    &_left {
       display: flex;
-      gap: 40px;
-      list-style: none;
-      padding: 16px 24px;
-      @include flex-between;
-
-      &_info {
-        @include flex-center;
-        gap: 30px;
-
-        @include breakpoint(xs) {
-          gap: 16px;
-        }
-      }
-
-      &_icon {
-        background-color: $blue-400;
-        border-radius: 100px;
-        color: $neutral-0;
-        cursor: pointer;
-        font-size: 20px;
-        padding: 10px;
-      }
     }
 
-    &_headers {
-      padding: 18px 8px;
-      margin-bottom: 12px;
-
-      @include breakpoint(sm) {
-        display: none;
-      }
+    &_text {
+      margin-right: 24px !important;
     }
 
-    &_header {
-      color: $neutral-400;
-      font-weight: 600;
-
-      @include breakpoint(sm) {
-        padding: 8px;
-      }
-
-      &_action {
-        color: $neutral-700;
-      }
+    &_date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     &_buttons {
-      @include flex-center;
-      gap: 2px;
+      display: flex;
+      align-items: center;
     }
 
-    &_viewButton {
-      color: $blue-400 !important;
+    &_statusButton {
+      margin-right: 16px !important;
+    }
+  }
+
+  &_item {
+    box-shadow: $shadow-normal;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    place-items: center;
+    padding: 12px 24px;
+    margin: 8px;
+  }
+
+  &_product {
+    display: flex;
+    align-items: center;
+    grid-column: 2/6;
+    place-self: normal;
+    gap: 12px;
+
+    &_text {
+      margin-bottom: 8px !important;
+    }
+  }
+
+  &_quantity {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 6/8;
+  }
+
+  &_customizationText {
+    @include flex-center;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 250px !important;
+    text-align: center;
+  }
+  
+  &_price {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 9/11;
+  }
+
+  &_orderTotal {
+    background-color: $blue-0;
+    border-radius: 0 0 5px 5px;
+    border-top: dashed 2px $blue-100;
+    @include flex-between;
+    padding: 24px 32px;
+
+    &_buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      &_button {
+        @include flex-center;
+        width: 190px !important;
+
+        &_spinner {
+          margin-left: 12px;
+          width: unset !important;
+        }
+      }
     }
 
-    &_addButton {
-      color: $green-400 !important;
+    &_text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-right: 12px;
+
+      &_fee {
+        margin-bottom: 12px;
+      }
     }
+  }
+
+  &_pagination {
+    margin-top: 60px;
   }
 
   &_noResults {

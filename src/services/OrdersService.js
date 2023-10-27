@@ -8,6 +8,7 @@ const OrdersService = {
    count: () => axios.get(`${BASE_URL}/buyers/orders/count`),
    retrieveSellerOrders: ({
       status,
+      search,
       productName,
       buyerName,
       sellerName,
@@ -16,6 +17,7 @@ const OrdersService = {
    }) => axios.get(`${BASE_URL}/sellers`, {
       params: {
          status,
+         search,
          productName,
          buyerName,
          sellerName,
