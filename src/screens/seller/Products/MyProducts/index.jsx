@@ -167,12 +167,12 @@ function MyProducts() {
                     </div>
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateCreated, name, quantity, price, stars, totalSold  }) =>
+                    ({ id, dateTimeCreated, name, quantity, price, stars, totalSold  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.MyProducts_grid_productGrid}>
                           <div className={styles.MyProducts_grid_column}>
-                            {/* {dateCreated} */} 2021-09-01
+                            {dateTimeCreated.split('T')[0]}
                           </div>
 
                           <div className={styles.MyProducts_grid_column}>
@@ -237,7 +237,7 @@ function MyProducts() {
                               />
 
                               <Text type={textTypes.HEADING.XS}>
-                                {dateCreated} {name}
+                                {dateTimeCreated} {name}
                               </Text>
                             </div>
                           </summary>

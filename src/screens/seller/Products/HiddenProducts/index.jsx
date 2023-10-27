@@ -128,6 +128,15 @@ function HiddenProducts() {
                         styles.HiddenProducts_grid_column
                       )}
                     >
+                      Quantity
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
                       Price
                     </div>
 
@@ -161,12 +170,12 @@ function HiddenProducts() {
 
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateCreated, name, quantity, price, totalSold, stars  }) =>
+                    ({ id, dateTimeCreated, name, quantity, price, totalSold, stars  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
                           <div className={styles.HiddenProducts_grid_column}>
-                            {/* {dateCreated} */} 2021-09-01
+                            {dateTimeCreated.split('T')[0]}
                           </div>
 
                           <div className={styles.HiddenProducts_grid_column}>
@@ -231,7 +240,7 @@ function HiddenProducts() {
                               />
 
                               <Text type={textTypes.HEADING.XS}>
-                                {dateCreated} {name}
+                                {dateTimeCreated} {name}
                               </Text>
                             </div>
                           </summary>

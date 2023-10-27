@@ -140,22 +140,30 @@ function UpdateProduct({id}) {
             ];
             
             const filteredImages = {};
+            const deleteUrls = [];
             
             let index = 1; 
 
             for (const image of images) {
               const propertyName = `image${index}`;
-              
+             
+              // Check if the image is empty or not and if it is a file
               if (!isEmpty(image) && image instanceof File) {
                 filteredImages[propertyName] = image;
               }
 
+              // Check the index of the product image that has been changed and put it in the deleted urls array
+              if (!isEmpty(image) && image instanceof File && product.images[index - 1]) {
+                deleteUrls.push(product.images[index - 1]);
+              }
+
               index++;
             }
-            
+
             const productTobeUpdated = {
               ...currentFormValues,
               ...filteredImages,
+              deleteUrls,
             };
 
             const { responseCode: updateProductResponseCode } = await updateProduct(id, productTobeUpdated);
@@ -169,7 +177,7 @@ function UpdateProduct({id}) {
                   },
                 });
 
-                // router.push(`/seller/products/${id}`);
+                router.push(`/seller/products/${id}`);
               },
               invalidFields: () => {
                 toast.error('Invalid fields.', {
