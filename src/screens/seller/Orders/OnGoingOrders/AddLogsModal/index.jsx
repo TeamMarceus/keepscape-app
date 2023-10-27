@@ -1,6 +1,8 @@
 import React from 'react';
 
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
@@ -42,6 +44,7 @@ const validate = (values) => {
   return errors;
 };
 
+
 function AddLogsModal({
   isOpen,
   handleClose,
@@ -50,6 +53,10 @@ function AddLogsModal({
   setOrders,
   orders,
 }) {
+
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+
   const {
     isAdding,
     addOrderLogs,
@@ -101,7 +108,7 @@ function AddLogsModal({
                       deliveryLogs: [
                         ...order.deliveryLogs,
                         {
-                          dateTime: currentFormValues.dateTime,
+                          dateTime: currentFormValues.dateTime.toString(),
                           log: currentFormValues.log,
                         },
                       ],

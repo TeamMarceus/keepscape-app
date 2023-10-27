@@ -75,6 +75,7 @@ function DeliveryLogsModal({
                 )}/>
 
                 <div className={styles.DeliveryLogsModal_logs_log_dateTime}>
+                  {console.log(log.dateTime, ' ', log.log)}
                   <Text>
                     {/* Format it to "MM/DD/YYYY hh:mm A" */}
                     {new Date(log.dateTime).toLocaleString('en-US', {
