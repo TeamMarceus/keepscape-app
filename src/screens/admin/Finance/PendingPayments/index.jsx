@@ -53,7 +53,7 @@ function PendingPayments() {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState({});
-  
+  // const isUpdatingRecord = true;
   const {
     isLoading: isRecordsLoading,
     isUpdating: isUpdatingRecord, 
@@ -220,37 +220,28 @@ function PendingPayments() {
                           </div>
                           
                           <div className={styles.PendingPayments_grid_column}>
-                              {(!isUpdatingRecord && !selectedRecord.id) &&
-                                <div className={styles.PendingPayments_grid_buttons}>
-                                  <IconButton
-                                    className={styles.PendingPayments_grid_payButton}
-                                    icon="paid"
-                                    type={iconButtonTypes.ICON.MD}
-                                    onClick={() => {
-                                      setSelectedRecord({ id });
-                                      setIsTransferModalOpen(true);
-                                    }}
-                                  />
+                            <div className={styles.PendingPayments_grid_buttons}>
+                              <IconButton
+                                className={styles.PendingPayments_grid_payButton}
+                                icon="paid"
+                                type={iconButtonTypes.ICON.MD}
+                                onClick={() => {
+                                  setSelectedRecord({ id });
+                                  setIsTransferModalOpen(true);
+                                }}
+                              />
 
-                                  <IconButton
-                                    className={styles.PendingPayments_grid_cancelButton}
-                                    icon="cancel"
-                                    type={iconButtonTypes.ICON.MD}
-                                    onClick={() => {
-                                      setSelectedRecord({ id });
-                                      setIsRejectModalOpen(true);
-                                    }}
-                                    />
-                                </div>
-                              }
-                              {(isUpdatingRecord && selectedRecord.id === id) &&
-                                <Spinner
-                                  className={styles.PendingPayments_grid_buttons_spinner}
-                                  colorName={colorNames.BLUE}
-                                  size={spinnerSizes.MD}
+                              <IconButton
+                                className={styles.PendingPayments_grid_cancelButton}
+                                icon="cancel"
+                                type={iconButtonTypes.ICON.MD}
+                                onClick={() => {
+                                  setSelectedRecord({ id });
+                                  setIsRejectModalOpen(true);
+                                }}
                                 />
-                              }
                             </div>
+                          </div>
                         </Card>
                       ) : (
                         // Mobile View

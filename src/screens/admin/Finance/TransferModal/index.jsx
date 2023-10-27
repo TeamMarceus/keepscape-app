@@ -47,7 +47,11 @@ function TrasnferModal({
             return;
           }
 
-          await updateWithdrawal(balanceWithdrawalId, 'Paid', values.paymentProofImage);
+          await updateWithdrawal({
+            balanceWithdrawalId, 
+            status: 'Paid', 
+            paymentProofImage: values.paymentProofImage
+          });
 
           if (!isUpdating) {
             handleClose();

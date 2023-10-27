@@ -10,12 +10,12 @@ const useAdminWithdrawals = ({page, pageSize, paymentMethod, paymentStatus, sell
   const [withdrawals, setWithdrawals] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
-  const updateWithdrawal = async (balanceWithdrawalId, status, reason, proof) => {
+  const updateWithdrawal = async ({balanceWithdrawalId, status, reason, paymentProofImage}) => {
     setIsUpdating(true);
 
     try {
       const { status: updateWithdrawalStatusResponse } = await FinancesService.updateWithdrawal(
-        balanceWithdrawalId, { status, reason, proof }
+        balanceWithdrawalId, { status, reason, paymentProofImage }
       );
   
       if (updateWithdrawalStatusResponse === 200) {

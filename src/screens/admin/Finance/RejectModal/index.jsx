@@ -52,7 +52,11 @@ function RejectModal({
             return;
           }
 
-          await updateWithdrawal(balanceWithdrawalId, 'Rejected', values.reason);
+          await updateWithdrawal({
+            balanceWithdrawalId, 
+            status: 'Rejected', 
+            reason: values.reason
+          });
 
           if (!isUpdating) {
             handleClose();

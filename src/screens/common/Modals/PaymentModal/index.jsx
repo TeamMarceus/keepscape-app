@@ -65,9 +65,7 @@ function PaymentModal({
             <img 
               alt="Payment Proof"
               className={styles.PaymentModal_image}
-              // height={400}
               src={paymentProfileImageUrl}
-              // width={400}
             />
           </>
         )}
