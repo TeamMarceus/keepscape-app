@@ -72,7 +72,8 @@ function AddLogsModal({
         onSubmit={async (values, { setErrors, setFieldValue }) => {
           const currentFormValues = {
             log: values.log,
-            dateTime: values.dateTime,
+            // Convert the date to UTC
+            dateTime: dayjs(values.dateTime).utc().format(),
           };
 
           const errors = validate(values);
@@ -100,7 +101,7 @@ function AddLogsModal({
                       deliveryLogs: [
                         ...order.deliveryLogs,
                         {
-                          dateTime: currentFormValues.dateTime.format('YYYY-MM-DD HH:mm:ss A'),
+                          dateTime: currentFormValues.dateTime,
                           log: currentFormValues.log,
                         },
                       ],

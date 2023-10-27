@@ -76,7 +76,16 @@ function DeliveryLogsModal({
 
                 <div className={styles.DeliveryLogsModal_logs_log_dateTime}>
                   <Text>
-                    {log.dateTime.replace('T', ' ')}
+                    {/* Format it to "MM/DD/YYYY hh:mm A" */}
+                    {new Date(log.dateTime).toLocaleString('en-US', {
+                      timeZone: 'Asia/Manila',
+                      month: '2-digit',
+                      day: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })}
                   </Text>
                 </div>
 

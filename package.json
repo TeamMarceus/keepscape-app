@@ -44,7 +44,9 @@
     "reduxjs-toolkit-persist": "^7.2.1",
     "slick-carousel": "^1.8.1",
     "sonner": "^1.0.3",
-    "universal-cookie": "^6.1.1"
+    "timezone": "^1.0.23",
+    "universal-cookie": "^6.1.1",
+    "utc": "^0.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.15",
