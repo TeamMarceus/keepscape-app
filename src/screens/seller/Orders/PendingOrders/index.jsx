@@ -13,6 +13,7 @@ import {
   Card, 
   ConfirmModal, 
   ControlledInput, 
+  ControlledSelect, 
   NoResults, 
   Pagination, 
   Text 
@@ -35,7 +36,9 @@ function PendingOrders() {
 
   const page = searchParams.get('page') || 1;
 
-  const [search, setSearch] = useState('');
+  const [searchBy, setSearchBy] = useState('buyerName');
+  const [searchBuyer, setSearchBuyer] = useState('');
+  const [searchProduct, setSearchProduct] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
 
   const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
@@ -55,15 +58,18 @@ function PendingOrders() {
     cancelOrder, 
   } = useSellerOrders({
     status: 'Pending',
-    productName: search,
-    buyerName: search,
+    productName: searchProduct,
+    buyerName: searchBuyer,
     page,
     pageSize: 10,
   });
 
+  console.log(searchBuyer, ' sad ', searchProduct)
+
   const filteredOrders = orders.filter((order) => (
-    order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
-    order.buyer.lastName.toLowerCase().includes(search.toLowerCase())
+    order.buyer.firstName.toLowerCase().includes(searchBuyer.toLowerCase()) ||
+    order.buyer.lastName.toLowerCase().includes(searchBuyer.toLowerCase()) ||
+    order.items.some((item) => item.productName.toLowerCase().includes(searchProduct.toLowerCase()))
   ));
 
   return (
@@ -73,14 +79,35 @@ function PendingOrders() {
           Pending Orders
         </Text>
 
-        <ControlledInput
-          className={styles.PendingOrders_search}
-          icon="search"
-          name="search"
-          placeholder="You can search by Buyer Name or Product Name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className={styles.PendingOrders_search}>
+          <ControlledInput
+            className={styles.PendingOrders_search_input}
+            icon="search"
+            name="search"
+            placeholder="You can search by Buyer Name or Product Name"
+            value={searchBuyer || searchProduct}
+            onChange={(e) => {
+              if (searchBy.value === 'buyerName') {
+                setSearchBuyer(e.target.value);
+              } else {
+                setSearchProduct(e.target.value);
+              }
+            }}
+          />
+
+          <ControlledSelect
+            className={styles.PendingOrders_search_select}
+            name="type"
+            options={[
+              { label: 'Buyer Name', value: 'buyerName' },
+              { label: 'Product Name', value: 'productName' },
+            ]}
+            placeholder="Search by"
+            value={searchBy}
+            onChange={(val) => {setSearchBy(val)}}
+          />
+        </div>
+
 
         {isOrdersLoading ? (
           <PreloaderOrders />

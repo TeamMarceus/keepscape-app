@@ -5,7 +5,26 @@
   padding-top: 24px;
 
   &_search {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 20px;
+
+    &_input {
+      width: 100% !important;
+    }
+
+    &_select {
+      margin-left: 10px;
+      width: 30% !important;
+
+      > div {
+        &:first-of-type {
+          width: 100% !important; 
+        }
+      }
+    }
   }
 
   &_orders {

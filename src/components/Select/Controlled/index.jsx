@@ -47,9 +47,7 @@ function ControlledSelect({
       components={{
         Option: CustomOption,
         SingleValue: CustomSingleValue,
-        // eslint-disable-next-line react/display-name
         ValueContainer: (valueContainerProps) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
           <CustomValueContainer type={type} {...valueContainerProps} />
         ),
         IndicatorSeparator: null,
