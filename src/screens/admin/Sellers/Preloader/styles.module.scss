@@ -18,8 +18,8 @@
 
   &_header {
     &_shine {
-      height: 54px;
-
+      height: 54px !important;
+ 
       @include breakpoint(sm) {
         height: 40px;
         display: none;
@@ -51,7 +51,7 @@
 
   &_body {
     &_shine {
-      height: 94px;
+      height: 94px !important;
 
       @include breakpoint(sm) {
         height: 50px;

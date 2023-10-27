@@ -96,6 +96,16 @@ function PaidPayments() {
                       styles.PaidPayments_grid_headers
                     )}
                   >
+
+                    <div
+                      className={cn(
+                        styles.PaidPayments_grid_header,
+                        styles.PaidPayments_grid_column
+                      )}
+                    >
+                      Date Paid
+                    </div>
+
                     <div
                       className={cn(
                         styles.PaidPayments_grid_header,
@@ -165,11 +175,15 @@ function PaidPayments() {
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
+                    ({ id, dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
                       paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PaidPayments_grid_recordGrid}>
+                          <div className={styles.PaidPayments_grid_column}>
+                            {dateTimeCreated.split('T')[0]}
+                          </div>
+
                           <Button
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}

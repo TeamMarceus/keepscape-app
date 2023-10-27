@@ -9,7 +9,7 @@
   &_header,
   &_body {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
 
     @include breakpoint(sm) {
       grid-template-columns: 1fr;
@@ -18,7 +18,7 @@
 
   &_header {
     &_shine {
-      height: 54px;
+      height: 54px !important;
 
       @include breakpoint(sm) {
         height: 40px;
@@ -51,7 +51,7 @@
 
   &_body {
     &_shine {
-      height: 94px;
+      height: 94px !important;
 
       @include breakpoint(sm) {
         height: 50px;

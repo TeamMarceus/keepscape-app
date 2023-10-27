@@ -102,6 +102,15 @@ function RejectedPayments() {
                         styles.RejectedPayments_grid_column
                       )}
                     >
+                      Date Rejected
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.RejectedPayments_grid_header,
+                        styles.RejectedPayments_grid_column
+                      )}
+                    >
                       Seller Name
                     </div>
 
@@ -165,11 +174,15 @@ function RejectedPayments() {
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
+                    ({ id,dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
                       paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.RejectedPayments_grid_recordGrid}>
+                          <div className={styles.RejectedPayments_grid_column}>
+                            {dateTimeCreated.split('T')[0]}
+                          </div>
+
                           <Button
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}

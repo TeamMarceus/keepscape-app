@@ -112,6 +112,15 @@ function PendingPayments() {
                         styles.PendingPayments_grid_column
                       )}
                     >
+                      Date Requested
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.PendingPayments_grid_header,
+                        styles.PendingPayments_grid_column
+                      )}
+                    >
                       Seller Name
                     </div>
 
@@ -175,11 +184,15 @@ function PendingPayments() {
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
+                    ({ id, dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
                       paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PendingPayments_grid_recordGrid}>
+                          <div className={styles.PendingPayments_grid_column}>
+                            {dateTimeCreated.split('T')[0]}
+                          </div>
+
                           <Button
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
