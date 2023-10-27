@@ -23,22 +23,11 @@
         justify-items: flex-start;
         padding: 30px 40px;
       }
-
-      &_proof {
-        cursor: pointer;
-        box-shadow: $shadow-normal;
-        border-radius: 5px;
-  
-        &:hover {
-          border: 1px solid $blue-400;
-          box-shadow: $shadow-raised;
-        }
-      }
     }
 
     &_recordGrid {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(7, 1fr);
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;

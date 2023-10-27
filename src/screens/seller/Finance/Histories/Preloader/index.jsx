@@ -9,6 +9,7 @@ function PreloaderFinance() {
       <Shine className={styles.PreloaderFinance_header_shine} />
       <Shine className={styles.PreloaderFinance_header_shine} />
       <Shine className={styles.PreloaderFinance_header_shine} />
+      
     </div>
 
     <Separator className={styles.PreloaderFinance_separator} />

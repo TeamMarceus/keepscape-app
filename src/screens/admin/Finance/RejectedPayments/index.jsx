@@ -77,7 +77,7 @@ function RejectedPayments() {
           className={styles.RejectedPayments_search}
           icon="search"
           name="search"
-          placeholder="You can search by Payment Method, Seller Name"
+          placeholder="You can search by Seller Name or Payment Method"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -157,19 +157,7 @@ function RejectedPayments() {
                       )}
                     >
                       Status
-                    </div>
-
-
-                    <div
-                      className={cn(
-                        styles.RejectedPayments_grid_header,
-                        styles.RejectedPayments_grid_column,
-                        styles.RejectedPayments_grid_header_action
-                      )}
-                    >
-                      Payment Proof
-                    </div>
-                    
+                    </div>                    
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
@@ -221,19 +209,6 @@ function RejectedPayments() {
                           <div className={styles.RejectedPayments_grid_column}>
                             {status}
                           </div>
-                          
-                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                           <img
-                            alt="Payment Proof"
-                            className={cn(styles.RejectedPayments_grid_column, styles.RejectedPayments_grid_column_proof)}
-                            height={60}
-                            src={paymentProfileImageUrl}
-                            width={60}
-                            onClick={() => {
-                              setIsProofModalOpen(true);
-                              setSelectedRecord({ sellerName, paymentProfileImageUrl })
-                            }}
-                          />
                         </Card>
                       ) : (
                         // Mobile View

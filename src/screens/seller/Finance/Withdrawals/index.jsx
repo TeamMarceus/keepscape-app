@@ -22,9 +22,10 @@ import {
 
 import { useSellerWithdrawals, useWindowSize } from '@/hooks';
 
+import IdModal from '@/screens/admin/CommonModals/IdModal';
 import PaymentModal from '@/screens/common/Modals/PaymentModal';
 
-import PreloaderWithdrawals from '../Preloader';
+import PreloaderWithdrawals from './Preloader';
 
 import styles from './styles.module.scss';
 
@@ -40,6 +41,7 @@ function Withdrawals() {
 
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isProofModalOpen, setIsProofModalOpen] = useState(false);
 
   const {
     isLoading: isWithdrawalsLoading, 
@@ -127,11 +129,20 @@ function Withdrawals() {
                     <div
                       className={cn(
                         styles.Withdrawals_grid_header,
+                        styles.Withdrawals_grid_column
+                      )}
+                    >
+                      Payment
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.Withdrawals_grid_header,
                         styles.Withdrawals_grid_column,
                         styles.Withdrawals_grid_header_action,
                       )}
                     >
-                      Payment
+                      Paid Proof
                     </div>
                     
                     {/* Header of OrderGrid ends here */}
@@ -139,7 +150,8 @@ function Withdrawals() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredRecords.map(
-                    ({ id, dateTimeCreated, amount, paymentDetails, paymentProfileImageUrl, paymentMethod, remarks, status  }) =>
+                    ({ id, dateTimeCreated, sellerName, amount, paymentDetails, paymentProfileImageUrl, 
+                      paymentProofImageUrl, paymentMethod, remarks, status  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Withdrawals_grid_recordGrid}>
@@ -149,7 +161,16 @@ function Withdrawals() {
 
                           <Text 
                             className={styles.Withdrawals_grid_column}
-                            colorClass={amount < 0 ? colorClasses.RED['300'] : colorClasses.GREEN['300']}
+                            colorClass={(() => {
+                              if (status === 'Pending') {
+                                return colorClasses.BLUE['300'];
+                              } if (status === 'Paid') {
+                                return colorClasses.GREEN['300'];
+                              }
+
+                              return colorClasses.RED['300'];
+                            })()
+                            }
                           >
                             {amount.toFixed(2)}
                           </Text>
@@ -162,8 +183,7 @@ function Withdrawals() {
                             {remarks || '-'}
                           </div>              
                           <Button
-
-                            className={styles.ReviewOrders_info_text}
+                            className={styles.Withdrawals_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
                               setSelectedRecord({ id, paymentMethod, paymentDetails, 
@@ -172,7 +192,27 @@ function Withdrawals() {
                             }}
                           >
                             {paymentMethod}
-                          </Button>        
+                          </Button>     
+
+                         { status === 'Paid' ? (
+                              //  eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions 
+                              <img
+                              alt="Payment Proof"
+                              className={cn(styles.Withdrawals_grid_column, styles.Withdrawals_grid_column_proof)}
+                              height={60}
+                              src={paymentProofImageUrl}
+                              width={60}
+                              onClick={() => {
+                                setIsProofModalOpen(true);
+                                setSelectedRecord({ sellerName, paymentProofImageUrl })
+                              }}
+                            />
+
+                           ) : (
+                              <div className={styles.Withdrawals_grid_column}>
+                                -
+                              </div>
+                           )}
                         </Card>
                       ) : (
                         // Mobile View
@@ -240,6 +280,15 @@ function Withdrawals() {
           title="Payment Details"
         />
       )}
+
+      {isProofModalOpen &&
+        <IdModal
+          handleClose={() => setIsProofModalOpen(false)}
+          image={selectedRecord.paymentProofImageUrl}
+          isOpen={isProofModalOpen}
+          title="Proof of Payment"
+        />
+      }
     </>
   )
 }

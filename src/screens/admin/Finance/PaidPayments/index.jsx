@@ -77,7 +77,7 @@ function PaidPayments() {
           className={styles.PaidPayments_search}
           icon="search"
           name="search"
-          placeholder="You can search by Payment Method, Seller Name"
+          placeholder="You can search by Seller Name or Payment Method"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -168,7 +168,7 @@ function PaidPayments() {
                         styles.PaidPayments_grid_header_action
                       )}
                     >
-                      Payment Proof
+                      Paid Proof
                     </div>
                     
                     {/* Header of OrderGrid ends here */}
@@ -228,11 +228,11 @@ function PaidPayments() {
                             alt="Payment Proof"
                             className={cn(styles.PaidPayments_grid_column, styles.PaidPayments_grid_column_proof)}
                             height={60}
-                            src={paymentProfileImageUrl}
+                            src={paymentProofImageUrl}
                             width={60}
                             onClick={() => {
                               setIsProofModalOpen(true);
-                              setSelectedRecord({ sellerName, paymentProfileImageUrl })
+                              setSelectedRecord({ sellerName, paymentProofImageUrl })
                             }}
                           />
                         </Card>
@@ -314,9 +314,9 @@ function PaidPayments() {
       {isProofModalOpen &&
         <IdModal
           handleClose={() => setIsProofModalOpen(false)}
-          image={selectedRecord.paymentProfileImageUrl}
+          image={selectedRecord.paymentProofImageUrl}
           isOpen={isProofModalOpen}
-          title={`${selectedRecord.sellerName} Payment Proof`}
+          title="Proof of Payment"
         />
       }
     </>

@@ -22,9 +22,10 @@ import {
 
 import { useBalance, useSellerLogs, useWindowSize } from '@/hooks';
 
-import PreloaderHistories from '../Preloader';
-
 import RequestModal from '../RequestModal';
+
+import PreloaderHistories from './Preloader';
+
 
 import styles from './styles.module.scss';
 
@@ -145,7 +146,7 @@ function Histories() {
           className={styles.Histories_search}
           icon="search"
           name="search"
-          placeholder="You can search by Date Created, Amount, or Remarks"
+          placeholder="You can search by Date Transacted, Amount, or Remarks"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

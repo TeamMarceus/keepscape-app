@@ -27,9 +27,7 @@ function IdModal({
       <img 
         alt={title}
         className={styles.IdModal_id}
-        height={400}
         src={image}
-        width={400}
       />
     </Modal>
   )

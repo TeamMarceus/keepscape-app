@@ -87,7 +87,7 @@ function PendingPayments() {
           className={styles.PendingPayments_search}
           icon="search"
           name="search"
-          placeholder="You can search by Payment Method, Seller Name"
+          placeholder="You can search by Seller Name or Payment Method"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
