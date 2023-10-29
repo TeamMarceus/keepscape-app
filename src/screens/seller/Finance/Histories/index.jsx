@@ -40,7 +40,6 @@ function Histories() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  
   const [balanceAmount, setBalanceAmount] = useState(0); 
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [clickedPaymentMethod, setClickedPaymentMethod] = useState(null);

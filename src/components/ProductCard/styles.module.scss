@@ -12,7 +12,10 @@
   }
 
   &_info {
-    padding: 12px 14px 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 12px 14px;
   }
 
   &_price {
@@ -26,6 +29,7 @@
   &_bottom {
     @include flex-between;
     gap: 8px;
+    margin-top: auto;
   }
 
   &_button {

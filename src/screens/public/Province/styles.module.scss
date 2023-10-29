@@ -14,9 +14,18 @@
     border-radius: 5px;
     box-shadow: $shadow-normal;
     @include flex-center;
+    text-align: center;
 
     &_text {
       font-size: 90px;
+
+      @include breakpoint(md) {
+        font-size: 60px; 
+      }
+
+      @include breakpoint(xs) {
+        font-size: 40px; 
+      }
     }
   }
 
@@ -26,6 +35,8 @@
   }
 
   &_products {
+    margin-left: 40px;
+    
     &_list {
       display: grid;
       grid-template-columns: repeat(5, 1fr);

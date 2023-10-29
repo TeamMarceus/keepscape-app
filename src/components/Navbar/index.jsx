@@ -14,7 +14,7 @@ import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
 import { buttonKinds, colorClasses, iconButtonTypes, userTypes} from '@/app-globals';
 import { Card, ControlledInput, Icon, IconButton, Text } from '@/components';
 import { getUser} from '@/ducks';
-import { useOnClickOutside } from '@/hooks';
+import { useCartCount, useOnClickOutside } from '@/hooks';
 
 import styles from './styles.module.scss';
 
@@ -28,6 +28,11 @@ function Navbar() {
 
   const user = useSelector((store) => getUser(store));
   const { userType, id: userId } = user;
+
+  const {
+    isLoading: isCartCountLoading,
+    count,
+  } = useCartCount();
 
   const [search, setSearch] = useState('');
   
@@ -253,7 +258,7 @@ function Navbar() {
               <ControlledInput
                 className={styles.Navbar_search_input}
                 name="search"
-                placeholder="Search for souvenir products, places, and shops"
+                placeholder="Search for souvenir products, categories, places, and shops"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyPress={(e) => {
@@ -277,9 +282,11 @@ function Navbar() {
             
             {!isSellerOrAdmin &&
               <div className={styles.Navbar_cart}>
-                <div className={styles.Navbar_cart_count}>
-                  7
+                {!isCartCountLoading && count > 0 &&
+                  <div className={styles.Navbar_cart_count}>
+                  {count}
                 </div>
+                }
                 <IconButton
                   className={styles.Navbar_cart_icon}
                   icon="shopping_cart"

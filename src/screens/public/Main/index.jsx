@@ -14,7 +14,7 @@ import { Button, CardImage, Preloader, Text } from '@/components'
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
-import { useProducts, useWindowSize } from '@/hooks';
+import { useProductCategories, useProducts, useWindowSize } from '@/hooks';
 
 import { beaches } from '../constants/beaches';
 import { categories } from '../constants/categories';
@@ -191,7 +191,7 @@ function Main() {
   } else if (windowSize.width < 575) {
     slidesToShow = 1;
   } else {
-    slidesToShow = 5;
+    slidesToShow = 4;
   }
  
   const productSliderSettings = {
@@ -203,7 +203,16 @@ function Main() {
     slidesToScroll: 1,
   };
   
-  const {isLoading: isProductsLoading, products, totalPages } = useProducts({ page });
+  const {
+    isLoading: isProductsLoading, 
+    products, 
+    totalPages 
+  } = useProducts({ page, pageSize: 12, isHidden: false });
+
+  const {
+    isLoading: isProductCategoriesLoading, 
+    productCategories
+  } = useProductCategories();
 
   return (
     <div className={styles.Main}>
@@ -349,25 +358,29 @@ function Main() {
           >
            CATEGORIES
         </Text>
-        
-        <div className={styles.Main_categories_list}>
-           <Slider {...productSliderSettings}>
-            {categories.map((category, index) => (
-              <CardImage
-                key={index}
-                isClickable
-                className={styles.Main_categories_item}
-                image={category.image}
-                imageHeight={180}
-                imageWidth={180}
-                name={category.name}
-                onClick={() => 
-                  router.push(`/keepscape/category/${category.name}`)
-                }
-              />
-            ))}
-          </Slider>
-        </div>
+
+        {isProductCategoriesLoading ? (
+          <Preloader />
+          ) : (
+          <div className={styles.Main_categories_list}>
+            <Slider {...productSliderSettings}>
+              {productCategories.map((category) => (
+                <CardImage
+                  key={category.id}
+                  isClickable
+                  className={styles.Main_categories_item}
+                  imageHeight={180}
+                  imageString={category.imageUrl}
+                  imageWidth={180}
+                  name={category.name}
+                  onClick={() => 
+                    router.push(`/keepscape/category/${category.name}`)
+                  }
+                />
+              ))}
+            </Slider>
+          </div>
+        )}
       </div>
 
       <div className={styles.Main_discover} id="discover">
@@ -401,15 +414,17 @@ function Main() {
           </div>  
         )}
 
-        <Button
-          className={styles.Main_discover_button}
-          disabled={isProductsLoading || page === totalPages}
-          onClick={() => {
-            setPage(page + 1);
-          }}
-        >
-          See More
-        </Button> 
+        { totalPages > 1 &&
+          <Button
+            className={styles.Main_discover_button}
+            disabled={isProductsLoading || page === totalPages}
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
+            See More
+          </Button>
+        }
       </div>
     </div>
   )

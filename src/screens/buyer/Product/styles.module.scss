@@ -144,11 +144,13 @@
       display: flex;
       align-items: center;
       justify-content: space-evenly;
-      padding: 40px;
+      gap: 8px;
+      padding: 40px 24px;
     }
 
     &_rating {
       display: flex;
+      align-items: center;
       flex-direction: column;
       gap: 8px;
   
@@ -165,7 +167,15 @@
     }
 
     &_list {
-      margin-top: 40px;
+      margin-top: 24px;
     }
+  }
+
+  &_pagination {
+    margin-top: 60px !important;
+  }
+
+  &_noResults {
+    margin-top: 40px;
   }
 }

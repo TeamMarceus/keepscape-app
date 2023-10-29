@@ -275,6 +275,8 @@ function Filters({
                 newSearchParams.delete('ratings');
                 newSearchParams.delete('province');
                 newSearchParams.delete('category');
+                setMinimumPrice('');
+                setMaximumPrice('');
                 router.push(`${route}?${newSearchParams.toString()}`, { scroll: false })
               }}
             >

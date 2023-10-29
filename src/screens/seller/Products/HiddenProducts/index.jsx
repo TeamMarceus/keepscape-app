@@ -119,6 +119,15 @@ function HiddenProducts() {
                         styles.HiddenProducts_grid_column
                       )}
                     >
+                      Image
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.HiddenProducts_grid_header,
+                        styles.HiddenProducts_grid_column
+                      )}
+                    >
                       Product Name
                     </div>
 
@@ -170,13 +179,23 @@ function HiddenProducts() {
 
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, name, quantity, price, totalSold, stars  }) =>
+                    ({ id, dateTimeCreated, images, name, quantity, price, totalSold, stars  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
                           <div className={styles.HiddenProducts_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
+
+                           {/* eslint-disable-next-line @next/next/no-img-element */}
+                           <img
+                            alt={name}
+                            className={styles.HiddenProducts_grid_column}
+                            height={60}
+                            src={images[0]}
+                            width={60}
+                          />
+
 
                           <div className={styles.HiddenProducts_grid_column}>
                             {name}

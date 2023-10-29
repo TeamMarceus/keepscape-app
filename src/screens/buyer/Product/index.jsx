@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import cn from 'classnames';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-scroll';
@@ -23,6 +24,8 @@ import {
   Card, 
   ControlledTextArea, 
   IconButton, 
+  NoResults, 
+  Pagination, 
   RatingStars, 
   ReviewCard, 
   ScreenLoader, 
@@ -33,40 +36,12 @@ import {
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { getUser, getDeliveryDetails } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
-import { useActionDispatch, useProduct } from '@/hooks';
+import { useActionDispatch, useProduct, useProductReviews } from '@/hooks';
+
+import PreloaderProductReviews from '@/screens/seller/Products/ViewProduct/Preloader';
 
 import styles from './styles.module.scss'
 
-// const product =
-// {
-//   id: '1',
-//   name: 'Butanding Keychain',
-//   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies.',
-//   images: [
-//     'https://picsum.photos/200/300',
-//     'https://picsum.photos/200/400',
-//     'https://picsum.photos/200/500',
-//     'https://picsum.photos/200/600',
-//     'https://picsum.photos/200/700',
-//     'https://picsum.photos/200/800',
-//   ],
-//   price: 100,
-//   rating: 4,
-//   place: 'Cebu, Oslob',
-//   numOfReviews: 100,
-//   totalSold: 1000,
-//   isCustomizable: true,
-// }
-
-const seller = {
-  id: '1',
-  name: 'Butanding Store',
-  rating: 3,
-  totalSold: 1000,
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  contactNumber: '09312355213',
-  email: 'seller@gmail.com'
-}
 
 const sliderSettings = {
   lazyLoad: true,
@@ -77,77 +52,18 @@ const sliderSettings = {
   slidesToScroll: 1,
 };
 
-const reviews = [
-  {
-    id: 1,
-    name: 'John Doe',
-    rating: 1,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 2,
-    name: 'Johnny Doe',
-    rating: 2,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 3,
-    name: 'Alexandra Doe',
-    rating: 3,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 4,
-    name: 'John Deep',
-    rating: 4,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 5,
-    name: 'John Doe',
-    rating: 5,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 6,
-    name: 'Jane Doe',
-    rating: 1,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 7,
-    name: 'John Doe',
-    rating: 2,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 8,
-    name: 'John Doe',
-    rating: 3,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 9,
-    name: 'John Doe',
-    rating: 4,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-  {
-    id: 10,
-    name: 'John Doe',
-    rating: 5,
-    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at risus at erat pretium pretium. Integer id a augue nec diam aliquam ultricies',
-  },
-];
-
-
 function Product({ id }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const page = searchParams.get('page') || 1;
   const user = useSelector(getUser);
   const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
 
+  const [currentPage, setCurrentPage] = useState(1)
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [customInput, setCustomInput] = useState('')
@@ -155,8 +71,18 @@ function Product({ id }) {
 
   const { isLoading: isProductLoading, product } = useProduct(id);
 
-  const filteredReviews = clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) :
-    reviews.filter((review) => review.rating === clickedRating)
+  const { 
+    isLoading: isProductReviewsLoading, 
+    reviews, 
+    totalPages
+  } = useProductReviews({
+    productId: id,
+    stars: clickedRating === 0 ? null : clickedRating,
+    page,
+    pageSize: 10,
+  });
+
+  const filteredReviews = clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) : reviews;
 
   if (isProductLoading) {
     return <ScreenLoader/>
@@ -214,7 +140,7 @@ function Product({ id }) {
                   offset={-200}
                   to="reviews"
                 >
-                <RatingStars className={styles.Product_content_info_reviews_stars} rating={product.rating} />
+                <RatingStars className={styles.Product_content_info_reviews_stars} rating={product.stars} />
               </Link>
               |
               <Link
@@ -227,7 +153,7 @@ function Product({ id }) {
                 >
                 <Text colorClass={colorClasses.NEUTRAL['500']}> 
                   Rated by: {' '}
-                  <span className={styles.Product_content_info_reviews_span}>{product.numOfReviews}</span> 
+                  <span className={styles.Product_content_info_reviews_span}>{product.totalRatings}</span> 
                   {' '} users
                 </Text>
               </Link>
@@ -325,29 +251,28 @@ function Product({ id }) {
             </div>
           </div>
         </Card>
+
         <div className={styles.Product_seller}>
           <SellerCard
             contactNumber={product.seller.phone}
             description={product.seller.description}
             email={product.seller.email}
             name={product.seller.name}
+            rating={product.seller.stars}
+            sellerId={product.seller.sellerProfileId}
 
-            // TODO: replace with actual rating
-            rating={seller.rating}
-            sellerId={seller.id}
-            totalSold={seller.totalSold}
+            // TODO: replace with actual total sold
+            totalSold={10}
           />
 
           <ButtonLink
             className={styles.Product_seller_button}
-            // TODO: replace with actual ID
-            to={`/buyer/seller-products?id=${seller.id}`}
+            to={`/buyer/seller-products?id=${product.seller.sellerProfileId}`}
             type={buttonTypes.SECONDARY.BLUE}
           >
             Seller's Products
           </ButtonLink>
         </div>
-
       </div>
 
       <div className={styles.Product_description}>
@@ -371,75 +296,100 @@ function Product({ id }) {
           PRODUCT REVIEWS
         </Text>
 
-        <div className={styles.Product_reviews_ratings}>
-          <div className={styles.Product_reviews_rating}>
-            <Text 
-              colorClass={colorClasses.BLUE['400']}
-              type={textTypes.HEADING.XS}
-            > 
-              <span className={styles.Product_reviews_rating_span}>{product.rating}</span> {' '} 
-              out of 5
-            </Text>
-            <RatingStars rating={product.rating} />
-          </div>
 
-          <div className={styles.Product_reviews_buttons}>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 0 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(0) }}
-            >
-              All
-            </Button>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 5 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(5) }}
-            >
-              5 Stars
-            </Button>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 4 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(4) }}
-            >
-              4 Stars
-            </Button>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 3 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(3) }}
-            >
-              3 Stars
-            </Button>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 2 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(2) }}
-            >
-              2 Stars
-            </Button>
-            <Button
-              className={styles.Product_reviews_buttons_button}
-              type={clickedRating === 1 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-              onClick={()=>{ setClickedRating(1) }}
-            >
-              1 Star
-            </Button>
-          </div>
-        </div>
-        
-        {
-          filteredReviews.map((review) => (
-            <ReviewCard
-              key={review.id}
-              className={styles.Product_reviews_list}
-              comment={review.comment}
-              name={review.name}
-              rating={review.rating}
-            />
-          ))
-        }
+        {isProductReviewsLoading ? (
+          <PreloaderProductReviews/>
+        ) : (
+          <>
+            <div className={styles.Product_reviews_ratings}>
+              <div className={styles.Product_reviews_rating}>
+                <Text 
+                  colorClass={colorClasses.BLUE['400']}
+                  type={textTypes.HEADING.XS}
+                > 
+                  <span className={styles.Product_reviews_rating_span}>{product.stars}</span> {' '} 
+                  out of 5
+                </Text>
+                <RatingStars rating={product.stars} />
+              </div>
+
+              <div className={styles.Product_reviews_buttons}>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 0 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(0) }}
+                >
+                  All
+                </Button>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 5 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(5) }}
+                >
+                  5 Stars
+                </Button>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 4 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(4) }}
+                >
+                  4 Stars
+                </Button>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 3 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(3) }}
+                >
+                  3 Stars
+                </Button>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 2 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(2) }}
+                >
+                  2 Stars
+                </Button>
+                <Button
+                  className={styles.Product_reviews_buttons_button}
+                  type={clickedRating === 1 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
+                  onClick={()=>{ setClickedRating(1) }}
+                >
+                  1 Star
+                </Button>
+              </div>
+            </div>
+
+            {filteredReviews.length > 0 ? (
+              <>
+                {filteredReviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    className={styles.Product_reviews_list}
+                    name={review.fullName}
+                    rating={review.rating}
+                    review={review.review}
+                  />
+                ))}
+
+              <Pagination 
+                className={styles.Product_pagination}
+                currentPage={currentPage}
+                pageJump={(value) => {
+                  setCurrentPage(value);
+                  router.push(`/buyer/product/${id}?page=${value}`, { scroll: false })
+                }}
+                totalPages={totalPages}
+              />
+
+              </>
+            ) : (
+              <NoResults
+                className={styles.Product_noResults}
+                message="No reviews found"
+              />
+            )}
+          </>
+        )}
       </div>
     </div>
   )

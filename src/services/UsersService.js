@@ -5,59 +5,15 @@ import config from './config';
 const BASE_URL = `${config.API_URL}/api/users`;
 
 const UsersService = {
-  // Public
-  signupBuyer: (body) => axios.post(`${BASE_URL}/buyers/register`, body),
-  signupSeller: (body) => axios.post(`${BASE_URL}/sellers/register`, body, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }),
-  login: (body) => axios.post(`${BASE_URL}/login`, body),
-  logout: () => axios.post(`${BASE_URL}/logout`),
-
-  // Forgot Password
   acquireCode: (email) => axios.get(`${BASE_URL}/passwords/codes`, {
     params: {
       email,
     },
   }),
-  verifyCode: (body) => axios.post(`${BASE_URL}/passwords/codes/verify`, body),
-  resetPassword: (body) => axios.post(`${BASE_URL}/passwords/reset`, body),
+  
+  login: (body) => axios.post(`${BASE_URL}/login`, body),
+  logout: () => axios.post(`${BASE_URL}/logout`),
 
-  // Admin
-  retrieveSellerApplications: ({
-    status, 
-    page, 
-    pageSize, 
-    search}) => axios.get(`${BASE_URL}/sellers/applications`, {
-    params: {
-      status,
-      page,
-      pageSize,
-      search,
-    },
-  }),
-  updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),
-
-  retrieveSellers: ({
-    page, 
-    pageSize,
-    isBanned,
-    search,
-    isDescending,
-    orderBy,
-    userId,
-  }) => axios.get(`${BASE_URL}/sellers`, {
-    params: {
-      page,
-      pageSize,
-      isBanned,
-      isDescending,
-      orderBy,
-      userId,
-      search,
-    },
-  }),
   retrieveBuyers: ({
     page, 
     pageSize,
@@ -77,12 +33,53 @@ const UsersService = {
       userId,
     },
   }),
-  updateUserStatus: (id, body) => axios.put(`${BASE_URL}/${id}`, body),
+  retrieveUser: (id) => axios.get(`${BASE_URL}/${id}`),
+  retrieveSellerApplications: ({
+    status, 
+    page, 
+    pageSize, 
+    search}) => axios.get(`${BASE_URL}/sellers/applications`, {
+    params: {
+      status,
+      page,
+      pageSize,
+      search,
+    },
+  }),
+  retrieveSellers: ({
+    page, 
+    pageSize,
+    isBanned,
+    search,
+    isDescending,
+    orderBy,
+    userId,
+  }) => axios.get(`${BASE_URL}/sellers`, {
+    params: {
+      page,
+      pageSize,
+      isBanned,
+      isDescending,
+      orderBy,
+      userId,
+      search,
+    },
+  }),
+  resetPassword: (body) => axios.post(`${BASE_URL}/passwords/reset`, body),
 
-  // Common
   updateAccount: (userType, body) => axios.put(`${BASE_URL}/${userType}`, body),
   updatePassword: (body) => axios.put(`${BASE_URL}/passwords/update`, body),
+  updateUserStatus: (id, body) => axios.put(`${BASE_URL}/${id}`, body),
+  updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),
 
+  signupBuyer: (body) => axios.post(`${BASE_URL}/buyers/register`, body),
+  signupSeller: (body) => axios.post(`${BASE_URL}/sellers/register`, body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
+
+  verifyCode: (body) => axios.post(`${BASE_URL}/passwords/codes/verify`, body),
 };
 
 export default UsersService;

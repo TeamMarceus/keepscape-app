@@ -13,11 +13,13 @@ function PreloaderProducts() {
       <Shine className={styles.PreloaderProducts_header_shine} />
       <Shine className={styles.PreloaderProducts_header_shine} />
       <Shine className={styles.PreloaderProducts_header_shine} />
+      <Shine className={styles.PreloaderProducts_header_shine} />
     </div>
 
     <Separator className={styles.PreloaderProducts_separator} />
 
     <div className={styles.PreloaderProducts_body}>
+      <Shine className={styles.PreloaderProducts_body_shine} />
       <Shine className={styles.PreloaderProducts_body_shine} />
       <Shine className={styles.PreloaderProducts_body_shine} />
       <Shine className={styles.PreloaderProducts_body_shine} />

@@ -283,7 +283,7 @@ function ViewProduct({ id }) {
                     <span className={styles.ViewProduct_reviews_rating_span}>{product.stars}</span> {' '} 
                     out of 5
                   </Text>
-                  <RatingStars rating={product.rating} />
+                  <RatingStars rating={product.stars} />
                 </div>
 
                 <div className={styles.ViewProduct_reviews_buttons}>
@@ -363,7 +363,6 @@ function ViewProduct({ id }) {
               )}
             </>
           )}
-
         </div>
       </div>
 

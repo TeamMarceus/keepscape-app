@@ -32,15 +32,6 @@ import PreloaderProducts from '../Preloader';
 
 import styles from './styles.module.scss';
 
-const sliderSettings = {
-  lazyLoad: true,
-  dots: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-};
-
 function MyProducts() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -117,6 +108,15 @@ function MyProducts() {
                         styles.MyProducts_grid_column
                       )}
                     >
+                      Image
+                    </div>
+
+                    <div
+                      className={cn(
+                        styles.MyProducts_grid_header,
+                        styles.MyProducts_grid_column
+                      )}
+                    >
                       Product Name
                     </div>
 
@@ -167,13 +167,22 @@ function MyProducts() {
                     </div>
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, name, quantity, price, stars, totalSold  }) =>
+                    ({ id, dateTimeCreated, images, name, quantity, price, stars, totalSold  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.MyProducts_grid_productGrid}>
                           <div className={styles.MyProducts_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
+
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            alt={name}
+                            className={styles.MyProducts_grid_column}
+                            height={60}
+                            src={images[0]}
+                            width={60}
+                          />
 
                           <div className={styles.MyProducts_grid_column}>
                             {name}

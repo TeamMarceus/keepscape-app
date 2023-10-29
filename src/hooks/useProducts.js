@@ -48,15 +48,16 @@ const useProducts = ({
   }, [
     sellerProfileId,
     search, 
-    provinces,
-    categories,
+    provinces?.length,
+    categories?.length,
     rating, 
     minPrice, 
     maxPrice, 
     isHidden,
     isDescending, 
     page, 
-    pageSize]);
+    pageSize
+  ]);
 
   return { isLoading, products, totalPages };
 };
