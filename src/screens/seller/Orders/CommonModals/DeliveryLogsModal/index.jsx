@@ -1,6 +1,7 @@
 import React from 'react';
 
 import cn from 'classnames';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
 import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
@@ -65,7 +66,7 @@ function DeliveryLogsModal({
         {deliveryLogs.length > 0 ? (
 
           <div className={styles.DeliveryLogsModal_logs}>
-            {deliveryLogs.slice().reverse().map((log, index) => (
+            {deliveryLogs.map((log, index) => (
               <div
                 key={log.id}
                 className={styles.DeliveryLogsModal_logs_log}
@@ -75,18 +76,9 @@ function DeliveryLogsModal({
                 )}/>
 
                 <div className={styles.DeliveryLogsModal_logs_log_dateTime}>
-                  {console.log(log.dateTime, ' ', log.log)}
                   <Text>
-                    {/* Format it to "MM/DD/YYYY hh:mm A" */}
-                    {new Date(log.dateTime).toLocaleString('en-US', {
-                      timeZone: 'Asia/Manila',
-                      month: '2-digit',
-                      day: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: true,
-                    })}
+                    {/* Format it to "MM/DD/YYYY hh:mm A" and add 8 hours to it */}
+                    {dayjs(log.dateTime).add(8, 'hour').format('MM/DD/YYYY hh:mm A')}
                   </Text>
                 </div>
 

@@ -106,11 +106,12 @@ function AddLogsModal({
                     return {
                       ...order,
                       deliveryLogs: [
-                        ...order.deliveryLogs,
                         {
-                          dateTime: currentFormValues.dateTime.toString(),
+                          // subtract 8 hours to the dateTime
+                          dateTime: dayjs(currentFormValues.dateTime).subtract(8, 'hour').format('MM/DD/YYYY hh:mm A'),
                           log: currentFormValues.log,
                         },
+                        ...order.deliveryLogs,
                       ],
                     };
                   }
