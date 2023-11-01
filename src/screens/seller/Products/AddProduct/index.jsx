@@ -170,12 +170,6 @@ function AddProduct() {
                 setFieldValue('quantity', '');
                 setFieldValue('isCustomizable', false);
                 setFieldValue('price', '');
-                setFieldValue('image1', null);
-                setFieldValue('image2', null);
-                setFieldValue('image3', null);
-                setFieldValue('image4', null);
-                setFieldValue('image5', null);
-                
               },
               invalidFields: () => {
                 toast.error('Invalid fields.', {

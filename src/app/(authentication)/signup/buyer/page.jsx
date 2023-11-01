@@ -148,25 +148,27 @@ export default function BuyerSignUpPage() {
 
               // If the creation of the user is successful
               // then we need to log the user in
+              // Call the Acquire Tokens endpoint to set the tokens
+              const { data: acquireResponse } = await TokensService.acquire({
+                email: currentFormValues.email,
+                password: currentFormValues.password,
+              });
+              
+              // Update login
+              loginUpdate({
+                user: signUpResponse,
+                access_token: acquireResponse.accessToken,
+                refresh_token: acquireResponse.refreshToken,
+              });
 
-             // Call the Acquire Tokens endpoint to set the tokens
-             const { data: acquireResponse } = await TokensService.acquire({
-              email: currentFormValues.email,
-              password: currentFormValues.password,
-            });
+              // then we need to set the buyer AI suggested items
+              await UsersService.updateBuyerSuggestions();
 
-            // Update login
-            loginUpdate({
-              user: signUpResponse,
-              access_token: acquireResponse.accessToken,
-              refresh_token: acquireResponse.refreshToken,
-            });
-
-             // Redirect the buyer
-             redirect(
-              signUpResponse, 
-              acquireResponse.accessToken, 
-              acquireResponse.refreshToken);
+              // Redirect the buyer
+              redirect(
+                signUpResponse, 
+                acquireResponse.accessToken, 
+                acquireResponse.refreshToken);
 
             } catch (error) {
               setIsSigningUp(false);

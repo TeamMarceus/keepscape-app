@@ -75,9 +75,10 @@
     box-shadow: $shadow-normal;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 16px;
     margin: 24px 0 40px 0;
     padding: 8px 24px 32px;
+    width: 100%;
 
     &_title {
       background-color: $blue-400;
@@ -133,7 +134,10 @@
 
       &_product {
         margin: 0 12px !important;
-        padding: 0 0 12px 0 !important;
+
+        > img {
+          width: 220px !important;
+        }
       }
     }
   }

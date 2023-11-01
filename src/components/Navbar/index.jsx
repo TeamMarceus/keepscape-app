@@ -26,11 +26,17 @@ function Navbar() {
   const [isDropdownToggled, toggleDropdown] = useState(false);
   useOnClickOutside(ref, () => toggleDropdown(false));
 
-  const { isLoading: isCartCountLoading} = useCartCount();
-  const cartCount = useSelector((store) => getCartCount(store));
-
   const user = useSelector((store) => getUser(store));
   const { userType, id: userId } = user;
+
+  let isCartCountLoading = false;
+
+  if (userId && userType === userTypes.BUYER) {
+    const { isLoading } = useCartCount();
+    isCartCountLoading = isLoading;
+  }
+
+  const cartCount = useSelector((store) => getCartCount(store));
 
   const [search, setSearch] = useState('');
   

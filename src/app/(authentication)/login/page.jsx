@@ -98,7 +98,7 @@ export default function LoginPage() {
                   email: currentFormValues.email,
                   password: currentFormValues.password,
                 });
-
+                
                 // Update login
                 loginUpdate({
                   user: loginPageResponse,

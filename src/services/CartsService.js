@@ -6,7 +6,7 @@ const BASE_URL = `${config.API_URL}/api/carts`;
 
 const CartsService = {
   add: (product) => axios.post(`${BASE_URL}`, product),
-  checkout: () => axios.post(`${BASE_URL}/checkout`),
+  checkout: (ids) => axios.post(`${BASE_URL}/checkout`, ids),
   count: () => axios.get(`${BASE_URL}/count`),
   retrieve: () => axios.get(`${BASE_URL}`),
   deleteCart: (ids) => axios.delete(`${BASE_URL}`, {

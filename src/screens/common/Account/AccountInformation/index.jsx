@@ -29,6 +29,8 @@ import { actions as usersActions } from '@/ducks/reducers/users';
 import { useUpdateUser } from '@/hooks';
 import useActionDispatch from '@/hooks/useActionDispatch';
 
+import { UsersService } from '@/services';
+
 import styles from './styles.module.scss';
 
 function AccountInformation() {
@@ -132,9 +134,9 @@ function AccountInformation() {
           const buyerFormValues = {
             firstName: values.firstName,
             lastName: values.lastName,
+            phoneNumber: values.phoneNumber,
             preferences: values.preferences,
             interests: values.interests,
-            phoneNumber: values.phoneNumber,
             description: values.description,
           }
 
@@ -157,7 +159,7 @@ function AccountInformation() {
             await updateAccount(userType, currentFormValues);
 
           const updateAccountCallbacks = {
-            updated: () => {
+            updated: async () => {
               toast.success('Account updated successfully.', {
                 style: {
                   backgroundColor: '#48CFAD',
@@ -171,6 +173,8 @@ function AccountInformation() {
                   ...currentFormValues,
                 },
               });
+
+              await UsersService.updateBuyerSuggestions();
             },
             invalidFields: () => {
               toast.error('Invalid fields.', {

@@ -17,6 +17,10 @@ const useUpdateUser = () => {
       const response = await UsersService.updateAccount(userType, userTobeUpdated);
       
       responseCode = response.status;
+
+      // if (responseCode === 200) {
+      //   await UsersService.updateBuyerSuggestions();
+      // }
     } catch (error) {
       responseCode = error.response.status;
     }

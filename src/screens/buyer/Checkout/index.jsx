@@ -2,21 +2,39 @@ import React from 'react';
 
 import Image from 'next/image';
 
+import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, Card, Icon, Text } from '@/components';
+import { 
+  Button, 
+  ButtonLink, 
+  Card, 
+  Icon, 
+  NoResults, 
+  Text 
+} from '@/components';
 
-import { getCheckoutCart, getUser } from '@/ducks';
+import { getCartCount, getCheckoutCart, getUser } from '@/ducks';
+import { actions as usersActions } from '@/ducks/reducers/users';
+
+import { useActionDispatch , useCheckout } from '@/hooks';
 
 import CheckoutCardList from './CheckoutCardList';
 
 import styles from './styles.module.scss';
 
 function Checkout() {
+  const router = useRouter();
   const userCart = useSelector((store) => getCheckoutCart(store));
   const user = useSelector((store) => getUser(store));
+  const cartCount = useSelector((store) => getCartCount(store));
+  const loginUpdate = useActionDispatch(
+    usersActions.loginActions.loginUpdate
+  );
+
+  const {isLoading: isPlacingOrder, checkout } = useCheckout();
 
   const totalPrice = userCart.reduce((acc, curr) => 
     acc + curr.cartItems.reduce((accs, currs) => 
@@ -122,11 +140,17 @@ function Checkout() {
         </Text>
       </Card>
        
-      { userCart.length > 0 &&
+      { userCart.length > 0 ? (
         <CheckoutCardList
           className={styles.Checkout_products}
           userCart={userCart}
-      />}
+        />
+      ) : (
+        <NoResults 
+          className={styles.Checkout_noResults}
+          message="No products ordered yet."
+        />
+      )}
 
      <div className={styles.Checkout_footer}>
       <div className={styles.Checkout_footer_container}> 
@@ -147,8 +171,20 @@ function Checkout() {
 
           <Button
             className={styles.Checkout_footer_button}
-            disabled={totalPrice === 0}
-            onClick={() => {}}
+            disabled={totalPrice === 0 || isPlacingOrder}
+            onClick={ async () => {
+              // Pass the userCart -> cartItems -> ids to the checkout function
+              const cartItemIds = userCart.map((cart) => cart.cartItems.map((item) => item.id));
+
+              await checkout(cartItemIds.flat());
+
+              loginUpdate({ 
+                cart_count: cartCount === 1 ? {} : cartCount - cartItemIds.flat().length, 
+                checkout_cart: [],
+              });
+
+              router.push('/buyer/account?activeTab=orders');
+            }}
           >
             Place Order
           </Button>

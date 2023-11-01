@@ -33,6 +33,7 @@ const UsersService = {
       userId,
     },
   }),
+  retrieveBuyerSuggestions: () => axios.get(`${BASE_URL}/buyers/suggestions`),
   retrieveUser: (id) => axios.get(`${BASE_URL}/${id}`),
   retrieveSellerApplications: ({
     status, 
@@ -68,6 +69,7 @@ const UsersService = {
   resetPassword: (body) => axios.post(`${BASE_URL}/passwords/reset`, body),
 
   updateAccount: (userType, body) => axios.put(`${BASE_URL}/${userType}`, body),
+  updateBuyerSuggestions: () => axios.put(`${BASE_URL}/buyers/suggestions`),
   updatePassword: (body) => axios.put(`${BASE_URL}/passwords/update`, body),
   updateUserStatus: (id, body) => axios.put(`${BASE_URL}/${id}`, body),
   updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),

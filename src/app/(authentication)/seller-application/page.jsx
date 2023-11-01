@@ -14,7 +14,6 @@ import styles from './styles.module.scss';
 
 export default function SellerApplication() {
   const user = useSelector((store) => getUser(store));
-  console.log(user)
 
   return (
     <section className={styles.SellerApplication}>
