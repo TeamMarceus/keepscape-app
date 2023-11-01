@@ -81,7 +81,7 @@ function Histories() {
             colorClass={colorClasses.GREEN['400']}
             type={textTypes.HEADING.MD}
           >
-            ₱{balanceAmount.toFixed(2)} 
+            ₱{balanceAmount} 
           </Text>
 
           <Text 
@@ -205,7 +205,7 @@ function Histories() {
                             className={styles.Histories_grid_column}
                             colorClass={amount < 0 ? colorClasses.RED['300'] : colorClasses.GREEN['300']}
                           >
-                            {amount.toFixed(2)}
+                            {amount}
                           </Text>
 
                           <div className={styles.Histories_grid_column}>

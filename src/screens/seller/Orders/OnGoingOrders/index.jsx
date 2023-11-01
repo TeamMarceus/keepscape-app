@@ -203,7 +203,7 @@ function OngoingOrders() {
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    ₱{price.toFixed(2)}
+                                    ₱{price}
                                   </Text>
                                 </div>
                               </div>
@@ -225,7 +225,7 @@ function OngoingOrders() {
                                   colorClass={colorClasses.BLUE['300']}
                                   type={textTypes.HEADING.XXXS}
                                 >
-                                  ₱{deliveryFee.toFixed(2)}
+                                  ₱{deliveryFee}
                                 </Text>     
                               </div> 
 
@@ -241,7 +241,7 @@ function OngoingOrders() {
                                   colorClass={colorClasses.GREEN['300']}
                                   type={textTypes.HEADING.XS}
                                 >
-                                  ₱{totalPrice.toFixed(2)}
+                                  ₱{totalPrice}
                                 </Text>    
                               </div> 
                             </div>

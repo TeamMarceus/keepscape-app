@@ -172,7 +172,7 @@ function Withdrawals() {
                             })()
                             }
                           >
-                            {amount.toFixed(2)}
+                            {amount}
                           </Text>
 
                           <div className={styles.Withdrawals_grid_column}>
