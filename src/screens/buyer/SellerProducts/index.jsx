@@ -10,7 +10,7 @@ import {  Filters, NoResults, Pagination, Preloader, RatingStars, Text } from '@
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
-import { useProducts } from '@/hooks';
+import { useProducts, useSellerProfile } from '@/hooks';
 
 import styles from './styles.module.scss'
 
@@ -43,48 +43,55 @@ function SellerProducts({ id }) {
     sellerProfileId: id,
   });
 
+  const {isLoading: isSellerProfileLoading, sellerProfile} = useSellerProfile(id);
+
   return (
     <div className={styles.SellerProducts}>
-      <div className={styles.SellerProducts_banner}>
-        <Text 
-          className={styles.SellerProducts_banner_text}
-          colorClass={colorClasses.NEUTRAL['0']}
-          type={textTypes.HEADING.XXL}
-        >
-          KEYCHAIN SELLER
-        </Text>
+      {isSellerProfileLoading ? (
+          <Preloader/>
+        ) : (
+          <div className={styles.SellerProducts_banner}>
+            <Text 
+              className={styles.SellerProducts_banner_text}
+              colorClass={colorClasses.NEUTRAL['0']}
+              type={textTypes.HEADING.XXL}
+            >
+              {sellerProfile.name}
+            </Text>
 
-        <RatingStars 
-          className={styles.SellerProducts_banner_rating}
-          rating={4}
-        />
+            <RatingStars 
+              className={styles.SellerProducts_banner_rating}
+              rating={sellerProfile.stars}
+            />
 
-      <div className={styles.SellerProducts_banner_additional}>
-        <Text 
-          colorClass={colorClasses.NEUTRAL['200']}
-          type={textTypes.HEADING.XXXS}
-        >
-          Products: {' '}
-          <span className={styles.SellerProducts_banner_additional_text}>10</span>
-        </Text>
+          <div className={styles.SellerProducts_banner_additional}>
+            <Text 
+              colorClass={colorClasses.NEUTRAL['200']}
+              type={textTypes.HEADING.XXXS}
+            >
+              Total Products Sold: {' '}
+              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.totalSold}</span>
+            </Text>
 
-        <Text 
-          colorClass={colorClasses.NEUTRAL['200']}
-          type={textTypes.HEADING.XXXS}
-        >
-          Email: {' '}
-          <span className={styles.SellerProducts_banner_additional_text}>seller@gmail.com</span>
-        </Text>
+            <Text 
+              colorClass={colorClasses.NEUTRAL['200']}
+              type={textTypes.HEADING.XXXS}
+            >
+              Email: {' '}
+              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.email}</span>
+            </Text>
 
-        <Text 
-          colorClass={colorClasses.NEUTRAL['200']}
-          type={textTypes.HEADING.XXXS}
-        >
-          Contact Number: {' '}
-          <span className={styles.SellerProducts_banner_additional_text}>0906023213</span>
-        </Text>
-      </div>
-      </div>
+            <Text 
+              colorClass={colorClasses.NEUTRAL['200']}
+              type={textTypes.HEADING.XXXS}
+            >
+              Contact Number: {' '}
+              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.phone}</span>
+            </Text>
+          </div>
+          </div>
+        )
+      }
 
       <div className={styles.SellerProducts_content}>
         <Filters 

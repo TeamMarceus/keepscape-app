@@ -13,7 +13,7 @@ import Logo from '%/images/Logo/logo-white.svg'
 import { PUBLIC_ROUTES } from '@/app/keepscape/routes';
 import { buttonKinds, colorClasses, iconButtonTypes, userTypes} from '@/app-globals';
 import { Card, ControlledInput, Icon, IconButton, Text } from '@/components';
-import { getUser} from '@/ducks';
+import { getUser, getCartCount} from '@/ducks';
 import { useCartCount, useOnClickOutside } from '@/hooks';
 
 import styles from './styles.module.scss';
@@ -26,13 +26,11 @@ function Navbar() {
   const [isDropdownToggled, toggleDropdown] = useState(false);
   useOnClickOutside(ref, () => toggleDropdown(false));
 
+  const { isLoading: isCartCountLoading} = useCartCount();
+  const cartCount = useSelector((store) => getCartCount(store));
+
   const user = useSelector((store) => getUser(store));
   const { userType, id: userId } = user;
-
-  const {
-    isLoading: isCartCountLoading,
-    count,
-  } = useCartCount();
 
   const [search, setSearch] = useState('');
   
@@ -193,19 +191,33 @@ function Navbar() {
                     </Link>
                   }
 
-                  {userType === userTypes.BUYER &&
-                    <Link
-                      className={styles.Navbar_navUser_dropdown_link}
-                      href="/buyer/account?activeTab=purchase"
-                      onClick={() => toggleDropdown(!isDropdownToggled)}
-                    >
-                      <Icon
-                        className={styles.Navbar_navUser_dropdown_link_icon}
-                        icon="shopping_bag"
-                      />
-                      My Purchase
-                    </Link>
-                  }
+                  {userType === userTypes.BUYER && (
+                    <>
+                      <Link
+                        className={styles.Navbar_navUser_dropdown_link}
+                        href="/buyer/account?activeTab=orders"
+                        onClick={() => toggleDropdown(!isDropdownToggled)}
+                      >
+                        <Icon
+                          className={styles.Navbar_navUser_dropdown_link_icon}
+                          icon="receipt_long"
+                        />
+                        My Orders
+                      </Link>
+
+                      <Link
+                        className={styles.Navbar_navUser_dropdown_link}
+                        href="/buyer/account?activeTab=purchase"
+                        onClick={() => toggleDropdown(!isDropdownToggled)}
+                      >
+                        <Icon
+                          className={styles.Navbar_navUser_dropdown_link_icon}
+                          icon="shopping_bag"
+                        />
+                        My Purchase
+                      </Link>
+                    </>
+                  )}
 
                   <Link className={styles.Navbar_navUser_dropdown_link} href="/logout">
                     <Icon
@@ -282,9 +294,9 @@ function Navbar() {
             
             {!isSellerOrAdmin &&
               <div className={styles.Navbar_cart}>
-                {!isCartCountLoading && count > 0 &&
+                {(!isCartCountLoading && cartCount > 0) &&
                   <div className={styles.Navbar_cart_count}>
-                  {count}
+                  {cartCount}
                 </div>
                 }
                 <IconButton

@@ -25,7 +25,8 @@
   }
 
   &_item {
-    background-color: $neutral-50;
+    background-color: $neutral-0;
+    box-shadow: $shadow-normal;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     place-items: center;

@@ -40,7 +40,9 @@ function ProductCard({
       />
   
       <div className={styles.ProductCard_info}>
-        {name}
+        <Text className={styles.ProductCard_info_name}>
+          {name}  
+        </Text>
 
         <Text
           className={styles.ProductCard_price}

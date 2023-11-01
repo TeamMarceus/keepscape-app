@@ -10,6 +10,8 @@ const UsersService = {
       'Content-Type': 'multipart/form-data',
     },
   }), 
+  addReviews: (productId, body) => axios.post(`${BASE_URL}/${productId}/reviews`, body),
+  delete: (productId) => axios.delete(`${BASE_URL}/${productId}`),
   productList: ({
     sellerProfileId,
     search,
@@ -37,15 +39,10 @@ const UsersService = {
       descending,
     },
   }),
+  retrieve: (productId) => axios.get(`${BASE_URL}/${productId}`),
   retrieveCategories: () => axios.get(`${BASE_URL}/categories`),
   retrievePlaces: () => axios.get(`${BASE_URL}/places`),
-  retrieve: (productId) => axios.get(`${BASE_URL}/${productId}`),
-  update: (productId, body) => axios.put(`${BASE_URL}/${productId}`, body, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }),
-  delete: (productId) => axios.delete(`${BASE_URL}/${productId}`),
+  retrieveSellerProfile: (sellerProfileId) => axios.get(`${BASE_URL}/sellers/${sellerProfileId}`),
   reviews: (productId,{
     stars,
     page,
@@ -57,7 +54,11 @@ const UsersService = {
       pageSize,
     },
   }),
-  addReviews: (productId, body) => axios.post(`${BASE_URL}/${productId}/reviews`, body),
+  update: (productId, body) => axios.put(`${BASE_URL}/${productId}`, body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
   sellerProductList: ({
     sellerProfileId,
     search,

@@ -5,7 +5,7 @@
   margin-top: 90px;
   
   &_banner {
-    background-color: $blue-400;
+    background: $blue-gradient;
     height: 250px;
     margin-bottom: 40px;
     border-radius: 5px;
@@ -16,6 +16,7 @@
 
     &_text {
       font-size: 90px;
+      text-transform: capitalize;
 
       @include breakpoint(md) {
         font-size: 60px; 

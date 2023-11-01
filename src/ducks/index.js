@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   [SUGGESTIONS]: productReducer,
 });
 
-export const APP_REDUX_KEY = 'getgiftideas';
+export const APP_REDUX_KEY = 'keepscape';
 
 export default rootReducer;
 
@@ -40,10 +40,10 @@ export const getAccessToken = (store) =>
   usersSelectors.loginSelectors.getAccessToken(store[USERS]);
 export const getRefreshToken = (store) =>
   usersSelectors.loginSelectors.getRefreshToken(store[USERS]);
-export const getDeliveryDetails = (store) =>
-  usersSelectors.loginSelectors.getDeliveryDetails(store[USERS]);
 export const getCheckoutCart = (store) =>
   usersSelectors.loginSelectors.getCheckoutCart(store[USERS]);
+export const getCartCount = (store) =>
+  usersSelectors.loginSelectors.getCartCount(store[USERS]);
 
 // suggestions
 export const getSuggestions = (store) => 

@@ -16,6 +16,7 @@ import {
   spinnerSizes,
   textTypes,
   userStatus,
+  userTypes,
 } from '@/app-globals';
 
 import {
@@ -55,7 +56,6 @@ export default function LoginPage() {
     usersActions.loginActions.loginUpdate
   );
 
-
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   return (
@@ -66,7 +66,6 @@ export default function LoginPage() {
         >
           Welcome!
         </Text>
-       
        
         <div className={styles.LoginPage_content}>
           <Formik
@@ -90,7 +89,7 @@ export default function LoginPage() {
 
               // LoginPage the user
               try {
-                const { data: LoginPageResponse } = await UsersService.login(
+                const { data: loginPageResponse } = await UsersService.login(
                   currentFormValues
                 );
 
@@ -102,14 +101,14 @@ export default function LoginPage() {
 
                 // Update login
                 loginUpdate({
-                  user: LoginPageResponse,
+                  user: loginPageResponse,
                   access_token: acquireResponse.accessToken,
                   refresh_token: acquireResponse.refreshToken,
                 });
 
                 // Redirect the user
                 redirect(
-                  LoginPageResponse, 
+                  loginPageResponse, 
                   acquireResponse.accessToken, 
                   acquireResponse.refreshToken
                 );                

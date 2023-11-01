@@ -21,6 +21,7 @@
   &_name {
     @include flex-center;
     margin-right: 8px;
+    text-transform: capitalize;
 
     &_icon {
       font-size: 24px !important;

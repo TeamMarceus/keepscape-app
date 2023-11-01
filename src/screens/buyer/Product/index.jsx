@@ -34,14 +34,13 @@ import {
 } from '@/components'
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-import { getUser, getDeliveryDetails } from '@/ducks';
+import { getUser, getCartCount } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
-import { useActionDispatch, useProduct, useProductReviews } from '@/hooks';
+import { useActionDispatch, useAddToCart, useProduct, useProductReviews } from '@/hooks';
 
 import PreloaderProductReviews from '@/screens/seller/Products/ViewProduct/Preloader';
 
 import styles from './styles.module.scss'
-
 
 const sliderSettings = {
   lazyLoad: true,
@@ -57,18 +56,20 @@ function Product({ id }) {
   const searchParams = useSearchParams();
 
   const page = searchParams.get('page') || 1;
-  const user = useSelector(getUser);
-  const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
+
+  const user = useSelector((store) => getUser(store));
+  const cartCount = useSelector((store) => getCartCount(store));
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
-
+  
   const [currentPage, setCurrentPage] = useState(1)
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [customInput, setCustomInput] = useState('')
   const [clickedRating, setClickedRating] = useState(0)
 
+  const {isLoading: isAddingToCart, addToCart } = useAddToCart();
   const { isLoading: isProductLoading, product } = useProduct(id);
 
   const { 
@@ -216,29 +217,43 @@ function Product({ id }) {
             <div className={styles.Product_content_info_purchase}>
               <Button 
                 className={styles.Product_content_info_purchase_button}
+                disabled={isAddingToCart}
                 icon="add_shopping_cart"
                 type={buttonTypes.SECONDARY.BLUE}
-                onClick={()=>{}}
+                onClick={ async ()=>{
+                  await addToCart({
+                    productId: product.id,
+                    quantity,
+                    customizationMessage: customInput,
+                  });
+
+                  loginUpdate({ cart_count: cartCount + 1 });
+                }}
               >
                 Add to cart
               </Button>
               <ButtonLink
                 className={styles.Product_content_info_purchase_button}
-                to={deliveryDetails?.fullName ? '/buyer/checkout' : '/buyer/delivery'}
+                to={(user?.deliveryFullName && user?.deliveryAddress) ? 
+                  '/buyer/checkout' : '/buyer/delivery'}
                 onClick={()=>{
                   loginUpdate({
                     checkout_cart: [
                       {
                         id: '1',
-                        seller: seller.name,
-                        products: [
+                        sellerName: product.seller.name,
+                        cartItems: [
                           {
-                            id: product.id,
+                            // THIS IS THE CART ITEM ID
+                            id: PropTypes.string,
+
+                            productId: product.id,
                             name: product.name,
                             price: product.price,
                             quantity,
-                            image: product.images[currentImageIndex],
-                            customization: customInput,
+                            productImageUrl: product.images[currentImageIndex],
+                            customizationMessage: customInput,
+                            isCustomizable: product.isCustomizable,
                           }
                         ]
                       }
@@ -260,9 +275,7 @@ function Product({ id }) {
             name={product.seller.name}
             rating={product.seller.stars}
             sellerId={product.seller.sellerProfileId}
-
-            // TODO: replace with actual total sold
-            totalSold={10}
+            totalSold={product.seller.totalSold}
           />
 
           <ButtonLink

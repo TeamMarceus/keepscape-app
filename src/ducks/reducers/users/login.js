@@ -4,8 +4,8 @@ export const initialState = {
   user: {},
   accessToken: null,
   refreshToken: null,
-  deliveryDetails: {},
   checkoutCart: {},
+  cartCount: 0,
 };
 
 const loginSlice = createSlice({
@@ -17,8 +17,8 @@ const loginSlice = createSlice({
         user,
         access_token: accessToken,
         refresh_token: refreshToken,
-        delivery_details: deliveryDetails,
         checkout_cart: checkoutCart,
+        cart_count: cartCount,
       } = action.payload;
 
       return {
@@ -26,8 +26,8 @@ const loginSlice = createSlice({
         user: user || state.user,
         accessToken: accessToken || state.accessToken,
         refreshToken: refreshToken || state.refreshToken,
-        deliveryDetails: deliveryDetails || state.deliveryDetails,
         checkoutCart: checkoutCart || state.checkoutCart,
+        cartCount: cartCount || state.cartCount,
       };
     },
     loginRestart: () => initialState,
@@ -40,8 +40,8 @@ export const selectors = {
   getUser: (state) => state.loginReducer.user,
   getAccessToken: (state) => state.loginReducer.accessToken,
   getRefreshToken: (state) => state.loginReducer.refreshToken,
-  getDeliveryDetails: (state) => state.loginReducer.deliveryDetails,
   getCheckoutCart: (state) => state.loginReducer.checkoutCart,
+  getCartCount: (state) => state.loginReducer.cartCount,
 };
 
 export default loginSlice.reducer;

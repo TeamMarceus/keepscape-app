@@ -10,22 +10,31 @@ const useAnnouncements = ({page, pageSize}) => {
   const [totalPage, setTotalPage] = useState(0);
 
   const deleteAnnouncement = async (announcementId) => {
-    const { status: deleteAnnouncementStatus } = await AnnouncementsService.delete(
-      announcementId
-    );
-
-    if (deleteAnnouncementStatus === 200) {
-      toast.success('Announcement successfully deleted.', {
-        style: {
-          backgroundColor: '#1ab394',
-          color: '#fff',
-        },
-      });
-
-      setAnnouncements((prevAnnouncements) =>
-        prevAnnouncements.filter((prevAnnouncement) => prevAnnouncement.id !== announcementId)
+    try {
+      const { status: deleteAnnouncementStatus } = await AnnouncementsService.delete(
+        announcementId
       );
-    } else {
+  
+      if (deleteAnnouncementStatus === 200) {
+        toast.success('Announcement successfully deleted.', {
+          style: {
+            backgroundColor: '#1ab394',
+            color: '#fff',
+          },
+        });
+  
+        setAnnouncements((prevAnnouncements) =>
+          prevAnnouncements.filter((prevAnnouncement) => prevAnnouncement.id !== announcementId)
+        );
+      } else {
+        toast.error('Oops Something Went Wrong.', {
+          style: {
+            backgroundColor: '#ed5565',
+            color: '#fff',
+          },
+        });
+      }
+    } catch (error) {
       toast.error('Oops Something Went Wrong.', {
         style: {
           backgroundColor: '#ed5565',

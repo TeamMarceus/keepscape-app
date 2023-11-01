@@ -9,6 +9,8 @@ import { colorClasses, tabKinds, tabTypes, textTypes, userTypes } from '@/app-gl
 import { Card, Tabs, Text } from '@/components';
 import { getUser } from '@/ducks';
 
+import Orders from '@/screens/buyer/Orders';
+
 import Purchase from '../../buyer/Purchase';
 
 import AccountInformation from './AccountInformation';
@@ -29,6 +31,12 @@ function Account() {
       value: (!activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value),
       kind: tabKinds.LINK,
       action: `/buyer/account?activeTab=${accountTabs.ACCOUNT_INFORMATION.value}`,
+    },
+    {
+      name: accountTabs.ACCOUNT_ORDERS.name,
+      value: accountTabs.ACCOUNT_ORDERS.value,
+      kind: tabKinds.LINK,
+      action: `/buyer/account?activeTab=${accountTabs.ACCOUNT_ORDERS.value}`,
     },
     {
       name: accountTabs.ACCOUNT_PURCHASE.name,
@@ -89,12 +97,16 @@ function Account() {
           <AccountInformation />
         )}
 
-        {activeTab === accountTabs.CHANGE_PASSWORD.value && (
-          <ChangePassword />
+        {activeTab === accountTabs.ACCOUNT_ORDERS.value && (
+          <Orders />
         )}
 
         {activeTab === accountTabs.ACCOUNT_PURCHASE.value && (
           <Purchase />
+        )}
+
+        {activeTab === accountTabs.CHANGE_PASSWORD.value && (
+          <ChangePassword />
         )}
       </Card>
       

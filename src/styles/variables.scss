@@ -62,3 +62,7 @@ $shadow-normal: rgba(136, 153, 166, 0.2) 0 0 15px,
   rgba(136, 153, 166, 0.15) 0 0 3px 1px;
 $shadow-raised: rgba(136, 153, 166, 0.25) 0 0 15px,
   rgba(136, 153, 166, 0.15) 0 0 3px 1px;
+
+$blue-gradient: linear-gradient(90deg, rgba(59,175,218,1) 38%, 
+  rgba(85,185,223,1) 58%, 
+    rgba(79,193,233,1) 81%);

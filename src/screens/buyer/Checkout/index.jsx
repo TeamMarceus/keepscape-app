@@ -8,18 +8,19 @@ import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { colorClasses, textTypes } from '@/app-globals';
 import { Button, ButtonLink, Card, Icon, Text } from '@/components';
 
-import { getCheckoutCart, getDeliveryDetails, getUser } from '@/ducks';
+import { getCheckoutCart, getUser } from '@/ducks';
 
 import CheckoutCardList from './CheckoutCardList';
 
 import styles from './styles.module.scss';
 
 function Checkout() {
-  const deliveryDetails = useSelector((store) => getDeliveryDetails(store));
   const userCart = useSelector((store) => getCheckoutCart(store));
-  const user = useSelector(getUser);
+  const user = useSelector((store) => getUser(store));
 
-  const totalPrice = userCart.reduce((acc, curr) => acc + curr.products.reduce((accs, currs) => accs + (currs.price * currs.quantity), 0), 0);
+  const totalPrice = userCart.reduce((acc, curr) => 
+    acc + curr.cartItems.reduce((accs, currs) => 
+      accs + (currs.price * currs.quantity), 0), 0);
 
   return (
     <div className={styles.Checkout}>
@@ -60,20 +61,20 @@ function Checkout() {
         <Text
           type={textTypes.HEADING.XXS}
         >
-          {deliveryDetails?.fullName} 
+          {user?.deliveryFullName} 
         </Text>
         <Text
           type={textTypes.BODY.LG}
         >
-          {user?.mobileNumber} 
-          {user?.mobileNumber && deliveryDetails?.altMobileNumber && ' or ' } 
-          {deliveryDetails?.altMobileNumber}
+          {user?.phoneNumber} 
+          {user?.phoneNumber && user?.altMobileNumber && ' | ' } 
+          {user?.altMobileNumber}
         </Text>
 
         <Text
           type={textTypes.BODY.LG}
         >
-          {deliveryDetails?.fullAddress}
+          {user?.deliveryAddress}
         </Text>
 
         <ButtonLink
@@ -88,7 +89,7 @@ function Checkout() {
       <Card className={styles.Checkout_details}>
         <Text
           className={styles.Checkout_details_products}
-          type={textTypes.HEADING.XXS}
+          type={textTypes.HEADING.XXXS}
         >
           Products Ordered
         </Text>

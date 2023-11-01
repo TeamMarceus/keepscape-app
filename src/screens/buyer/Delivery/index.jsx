@@ -7,6 +7,10 @@ import { isEmpty } from 'lodash-es';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { useSelector } from 'react-redux';
+
+import { toast } from 'sonner';
+
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import {
   buttonKinds, 
@@ -26,20 +30,21 @@ import {
   Text 
 } from '@/components';
 
+import { getUser } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
-import { useActionDispatch } from '@/hooks';
+import { useActionDispatch, useUpdateUser } from '@/hooks';
 
 import styles from './styles.module.scss';
 
 const validate = (values) => {
   const errors = {};
 
-  if (!values.fullName) {
-    errors.fullName = 'This field is required.';
+  if (!values.deliveryFullName) {
+    errors.deliveryFullName = 'This field is required.';
   }
 
-  if (!values.fullAddress) {
-    errors.fullAddress = 'This field is required.';
+  if (!values.deliveryAddress) {
+    errors.deliveryAddress = 'This field is required.';
   }
 
   return errors;
@@ -48,11 +53,16 @@ const validate = (values) => {
 function Delivery() {
   const router = useRouter();
 
+  const user = useSelector((store) => getUser(store));
+
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
 
-  const [isSaving, setIsSaving] = useState(false);
+  const {
+    isUpdating: isSaving,
+    updateAccount,
+  } = useUpdateUser();
 
   return (
     <div className={styles.Delivery}>
@@ -74,15 +84,15 @@ function Delivery() {
     <div className={styles.Delivery_content}>
       <Formik
         initialValues={{
-          fullName: '',
-          fullAddress: '',
-          altMobileNumber: '',
+          deliveryFullName: user.deliveryFullName,
+          deliveryAddress: user.deliveryAddress,
+          altMobileNumber: user.altMobileNumber,
         }}
         onSubmit={async (values, { setErrors }) => {
           const currentFormValues = {
-            fullName: values.fullName,
-            fullAddress: values.fullAddress,
-            altMobileNumber: values.altMobileNumber,
+            deliveryFullName: values.deliveryFullName,
+            deliveryAddress: values.deliveryAddress,
+            altMobileNumber: values.altMobileNumber ? values.altMobileNumber : null,
           };
 
           const errors = validate(values);
@@ -91,37 +101,79 @@ function Delivery() {
             return;
           }
 
-          setIsSaving(true);
+          const { responseCode: updateAccountResponseCode} =
+            await updateAccount('buyers', currentFormValues);
 
-          // Add api call here
+          const updateAccountCallbacks = {
+            updated: () => {
+              toast.success('Delivery details updated.', {
+                style: {
+                  backgroundColor: '#48CFAD',
+                  color: '#fff',
+                },
+              });
 
-          loginUpdate({
-            delivery_details: currentFormValues,
-          })
-        
-          router.push('/buyer/checkout');
+              loginUpdate({
+                user: {
+                  ...user,
+                  ...currentFormValues,
+                },
+              });
+            
+              router.push('/buyer/checkout');
+            },
+            invalidFields: () => {
+              toast.error('Invalid fields.', {
+                style: {
+                  backgroundColor: '#ed5565',
+                  color: '#fff',
+                },
+              });
+              setErrors(errors);
+            },
+            internalError: () => {
+              toast.error('Oops, something went wrong.', {
+                style: {
+                  backgroundColor: '#ed5565',
+                  color: '#fff',
+                },
+              });
+            },
+          };
 
-          setIsSaving(false);
+          switch (updateAccountResponseCode) {
+            case 200:
+              updateAccountCallbacks.updated();
+              break;
+            case 400:
+              updateAccountCallbacks.invalidFields();
+              break;
+            case 500:
+              updateAccountCallbacks.internalError();
+              break;
+            default:
+              break;
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <ControlledInput
               className={styles.Delivery_content_input}
-              error={errors.fullName}
-              name="fullName"
+              error={errors.deliveryFullName}
+              name="deliveryFullName"
               placeholder="Full Name"
-              value={values.fullName}
-              onChange={(e) => setFieldValue('fullName', e.target.value)}
+              value={values.deliveryFullName}
+              onChange={(e) => setFieldValue('deliveryFullName', e.target.value)}
             />
 
             <ControlledInput
               className={styles.Delivery_content_input}
-              error={errors.fullAddress}
-              name="fullAddress"
+              error={errors.deliveryAddress}
+              name="deliveryAddress"
               placeholder="Full Address"
-              value={values.fullAddress}
-              onChange={(e) => setFieldValue('fullAddress', e.target.value)}
+              value={values.deliveryAddress}
+              onChange={(e) => setFieldValue('deliveryAddress', e.target.value)}
             />
 
             <ControlledInput

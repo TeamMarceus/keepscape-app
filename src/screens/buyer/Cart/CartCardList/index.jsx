@@ -36,10 +36,10 @@ function CartCardList({
 }) {
 
   useEffect (() => {
-    // Iterate through all products set the total price of all selected products
+    // Iterate through all cartItems set the total price of all selected cartItems
     let total = 0;
       userCart.forEach((cart) => {
-        cart.products.forEach((prod) => {
+        cart.cartItems.forEach((prod) => {
           if (prod.isSelected) {
             total += (prod.price * prod.quantity);
           }
@@ -55,13 +55,13 @@ function CartCardList({
     if (isAllSelected) {
       setIsAllSelected(false);
   
-      // Set the user cart seller products to be unselected
+      // Set the user cart seller cartItems to be unselected
       setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
             isSelected: false,
-            products: cart.products.map((prevProduct) => ({
+            cartItems: cart.cartItems.map((prevProduct) => ({
                 ...prevProduct,
                 isSelected: false,
               }))
@@ -71,13 +71,13 @@ function CartCardList({
         return prevCart;
       }));
     } else {
-      // Set the user cart seller products to be selected or unselected
+      // Set the user cart seller cartItems to be selected or unselected
       setUserCart((prevUserCart) => prevUserCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
             isSelected: !cart.isSelected,
-            products: cart.products.map((prevProduct) => ({
+            cartItems: cart.cartItems.map((prevProduct) => ({
               ...prevProduct,
               isSelected: !cart.isSelected,
             }))
@@ -91,6 +91,7 @@ function CartCardList({
 
   const onProductSelectChange = (cart, product) => {
     if (isAllSelected) {
+      console.log('here')
       setIsAllSelected(false);
       
       setUserCart(userCart.map((prevCart) => {
@@ -98,7 +99,7 @@ function CartCardList({
           return {
             ...prevCart,
             isSelected: false,
-            products: cart.products.map((prevProduct) => {
+            cartItems: cart.cartItems.map((prevProduct) => {
               if (prevProduct.id === product.id) {
                 return {
                   ...prevProduct,
@@ -118,14 +119,14 @@ function CartCardList({
       }));
 
     } else if (cart.isSelected) {
-
+        console.log('here')
        // Set cart seller to be unselected and set the only selected product to be selected
        setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
             isSelected: false,
-            products: cart.products.map((prevProduct) => {
+            cartItems: cart.cartItems.map((prevProduct) => {
               if (prevProduct.id === product.id) {
                 return {
                   ...prevProduct,
@@ -145,12 +146,13 @@ function CartCardList({
       }));
 
     } else {
+      console.log('here')
       // Set the cart individual product to be selected or unselected
       setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
-            products: cart.products.map((prevProduct) => {
+            cartItems: cart.cartItems.map((prevProduct) => {
               if (prevProduct.id === product.id) {
                 return {
                   ...prevProduct,
@@ -174,11 +176,11 @@ function CartCardList({
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
-          products: cart.products.map((prevProduct) => {
+          cartItems: cart.cartItems.map((prevProduct) => {
             if (prevProduct.id === product.id) {
               return {
                 ...prevProduct,
-                customization: value,
+                customizationMessage: value,
               };
             }
 
@@ -197,7 +199,7 @@ function CartCardList({
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
-          products: cart.products.map((prevProduct) => {
+          cartItems: cart.cartItems.map((prevProduct) => {
             if (prevProduct.id === product.id) {
               return {
                 ...prevProduct,
@@ -220,7 +222,7 @@ function CartCardList({
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
-          products: cart.products.map((prevProduct) => {
+          cartItems: cart.cartItems.map((prevProduct) => {
             if (prevProduct.id === product.id) {
               return {
                 ...prevProduct,
@@ -243,7 +245,7 @@ function CartCardList({
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
-          products: cart.products.filter((prevProduct) => prevProduct.id !== product.id),
+          cartItems: cart.cartItems.filter((prevProduct) => prevProduct.id !== product.id),
         };
       }
 
@@ -253,9 +255,8 @@ function CartCardList({
 
   return (
     <>
-    { 
-      userCart.map((cart) => (
-        cart.products.length > 0 &&
+      {userCart.map((cart) => (
+        cart.cartItems.length > 0 &&
         <Card 
           key={cart.id}
           className={cn(
@@ -263,13 +264,12 @@ function CartCardList({
             className
           )}
         >
-          
-          {  cart.products.length > 0 &&
+          {cart.cartItems.length > 0 &&
             <div className={styles.CartCardList_seller}>
               <Checkbox
                 checked={isAllSelected || cart.isSelected}
                 className={styles.CartCardList_product_checkbox}
-                name={cart.seller}
+                name={cart.sellerName}
                 onChange={() => onCartSelectChange(cart)}
               />
 
@@ -282,32 +282,32 @@ function CartCardList({
                 className={styles.CartCardList_seller_text}
                 type={textTypes.HEADING.XXXS}
               >
-                {cart.seller}
+                {cart.sellerName}
               </Text>
             </div>
           }
 
-          { cart.products.length > 0 &&
-            cart.products.map((product) => (
+          {cart.cartItems.length > 0 &&
+            cart.cartItems.map((product) => (
               <div key={product.id} className={styles.CartCardList_item}>
                 <div className={styles.CartCardList_product}>
                   <Checkbox
                     checked={isAllSelected || cart.isSelected || product.isSelected}
                     className={styles.CartCardList_product_checkbox}
-                    name={product.name}
+                    name={product.id}
                     onChange={() => onProductSelectChange(cart, product)}
                   />
 
                   <div className={styles.CartCardList_product_details}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={product.image}
+                      alt={product.productImageUrl}
                       className={styles.CartCardList_product_details_image}
                       height={100}
-                      src={product.image}
+                      src={product.productImageUrl}
                       width={100}
                     />
-                    <div>
+                    <div className={styles.CartCardList_product_details_detail}>
                       <Text 
                         className={styles.CartCardList_product_details_text}
                         type={textTypes.HEADING.XXS}
@@ -315,14 +315,16 @@ function CartCardList({
                         {product.name}
                       </Text>
 
-                      <ControlledTextArea
-                        inputClassName={styles.CartCardList_product_details_customize}
-                        name="customize"
-                        placeholder="Enter customization details here..."
-                        type={textAreaTypes.SLIM}
-                        value={product.customization}
-                        onChange={(e) => onCustomizationChange(cart, product, e.target.value)}
-                      />
+                      { product.isCustomizable &&
+                        <ControlledTextArea
+                          inputClassName={styles.CartCardList_product_details_customize}
+                          name="customize"
+                          placeholder="Enter customization details here..."
+                          type={textAreaTypes.SLIM}
+                          value={product.customizationMessage}
+                          onChange={(e) => onCustomizationChange(cart, product, e.target.value)}
+                        />
+                      }
                     </div>
                   </div>
                 </div>
@@ -384,8 +386,7 @@ function CartCardList({
             ))
           }
         </Card>
-      ))
-    }
+      ))}
     </>
   );
 }
@@ -395,16 +396,18 @@ CartCardList.propTypes = {
   isAllSelected: PropTypes.bool,
   userCart: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    seller: PropTypes.string,
+    sellerName: PropTypes.string,
     isSelected: PropTypes.bool,
-    products: PropTypes.arrayOf(PropTypes.shape({
-      customization: PropTypes.string,
-      image: PropTypes.string,
+    cartItems: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+      productId: PropTypes.string,
+      isCustomizable: PropTypes.bool,
+      customizationMessage: PropTypes.string,
+      productImageUrl: PropTypes.string,
       name: PropTypes.string,
       quantity: PropTypes.number,
       price: PropTypes.number,
       isSelected: PropTypes.bool,
-      seller: PropTypes.string,
     })),
   })),
   setIsAllSelected: PropTypes.func,

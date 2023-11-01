@@ -3,6 +3,10 @@ const accountTabs = {
     name: 'My Account',
     value: 'information',
   },
+  ACCOUNT_ORDERS: {
+    name: 'My Orders',
+    value: 'orders',
+  },
   ACCOUNT_PURCHASE: {
     name: 'My Purchase',
     value: 'purchase',

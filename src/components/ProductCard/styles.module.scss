@@ -16,6 +16,13 @@
     flex-direction: column;
     height: 100%;
     padding: 12px 14px;
+    
+    &_name {
+      // max-width: 150px;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+    }
   }
 
   &_price {
