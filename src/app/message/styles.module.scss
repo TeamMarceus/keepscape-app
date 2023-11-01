@@ -1,0 +1,26 @@
+@import '@/styles/mixins';
+
+.container {
+  background-image: url('../../../public/images/Beaches/cebu.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  margin: 0 auto;
+  flex-direction: column;
+  position: relative;
+  padding: 75px 60px 80px;
+  z-index: -2;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(145, 124, 124, 0.6); 
+    pointer-events: none; 
+    z-index: -1;
+  }
+}
