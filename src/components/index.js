@@ -25,6 +25,7 @@ export { default as NoResults } from './NoResults';
 export { default as Modal } from './Modal';
 export { default as ModalLoader } from './ModalLoader';
 export { default as Pagination } from './Pagination';
+export { default as PaypalButton } from './Button/Paypal';
 export { default as Preloader } from './Preloader';
 export { default as RatingStars } from './RatingStars';
 export { default as ReviewCard } from './ReviewCard';

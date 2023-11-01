@@ -8,7 +8,7 @@ import {
   buttonTypes,
   colorClasses,
 } from '@/app-globals';
-import { Button, Text, ControlledInput, NoResults } from '@/components';
+import { Button, Text, ControlledInput, NoResults, PaypalButton } from '@/components';
 
 import PurchaseCard from './PurchaseCard';
 import styles from './styles.module.scss';
@@ -195,6 +195,7 @@ function Orders() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+      <PaypalButton total={10}/>
 
     {filteredSearch.length !== 0 ?
       <div className={styles.Orders_products}>

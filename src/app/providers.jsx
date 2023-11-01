@@ -1,6 +1,6 @@
 'use client';
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { persistStore } from 'reduxjs-toolkit-persist';
@@ -25,7 +25,9 @@ export default function Providers({children}) {
         loading={<ScreenLoader />}
         persistor={persistStore(store)}
       >
-        <AppEffects> {children} </AppEffects>
+        <PayPalScriptProvider options={{ 'client-id': 'AeXdWR_JCCE07lzAcsR4oi636nYHSdbOAefAHfOOC57CeWOW1bJQYnkFGAskYJw8lPuOKaoA8l2bz_LV', 'currency': 'PHP' }}>
+          <AppEffects> {children} </AppEffects>
+        </PayPalScriptProvider>
         <Toaster />
       </PersistGate>
     </Provider>
