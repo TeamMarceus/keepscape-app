@@ -6,9 +6,17 @@ import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { Button, ButtonLink, Card, Checkbox, NoResults, ScreenLoader, Text } from '@/components';
+import {
+  Button, 
+  ButtonLink, 
+  Card, 
+  Checkbox, 
+  NoResults, 
+  ScreenLoader, 
+  Text 
+} from '@/components';
 
-import { getUser } from '@/ducks';
+import { getUser, getCartCount } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useCart } from '@/hooks';
 
@@ -18,6 +26,7 @@ import styles from './styles.module.scss';
 
 function Cart() {
   const user = useSelector((store) => getUser(store));
+  const cartCount = useSelector((store) => getCartCount(store));
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
@@ -25,17 +34,23 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [isAllSelected, setIsAllSelected] = useState(false);
 
-  const { isLoading: isCartLoading, cart: userCart } = useCart();
+  const { 
+    isLoading: isCartLoading, 
+    cart: userCart,
+    isDeleting: isDeletingCartItems,
+    deleteCartItems, 
+  } = useCart();
+
   const [newUserCart, setNewUserCart] = useState([]);
 
   useEffect(() => {
     if (!isCartLoading) {
-      // Set the products of the userCart to have isSelected property
+      // Set the items of the userCart to have isSelected property
       setNewUserCart(userCart.cartSellers.map((cart) => ({
         ...cart,
         isSelected: false,
-        cartItems: cart.cartItems.map((product) => ({
-          ...product,
+        cartItems: cart.cartItems.map((item) => ({
+          ...item,
           isSelected: false,
         })),
       })));
@@ -71,16 +86,16 @@ function Cart() {
               checked={isAllSelected}
               className={styles.Cart_details_checkbox}
               label="Product"
-              name="product"
+              name="item"
               onChange={() => { 
                 setIsAllSelected(!isAllSelected);
                 
-                // Set the cart products to have isSelected property
+                // Set the cart items to have isSelected property
                 setNewUserCart(newUserCart.map((cart) => ({
                   ...cart,
                   isSelected: !isAllSelected,
-                  cartItems: cart.cartItems.map((product) => ({
-                    ...product,
+                  cartItems: cart.cartItems.map((item) => ({
+                    ...item,
                     isSelected: !isAllSelected,
                   })),
                 })));
@@ -108,7 +123,8 @@ function Cart() {
             
           {newUserCart.length > 0 ?
             <CartCardList
-              className={styles.Cart_products}
+              className={styles.Cart_items}
+              deleteCartItems={deleteCartItems}
               isAllSelected={isAllSelected}
               setIsAllSelected={setIsAllSelected}
               setTotalPrice={setTotalPrice}
@@ -129,7 +145,7 @@ function Cart() {
                 <Checkbox
                   checked={isAllSelected}
                   label="Select All"
-                  name="product"
+                  name="item"
                   onChange={() => { 
                     setIsAllSelected(!isAllSelected);
 
@@ -137,8 +153,8 @@ function Cart() {
                     setNewUserCart(newUserCart.map((cart) => ({
                       ...cart,
                       isSelected: !isAllSelected,
-                      cartItems: cart.cartItems.map((product) => ({
-                        ...product,
+                      cartItems: cart.cartItems.map((item) => ({
+                        ...item,
                         isSelected: !isAllSelected,
                       })),
                     })));
@@ -147,15 +163,23 @@ function Cart() {
 
                 <Button
                   className={styles.Cart_footer_button}
-                  disabled={totalPrice === 0}
+                  disabled={totalPrice === 0 || isDeletingCartItems}
                   type={buttonTypes.PRIMARY.RED}
-                  onClick={()=>{
+                  onClick={ async ()=>{
+                    // Only pass the ids of the selected cartItems to the deleteCartItems function as an array
+                    const cartItemsIds = newUserCart.reduce((total, cart) => 
+                      total.concat(cart.cartItems.filter((item) => 
+                        item.isSelected).map((item) => item.id)), []);
+
+                    await deleteCartItems(cartItemsIds);
+
                     // Set the cart cartItems to have isSelected property and filter the selected cartItems
                     setNewUserCart(newUserCart.map((cart) => ({
                       ...cart,
-                      cartItems: cart.cartItems.filter((product) => !product.isSelected),
+                      cartItems: cart.cartItems.filter((item) => !item.isSelected),
                     })));
 
+                    loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - cartItemsIds.length });
                   }}
                 >
                   Delete Selected
@@ -170,13 +194,13 @@ function Cart() {
                   Total ({ 
                     // Get the total number of selected cartItems from the userCart
                     newUserCart.reduce((total, cart) => 
-                      total + cart.cartItems.filter((product) => 
-                        product.isSelected).length, 0)
+                      total + cart.cartItems.filter((item) => 
+                        item.isSelected).length, 0)
                   } item{
                     // Get the total number of selected cartItems from the userCart
                     newUserCart.reduce((total, cart) => 
-                      total + cart.cartItems.filter((product) => 
-                        product.isSelected).length, 0) > 1 ? 's' : ''}) :
+                      total + cart.cartItems.filter((item) => 
+                        item.isSelected).length, 0) > 1 ? 's' : ''}) :
                 </Text>
 
                 <Text 
@@ -196,7 +220,7 @@ function Cart() {
                       loginUpdate({
                         checkout_cart: newUserCart.map((cart) => ({
                           ...cart,
-                          cartItems: cart.cartItems.filter((product) => product.isSelected),
+                          cartItems: cart.cartItems.filter((item) => item.isSelected),
                         })),
                       });
                     }

@@ -66,8 +66,7 @@ function AddReviewModal({
             setErrors(errors);
             return;
           }
-          console.log(values.rating);
-
+          
           setIsSubmitting(true);
           setIsSubmitting(false);
         }}
