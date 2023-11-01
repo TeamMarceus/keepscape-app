@@ -9,7 +9,12 @@ const CartsService = {
   checkout: () => axios.post(`${BASE_URL}/checkout`),
   count: () => axios.get(`${BASE_URL}/count`),
   retrieve: () => axios.get(`${BASE_URL}`),
-  remove: (ids) => axios.delete(`${BASE_URL}`, ids),
+  deleteCart: (ids) => axios.delete(`${BASE_URL}`, {
+    data: ids,
+    headers: {
+      'Content-Type': 'application/json', 
+    },
+  })
 };
 
 export default CartsService;

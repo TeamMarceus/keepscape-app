@@ -4,13 +4,15 @@ import cn from 'classnames';
 
 import PropTypes from 'prop-types';
 
+
+import { useSelector } from 'react-redux';
+
 import { 
   buttonTypes, 
   colorClasses, 
   iconButtonTypes, 
   textTypes 
 } from '@/app-globals';
-
 import { 
   Button, 
   Card, 
@@ -20,6 +22,10 @@ import {
   IconButton, 
   Text
 } from '@/components';
+
+import { getCartCount } from '@/ducks';
+import { actions as usersActions } from '@/ducks/reducers/users';
+import { useActionDispatch } from '@/hooks';
 
 import { textAreaTypes } from '../../../../components/TextArea/constants';
 
@@ -33,7 +39,13 @@ function CartCardList({
   setUserCart,
   setTotalPrice,
   totalPrice,
+  deleteCartItems,
 }) {
+
+  const cartCount = useSelector((store) => getCartCount(store));
+  const loginUpdate = useActionDispatch(
+    usersActions.loginActions.loginUpdate
+  );
 
   useEffect (() => {
     // Iterate through all cartItems set the total price of all selected cartItems
@@ -89,9 +101,8 @@ function CartCardList({
     } 
   }
 
-  const onProductSelectChange = (cart, product) => {
+  const onProductSelectChange = (cart, item) => {
     if (isAllSelected) {
-      console.log('here')
       setIsAllSelected(false);
       
       setUserCart(userCart.map((prevCart) => {
@@ -100,7 +111,7 @@ function CartCardList({
             ...prevCart,
             isSelected: false,
             cartItems: cart.cartItems.map((prevProduct) => {
-              if (prevProduct.id === product.id) {
+              if (prevProduct.id === item.id) {
                 return {
                   ...prevProduct,
                   isSelected: true,
@@ -119,15 +130,14 @@ function CartCardList({
       }));
 
     } else if (cart.isSelected) {
-        console.log('here')
-       // Set cart seller to be unselected and set the only selected product to be selected
+       // Set cart seller to be unselected and set the only selected item to be selected
        setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
             isSelected: false,
             cartItems: cart.cartItems.map((prevProduct) => {
-              if (prevProduct.id === product.id) {
+              if (prevProduct.id === item.id) {
                 return {
                   ...prevProduct,
                   isSelected: true,
@@ -146,17 +156,16 @@ function CartCardList({
       }));
 
     } else {
-      console.log('here')
-      // Set the cart individual product to be selected or unselected
+      // Set the cart individual item to be selected or unselected
       setUserCart(userCart.map((prevCart) => {
         if (prevCart.id === cart.id) {
           return {
             ...prevCart,
             cartItems: cart.cartItems.map((prevProduct) => {
-              if (prevProduct.id === product.id) {
+              if (prevProduct.id === item.id) {
                 return {
                   ...prevProduct,
-                  isSelected: !product.isSelected,
+                  isSelected: !item.isSelected,
                 };
               }
   
@@ -170,14 +179,14 @@ function CartCardList({
     } 
   }
 
-  const onCustomizationChange = (cart, product, value) => {
-    // Set the cart product customization to be changed
+  const onCustomizationChange = (cart, item, value) => {
+    // Set the cart item customization to be changed
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
           cartItems: cart.cartItems.map((prevProduct) => {
-            if (prevProduct.id === product.id) {
+            if (prevProduct.id === item.id) {
               return {
                 ...prevProduct,
                 customizationMessage: value,
@@ -193,14 +202,14 @@ function CartCardList({
     }));
   }
 
-  const onQuantityIncrement = (cart, product) => {
-    // Set the cart product quantity to be incremented
+  const onQuantityIncrement = (cart, item) => {
+    // Set the cart item quantity to be incremented
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
           cartItems: cart.cartItems.map((prevProduct) => {
-            if (prevProduct.id === product.id) {
+            if (prevProduct.id === item.id) {
               return {
                 ...prevProduct,
                 quantity: prevProduct.quantity + 1,
@@ -216,14 +225,14 @@ function CartCardList({
     }));
   }
 
-  const onQuantityDecrement = (cart, product) => {
-    // Set the cart product quantity to be decremented
+  const onQuantityDecrement = (cart, item) => {
+    // Set the cart item quantity to be decremented
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
           cartItems: cart.cartItems.map((prevProduct) => {
-            if (prevProduct.id === product.id) {
+            if (prevProduct.id === item.id) {
               return {
                 ...prevProduct,
                 quantity: prevProduct.quantity - 1,
@@ -239,18 +248,22 @@ function CartCardList({
     }));
   }
 
-  const onDelete = (cart, product) => {
-    // Set the cart product to be deleted
+  const onDelete = async (cart, item) => {
+    // Set the cart item to be deleted
+    await deleteCartItems([item.id]);
+
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
-          cartItems: cart.cartItems.filter((prevProduct) => prevProduct.id !== product.id),
+          cartItems: cart.cartItems.filter((prevProduct) => prevProduct.id !== item.id),
         };
       }
 
       return prevCart;
     }));
+
+    loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - 1 });
   }
 
   return (
@@ -288,23 +301,23 @@ function CartCardList({
           }
 
           {cart.cartItems.length > 0 &&
-            cart.cartItems.map((product) => (
-              <div key={product.id} className={styles.CartCardList_item}>
+            cart.cartItems.map((item) => (
+              <div key={item.id} className={styles.CartCardList_item}>
                 <div className={styles.CartCardList_product}>
                   <Checkbox
-                    checked={isAllSelected || cart.isSelected || product.isSelected}
+                    checked={isAllSelected || cart.isSelected || item.isSelected}
                     className={styles.CartCardList_product_checkbox}
-                    name={product.id}
-                    onChange={() => onProductSelectChange(cart, product)}
+                    name={item.id}
+                    onChange={() => onProductSelectChange(cart, item)}
                   />
 
                   <div className={styles.CartCardList_product_details}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={product.productImageUrl}
+                      alt={item.productImageUrl}
                       className={styles.CartCardList_product_details_image}
                       height={100}
-                      src={product.productImageUrl}
+                      src={item.productImageUrl}
                       width={100}
                     />
                     <div className={styles.CartCardList_product_details_detail}>
@@ -312,17 +325,17 @@ function CartCardList({
                         className={styles.CartCardList_product_details_text}
                         type={textTypes.HEADING.XXS}
                       >
-                        {product.name}
+                        {item.name}
                       </Text>
 
-                      { product.isCustomizable &&
+                      { item.isCustomizable &&
                         <ControlledTextArea
                           inputClassName={styles.CartCardList_product_details_customize}
                           name="customize"
                           placeholder="Enter customization details here..."
                           type={textAreaTypes.SLIM}
-                          value={product.customizationMessage}
-                          onChange={(e) => onCustomizationChange(cart, product, e.target.value)}
+                          value={item.customizationMessage}
+                          onChange={(e) => onCustomizationChange(cart, item, e.target.value)}
                         />
                       }
                     </div>
@@ -335,16 +348,16 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                  ₱{product.price}
+                  ₱{item.price}
                   </Text>
                 </div>
 
                 <div className={styles.CartCardList_quantity}>
                   <IconButton 
-                    disabled={product.quantity <= 0}
+                    disabled={item.quantity <= 0}
                     icon="remove"
                     type={iconButtonTypes.OUTLINE.LG}
-                    onClick={()=> onQuantityDecrement(cart, product)}
+                    onClick={()=> onQuantityDecrement(cart, item)}
                   />
                 
                   <Text
@@ -352,14 +365,14 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                    {product.quantity}
+                    {item.quantity}
                   </Text>
 
                   <IconButton 
-                    disabled={product.quantity >= 10}
+                    disabled={item.quantity >= 10}
                     icon="add"
                     type={iconButtonTypes.OUTLINE.LG}
-                    onClick={()=> onQuantityIncrement(cart, product)}
+                    onClick={()=> onQuantityIncrement(cart, item)}
                   />
                 </div>
 
@@ -369,7 +382,7 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                    ₱ {product.price * product.quantity}
+                    ₱ {item.price * item.quantity}
                   </Text>
                 </div>
 
@@ -377,7 +390,7 @@ function CartCardList({
                   <Button
                     className={styles.CartCardList_actions_button}
                     type={buttonTypes.SECONDARY.RED}
-                    onClick={()=> onDelete(cart, product)}
+                    onClick={()=> onDelete(cart, item)}
                   >
                     Delete
                   </Button>
@@ -414,6 +427,7 @@ CartCardList.propTypes = {
   setUserCart: PropTypes.func,
   setTotalPrice: PropTypes.func,
   totalPrice: PropTypes.number,
+  deleteCartItems: PropTypes.func,
 };
 
 export default CartCardList;
