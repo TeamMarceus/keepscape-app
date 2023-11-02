@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-
-import { toast } from 'sonner';
+import { useState } from 'react';
 
 import { userStatus } from '@/app-globals';
 import { UsersService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useUpdateUserStatus = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,21 +20,11 @@ const useUpdateUserStatus = () => {
 
       if (updateSellerStatusStatus === 200) {
         if (status === userStatus.BANNED) {
-          toast.error('Seller successfully banned.', {
-            style: {
-              backgroundColor: '#ed5565',
-              color: '#fff',
-            },
-          });
+          toastSuccess('Seller successfully banned.');
         }
   
         if (status === userStatus.ACTIVE) {
-          toast.success('Seller successfully unbanned.', {
-            style: {
-              backgroundColor: '#1ab394',
-              color: '#fff',
-            },
-          });
+          toastSuccess('Seller successfully unbanned.');
         }
   
         // Update the seller isBanned status
@@ -55,18 +44,10 @@ const useUpdateUserStatus = () => {
 
       setIsLoading(false);
     } catch (error) {
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
-
+      toastError('Oops Something Went Wrong.');
       setIsLoading(false);
     }
-
   };
-
 
   return { isLoading, updateSellerStatus };
 };

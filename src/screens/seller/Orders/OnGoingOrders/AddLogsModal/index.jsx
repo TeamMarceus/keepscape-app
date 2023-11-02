@@ -7,8 +7,6 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { toast } from 'sonner';
-
 import { 
   buttonKinds, 
   colorNames, 
@@ -27,6 +25,8 @@ import {
 import { textAreaTypes } from '@/components/TextArea/constants';
 
 import { useAddOrderLogs } from '@/hooks';
+
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
@@ -93,14 +93,8 @@ function AddLogsModal({
 
             const addOrderLogsCallbacks = {
               created: () => {
-                toast.success('Delivery log successfully added.', {
-                  style: {
-                    backgroundColor: '#48CFAD',
-                    color: '#fff',
-                  },
-                });
+                toastSuccess('Delivery log successfully added.');
 
-                // Set the 
                 const newOrders = orders.map((order) => {
                   if (order.id === orderId) {
                     return {
@@ -126,20 +120,10 @@ function AddLogsModal({
                 setFieldValue('dateTime', dayjs());
               },
               invalidFields: () => {
-                toast.error('Invalid fields.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Invalid fields.');
               },
               internalError: () => {
-                toast.error('Oops, something went wrong.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Oops, something went wrong.');
               },
             };
 

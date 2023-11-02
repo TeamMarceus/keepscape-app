@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { ReportsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useReportedOrders = ({page, pageSize, search}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,12 +17,7 @@ const useReportedOrders = ({page, pageSize, search}) => {
       const { status: resolveOrderReportsStatus } = await ReportsService.resolveOrderReports(orderId);
   
       if (resolveOrderReportsStatus === 200) {
-        toast.success('Order reports resolved.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Order reports resolved.');
         
         setReportedOrders((prevReportedOrders) =>
           prevReportedOrders.filter((order) => order.id !== orderId)
@@ -33,12 +27,7 @@ const useReportedOrders = ({page, pageSize, search}) => {
       setIsResolvingLoading(false);
     } catch (error) {
       setIsResolvingLoading(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   };
 
@@ -49,12 +38,7 @@ const useReportedOrders = ({page, pageSize, search}) => {
       const { status: refundOrderStatus } = await ReportsService.refund(orderId);
   
       if (refundOrderStatus === 200) {
-        toast.success('Order successfully refunded.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Order successfully refunded.');
         
         setReportedOrders((prevReportedOrders) =>
           prevReportedOrders.filter((order) => order.id !== orderId)
@@ -64,12 +48,7 @@ const useReportedOrders = ({page, pageSize, search}) => {
       setIsRefundingLoading(false);
     } catch (error) {
       setIsRefundingLoading(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   };
 

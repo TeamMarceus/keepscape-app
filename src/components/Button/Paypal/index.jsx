@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
-import { toast } from 'sonner';
+
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 function PayPalButton({ total }) {
   const paypalRef = useRef();
@@ -17,22 +18,12 @@ function PayPalButton({ total }) {
           }],
         }),
       onApprove: (data, actions) => actions.order.capture().then((details) => {
-          toast.success(`Transaction completed by ${details.payer.name.given_name}`, {
-            style: {
-              backgroundColor: '#1ab394',
-              color: '#fff',
-            },
-          });
-          // TODO: Send transaction data to your server for further processing.
+        toastSuccess(`Transaction completed by ${details.payer.name.given_name}`);
+        // TODO: Send transaction data to your server for further processing.
         }),
       onError: (err) => {
         console.error(err);
-        toast.error('An error occurred during the transaction.', {
-          style: {
-            backgroundColor: '#ed5565',
-            color: '#fff',
-          },
-        });
+        toastError('An error occurred during the transaction.');
       }
     }).render(paypalRef.current);
   }, [total]);

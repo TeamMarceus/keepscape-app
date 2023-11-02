@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { toast } from 'sonner';
-
 import { CartsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useCheckout = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,20 +13,10 @@ const useCheckout = () => {
       const response = await CartsService.checkout(cartItemIds);
 
       if (response.status === 200) {
-        toast.success('Order successfully placed.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Order successfully placed.');
       }
     } catch (error) {
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
 
     setIsLoading(false);

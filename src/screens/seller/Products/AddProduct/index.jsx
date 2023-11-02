@@ -1,8 +1,7 @@
-import React, { useState }  from 'react';
+import React from 'react';
 
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
-import { toast } from 'sonner';
 
 import {
 
@@ -33,6 +32,8 @@ import {
 import { textAreaTypes } from '@/components/TextArea/constants';
 
 import { useAddProduct, useProductCategories, useProductPlaces } from '@/hooks';
+
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
@@ -155,13 +156,8 @@ function AddProduct() {
 
             const addProductCallbacks = {
               created: () => {
-                toast.success('Product successfully added.', {
-                  style: {
-                    backgroundColor: '#48CFAD',
-                    color: '#fff',
-                  },
-                });
-
+                toastSuccess('Product successfully added.');
+              
                 // Reset form values
                 setFieldValue('name', '');
                 setFieldValue('description', '');
@@ -172,20 +168,10 @@ function AddProduct() {
                 setFieldValue('price', '');
               },
               invalidFields: () => {
-                toast.error('Invalid fields.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Invalid fields.');
               },
               internalError: () => {
-                toast.error('Oops, something went wrong.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Oops, something went wrong.');
               },
             };
 

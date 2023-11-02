@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { toast } from 'sonner';
-
 import { ProductsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useUpdateProduct = () => {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -18,30 +17,15 @@ const useUpdateProduct = () => {
 
       if (responseCode === 200) {
         if (isHide) {
-          toast.success('Product successfully hidden.', {
-            style: {
-              backgroundColor: '#1ab394',
-              color: '#fff',
-            },
-          });
+          toastSuccess('Product successfully hidden.');
         } else if (isUnhide) {
-          toast.success('Product successfully unhidden.', {
-            style: {
-              backgroundColor: '#1ab394',
-              color: '#fff',
-            },
-          });
+          toastSuccess('Product successfully unhidden.');
         }
       }
 
       setIsUpdating(false);
     } catch (error) {
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
 
       responseCode = error.response.status;
       setIsUpdating(false);

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
 import { ProductsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useProduct = (productId, isUpdatingProduct) => {
   const router = useRouter();
@@ -17,25 +17,14 @@ const useProduct = (productId, isUpdatingProduct) => {
       const { status: deleteProductStatus } = await ProductsService.delete(productId);
   
       if (deleteProductStatus === 200) {
-      
-        toast.success('Product successfully deleted.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Product successfully deleted.');
       } 
       setIsDeleting(false);
       router.push('/seller/products');
 
     } catch (error) {
       setIsDeleting(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 

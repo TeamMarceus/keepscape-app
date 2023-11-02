@@ -4,8 +4,6 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { toast } from 'sonner';
-
 import { 
   buttonKinds, 
   colorNames, 
@@ -27,6 +25,8 @@ import {
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 import { useRequestWithdraw } from '@/hooks';
+
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
@@ -152,12 +152,7 @@ function RequestModal({
 
             const requestWithdrawCallbacks = {
               created: () => {
-                toast.success('Withdrawal successfully requested.', {
-                  style: {
-                    backgroundColor: '#48CFAD',
-                    color: '#fff',
-                  },
-                });
+                toastSuccess('Withdrawal successfully requested.');
 
                 setBalanceAmount(currentBalance - values.amount);
 
@@ -172,20 +167,10 @@ function RequestModal({
                 setFieldValue('remarks', '');      
               },
               invalidFields: () => {
-                toast.error('Invalid fields.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Invalid fields.');
               },
               internalError: () => {
-                toast.error('Oops, something went wrong.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Oops, something went wrong.');
               },
             };
 

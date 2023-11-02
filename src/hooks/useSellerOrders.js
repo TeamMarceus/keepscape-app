@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { OrdersService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useSellerOrders = ({
   status,
@@ -26,13 +27,7 @@ const useSellerOrders = ({
       const { status: addDeliveryFeeStatus } = await OrdersService.updateOrderDeliveryFee(orderId, body);
   
       if (addDeliveryFeeStatus === 200) {
-      
-        toast.success('Delivery fee successfully added.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Delivery fee successfully added.');
 
         setOrders((prevOrders) =>
           prevOrders.filter((ord) => ord.id !== orderId)
@@ -43,12 +38,7 @@ const useSellerOrders = ({
 
     } catch (error) {
       setIsAdding(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 
@@ -58,13 +48,7 @@ const useSellerOrders = ({
       const { status: cancelOrderStatus } = await OrdersService.cancelOrder(orderId);
   
       if (cancelOrderStatus === 200) {
-      
-        toast.success('Order successfully cancelled.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Order successfully cancelled.');
 
         setOrders((prevOrders) =>
           prevOrders.filter((ord) => ord.id !== orderId)
@@ -75,12 +59,7 @@ const useSellerOrders = ({
 
     } catch (error) {
       setIsCancelling(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 
@@ -90,13 +69,7 @@ const useSellerOrders = ({
       const { status: deliverOrderStatus } = await OrdersService.deliverOrder(orderId, body);
   
       if (deliverOrderStatus === 200) {
-      
-        toast.success('Order successfully delivered.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Order successfully delivered.');
 
         setOrders((prevOrders) =>
           prevOrders.filter((ord) => ord.id !== orderId)
@@ -107,12 +80,7 @@ const useSellerOrders = ({
 
     } catch (error) {
       setIsSettingDelivered(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 

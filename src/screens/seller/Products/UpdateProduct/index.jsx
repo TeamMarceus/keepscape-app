@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
-import { toast } from 'sonner';
 
 import {
   buttonKinds,
@@ -34,6 +33,8 @@ import { textAreaTypes } from '@/components/TextArea/constants';
 
 import {  useProduct, useProductCategories, useProductPlaces, useUpdateProduct } from '@/hooks';
 
+
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
@@ -170,30 +171,14 @@ function UpdateProduct({id}) {
 
             const updateProductCallbacks = {
               updated: () => {
-                toast.success('Product successfully updated.', {
-                  style: {
-                    backgroundColor: '#48CFAD',
-                    color: '#fff',
-                  },
-                });
-
+                toastSuccess('Product successfully updated.');
                 router.push(`/seller/products/${id}`);
               },
               invalidFields: () => {
-                toast.error('Invalid fields.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Invalid fields.');
               },
               internalError: () => {
-                toast.error('Oops, something went wrong.', {
-                  style: {
-                    backgroundColor: '#ed5565',
-                    color: '#fff',
-                  },
-                });
+                toastError('Oops, something went wrong.');
               },
             };
 

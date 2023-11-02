@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { ProductsService, ReportsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,13 +16,7 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
       const { status: deleteProductStatus } = await ProductsService.delete(productId);
   
       if (deleteProductStatus === 200) {
-      
-        toast.success('Product successfully deleted.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Product successfully deleted.');
         
         setReportedProducts((prevReportedProducts) =>
           prevReportedProducts.filter((products) => products.id !== productId)
@@ -33,12 +26,7 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
       setIsDeletingLoading(false);
     } catch (error) {
       setIsDeletingLoading(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   };
 
@@ -48,12 +36,7 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
       const { status: resolveProductReportsStatus } = await ReportsService.resolveProductReports(productId);
   
       if (resolveProductReportsStatus === 200) {
-        toast.success('Product reports resolved.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Product reports resolved.');
         
         setReportedProducts((prevReportedProducts) =>
           prevReportedProducts.filter((products) => products.id !== productId)
@@ -63,12 +46,7 @@ const useReportedProducts = ({page, pageSize, sellerName, productName}) => {
       setIsResolvingLoading(false);
     } catch (error) {
       setIsResolvingLoading(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   };
 

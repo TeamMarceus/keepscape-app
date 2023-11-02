@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { ProductsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useSellerProducts = ({
   sellerProfileId,
@@ -28,13 +27,7 @@ const useSellerProducts = ({
       const { status: deleteProductStatus } = await ProductsService.delete(productId);
   
       if (deleteProductStatus === 200) {
-      
-        toast.success('Product successfully deleted.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Product successfully deleted.');
 
         setProducts((prevProducts) =>
           prevProducts.filter((prod) => prod.id !== productId)
@@ -45,12 +38,7 @@ const useSellerProducts = ({
 
     } catch (error) {
       setIsDeleting(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 

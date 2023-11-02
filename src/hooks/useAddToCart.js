@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { toast } from 'sonner';
-
 import { CartsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useAddToCart = () => {
   const [isAdding, setIsAdding] = useState(false);
@@ -14,29 +13,14 @@ const useAddToCart = () => {
       const { status: addToCartStatus } = await CartsService.add(product);
 
       if (addToCartStatus === 200) {
-        toast.success('Product successfully added to cart.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Product successfully added to cart.');
       } else {
-        toast.error('Oops Something Went Wrong.', {
-          style: {
-            backgroundColor: '#ed5565',
-            color: '#fff',
-          },
-        });
+        toastError('Oops Something Went Wrong.');
       }
 
       setIsAdding(false);
     } catch (error) {
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
       
       setIsAdding(false);
     }

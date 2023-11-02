@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { CartsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useCart = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,23 +14,13 @@ const useCart = () => {
       const { status: deleteCartItemStatus } = await CartsService.deleteCart(itemIds);
   
       if (deleteCartItemStatus === 200) {
-        toast.success(itemIds.length > 1 ? 'Items successfully deleted' : 'Item successfully deleted', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess(itemIds.length > 1 ? 'Items successfully deleted' : 'Item successfully deleted');
       } 
 
       setIsDeleting(false);
     } catch (error) {
       setIsDeleting(false);
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   }
 

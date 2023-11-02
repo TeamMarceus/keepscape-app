@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { AnnouncementsService } from '@/services';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useAnnouncements = ({page, pageSize}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,31 +15,16 @@ const useAnnouncements = ({page, pageSize}) => {
       );
   
       if (deleteAnnouncementStatus === 200) {
-        toast.success('Announcement successfully deleted.', {
-          style: {
-            backgroundColor: '#1ab394',
-            color: '#fff',
-          },
-        });
+        toastSuccess('Announcement successfully deleted.');
   
         setAnnouncements((prevAnnouncements) =>
           prevAnnouncements.filter((prevAnnouncement) => prevAnnouncement.id !== announcementId)
         );
       } else {
-        toast.error('Oops Something Went Wrong.', {
-          style: {
-            backgroundColor: '#ed5565',
-            color: '#fff',
-          },
-        });
+        toastError('Oops Something Went Wrong.');
       }
     } catch (error) {
-      toast.error('Oops Something Went Wrong.', {
-        style: {
-          backgroundColor: '#ed5565',
-          color: '#fff',
-        },
-      });
+      toastError('Oops Something Went Wrong.');
     }
   };
 
