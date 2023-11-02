@@ -215,6 +215,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      @include breakpoint(xs) {
+        grid-template-columns: 1fr;
+      }
+
       &_item {
         &:hover {
           scale: 1.05;
