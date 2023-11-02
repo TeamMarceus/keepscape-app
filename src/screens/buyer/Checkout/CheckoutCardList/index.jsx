@@ -59,7 +59,7 @@ function CheckoutCardList({
                   <div className={styles.CheckoutCardList_product}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={product.productImageUrl}
+                      alt={product.name}
                       className={styles.CheckoutCardList_product_details_image}
                       height={60}
                       src={product.productImageUrl}
@@ -100,7 +100,7 @@ function CheckoutCardList({
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XXS}
                     >
-                    ₱{product.price}
+                    ₱{product.price.toLocaleString()}
                     </Text>
                   </div>
 
@@ -120,7 +120,7 @@ function CheckoutCardList({
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XXS}
                     >
-                      ₱{product.price * product.quantity}
+                      ₱{(product.price * product.quantity).toLocaleString()}
                     </Text>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ function CheckoutCardList({
                 colorClass={colorClasses.BLUE['300']}
                 type={textTypes.HEADING.XXS}
               >
-                ₱{cart.cartItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)}
+                ₱{(cart.cartItems.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0)).toLocaleString()}
               </Text>
           </div>
         </Card>

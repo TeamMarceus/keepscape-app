@@ -96,7 +96,7 @@ function Product({ id }) {
           <div className={styles.Product_content_images}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              alt="Product"
+              alt={product.name}
               height={350}
               src={product.images[currentImageIndex]}
               width={400}
@@ -170,7 +170,7 @@ function Product({ id }) {
                 colorClass={colorClasses.GREEN['200']}
                 type={textTypes.HEADING.MD}
               >
-                ₱{product.price}
+                ₱{product.price.toLocaleString()}
               </Text>
             </div>
             
@@ -235,7 +235,7 @@ function Product({ id }) {
               <ButtonLink
                 className={styles.Product_content_info_purchase_button}
                 to={(user?.deliveryFullName && user?.deliveryAddress) ? 
-                  '/buyer/checkout' : '/buyer/delivery'}
+                  `/buyer/checkout?productId=${product.id}`: '/buyer/delivery'}
                 onClick={()=>{
                   loginUpdate({
                     checkout_cart: [
@@ -245,8 +245,7 @@ function Product({ id }) {
                         cartItems: [
                           {
                             // THIS IS THE CART ITEM ID
-                            id: PropTypes.string,
-
+                            id: '1',
                             productId: product.id,
                             name: product.name,
                             price: product.price,

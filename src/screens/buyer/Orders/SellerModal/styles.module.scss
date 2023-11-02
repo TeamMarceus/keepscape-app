@@ -1,0 +1,25 @@
+.SellerModal {
+  &_profile {
+    padding: 24px;
+    margin-bottom: 24px;
+    
+    &_info {
+      display: flex;
+      margin-bottom: 12px;
+    }
+
+    &_name {
+      margin-left: 24px;
+    }
+
+    &_sellerName {
+      margin-bottom: 12px;
+    }
+  }
+
+  &_info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

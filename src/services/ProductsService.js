@@ -11,7 +11,7 @@ const UsersService = {
     },
   }), 
   addReviews: (productId, body) => axios.post(`${BASE_URL}/${productId}/reviews`, body),
-  checkoutProduct: (productId) => axios.post(`${BASE_URL}/${productId}/checkout`),
+  checkout: (productId, body) => axios.post(`${BASE_URL}/${productId}/checkout`, body),
   delete: (productId) => axios.delete(`${BASE_URL}/${productId}`),
   productList: ({
     sellerProfileId,

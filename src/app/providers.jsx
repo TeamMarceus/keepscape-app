@@ -25,7 +25,12 @@ export default function Providers({children}) {
         loading={<ScreenLoader />}
         persistor={persistStore(store)}
       >
-        <PayPalScriptProvider options={{ 'client-id': 'AeXdWR_JCCE07lzAcsR4oi636nYHSdbOAefAHfOOC57CeWOW1bJQYnkFGAskYJw8lPuOKaoA8l2bz_LV', 'currency': 'PHP' }}>
+        <PayPalScriptProvider 
+          options={{ 
+            'client-id': 'AVF1QLI9DgwDJoA76NSIc7BhFEGKMDS1_E_A7vM_0Pkj0tsNLSTu7BNllTwztJ3Jtajz7kzgAjheEBqM', 
+            'currency': 'PHP' 
+          }}
+        >
           <AppEffects> {children} </AppEffects>
         </PayPalScriptProvider>
         <Toaster />

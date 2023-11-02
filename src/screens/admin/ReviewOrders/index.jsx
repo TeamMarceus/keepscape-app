@@ -234,7 +234,7 @@ function ReviewOrders() {
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    ₱{price}
+                                    ₱{price.toLocaleString()}
                                   </Text>
                                 </div>
                               </div>
@@ -255,7 +255,7 @@ function ReviewOrders() {
                                 colorClass={colorClasses.BLUE['300']}
                                 type={textTypes.HEADING.XXS}
                               >
-                                ₱{totalPrice}
+                                ₱{totalPrice.toLocaleString()}
                               </Text>    
                             </div> 
 

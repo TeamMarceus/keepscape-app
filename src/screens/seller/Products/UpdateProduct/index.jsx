@@ -167,7 +167,10 @@ function UpdateProduct({id}) {
               deleteUrls,
             };
 
-            const { responseCode: updateProductResponseCode } = await updateProduct(id, productTobeUpdated);
+            const { responseCode: updateProductResponseCode } = await updateProduct({
+              productId: id, 
+              body: productTobeUpdated
+            });
 
             const updateProductCallbacks = {
               updated: () => {

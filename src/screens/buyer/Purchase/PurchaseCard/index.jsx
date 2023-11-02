@@ -146,7 +146,7 @@ function PurchaseCard({
                 colorClass={colorClasses.NEUTRAL['400']}
                 type={textTypes.HEADING.XXS}
               >
-                ₱{price}
+                ₱{price.toLocaleString()}
               </Text>
             </div>
 

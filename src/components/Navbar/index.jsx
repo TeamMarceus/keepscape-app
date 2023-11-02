@@ -30,13 +30,13 @@ function Navbar() {
   const { userType, id: userId } = user;
 
   let isCartCountLoading = false;
+  let cartCount = 0;
 
   if (userId && userType === userTypes.BUYER) {
     const { isLoading } = useCartCount();
     isCartCountLoading = isLoading;
+    cartCount = useSelector((store) => getCartCount(store));
   }
-
-  const cartCount = useSelector((store) => getCartCount(store));
 
   const [search, setSearch] = useState('');
   

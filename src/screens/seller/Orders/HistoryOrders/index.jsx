@@ -98,142 +98,140 @@ function HistoryOrders() {
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.HistoryOrders_order}>
-                          <div className={styles.HistoryOrders}>
-                            <div className={styles.HistoryOrders_info}>
-                              <div className={styles.HistoryOrders_info_left}>
-                                <Button
-                                  className={styles.HistoryOrders_info_text}
-                                  icon="person"
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsBuyerModalOpen(true)
-                                  }}
+                          <div className={styles.HistoryOrders_info}>
+                            <div className={styles.HistoryOrders_info_left}>
+                              <Button
+                                className={styles.HistoryOrders_info_text}
+                                icon="person"
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer});
+                                  setIsBuyerModalOpen(true)
+                                }}
+                              >
+                                <Text type={textTypes.HEADING.XXXS}>
+                                  {buyer.firstName} {buyer.lastName}
+                                </Text>
+                              </Button>
+
+                              <div className={styles.HistoryOrders_info_date}>
+                                Date Ordered: 
+
+                                <Text
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXXS}
                                 >
-                                  <Text type={textTypes.HEADING.XXXS}>
-                                    {buyer.firstName} {buyer.lastName}
+                                  {dateTimeCreated.split('T')[0]}
+                                </Text>
+                              </div>
+                            </div>
+
+                            <div className={styles.HistoryOrders_info_buttons}>
+                              <Button
+                                className={styles.HistoryOrders_info_statusButton}
+                                icon={
+                                  (() => {
+                                    if (status === orderStatus.REFUNDED) {
+                                      return 'payments';
+                                    } if (status === orderStatus.DELIVERED) {
+                                      return 'check_circle';
+                                    } 
+                                    return 'cancel';
+                                  })()
+                                }
+                                type={
+                                  (() => {
+                                    if (status === orderStatus.REFUNDED) {
+                                      return buttonTypes.TEXT.BLUE;
+                                    } if (status === orderStatus.DELIVERED) {
+                                      return buttonTypes.TEXT.GREEN;
+                                    } 
+                                    return buttonTypes.TEXT.RED;
+                                  })()
+                                }
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
+                                  
+                                  if (status === orderStatus.CANCELLED) {
+                                    setIsDeliveryDetailsModalOpen(true);
+                                  } else {
+                                    setIsDeliveryLogsModalOpen(true);
+                                  }
+                                }}
+                              >
+                                {status}
+                              </Button>
+                            </div>
+                            
+                          </div>
+
+                          {items.map(
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            <div key={productId} className={styles.HistoryOrders_item}>
+                              <div className={styles.HistoryOrders_product}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  alt="Product"
+                                  className={styles.HistoryOrders_product_image}
+                                  height={60}
+                                  src={productImageUrl}
+                                  width={60}
+                                />
+
+                                <div>
+                                  <Text 
+                                    className={styles.HistoryOrders_product_text}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    {productName}
                                   </Text>
-                                </Button>
+                                </div>
+                              </div>
 
-                                <div className={styles.HistoryOrders_info_date}>
-                                  Date Ordered: 
+                              <div className={styles.HistoryOrders_quantity}>
+                                Quantity:
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  {quantity}
+                                </Text>
+                              </div>
 
-                                  <Text
+                              <div className={styles.HistoryOrders_customizationText}>
+                                Customization:
+                                {customizationMessage  ? (
+                                  <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {dateTimeCreated.split('T')[0]}
+                                    {customizationMessage } 
                                   </Text>
-                                </div>
-                              </div>
-
-                              <div className={styles.HistoryOrders_info_buttons}>
-                                <Button
-                                  className={styles.HistoryOrders_info_statusButton}
-                                  icon={
-                                    (() => {
-                                      if (status === orderStatus.REFUNDED) {
-                                        return 'payments';
-                                      } if (status === orderStatus.DELIVERED) {
-                                        return 'check_circle';
-                                      } 
-                                      return 'cancel';
-                                    })()
-                                  }
-                                  type={
-                                    (() => {
-                                      if (status === orderStatus.REFUNDED) {
-                                        return buttonTypes.TEXT.BLUE;
-                                      } if (status === orderStatus.DELIVERED) {
-                                       return buttonTypes.TEXT.GREEN;
-                                      } 
-                                      return buttonTypes.TEXT.RED;
-                                    })()
-                                  }
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
-                                    
-                                    if (status === orderStatus.CANCELLED) {
-                                      setIsDeliveryDetailsModalOpen(true);
-                                    } else {
-                                      setIsDeliveryLogsModalOpen(true);
-                                    }
-                                  }}
-                                >
-                                  {status}
-                                </Button>
-                              </div>
-                              
-                            </div>
-
-                            {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                              <div key={productId} className={styles.HistoryOrders_item}>
-                                <div className={styles.HistoryOrders_product}>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    alt="Product"
-                                    className={styles.HistoryOrders_product_image}
-                                    height={60}
-                                    src={productImageUrl}
-                                    width={60}
-                                  />
-
-                                  <div>
-                                    <Text 
-                                      className={styles.HistoryOrders_product_text}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      {productName}
-                                    </Text>
-                                  </div>
-                                </div>
-
-                                <div className={styles.HistoryOrders_quantity}>
-                                  Quantity:
+                                  ) : (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {quantity}
+                                    No Customization
                                   </Text>
-                                </div>
-
-                                <div className={styles.HistoryOrders_customizationText}>
-                                  Customization:
-                                  {customizationMessage  ? (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXXS}
-                                    >
-                                      {customizationMessage } 
-                                    </Text>
-                                    ) : (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      No Customization
-                                    </Text>
-                                  )}
-                                </div>
-                              
-
-                                <div className={styles.HistoryOrders_price}>
-                                  Price:
-                                  <Text
-                                    className={styles.HistoryOrders_price_text}
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    ₱{price}
-                                  </Text>
-                                </div>
+                                )}
                               </div>
-                              )
-                            )}
-                          </div>
+                            
 
+                              <div className={styles.HistoryOrders_price}>
+                                Price:
+                                <Text
+                                  className={styles.HistoryOrders_price_text}
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  ₱{price.toLocaleString()}
+                                </Text>
+                              </div>
+                            </div>
+                            )
+                          )}
+                       
                           <div className={styles.HistoryOrders_orderTotal}>
                             <div className={styles.HistoryOrders_orderTotal_text}>
                               <Text 
@@ -263,7 +261,7 @@ function HistoryOrders() {
                                 colorClass={colorClasses.GREEN['300']}
                                 type={textTypes.HEADING.XS}
                               >
-                                ₱{totalPrice}
+                                ₱{totalPrice.toLocaleString()}
                               </Text>    
                             </div> 
                           </div>
@@ -318,9 +316,9 @@ function HistoryOrders() {
 
       {isDeliveryDetailsModalOpen && (
         <DeliveryDetailsModal
-          altMobileNumber={selectedOrder.buyer.altPhoneNumber}
+          altMobileNumber={selectedOrder.buyer.altMobileNumber}
           contactNumber={selectedOrder.buyer.phoneNumber}
-          fullAddress={selectedOrder.buyer.deliveryFullAddress}
+          fullAddress={selectedOrder.buyer.deliveryAddress}
           fullName={selectedOrder.buyer.deliveryFullName}
           handleClose={() => setIsDeliveryDetailsModalOpen(false)}
           isOpen={isDeliveryDetailsModalOpen}
@@ -331,6 +329,7 @@ function HistoryOrders() {
         <BuyerModal
           buyer={selectedOrder.buyer}
           handleClose={() => setIsBuyerModalOpen(false)}
+          hasUserId={false}
           isOpen={isBuyerModalOpen}
           title="Buyer Details"
         />

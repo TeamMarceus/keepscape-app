@@ -203,7 +203,7 @@ function PendingOrders() {
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    ₱{price}
+                                    ₱{price.toLocaleString()}
                                   </Text>
                                 </div>
                               </div>
@@ -224,7 +224,7 @@ function PendingOrders() {
                                 colorClass={colorClasses.BLUE['300']}
                                 type={textTypes.HEADING.XXS}
                               >
-                                ₱{totalPrice}
+                                ₱{totalPrice.toLocaleString()}
                               </Text>    
                             </div> 
 
@@ -280,14 +280,13 @@ function PendingOrders() {
             )}
           </>
         )}
-
       </div>
 
       {isDeliveryDetailsModalOpen && (
         <DeliveryDetailsModal
           altMobileNumber={selectedOrder.buyer.altPhoneNumber}
           contactNumber={selectedOrder.buyer.phoneNumber}
-          fullAddress={selectedOrder.buyer.deliveryFullAddress}
+          fullAddress={selectedOrder.buyer.deliveryAddress}
           fullName={selectedOrder.buyer.deliveryFullName}
           handleClose={() => setIsDeliveryDetailsModalOpen(false)}
           isOpen={isDeliveryDetailsModalOpen}
@@ -309,6 +308,7 @@ function PendingOrders() {
         <BuyerModal
           buyer={selectedOrder.buyer}
           handleClose={() => setIsBuyerModalOpen(false)}
+          hasUserId={false}
           isOpen={isBuyerModalOpen}
           title="Buyer Details"
         />

@@ -6,7 +6,7 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 const useUpdateProduct = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   
-  const updateProduct = async (productId, body, isHide, isUnhide) => {
+  const updateProduct = async ({productId, body, isHide, isUnhide}) => {
     let responseCode;
 
     try {

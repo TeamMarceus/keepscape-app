@@ -48,6 +48,19 @@
     margin-top: 16px;
   }
 
+  &_outOfStock {
+    margin-top: 40px;
+
+    &_items {
+      background-color: $neutral-50;
+      margin-top: 16px;
+
+      > div {
+        background-color: $neutral-50;
+      }
+    }
+  }
+
   &_footer {
     @include flex-center;
     background-color: $neutral-0;

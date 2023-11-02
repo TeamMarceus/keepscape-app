@@ -314,7 +314,7 @@ function CartCardList({
                   <div className={styles.CartCardList_product_details}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={item.productImageUrl}
+                      alt={item.name}
                       className={styles.CartCardList_product_details_image}
                       height={100}
                       src={item.productImageUrl}
@@ -348,7 +348,7 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                  ₱{item.price}
+                  ₱{(item.price).toLocaleString()}
                   </Text>
                 </div>
 
@@ -382,7 +382,7 @@ function CartCardList({
                     colorClass={colorClasses.NEUTRAL['400']}
                     type={textTypes.HEADING.XXS}
                   >
-                    ₱ {item.price * item.quantity}
+                    ₱ {(item.price * item.quantity).toLocaleString()}
                   </Text>
                 </div>
 

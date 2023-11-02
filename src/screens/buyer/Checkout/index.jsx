@@ -2,7 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
@@ -27,6 +27,9 @@ import styles from './styles.module.scss';
 
 function Checkout() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get('productId');
+
   const userCart = useSelector((store) => getCheckoutCart(store));
   const user = useSelector((store) => getUser(store));
   const cartCount = useSelector((store) => getCartCount(store));
@@ -34,7 +37,11 @@ function Checkout() {
     usersActions.loginActions.loginUpdate
   );
 
-  const {isLoading: isPlacingOrder, checkout } = useCheckout();
+  const {
+    isLoading: isPlacingOrder, 
+    checkoutOrder,
+    checkoutProduct, 
+  } = useCheckout();
 
   const totalPrice = userCart.reduce((acc, curr) => 
     acc + curr.cartItems.reduce((accs, currs) => 
@@ -166,22 +173,34 @@ function Checkout() {
             colorClass={colorClasses.BLUE['300']}
             type={textTypes.HEADING.XS}
           >
-            ₱{totalPrice}
+            ₱{totalPrice.toLocaleString()}
           </Text>
 
           <Button
             className={styles.Checkout_footer_button}
             disabled={totalPrice === 0 || isPlacingOrder}
-            onClick={ async () => {
-              // Pass the userCart -> cartItems -> ids to the checkout function
-              const cartItemIds = userCart.map((cart) => cart.cartItems.map((item) => item.id));
+            onClick={ async () => {             
+              if (productId) {
+                const { quantity, customizationMessage } = userCart[0].cartItems[0];
 
-              await checkout(cartItemIds.flat());
+                await checkoutProduct(productId, {
+                  quantity,
+                  customizationMessage
+                });
+                
+                loginUpdate({ 
+                  checkout_cart: [],
+                });
+              } else  {
+                const cartItemIds = userCart.map((cart) => cart.cartItems.map((item) => item.id));
 
-              loginUpdate({ 
-                cart_count: cartCount === 1 ? {} : cartCount - cartItemIds.flat().length, 
-                checkout_cart: [],
-              });
+                await checkoutOrder(cartItemIds.flat());
+
+                loginUpdate({ 
+                  cart_count: cartCount === 1 ? {} : cartCount - cartItemIds.flat().length, 
+                  checkout_cart: [],
+                });
+              }
 
               router.push('/buyer/account?activeTab=orders');
             }}

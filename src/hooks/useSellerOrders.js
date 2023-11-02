@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { toast } from 'sonner';
-
 import { OrdersService } from '@/services';
 import { toastError, toastSuccess } from '@/utils/toasts';
 

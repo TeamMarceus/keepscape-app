@@ -5,6 +5,7 @@ export { default as useAddOrderLogs } from './useAddOrderLogs';
 export { default as useAddToCart } from './useAddToCart';
 export { default as useAnalytics } from './useAnalytics';
 export { default as useBalance } from './useBalance';
+export { default as useBuyerOrders } from './useBuyerOrders';
 export { default as useBuyers } from './useBuyers';
 export { default as useBuyerSuggestions } from './useBuyerSuggestions';
 export { default as useCart } from './useCart';

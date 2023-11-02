@@ -42,6 +42,7 @@ function Cart() {
   } = useCart();
 
   const [newUserCart, setNewUserCart] = useState([]);
+  const [outOfStockItems, setOutOfStockItems] = useState([])
 
   useEffect(() => {
     if (!isCartLoading) {
@@ -53,6 +54,12 @@ function Cart() {
           ...item,
           isSelected: false,
         })),
+      })));
+
+      // Set the out of stock items
+      setOutOfStockItems(userCart.hiddenItems.map((item) => ({
+        ...item,
+        isSelected: false,
       })));
     }
   }, [isCartLoading]);
@@ -121,17 +128,41 @@ function Cart() {
             </div>
           </Card>
             
-          {newUserCart.length > 0 ?
-            <CartCardList
-              className={styles.Cart_items}
-              deleteCartItems={deleteCartItems}
-              isAllSelected={isAllSelected}
-              setIsAllSelected={setIsAllSelected}
-              setTotalPrice={setTotalPrice}
-              setUserCart={setNewUserCart}
-              totalPrice={totalPrice}
-              userCart={newUserCart}
-            />
+          {(newUserCart.length > 0 || outOfStockItems.length > 0 ) ?
+            <>
+              <CartCardList
+                className={styles.Cart_items}
+                deleteCartItems={deleteCartItems}
+                isAllSelected={isAllSelected}
+                setIsAllSelected={setIsAllSelected}
+                setTotalPrice={setTotalPrice}
+                setUserCart={setNewUserCart}
+                totalPrice={totalPrice}
+                userCart={newUserCart}
+              />
+
+              {outOfStockItems.length > 0 && (
+                <div className={styles.Cart_outOfStock}>
+                  <Text
+                    colorClass={colorClasses.NEUTRAL['400']}
+                    type={textTypes.HEADING.XS}
+                  >
+                    Out of Stock Items
+                  </Text>
+
+                  <CartCardList
+                    className={styles.Cart_outOfStock_items}
+                    deleteCartItems={deleteCartItems}
+                    isAllSelected={isAllSelected}
+                    setIsAllSelected={setIsAllSelected}
+                    setTotalPrice={setTotalPrice}
+                    setUserCart={setNewUserCart}
+                    totalPrice={totalPrice}
+                    userCart={newUserCart}
+                  />
+                </div>
+              )}
+            </>
           :
             <NoResults
               className={styles.Cart_noResults}
@@ -207,7 +238,7 @@ function Cart() {
                   colorClass={colorClasses.BLUE['300']}
                   type={textTypes.HEADING.XS}
                 >
-                  ₱{totalPrice}
+                  ₱{totalPrice.toLocaleString()}
                 </Text>
 
                 <ButtonLink

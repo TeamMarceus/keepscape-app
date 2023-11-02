@@ -82,7 +82,7 @@ function SellerModal({
           <Text type={textTypes.HEADING.XXS}>
             Additional Information
           </Text>
-
+          
           <div className={styles.SellerModal_additionalContainer}>
             <div className={styles.SellerModal_additionalInfo}>
               <Text colorClass={colorClasses.NEUTRAL['400']}>

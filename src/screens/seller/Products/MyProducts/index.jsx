@@ -193,7 +193,7 @@ function MyProducts() {
                           </div>
 
                           <div className={styles.MyProducts_grid_column}>
-                            ₱{price}
+                            ₱{price.toLocaleString()}
                           </div>
                       
                           <div className={styles.MyProducts_grid_column}>

@@ -206,7 +206,7 @@ function HiddenProducts() {
                           </div>
 
                           <div className={styles.HiddenProducts_grid_column}>
-                            ₱{price}
+                            ₱{price.toLocaleString()}
                           </div>
                       
                           <div className={styles.HiddenProducts_grid_column}>

@@ -98,118 +98,116 @@ function OngoingOrders() {
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.OngoingOrders_order}>
-                          <div className={styles.OngoingOrders}>
-                            <div className={styles.OngoingOrders_info}>
-                              <div className={styles.OngoingOrders_info_left}>
-                                <Button
-                                  className={styles.OngoingOrders_info_text}
-                                  icon="person"
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsBuyerModalOpen(true)
-                                  }}
+                          <div className={styles.OngoingOrders_info}>
+                            <div className={styles.OngoingOrders_info_left}>
+                              <Button
+                                className={styles.OngoingOrders_info_text}
+                                icon="person"
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer});
+                                  setIsBuyerModalOpen(true)
+                                }}
+                              >
+                                <Text type={textTypes.HEADING.XXXS}>
+                                  {buyer.firstName} {buyer.lastName}
+                                </Text>
+                              </Button>
+
+                              <div className={styles.OngoingOrders_info_date}>
+                                Date Ordered: 
+
+                                <Text
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXXS}
                                 >
-                                  <Text type={textTypes.HEADING.XXXS}>
-                                    {buyer.firstName} {buyer.lastName}
+                                  {dateTimeCreated.split('T')[0]}
+                                </Text>
+                              </div>
+                            </div>
+
+                            <div className={styles.OngoingOrders_info_buttons}>
+                              <Button
+                                className={styles.OngoingOrders_info_statusButton}
+                                icon='local_shipping'
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
+                                  setIsDeliveryLogsModalOpen(true);
+                                }}
+                              >
+                                Ongoing
+                              </Button>
+                            </div>
+                            
+                          </div>
+
+                          {items.map(
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            <div key={productId} className={styles.OngoingOrders_item}>
+                              <div className={styles.OngoingOrders_product}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  alt="Product"
+                                  className={styles.OngoingOrders_product_image}
+                                  height={60}
+                                  src={productImageUrl}
+                                  width={60}
+                                />
+
+                                <div>
+                                  <Text 
+                                    className={styles.OngoingOrders_product_text}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    {productName}
                                   </Text>
-                                </Button>
+                                </div>
+                              </div>
 
-                                <div className={styles.OngoingOrders_info_date}>
-                                  Date Ordered: 
+                              <div className={styles.OngoingOrders_quantity}>
+                                Quantity:
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  {quantity}
+                                </Text>
+                              </div>
 
-                                  <Text
+                              <div className={styles.OngoingOrders_customizationText}>
+                                Customization:
+                                {customizationMessage  ? (
+                                  <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {dateTimeCreated.split('T')[0]}
+                                    {customizationMessage } 
                                   </Text>
-                                </div>
-                              </div>
-
-                              <div className={styles.OngoingOrders_info_buttons}>
-                                <Button
-                                  className={styles.OngoingOrders_info_statusButton}
-                                  icon='local_shipping'
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
-                                    setIsDeliveryLogsModalOpen(true);
-                                  }}
-                                >
-                                  Ongoing
-                                </Button>
-                              </div>
-                              
-                            </div>
-
-                            {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                              <div key={productId} className={styles.OngoingOrders_item}>
-                                <div className={styles.OngoingOrders_product}>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    alt="Product"
-                                    className={styles.OngoingOrders_product_image}
-                                    height={60}
-                                    src={productImageUrl}
-                                    width={60}
-                                  />
-
-                                  <div>
-                                    <Text 
-                                      className={styles.OngoingOrders_product_text}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      {productName}
-                                    </Text>
-                                  </div>
-                                </div>
-
-                                <div className={styles.OngoingOrders_quantity}>
-                                  Quantity:
+                                  ) : (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {quantity}
+                                    No Customization
                                   </Text>
-                                </div>
-
-                                <div className={styles.OngoingOrders_customizationText}>
-                                  Customization:
-                                  {customizationMessage  ? (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXXS}
-                                    >
-                                      {customizationMessage } 
-                                    </Text>
-                                    ) : (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      No Customization
-                                    </Text>
-                                  )}
-                                </div>
-                              
-
-                                <div className={styles.OngoingOrders_price}>
-                                  Price:
-                                  <Text
-                                    className={styles.OngoingOrders_price_text}
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    ₱{price}
-                                  </Text>
-                                </div>
+                                )}
                               </div>
-                              )
-                            )}
-                          </div>
+                            
+
+                              <div className={styles.OngoingOrders_price}>
+                                Price:
+                                <Text
+                                  className={styles.OngoingOrders_price_text}
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  ₱{price.toLocaleString()}
+                                </Text>
+                              </div>
+                            </div>
+                            )
+                          )}
 
                           <div className={styles.OngoingOrders_orderTotal}>
                             <div>
@@ -241,7 +239,7 @@ function OngoingOrders() {
                                   colorClass={colorClasses.GREEN['300']}
                                   type={textTypes.HEADING.XS}
                                 >
-                                  ₱{totalPrice}
+                                  ₱{totalPrice.toLocaleString()}
                                 </Text>    
                               </div> 
                             </div>
@@ -334,6 +332,7 @@ function OngoingOrders() {
         <BuyerModal
           buyer={selectedOrder.buyer}
           handleClose={() => setIsBuyerModalOpen(false)}
+          hasUserId={false}
           isOpen={isBuyerModalOpen}
           title="Buyer Details"
         />

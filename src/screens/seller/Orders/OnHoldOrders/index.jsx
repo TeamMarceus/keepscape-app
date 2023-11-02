@@ -97,137 +97,135 @@ function OnholdOrders() {
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.OnholdOrders_order}>
-                          <div className={styles.OnholdOrders}>
-                            <div className={styles.OnholdOrders_info}>
-                              <div className={styles.OnholdOrders_info_left}>
-                                <Button
-                                  className={styles.OnholdOrders_info_text}
-                                  icon="person"
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsBuyerModalOpen(true)
-                                  }}
+                          <div className={styles.OnholdOrders_info}>
+                            <div className={styles.OnholdOrders_info_left}>
+                              <Button
+                                className={styles.OnholdOrders_info_text}
+                                icon="person"
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer});
+                                  setIsBuyerModalOpen(true)
+                                }}
+                              >
+                                <Text type={textTypes.HEADING.XXXS}>
+                                  {buyer.firstName} {buyer.lastName}
+                                </Text>
+                              </Button>
+
+                              <div className={styles.OnholdOrders_info_date}>
+                                Date Ordered: 
+
+                                <Text
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXXS}
                                 >
-                                  <Text type={textTypes.HEADING.XXXS}>
-                                    {buyer.firstName} {buyer.lastName}
+                                  {dateTimeCreated.split('T')[0]}
+                                </Text>
+                              </div>
+                            </div>
+
+                            <div className={styles.OnholdOrders_info_buttons}>
+                              <Button
+                                className={styles.OnholdOrders_info_statusButton}
+                                icon={
+                                  (() => {
+                                    if (status === orderStatus.AWAITING_BUYER) {
+                                      return 'check';
+                                    } 
+                                      return 'payments';
+                                  })()
+                                }
+                                type={
+                                  (() => {
+                                    if (status === orderStatus.AWAITING_BUYER) {
+                                      return buttonTypes.TEXT.BLUE;
+                                    } 
+                                      return buttonTypes.TEXT.GREEN;
+                                  })()
+                                }
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
+                                  
+                                  if (status === orderStatus.AWAITING_BUYER) {
+                                    setIsDeliveryDetailsModalOpen(true);
+                                  } else {
+                                    setIsDeliveryLogsModalOpen(true);
+                                  }
+                                }}
+                              >
+                                {status === orderStatus.AWAITING_BUYER ? 'Awaiting Confirmation' : 'Awaiting Payment'}
+                              </Button>
+                            </div>
+                            
+                          </div>
+
+                          {items.map(
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            <div key={productId} className={styles.OnholdOrders_item}>
+                              <div className={styles.OnholdOrders_product}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  alt="Product"
+                                  className={styles.OnholdOrders_product_image}
+                                  height={60}
+                                  src={productImageUrl}
+                                  width={60}
+                                />
+
+                                <div>
+                                  <Text 
+                                    className={styles.OnholdOrders_product_text}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    {productName}
                                   </Text>
-                                </Button>
+                                </div>
+                              </div>
 
-                                <div className={styles.OnholdOrders_info_date}>
-                                  Date Ordered: 
+                              <div className={styles.OnholdOrders_quantity}>
+                                Quantity:
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  {quantity}
+                                </Text>
+                              </div>
 
-                                  <Text
+                              <div className={styles.OnholdOrders_customizationText}>
+                                Customization:
+                                {customizationMessage  ? (
+                                  <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {dateTimeCreated.split('T')[0]}
+                                    {customizationMessage } 
                                   </Text>
-                                </div>
-                              </div>
-
-                              <div className={styles.OnholdOrders_info_buttons}>
-                                <Button
-                                  className={styles.OnholdOrders_info_statusButton}
-                                  icon={
-                                    (() => {
-                                      if (status === orderStatus.AWAITING_BUYER) {
-                                        return 'check';
-                                      } 
-                                        return 'payments';
-                                    })()
-                                  }
-                                  type={
-                                    (() => {
-                                      if (status === orderStatus.AWAITING_BUYER) {
-                                        return buttonTypes.TEXT.BLUE;
-                                      } 
-                                        return buttonTypes.TEXT.GREEN;
-                                    })()
-                                  }
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
-                                    
-                                    if (status === orderStatus.AWAITING_BUYER) {
-                                      setIsDeliveryDetailsModalOpen(true);
-                                    } else {
-                                      setIsDeliveryLogsModalOpen(true);
-                                    }
-                                  }}
-                                >
-                                  {status === orderStatus.AWAITING_BUYER ? 'Awaiting Confirmation' : 'Awaiting Payment'}
-                                </Button>
-                              </div>
-                              
-                            </div>
-
-                            {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                              <div key={productId} className={styles.OnholdOrders_item}>
-                                <div className={styles.OnholdOrders_product}>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    alt="Product"
-                                    className={styles.OnholdOrders_product_image}
-                                    height={60}
-                                    src={productImageUrl}
-                                    width={60}
-                                  />
-
-                                  <div>
-                                    <Text 
-                                      className={styles.OnholdOrders_product_text}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      {productName}
-                                    </Text>
-                                  </div>
-                                </div>
-
-                                <div className={styles.OnholdOrders_quantity}>
-                                  Quantity:
+                                  ) : (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {quantity}
+                                    No Customization
                                   </Text>
-                                </div>
-
-                                <div className={styles.OnholdOrders_customizationText}>
-                                  Customization:
-                                  {customizationMessage  ? (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXXS}
-                                    >
-                                      {customizationMessage } 
-                                    </Text>
-                                    ) : (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      No Customization
-                                    </Text>
-                                  )}
-                                </div>
-                              
-
-                                <div className={styles.OnholdOrders_price}>
-                                  Price:
-                                  <Text
-                                    className={styles.OnholdOrders_price_text}
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    ₱{price}
-                                  </Text>
-                                </div>
+                                )}
                               </div>
-                              )
-                            )}
-                          </div>
+                            
+
+                              <div className={styles.OnholdOrders_price}>
+                                Price:
+                                <Text
+                                  className={styles.OnholdOrders_price_text}
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  ₱{price.toLocaleString()}
+                                </Text>
+                              </div>
+                            </div>
+                            )
+                          )}
 
                           <div className={styles.OnholdOrders_orderTotal}>
                             <div className={styles.OnholdOrders_orderTotal_text}>
@@ -258,7 +256,7 @@ function OnholdOrders() {
                                 colorClass={colorClasses.GREEN['300']}
                                 type={textTypes.HEADING.XS}
                               >
-                                ₱{totalPrice}
+                                ₱{totalPrice.toLocaleString()}
                               </Text>    
                             </div> 
                           </div>
@@ -326,6 +324,7 @@ function OnholdOrders() {
         <BuyerModal
           buyer={selectedOrder.buyer}
           handleClose={() => setIsBuyerModalOpen(false)}
+          hasUserId={false}
           isOpen={isBuyerModalOpen}
           title="Buyer Details"
         />

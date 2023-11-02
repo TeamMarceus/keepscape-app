@@ -172,7 +172,7 @@ function ViewProduct({ id }) {
                 colorClass={colorClasses.GREEN['200']}
                 type={textTypes.HEADING.MD}
               >
-                ₱{product.price}
+                ₱{product.price.toLocaleString()}
               </Text>
             </div>
             
@@ -210,15 +210,15 @@ function ViewProduct({ id }) {
                   const formData = new FormData();
                   formData.append('product', !product.isHidden);
 
-                  await updateProduct(
-                    id,  
-                    { 
-                      isHidden: formData.get('product'),
-                    },
-                    !product.isHidden,
-                    product.isHidden
-                  )
-                }}
+                  await updateProduct({
+                      productId: id,
+                      body: { 
+                          isHidden: formData.get('product'),
+                        },
+                      isHide: !product.isHidden,
+                      isHidden: product.isHidden,
+                    })
+                  }}
               >
                 {product.isHidden ? 'Unhide' : 'Hide'}
               </Button>
