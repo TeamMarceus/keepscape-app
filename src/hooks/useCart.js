@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react';
 
+import { useSelector } from 'react-redux';
+
+import { getCartCount } from '@/ducks';
+import { actions as usersActions } from '@/ducks/reducers/users';
+import { useActionDispatch } from '@/hooks';
 import { CartsService } from '@/services';
 import { toastError, toastSuccess } from '@/utils/toasts';
 
 const useCart = () => {
+  const cartCount = useSelector((store) => getCartCount(store));
+  const loginUpdate = useActionDispatch(
+    usersActions.loginActions.loginUpdate
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [cart, setCart] = useState(null);
@@ -15,6 +24,8 @@ const useCart = () => {
   
       if (deleteCartItemStatus === 200) {
         toastSuccess(itemIds.length > 1 ? 'Items successfully deleted' : 'Item successfully deleted');
+        
+        loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - itemIds.length });
       } 
 
       setIsDeleting(false);

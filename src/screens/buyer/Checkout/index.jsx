@@ -2,7 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 import ShoppingCart from '%/images/Misc/shopping-cart.png'
@@ -16,26 +16,20 @@ import {
   Text 
 } from '@/components';
 
-import { getCartCount, getCheckoutCart, getUser } from '@/ducks';
-import { actions as usersActions } from '@/ducks/reducers/users';
+import { getCheckoutCart, getUser } from '@/ducks';
 
-import { useActionDispatch , useCheckout } from '@/hooks';
+import { useCheckout } from '@/hooks';
 
 import CheckoutCardList from './CheckoutCardList';
 
 import styles from './styles.module.scss';
 
 function Checkout() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get('productId');
 
   const userCart = useSelector((store) => getCheckoutCart(store));
   const user = useSelector((store) => getUser(store));
-  const cartCount = useSelector((store) => getCartCount(store));
-  const loginUpdate = useActionDispatch(
-    usersActions.loginActions.loginUpdate
-  );
 
   const {
     isLoading: isPlacingOrder, 
@@ -187,22 +181,11 @@ function Checkout() {
                   quantity,
                   customizationMessage
                 });
-                
-                loginUpdate({ 
-                  checkout_cart: [],
-                });
               } else  {
                 const cartItemIds = userCart.map((cart) => cart.cartItems.map((item) => item.id));
 
                 await checkoutOrder(cartItemIds.flat());
-
-                loginUpdate({ 
-                  cart_count: cartCount === 1 ? {} : cartCount - cartItemIds.flat().length, 
-                  checkout_cart: [],
-                });
               }
-
-              router.push('/buyer/account?activeTab=orders');
             }}
           >
             Place Order

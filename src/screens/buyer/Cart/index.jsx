@@ -16,7 +16,7 @@ import {
   Text 
 } from '@/components';
 
-import { getUser, getCartCount } from '@/ducks';
+import { getUser } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useCart } from '@/hooks';
 
@@ -26,7 +26,6 @@ import styles from './styles.module.scss';
 
 function Cart() {
   const user = useSelector((store) => getUser(store));
-  const cartCount = useSelector((store) => getCartCount(store));
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
@@ -253,8 +252,6 @@ function Cart() {
                     })));
                     
                     await deleteCartItems(cartItemsIds);
-
-                    loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - cartItemsIds.length });
                   }}
                 >
                   Delete Selected
