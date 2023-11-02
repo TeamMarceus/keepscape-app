@@ -177,9 +177,10 @@ function Cart() {
           <div className={styles.Cart_footer}>
             <div className={styles.Cart_footer_container}> 
               <div className={styles.Cart_footer_left}>
-                <Checkbox
+                {newUserCart.length > 0 &&
+                  <Checkbox
                   checked={isAllAvailableSelected}
-                  label="Select All Available"
+                  label={outOfStockItems.length > 0 ? 'Select All Available' : 'Select All'}
                   name="available"
                   onChange={() => { 
                     setIsAllAvailableSelected(!isAllAvailableSelected);
@@ -195,10 +196,12 @@ function Cart() {
                     })));
                   }}
                 />
+                }
 
-                <Checkbox
+                {outOfStockItems.length > 0 &&
+                  <Checkbox
                   checked={isAllOutOfStockSelected}
-                  label="Select All Out of Stock"
+                  label={newUserCart.length > 0 ? 'Select All Out of Stock' : 'Select All'}
                   name="outOfStock"
                   onChange={() => { 
                     setIsAllOutOfStockSelected(!isAllOutOfStockSelected);
@@ -214,6 +217,7 @@ function Cart() {
                     })));
                   }}
                 />
+                }
 
                 <Button
                   className={styles.Cart_footer_button}
