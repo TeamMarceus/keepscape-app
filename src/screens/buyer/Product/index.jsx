@@ -34,7 +34,7 @@ import {
 } from '@/components'
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-import { getUser, getCartCount } from '@/ducks';
+import { getUser } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
 import { useActionDispatch, useAddToCart, useProduct, useProductReviews } from '@/hooks';
 
@@ -58,7 +58,6 @@ function Product({ id }) {
   const page = searchParams.get('page') || 1;
 
   const user = useSelector((store) => getUser(store));
-  const cartCount = useSelector((store) => getCartCount(store));
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
@@ -226,8 +225,6 @@ function Product({ id }) {
                     quantity,
                     customizationMessage: customInput,
                   });
-
-                  loginUpdate({ cart_count: cartCount + 1 });
                 }}
               >
                 Add to cart

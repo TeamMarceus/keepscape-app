@@ -112,7 +112,7 @@ function Orders() {
               colorClass={colorClasses.NEUTRAL['400']}
               type={textTypes.HEADING.XXXS}
             >
-              To Pay
+              Awaiting Payment
             </Text>
           </Button>
         </div>

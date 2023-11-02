@@ -37,9 +37,10 @@ function CartCardList({
   userCart,
   setIsAllSelected,
   setUserCart,
-  setTotalPrice,
+  setTotalPrice = () => {},
   totalPrice,
   deleteCartItems,
+  isOutOfStock = false,
 }) {
 
   const cartCount = useSelector((store) => getCartCount(store));
@@ -330,6 +331,7 @@ function CartCardList({
 
                       { item.isCustomizable &&
                         <ControlledTextArea
+                          disabled={isOutOfStock}
                           inputClassName={styles.CartCardList_product_details_customize}
                           name="customize"
                           placeholder="Enter customization details here..."
@@ -354,7 +356,7 @@ function CartCardList({
 
                 <div className={styles.CartCardList_quantity}>
                   <IconButton 
-                    disabled={item.quantity <= 0}
+                    disabled={item.quantity <= 0 || isOutOfStock}
                     icon="remove"
                     type={iconButtonTypes.OUTLINE.LG}
                     onClick={()=> onQuantityDecrement(cart, item)}
@@ -369,7 +371,7 @@ function CartCardList({
                   </Text>
 
                   <IconButton 
-                    disabled={item.quantity >= 10}
+                    disabled={item.quantity >= 10 || isOutOfStock}
                     icon="add"
                     type={iconButtonTypes.OUTLINE.LG}
                     onClick={()=> onQuantityIncrement(cart, item)}
@@ -428,6 +430,7 @@ CartCardList.propTypes = {
   setTotalPrice: PropTypes.func,
   totalPrice: PropTypes.number,
   deleteCartItems: PropTypes.func,
+  isOutOfStock: PropTypes.bool,
 };
 
 export default CartCardList;

@@ -36,7 +36,7 @@ function Main() {
   const router = useRouter();
   const { windowSize } = useWindowSize();
   const user = useSelector((store) => getUser(store));
-  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
 
   let isSuggestionsLoading = false;
   let suggestions;
@@ -55,7 +55,7 @@ function Main() {
     isLoading: isDiscoverProductsLoading, 
     products: disoverProducts, 
     totalPages 
-  } = useProducts({ page, pageSize: 12, isHidden: false });
+  } = useProducts({ page: 1, pageSize, isHidden: false });
 
   const {
     isLoading: isProductCategoriesLoading, 
@@ -289,17 +289,21 @@ function Main() {
           </div>  
         )}
 
-        { totalPages > 1 &&
-          <Button
-            className={styles.Main_discover_button}
-            disabled={isDiscoverProductsLoading || page === totalPages}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            See More
-          </Button>
-        }
+        <Button
+          className={styles.Main_discover_button}
+          disabled={isDiscoverProductsLoading}
+          onClick={() => {
+            if (totalPages > 1) {
+              setPageSize(pageSize + 6);
+            } 
+
+            if (totalPages === 1) {
+              setPageSize(pageSize - 6);
+            }
+          }}
+        >
+          {totalPages > 1 ? 'See more' : 'See less'}
+        </Button>
       </div>
     </div>
   )

@@ -32,7 +32,8 @@ function Cart() {
   );
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isAllSelected, setIsAllSelected] = useState(false);
+  const [isAllAvailableSelected, setIsAllAvailableSelected] = useState(false);
+  const [isAllOutOfStockSelected, setIsAllOutOfStockSelected] = useState(false);
 
   const { 
     isLoading: isCartLoading, 
@@ -60,6 +61,10 @@ function Cart() {
       setOutOfStockItems(userCart.hiddenItems.map((item) => ({
         ...item,
         isSelected: false,
+        cartItems: item.cartItems.map((cart) => ({
+          ...cart,
+          isSelected: false,
+        })),
       })));
     }
   }, [isCartLoading]);
@@ -90,20 +95,20 @@ function Cart() {
         <>
           <Card className={styles.Cart_details}>
             <Checkbox
-              checked={isAllSelected}
+              checked={isAllAvailableSelected}
               className={styles.Cart_details_checkbox}
               label="Product"
               name="item"
               onChange={() => { 
-                setIsAllSelected(!isAllSelected);
+                setIsAllAvailableSelected(!isAllAvailableSelected);
                 
                 // Set the cart items to have isSelected property
                 setNewUserCart(newUserCart.map((cart) => ({
                   ...cart,
-                  isSelected: !isAllSelected,
+                  isSelected: !isAllAvailableSelected,
                   cartItems: cart.cartItems.map((item) => ({
                     ...item,
-                    isSelected: !isAllSelected,
+                    isSelected: !isAllAvailableSelected,
                   })),
                 })));
               }}
@@ -133,8 +138,8 @@ function Cart() {
               <CartCardList
                 className={styles.Cart_items}
                 deleteCartItems={deleteCartItems}
-                isAllSelected={isAllSelected}
-                setIsAllSelected={setIsAllSelected}
+                isAllSelected={isAllAvailableSelected}
+                setIsAllSelected={setIsAllAvailableSelected}
                 setTotalPrice={setTotalPrice}
                 setUserCart={setNewUserCart}
                 totalPrice={totalPrice}
@@ -144,21 +149,21 @@ function Cart() {
               {outOfStockItems.length > 0 && (
                 <div className={styles.Cart_outOfStock}>
                   <Text
+                    className={styles.Cart_outOfStock_title}
                     colorClass={colorClasses.NEUTRAL['400']}
-                    type={textTypes.HEADING.XS}
+                    type={textTypes.HEADING.SM}
                   >
                     Out of Stock Items
                   </Text>
 
                   <CartCardList
+                    isOutOfStock
                     className={styles.Cart_outOfStock_items}
                     deleteCartItems={deleteCartItems}
-                    isAllSelected={isAllSelected}
-                    setIsAllSelected={setIsAllSelected}
-                    setTotalPrice={setTotalPrice}
-                    setUserCart={setNewUserCart}
-                    totalPrice={totalPrice}
-                    userCart={newUserCart}
+                    isAllSelected={isAllOutOfStockSelected}
+                    setIsAllSelected={setIsAllOutOfStockSelected}
+                    setUserCart={setOutOfStockItems}
+                    userCart={outOfStockItems}
                   />
                 </div>
               )}
@@ -174,19 +179,38 @@ function Cart() {
             <div className={styles.Cart_footer_container}> 
               <div className={styles.Cart_footer_left}>
                 <Checkbox
-                  checked={isAllSelected}
-                  label="Select All"
-                  name="item"
+                  checked={isAllAvailableSelected}
+                  label="Select All Available"
+                  name="available"
                   onChange={() => { 
-                    setIsAllSelected(!isAllSelected);
+                    setIsAllAvailableSelected(!isAllAvailableSelected);
 
                     // Set the cart cartItems to have isSelected property
                     setNewUserCart(newUserCart.map((cart) => ({
                       ...cart,
-                      isSelected: !isAllSelected,
+                      isSelected: !isAllAvailableSelected,
                       cartItems: cart.cartItems.map((item) => ({
                         ...item,
-                        isSelected: !isAllSelected,
+                        isSelected: !isAllAvailableSelected,
+                      })),
+                    })));
+                  }}
+                />
+
+                <Checkbox
+                  checked={isAllOutOfStockSelected}
+                  label="Select All Out of Stock"
+                  name="outOfStock"
+                  onChange={() => { 
+                    setIsAllOutOfStockSelected(!isAllOutOfStockSelected);
+
+                    // Set the cart outOfStock items to have isSelected property
+                    setOutOfStockItems(outOfStockItems.map((item) => ({
+                      ...item,
+                      isSelected: !isAllOutOfStockSelected,
+                      cartItems: item.cartItems.map((cart) => ({
+                        ...cart,
+                        isSelected: !isAllOutOfStockSelected,
                       })),
                     })));
                   }}
@@ -194,21 +218,41 @@ function Cart() {
 
                 <Button
                   className={styles.Cart_footer_button}
-                  disabled={totalPrice === 0 || isDeletingCartItems}
+                  disabled={
+                    isDeletingCartItems || 
+                    // Check if there are no selected cartItems or outOfStockItems
+                    (outOfStockItems.reduce((total, item) =>
+                      total + item.cartItems.filter((cart) =>
+                        cart.isSelected).length, 0) === 0 &&
+                    totalPrice === 0)
+                  }
                   type={buttonTypes.PRIMARY.RED}
                   onClick={ async ()=>{
                     // Only pass the ids of the selected cartItems to the deleteCartItems function as an array
-                    const cartItemsIds = newUserCart.reduce((total, cart) => 
+
+                    const availableCartItemIds = newUserCart.reduce((total, cart) => 
+                      total.concat(cart.cartItems.filter((item) => 
+                        item.isSelected).map((item) => item.id)), []);
+                    
+                    const outOfStockItemIds = outOfStockItems.reduce((total, cart) => 
                       total.concat(cart.cartItems.filter((item) => 
                         item.isSelected).map((item) => item.id)), []);
 
-                    await deleteCartItems(cartItemsIds);
+                    const cartItemsIds = availableCartItemIds.concat(outOfStockItemIds);
 
                     // Set the cart cartItems to have isSelected property and filter the selected cartItems
                     setNewUserCart(newUserCart.map((cart) => ({
                       ...cart,
                       cartItems: cart.cartItems.filter((item) => !item.isSelected),
                     })));
+
+                    // Set the cart outOfStock items to have isSelected property and filter the selected cartItems
+                    setOutOfStockItems(outOfStockItems.map((item) => ({
+                      ...item,
+                      cartItems: item.cartItems.filter((cart) => !cart.isSelected),
+                    })));
+                    
+                    await deleteCartItems(cartItemsIds);
 
                     loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - cartItemsIds.length });
                   }}

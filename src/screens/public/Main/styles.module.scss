@@ -224,7 +224,7 @@
 
     &_button {
       align-self: center;
-      margin-top: 40px;
+      margin-top: 40px !important;
       width: 15%;
 
       @include breakpoint(md) {
