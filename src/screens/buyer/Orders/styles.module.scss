@@ -161,6 +161,18 @@
       align-items: center;
       gap: 12px;
       margin-right: 12px;
+
+      &_deliveryFee {
+        background-color: $neutral-50;
+        border-radius: 5px;
+        box-shadow: $shadow-normal;
+        padding: 4px 8px;
+        width: fit-content !important;
+
+        &:hover {
+          background-color: $neutral-100;
+        }
+      }
     }
   }
 

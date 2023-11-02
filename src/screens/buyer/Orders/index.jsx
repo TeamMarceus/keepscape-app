@@ -18,13 +18,18 @@ import {
   ControlledInput,
   NoResults,
   Pagination,
-  Card 
+  Card, 
+  ConfirmModal,
+  PaypalButton
 } from '@/components';
 
 import { useBuyerOrders, useWindowSize } from '@/hooks';
 
 import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 
+import DeliveryDetailsModal from '@/screens/common/Modals/DeliveryDetailsModal';
+
+import DeliveryFeeProofModal from './DeliveryFeeProofModal';
 import SellerModal from './SellerModal';
 
 import styles from './styles.module.scss';
@@ -39,12 +44,17 @@ function Orders() {
  
   const [search, setSearch] = useState('');
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
+  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
+  const [isCancelConfirmationToggled, toggleCancelConfirmation] = useState(false);
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
   const { 
     isLoading: isOrdersLoading, 
     orders,
     totalPages,
+    isCancelling: isOrderCancelling,
+    cancelOrder,
   } = useBuyerOrders({
     status: filter,
     search,
@@ -125,8 +135,9 @@ function Orders() {
               <>
                 <div className={styles.Orders_orders}>
                   {filteredOrders.map(
-                    ({ id, seller, dateTimeCreated, items, totalPrice, status,
-                      deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
+                    ({ id, seller, dateTimeCreated, items, totalPrice, status, 
+                      deliveryAddress, deliveryFullName, altMobileNumber, 
+                      phoneNumber, deliveryFeeProofImageUrl, deliveryFee}) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Orders_order}>
@@ -167,13 +178,9 @@ function Orders() {
                                   buttonTypes.TEXT.GREEN : buttonTypes.TEXT.BLUE
                                 }
                                 onClick={() => {
-                                  // setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
-                                  
-                                  // if (status === orderStatus.AWAITING_BUYER) {
-                                  //   setIsDeliveryDetailsModalOpen(true);
-                                  // } else {
-                                  //   setIsDeliveryLogsModalOpen(true);
-                                  // }
+                                  setSelectedOrder({id, deliveryAddress, deliveryFullName, altMobileNumber, phoneNumber});
+                                
+                                  setIsDeliveryDetailsModalOpen(true);
                                 }}
                               >
                                 {status === orderStatus.AWAITING_BUYER ? 'Awaiting Payment' : 'Pending'}
@@ -251,7 +258,15 @@ function Orders() {
                           <div className={styles.Orders_orderTotal}>
                             <div className={styles.Orders_orderTotal_fees}>
                               {status === orderStatus.AWAITING_BUYER && (
-                                <div className={styles.Orders_orderTotal_text}>
+                                <Button 
+                                  className={cn(styles.Orders_orderTotal_text, 
+                                    styles.Orders_orderTotal_text_deliveryFee)}
+                                  type={buttonTypes.TEXT.NEUTRAL}
+                                  onClick={() => {
+                                    setSelectedOrder({id, deliveryFeeProofImageUrl});
+                                    setIsDeliveryFeeProofModalOpen(true);
+                                  }}
+                                >
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
@@ -265,7 +280,7 @@ function Orders() {
                                   >
                                     ₱{deliveryFee.toLocaleString()}
                                   </Text>    
-                                </div> 
+                                </Button> 
                               )}
 
                               <div className={styles.Orders_orderTotal_text}>
@@ -285,16 +300,24 @@ function Orders() {
                               </div> 
                             </div>
 
-                            <div className={styles.Orders_orderTotal_buttons}> 
-                              {status === orderStatus.PENDING &&
-                                <Button
+                            <div className={styles.Orders_orderTotal_buttons}>
+                              {status === orderStatus.AWAITING_BUYER && (
+                                <PaypalButton
                                   className={styles.Orders_orderTotal_buttons_button}
-                                  type={buttonTypes.SECONDARY.BLUE}
-                                  onClick={() => {}}
-                                >
-                                  Cancel Order
-                                </Button>
-                              }
+                                  total={totalPrice}
+                                />
+                              )}
+
+                              <Button
+                                className={styles.Orders_orderTotal_buttons_button}
+                                type={buttonTypes.SECONDARY.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({ id });
+                                  toggleCancelConfirmation(true);
+                                }}
+                              >
+                                Cancel Order
+                              </Button>
                             </div>
                           </div>
                         </Card>
@@ -325,6 +348,26 @@ function Orders() {
         )}
       </div>
 
+      {isDeliveryDetailsModalOpen && (
+        <DeliveryDetailsModal
+          altMobileNumber={selectedOrder.altPhoneNumber}
+          contactNumber={selectedOrder.phoneNumber}
+          fullAddress={selectedOrder.deliveryAddress}
+          fullName={selectedOrder.deliveryFullName}
+          handleClose={() => setIsDeliveryDetailsModalOpen(false)}
+          isOpen={isDeliveryDetailsModalOpen}
+        />
+      )}
+
+      {isDeliveryFeeProofModalOpen && (
+        <DeliveryFeeProofModal
+          handleClose={() => setIsDeliveryFeeProofModalOpen(false)}
+          isOpen={isDeliveryFeeProofModalOpen}
+          proof={selectedOrder.deliveryFeeProofImageUrl}
+          title="Delivery Fee Proof"
+        />
+      )}
+
       {isSellerModalOpen && (
         <SellerModal
           description={selectedOrder.seller.description}
@@ -337,6 +380,33 @@ function Orders() {
           title="Seller Details"
         />
       )}
+
+      <ConfirmModal
+        actions={[
+          {
+            id: 'cancelConfirmButton',
+            text: 'Cancel',
+            type: buttonTypes.PRIMARY.BLUE,
+            onClick: async () => {
+              await cancelOrder(selectedOrder.id);
+              toggleCancelConfirmation(false);
+            },
+            disabled: isOrderCancelling,
+          },
+          {
+            id: 'cancelConfirmButton',
+            text: 'Back',
+            type: buttonTypes.SECONDARY.BLUE,
+            onClick: () => toggleCancelConfirmation(false),
+          },
+        ]}
+        body="Are you sure you want to cancel this order?"
+        handleClose={() => {
+          toggleCancelConfirmation(false);
+        }}
+        isOpen={isCancelConfirmationToggled}
+        title="Cancel?"
+      />
     </>
   );
 }

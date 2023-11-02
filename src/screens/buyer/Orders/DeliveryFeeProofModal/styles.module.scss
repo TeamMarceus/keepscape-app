@@ -1,0 +1,9 @@
+@import '@/styles/mixins.scss';
+
+.DeliveryFeeProofModal {
+  &_proof {
+    display: flex;
+    margin: 0 auto !important;
+    width: 100%;
+  }
+}

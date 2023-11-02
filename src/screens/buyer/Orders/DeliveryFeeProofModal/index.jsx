@@ -8,15 +8,15 @@ import { Button, Modal } from '@/components';
 
 import styles from './styles.module.scss';
 
-function QrCodeModal({
+function DeliveryFeeProofModal({
   isOpen,
   handleClose,
-  qrCode,
+  proof,
   title,
 }) {
   return (
     <Modal
-      className={styles.QrCodeModal}
+      className={styles.DeliveryFeeProofModal}
       handleClose={handleClose}
       isOpen={isOpen}
       position={modalPositions.CENTER}
@@ -25,26 +25,19 @@ function QrCodeModal({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img 
-        alt="QR Code"
-        className={styles.QrCodeModal_qrCode}
-        src={qrCode}
+        alt="Proof of delivery fee"
+        className={styles.DeliveryFeeProofModal_proof}
+        src={proof}
       />
-
-      <Button
-        className={styles.QrCodeModal_button}
-        onClick={() => {}}
-      >
-        Share QR Code
-      </Button>
   </Modal>
   )
 }
 
-QrCodeModal.propTypes = {
+DeliveryFeeProofModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  qrCode: PropTypes.string.isRequired,
+  proof: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 }
 
-export default QrCodeModal;
+export default DeliveryFeeProofModal;

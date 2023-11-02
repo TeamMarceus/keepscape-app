@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 
 import { toastError, toastSuccess } from '@/utils/toasts';
 
-function PayPalButton({ total }) {
+function PayPalButton({ className, total }) {
   const paypalRef = useRef();
 
   useEffect(() => {
@@ -24,16 +25,24 @@ function PayPalButton({ total }) {
       onError: (err) => {
         console.error(err);
         toastError('An error occurred during the transaction.');
-      }
+      },
+      style: {
+        layout: 'horizontal',
+        height: 40,
+        color: 'blue',
+        shape: 'rect',
+        label: 'pay',
+      },
     }).render(paypalRef.current);
   }, [total]);
 
   return (
-    <div ref={paypalRef} />
+    <div ref={paypalRef} className={cn(className)} />
   );
 }
 
 PayPalButton.propTypes = {
+  className: PropTypes.string,
   total: PropTypes.number.isRequired,
 };
 

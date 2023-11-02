@@ -43,7 +43,7 @@ const useSellerOrders = ({
   const cancelOrder = async (orderId) => {
     try {
       setIsCancelling(true);
-      const { status: cancelOrderStatus } = await OrdersService.cancelOrder(orderId);
+      const { status: cancelOrderStatus } = await OrdersService.cancelSellerOrder(orderId);
   
       if (cancelOrderStatus === 200) {
         toastSuccess('Order successfully cancelled.');

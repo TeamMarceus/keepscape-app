@@ -24,7 +24,7 @@ import { useSellerOrders, useWindowSize } from '@/hooks';
 import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
-import DeliveryDetailsModal from '../CommonModals/DeliveryDetailsModal';
+import DeliveryDetailsModal from '../../../common/Modals/DeliveryDetailsModal';
 
 import AddDeliveryFeeModal from './AddDeliveryFeeModal';
 import styles from './styles.module.scss';
@@ -98,119 +98,117 @@ function PendingOrders() {
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PendingOrders_order}>
-                          <div className={styles.PendingOrders}>
-                            <div className={styles.PendingOrders_info}>
-                              <div className={styles.PendingOrders_info_left}>
-                                <Button
-                                  className={styles.PendingOrders_info_text}
-                                  icon="person"
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsBuyerModalOpen(true)
-                                  }}
+                          <div className={styles.PendingOrders_info}>
+                            <div className={styles.PendingOrders_info_left}>
+                              <Button
+                                className={styles.PendingOrders_info_text}
+                                icon="person"
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer});
+                                  setIsBuyerModalOpen(true)
+                                }}
+                              >
+                                <Text type={textTypes.HEADING.XXXS}>
+                                  {buyer.firstName} {buyer.lastName}
+                                </Text>
+                              </Button>
+
+                              <div className={styles.PendingOrders_info_date}>
+                                Date Ordered: 
+
+                                <Text
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXXS}
                                 >
-                                  <Text type={textTypes.HEADING.XXXS}>
-                                    {buyer.firstName} {buyer.lastName}
+                                  {dateTimeCreated.split('T')[0]}
+                                </Text>
+                              </div>
+                            </div>
+
+                            <div className={styles.PendingOrders_info_buttons}>
+                              <Button
+                                className={styles.PendingOrders_info_statusButton}
+                                icon='pending'
+                                type={buttonTypes.TEXT.BLUE}
+                                onClick={() => {
+                                  setSelectedOrder({id, buyer});
+                                  setIsDeliveryDetailsModalOpen(true)
+                                }}
+                              >
+                                Pending
+                              </Button>
+                            </div>
+                            
+                          </div>
+
+                          {items.map(
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            <div key={productId} className={styles.PendingOrders_item}>
+                              <div className={styles.PendingOrders_product}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  alt="Product"
+                                  className={styles.PendingOrders_product_image}
+                                  height={60}
+                                  src={productImageUrl}
+                                  width={60}
+                                />
+
+                                <div>
+                                  <Text 
+                                    className={styles.PendingOrders_product_text}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    {productName}
                                   </Text>
-                                </Button>
+                                </div>
+                              </div>
 
-                                <div className={styles.PendingOrders_info_date}>
-                                  Date Ordered: 
+                              <div className={styles.PendingOrders_quantity}>
+                                Quantity:
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  {quantity}
+                                </Text>
+                              </div>
 
-                                  <Text
+                              <div className={styles.PendingOrders_customizationText}>
+                                Customization:
+                                {customizationMessage  ? (
+                                  <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {dateTimeCreated.split('T')[0]}
+                                    {customizationMessage } 
                                   </Text>
-                                </div>
-                              </div>
-
-                              <div className={styles.PendingOrders_info_buttons}>
-                                <Button
-                                  className={styles.PendingOrders_info_statusButton}
-                                  icon='pending'
-                                  type={buttonTypes.TEXT.BLUE}
-                                  onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsDeliveryDetailsModalOpen(true)
-                                  }}
-                                >
-                                  Pending
-                                </Button>
-                              </div>
-                              
-                            </div>
-
-                            {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                              <div key={productId} className={styles.PendingOrders_item}>
-                                <div className={styles.PendingOrders_product}>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    alt="Product"
-                                    className={styles.PendingOrders_product_image}
-                                    height={60}
-                                    src={productImageUrl}
-                                    width={60}
-                                  />
-
-                                  <div>
-                                    <Text 
-                                      className={styles.PendingOrders_product_text}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      {productName}
-                                    </Text>
-                                  </div>
-                                </div>
-
-                                <div className={styles.PendingOrders_quantity}>
-                                  Quantity:
+                                  ) : (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {quantity}
+                                    No Customization
                                   </Text>
-                                </div>
-
-                                <div className={styles.PendingOrders_customizationText}>
-                                  Customization:
-                                  {customizationMessage  ? (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXXS}
-                                    >
-                                      {customizationMessage } 
-                                    </Text>
-                                    ) : (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      No Customization
-                                    </Text>
-                                  )}
-                                </div>
-                              
-
-                                <div className={styles.PendingOrders_price}>
-                                  Price:
-                                  <Text
-                                    className={styles.PendingOrders_price_text}
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    ₱{price.toLocaleString()}
-                                  </Text>
-                                </div>
+                                )}
                               </div>
-                              )
-                            )}
-                          </div>
+                            
 
+                              <div className={styles.PendingOrders_price}>
+                                Price:
+                                <Text
+                                  className={styles.PendingOrders_price_text}
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  ₱{price.toLocaleString()}
+                                </Text>
+                              </div>
+                            </div>
+                            )
+                          )}
+                          
                           <div className={styles.PendingOrders_orderTotal}>
                             <div className={styles.PendingOrders_orderTotal_text}>
                               <Text 
