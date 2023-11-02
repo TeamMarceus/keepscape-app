@@ -313,9 +313,9 @@ function OnholdOrders() {
 
       {isDeliveryDetailsModalOpen && (
         <DeliveryDetailsModal
-          altMobileNumber={selectedOrder.buyer.altPhoneNumber}
+          altMobileNumber={selectedOrder.buyer.altMobileNumber}
           contactNumber={selectedOrder.buyer.phoneNumber}
-          fullAddress={selectedOrder.buyer.deliveryFullAddress}
+          fullAddress={selectedOrder.buyer.deliveryAddress}
           fullName={selectedOrder.buyer.deliveryFullName}
           handleClose={() => setIsDeliveryDetailsModalOpen(false)}
           isOpen={isDeliveryDetailsModalOpen}
