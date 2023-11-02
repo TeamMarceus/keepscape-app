@@ -7,7 +7,6 @@
   &_banner {
     background: $blue-gradient;
     height: 250px;
-    margin-bottom: 40px;
     border-radius: 5px;
     box-shadow: $shadow-normal;
     @include flex-center;
@@ -50,6 +49,7 @@
   &_content {
     display: flex;
     justify-content: space-between;
+    margin-top: 40px;
   }
 
   &_products {

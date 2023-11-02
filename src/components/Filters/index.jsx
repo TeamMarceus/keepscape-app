@@ -27,6 +27,10 @@ const validate = (values) => {
     errors.overall = 'Please input valid price range.';
   }
 
+  if (Number(values.minimumPrice) < 0 || Number(values.maximumPrice) < 0) {
+    errors.overall = 'Please input valid price range.';
+  }
+
   return errors;
 };
 

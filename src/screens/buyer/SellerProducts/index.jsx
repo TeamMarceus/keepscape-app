@@ -12,6 +12,7 @@ import { getUser } from '@/ducks';
 
 import { useProducts, useSellerProfile } from '@/hooks';
 
+import PreloaderSellerProfile from './Preloader';
 import styles from './styles.module.scss'
 
 function SellerProducts({ id }) {
@@ -48,7 +49,7 @@ function SellerProducts({ id }) {
   return (
     <div className={styles.SellerProducts}>
       {isSellerProfileLoading ? (
-          <Preloader/>
+          <PreloaderSellerProfile/>
         ) : (
           <div className={styles.SellerProducts_banner}>
             <Text 
