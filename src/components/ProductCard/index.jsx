@@ -49,7 +49,7 @@ function ProductCard({
           colorClass={colorClasses.RED['200']}
           type={textTypes.BODY.LG}
         >
-          {`₱ ${price}`}
+          {`₱ ${price.toLocaleString()}`}
         </Text>
 
         <RatingStars className={styles.ProductCard_ratings} rating={rating}/>
