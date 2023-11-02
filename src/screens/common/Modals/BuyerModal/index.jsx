@@ -10,6 +10,7 @@ import styles from './styles.module.scss';
 function BuyerModal({
   isOpen,
   handleClose,
+  hasUserId,
   buyer,
   title,
 }) {
@@ -64,12 +65,14 @@ function BuyerModal({
       </Text>
 
       <div className={styles.BuyerModal_additionalContainer}>
-        <div className={styles.BuyerModal_additionalInfo}>
-          <Text colorClass={colorClasses.NEUTRAL['400']}>
-            User ID: 
-          </Text>
-          {buyer.id}
-        </div>
+        {hasUserId && (
+          <div className={styles.BuyerModal_additionalInfo}>
+            <Text colorClass={colorClasses.NEUTRAL['400']}>
+              User ID: 
+            </Text>
+            {buyer.id}
+          </div>
+        )}
 
         <div className={styles.BuyerModal_additionalInfo}>
           <Text colorClass={colorClasses.NEUTRAL['400']}>
@@ -92,6 +95,7 @@ function BuyerModal({
 BuyerModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  hasUserId: PropTypes.bool.isRequired,
   buyer: PropTypes.shape({
     fullName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
