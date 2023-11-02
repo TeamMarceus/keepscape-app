@@ -36,7 +36,7 @@ function Main() {
   const router = useRouter();
   const { windowSize } = useWindowSize();
   const user = useSelector((store) => getUser(store));
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(10);
 
   let isSuggestionsLoading = false;
   let suggestions;
@@ -294,11 +294,11 @@ function Main() {
           disabled={isDiscoverProductsLoading}
           onClick={() => {
             if (totalPages > 1) {
-              setPageSize(pageSize + 6);
+              setPageSize(pageSize + 5);
             } 
 
             if (totalPages === 1) {
-              setPageSize(pageSize - 6);
+              setPageSize(pageSize - 5);
             }
           }}
         >
