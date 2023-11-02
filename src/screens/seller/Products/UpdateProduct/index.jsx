@@ -154,10 +154,12 @@ function UpdateProduct({id}) {
               }
 
               // Check the index of the product image that has been changed and put it in the deleted urls array
-              if (!isEmpty(image) && image instanceof File && product.images[index - 1]) {
+              if ((!isEmpty(image) && image instanceof File && product.images[index - 1]) ||
+                  (isEmpty(image) && product.images[index - 1])) {
                 deleteUrls.push(product.images[index - 1]);
               }
 
+         
               index++;
             }
 
