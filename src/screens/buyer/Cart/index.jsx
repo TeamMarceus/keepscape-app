@@ -179,43 +179,43 @@ function Cart() {
               <div className={styles.Cart_footer_left}>
                 {newUserCart.length > 0 &&
                   <Checkbox
-                  checked={isAllAvailableSelected}
-                  label={outOfStockItems.length > 0 ? 'Select All Available' : 'Select All'}
-                  name="available"
-                  onChange={() => { 
-                    setIsAllAvailableSelected(!isAllAvailableSelected);
+                    checked={isAllAvailableSelected}
+                    label={outOfStockItems.length > 0 ? 'Select All Available' : 'Select All'}
+                    name="available"
+                    onChange={() => { 
+                      setIsAllAvailableSelected(!isAllAvailableSelected);
 
-                    // Set the cart cartItems to have isSelected property
-                    setNewUserCart(newUserCart.map((cart) => ({
-                      ...cart,
-                      isSelected: !isAllAvailableSelected,
-                      cartItems: cart.cartItems.map((item) => ({
-                        ...item,
+                      // Set the cart cartItems to have isSelected property
+                      setNewUserCart(newUserCart.map((cart) => ({
+                        ...cart,
                         isSelected: !isAllAvailableSelected,
-                      })),
-                    })));
-                  }}
+                        cartItems: cart.cartItems.map((item) => ({
+                          ...item,
+                          isSelected: !isAllAvailableSelected,
+                        })),
+                      })));
+                    }}
                 />
                 }
 
                 {outOfStockItems.length > 0 &&
                   <Checkbox
-                  checked={isAllOutOfStockSelected}
-                  label={newUserCart.length > 0 ? 'Select All Out of Stock' : 'Select All'}
-                  name="outOfStock"
-                  onChange={() => { 
-                    setIsAllOutOfStockSelected(!isAllOutOfStockSelected);
+                    checked={isAllOutOfStockSelected}
+                    label={newUserCart.length > 0 ? 'Select All Out of Stock' : 'Select All'}
+                    name="outOfStock"
+                    onChange={() => { 
+                      setIsAllOutOfStockSelected(!isAllOutOfStockSelected);
 
-                    // Set the cart outOfStock items to have isSelected property
-                    setOutOfStockItems(outOfStockItems.map((item) => ({
-                      ...item,
-                      isSelected: !isAllOutOfStockSelected,
-                      cartItems: item.cartItems.map((cart) => ({
-                        ...cart,
+                      // Set the cart outOfStock items to have isSelected property
+                      setOutOfStockItems(outOfStockItems.map((item) => ({
+                        ...item,
                         isSelected: !isAllOutOfStockSelected,
-                      })),
-                    })));
-                  }}
+                        cartItems: item.cartItems.map((cart) => ({
+                          ...cart,
+                          isSelected: !isAllOutOfStockSelected,
+                        })),
+                      })));
+                   }}
                 />
                 }
 

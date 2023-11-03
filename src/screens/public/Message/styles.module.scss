@@ -1,7 +1,106 @@
-.Message {
-  margin-top: 90px;
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
-  &_content {
+.Message {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 40px;
+
+  &___bohol {
+    background-image: url('../../../../public/images/Beaches/bohol-hills.jpg');
+  }
+
+  &___cebu {
+    background-image: url('../../../../public/images/Beaches/cebu1.jpg');
+  }
+
+  &___negrosOriental {
+    background-image: url('../../../../public/images/Beaches/negros-oriental.png');
+  }
+
+  &___siquijor {
+    background-image: url('../../../../public/images/Beaches/siquijor.png');
+  }
+
+  &_left {
+    border-left: 1px dashed $neutral-100;
+    padding: 0 0 20px 40px;
+    max-width: 1200px;
+
+    &_title {
+      margin-bottom: 12px;
+
+      &_place {
+        font-size: 90px;
+      }
+
+      &_text {
+        font-style: italic;
+      }
+    }
+  }
+
+  &_button {
+    margin-top: 40px;
+    width: 40%;
+  }
+
+  &_right {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    margin-left: 50px;
+    padding: 40px;
+
+    &_links {
+      @include flex-between;
+      margin-bottom: 24px;
+    }
+
+    &_button {
+      margin-right: 24px;
+    }
+
+    &_slider {
+      align-self: center;
+      width: 100%;
+      max-width: 450px;
+      
+      > div {
+        > ul {
+          bottom: 10px !important;
+        }
+
+        > button {
+          width: 115px !important;
+
+          &:hover {
+            scale: unset !important;
+          }
+        }
+      }
+    }
+
+    &_card {
+      background: transparent;
+      margin-top: 24px;
+      padding: 24px;
+
+      &_title {
+        margin-bottom: 12px;
+      }
+
+      &_button {
+        margin-top: 24px;
+      }
+    }
 
   }
 }

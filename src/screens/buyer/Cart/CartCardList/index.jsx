@@ -371,6 +371,7 @@ function CartCardList({
                   </Text>
 
                   <IconButton 
+                    // TODO: Add max quantity
                     disabled={item.quantity >= 10 || isOutOfStock}
                     icon="add"
                     type={iconButtonTypes.OUTLINE.LG}
