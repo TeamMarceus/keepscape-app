@@ -8,7 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 40px;
+
+  @include breakpoint(md) {
+    flex-direction: column;
+  }
 
   &___bohol {
     background-image: url('../../../../public/images/Beaches/bohol-hills.jpg');
@@ -19,23 +22,41 @@
   }
 
   &___negrosOriental {
-    background-image: url('../../../../public/images/Beaches/negros-oriental.png');
+    background-image: url('../../../../public/images/Beaches/negros-oriental1.jpg');
   }
 
   &___siquijor {
-    background-image: url('../../../../public/images/Beaches/siquijor.png');
+    background-image: url('../../../../public/images/Beaches/siquijor2.jpg');
   }
 
   &_left {
     border-left: 1px dashed $neutral-100;
     padding: 0 0 20px 40px;
+    margin-left: 40px;
     max-width: 1200px;
+
+    @include breakpoint(md) {
+      margin: 40px 40px;
+    }
+
+    @include breakpoint(xs) {
+      padding-left: 20px;
+      margin: 40px 20px;
+    }
+
+    &___negrosOriental {
+      border-left: 1px dashed $neutral-800 !important;
+    }
 
     &_title {
       margin-bottom: 12px;
 
       &_place {
         font-size: 90px;
+
+        &___negrosOriental {
+          font-size: 70px;
+        }
       }
 
       &_text {
@@ -47,6 +68,10 @@
   &_button {
     margin-top: 40px;
     width: 40%;
+
+    @include breakpoint(lg) {
+      width: 100%;
+    }
   }
 
   &_right {
@@ -58,6 +83,12 @@
     height: 100%;
     margin-left: 50px;
     padding: 40px;
+    
+    @include breakpoint(md) {
+      height: unset;
+      margin-left: 0;
+      width: 100%;
+    }
 
     &_links {
       @include flex-between;
@@ -72,6 +103,11 @@
       align-self: center;
       width: 100%;
       max-width: 450px;
+
+      @include breakpoint(md) {
+        justify-self: center;
+        max-width: 100%;
+      }
       
       > div {
         > ul {
@@ -88,9 +124,20 @@
       }
     }
 
+    &_image {
+      @include breakpoint(md) {
+        height: 250px;
+      }
+
+      @include breakpoint(xs) {
+        height: 200px;
+        width: 280px;
+      }
+    }
+
     &_card {
       background: transparent;
-      margin-top: 24px;
+      margin-top: 24px !important;
       padding: 24px;
 
       &_title {

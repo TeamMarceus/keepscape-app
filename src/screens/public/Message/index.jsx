@@ -11,23 +11,33 @@ import 'slick-carousel/slick/slick-theme.css';
 import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
 import { ButtonLink, Card, Text } from '@/components';
 
-import { boholBeaches, cebuBeaches } from './constants/places';
+import { useWindowSize } from '@/hooks';
+
+import { 
+  boholBeaches, 
+  cebuBeaches, 
+  negrosOrientalBeaches, 
+  siquijorBeaches 
+} from './constants/places';
 
 import styles from './styles.module.scss';
 
-const sliderSettings = {
-  className: 'center',
-  centerMode: true,
-  infinite: true,
-  centerPadding: '60px',
-  slidesToShow: 2,
-  vertical: true,
-  verticalSwiping: true,
-};
 
 function Message() {
 
-  const place = 'Cebu';
+  const { windowSize } = useWindowSize(); 
+  
+  const sliderSettings = {
+    className: windowSize.width <= 991 ? null : 'center',
+    centerMode: !(windowSize.width <= 991),
+    infinite: true,
+    centerPadding: windowSize.width <= 991 ? null : '60px',
+    slidesToShow: windowSize.width <= 991 ? 1 : 2,
+    vertical: !(windowSize.width <= 991),
+    verticalSwiping: !(windowSize.width <= 991),
+  };
+
+  const place = 'Bohol';
 
   const beaches = (() => {
     if (place === 'Bohol') {
@@ -35,12 +45,11 @@ function Message() {
     } if (place === 'Cebu') {
       return cebuBeaches;
     } if (place === 'Siquijor') {
-      return [];
+      return siquijorBeaches;
     }
 
-    return [];
+    return negrosOrientalBeaches;
   })();
-  
 
   return (
     <div className={cn(styles.Message, {
@@ -49,16 +58,30 @@ function Message() {
       [styles.Message___siquijor]: place === 'Siquijor',
       [styles.Message___bohol]: place === 'Bohol',
     })}>
-      <div className={styles.Message_left}>
+      <div className={cn(styles.Message_left, {
+        [styles.Message_left___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 991
+      })}
+      >
         <Text 
          className={styles.Message_left_title}
-         colorClass={colorClasses.NEUTRAL['0']}
+         colorClass={(place === 'Negros Oriental' && windowSize.width <= 991) ? 
+          colorClasses.NEUTRAL['800'] :  colorClasses.NEUTRAL['0']}
          type={textTypes.HEADING.XXL}
         >
-          <span className={styles.Message_left_title_place}>{place}</span> <span className={styles.Message_left_title_text}>resides within you</span>
+          <span className={cn(styles.Message_left_title_place, {
+            [styles.Message_left_title_place___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 575
+          })}
+          >
+            {place}
+          </span> {' '}
+          
+          <span className={styles.Message_left_title_text}>resides within you</span>
         </Text>
-
-        <Text colorClass={colorClasses.NEUTRAL['0']}>
+ 
+        <Text 
+          colorClass={(place === 'Negros Oriental' && windowSize.width <= 991) ? 
+          colorClasses.NEUTRAL['800'] :  colorClasses.NEUTRAL['0']}
+        >
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
