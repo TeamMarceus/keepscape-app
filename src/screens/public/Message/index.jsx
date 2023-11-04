@@ -24,7 +24,6 @@ import styles from './styles.module.scss';
 
 
 function Message() {
-
   const { windowSize } = useWindowSize(); 
   
   const sliderSettings = {

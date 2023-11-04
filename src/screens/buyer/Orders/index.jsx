@@ -55,6 +55,7 @@ function Orders() {
     totalPages,
     isCancelling: isOrderCancelling,
     cancelOrder,
+    setOrders,
   } = useBuyerOrders({
     status: filter,
     search,
@@ -304,6 +305,8 @@ function Orders() {
                               {status === orderStatus.AWAITING_BUYER && (
                                 <PaypalButton
                                   className={styles.Orders_orderTotal_buttons_button}
+                                  orderId={id}
+                                  setOrders={setOrders}
                                   total={totalPrice}
                                 />
                               )}

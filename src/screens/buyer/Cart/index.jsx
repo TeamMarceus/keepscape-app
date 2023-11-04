@@ -53,6 +53,7 @@ function Cart() {
         cartItems: cart.cartItems.map((item) => ({
           ...item,
           isSelected: false,
+          quantity: item.quantity > item.totalStock ? item.totalStock : item.quantity,
         })),
       })));
 

@@ -15,6 +15,7 @@ export { default as useCookies } from './useCookies';
 export { default as useInterval } from './useInterval';
 export { default as useNoAuthRoute } from './useNoAuthRoute';
 export { default as useOnClickOutside } from './useOnClickOutside';
+export { default as usePayOrder } from './usePayOrder';
 export { default as usePrivateRoute } from './usePrivateRoute';
 export { default as useProduct } from './useProduct';
 export { default as useProducts } from './useProducts';

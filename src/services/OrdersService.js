@@ -48,6 +48,9 @@ const OrdersService = {
         pageSize,
     },
   }),
+  payOrder: (orderId, paypalOrderId) => axios.post(`${BASE_URL}/buyers/${orderId}/pay`, {
+    paypalOrderId,
+  }),
   updateOrderDeliveryFee: (orderId, body) => axios.put(`${BASE_URL}/sellers/${orderId}`, body, {
     headers: {
       'Content-Type': 'multipart/form-data',

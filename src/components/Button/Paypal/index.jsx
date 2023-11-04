@@ -3,10 +3,17 @@ import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 
+import { usePayOrder } from '@/hooks';
 import { toastError, toastSuccess } from '@/utils/toasts';
 
-function PayPalButton({ className, total }) {
+function PayPalButton({ 
+  className, 
+  total, 
+  orderId, 
+  setOrders 
+}) {
   const paypalRef = useRef();
+  const {isPaying, payOrder } = usePayOrder();
 
   useEffect(() => {
     window.paypal.Buttons({
@@ -18,9 +25,40 @@ function PayPalButton({ className, total }) {
             },
           }],
         }),
-      onApprove: (data, actions) => actions.order.capture().then((details) => {
-        toastSuccess(`Transaction completed by ${details.payer.name.given_name}`);
-        // TODO: Send transaction data to your server for further processing.
+      onApprove: (data, actions) => actions.order.capture().then(async (details) => {
+        const { responseCode: payOrderResponseCode } = await payOrder(orderId, details.id);
+
+            const payOrderCallbacks = {
+              created: () => {
+                toastSuccess('Transaction completed');
+                
+                // Remove the order from the list
+                setOrders((orders) => orders.filter((order) => order.id !== orderId));
+              },
+              invalidFields: () => {
+                toastError('Oops, something went wrong.');
+              },
+              internalError: () => {
+                toastError('Oops, something went wrong.');
+              },
+            };
+
+            switch (payOrderResponseCode) {
+              case 200:
+                payOrderCallbacks.created();
+                break;
+              case 400:
+                payOrderCallbacks.invalidFields();
+                break;
+              case 401:
+                payOrderCallbacks.internalError();
+                break;
+              case 500:
+                payOrderCallbacks.internalError();
+                break;
+              default:
+                break;
+            }
         }),
       onError: (err) => {
         console.error(err);
@@ -44,6 +82,8 @@ function PayPalButton({ className, total }) {
 PayPalButton.propTypes = {
   className: PropTypes.string,
   total: PropTypes.number.isRequired,
+  orderId: PropTypes.string.isRequired,
+  setOrders: PropTypes.func.isRequired,
 };
 
 export default PayPalButton;

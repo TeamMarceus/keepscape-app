@@ -371,8 +371,7 @@ function CartCardList({
                   </Text>
 
                   <IconButton 
-                    // TODO: Add max quantity
-                    disabled={item.quantity >= 10 || isOutOfStock}
+                    disabled={item.quantity >= item.totalStock || isOutOfStock}
                     icon="add"
                     type={iconButtonTypes.OUTLINE.LG}
                     onClick={()=> onQuantityIncrement(cart, item)}
@@ -424,6 +423,7 @@ CartCardList.propTypes = {
       quantity: PropTypes.number,
       price: PropTypes.number,
       isSelected: PropTypes.bool,
+      totalStock: PropTypes.number,
     })),
   })),
   setIsAllSelected: PropTypes.func,
