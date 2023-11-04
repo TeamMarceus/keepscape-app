@@ -44,6 +44,7 @@ const UsersService = {
   retrieveCategories: () => axios.get(`${BASE_URL}/categories`),
   retrievePlaces: () => axios.get(`${BASE_URL}/places`),
   retrieveSellerProfile: (sellerProfileId) => axios.get(`${BASE_URL}/sellers/${sellerProfileId}`),
+  retrieveReview: (productId) => axios.get(`${BASE_URL}/${productId}/review`),
   reviews: (productId,{
     stars,
     page,
@@ -60,6 +61,7 @@ const UsersService = {
       'Content-Type': 'multipart/form-data',
     },
   }),
+  updateReview: (productId, body) => axios.put(`${BASE_URL}/${productId}/reviews`, body),
   sellerProductList: ({
     sellerProfileId,
     search,

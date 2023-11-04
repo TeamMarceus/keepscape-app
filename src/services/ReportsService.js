@@ -4,7 +4,7 @@ import config from './config';
 
 const BASE_URL = `${config.API_URL}/api/reports`;
 
-const AnalyticsService = {
+const ReportsService = {
   productList: ({
     productName,
     sellerName,
@@ -36,6 +36,8 @@ const AnalyticsService = {
   resolveProductReports: (id) => axios.post(`${BASE_URL}/products/${id}/resolve`),
   resolveOrderReports: (id) => axios.post(`${BASE_URL}/orders/${id}/resolve`),
   refund: (id) => axios.post(`${BASE_URL}/orders/${id}/refund`),
+  reportProduct: (id, body) => axios.post(`${BASE_URL}/products/${id}`, body),
+  reportOrder: (id, body) => axios.post(`${BASE_URL}/orders/${id}`, body),
 };
 
-export default AnalyticsService;
+export default ReportsService;

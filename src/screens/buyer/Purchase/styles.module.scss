@@ -38,15 +38,181 @@
     margin-top: 18px;
   }
 
-  &_products {
-    margin-top: 18px;
+  &_orders {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 12px;
+  }
 
-    &_card {
-      margin-top: 16px;
+  &_order {
+    margin-top: 12px;
+  }
+
+  &_info {
+    @include flex-between;
+    border-bottom: 1px solid $neutral-200;
+    padding: 20px 32px 20px 24px;
+
+    &_left {
+      display: flex;
+    }
+
+    &_text {
+      margin-right: 24px !important;
+    }
+
+    &_date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &_buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    &_statusButton {
+      margin-right: 16px !important;
+    }
+
+    &_reportsButton {
+      border-color: $red-400 !important;
+      color: $red-400 !important;
     }
   }
 
+  &_item {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    place-items: center;
+    padding: 12px 24px;
+    margin: 8px;
+  }
+
+  &_product {
+    display: flex;
+    align-items: center;
+    grid-column: 1/5;
+    place-self: normal;
+    gap: 12px;
+
+    &_text {
+      margin-bottom: 8px !important;
+    }
+
+    &_icon {
+      color: $yellow-400;
+      font-size: 24px;
+    }
+
+    &___delivered {
+      box-shadow: $shadow-normal;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 6px 12px;
+
+      &:hover {
+        background-color: $neutral-50;
+        box-shadow: $shadow-raised;
+      }
+    }
+  }
+
+  &_quantity {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 6/8;
+  }
+
+  &_customizationText {
+    @include flex-center;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 250px !important;
+    text-align: center;
+  }
+  
+  &_price {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 9/11;
+  }
+
+  &_qrCode {
+    cursor: pointer;
+    grid-column: 12/13;
+    
+    &_image {
+      box-shadow: $shadow-normal;
+      border-radius: 5px;
+
+      &:hover {
+        border: 1px solid $blue-400;
+        box-shadow: $shadow-raised;
+      }
+    }
+  }
+
+  &_orderTotal {
+    background-color: $blue-0;
+    border-radius: 0 0 5px 5px;
+    border-top: dashed 2px $blue-100;
+    @include flex-between;
+    padding: 24px 32px;
+
+    &_fees {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &_buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      &_button {
+        @include flex-center;
+        width: 180px !important;
+
+        &_spinner {
+          margin-left: 12px;
+          width: unset !important;
+        }
+      }
+    }
+
+    &_text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-right: 12px;
+
+      &_deliveryFee {
+        background-color: $neutral-50;
+        border-radius: 5px;
+        box-shadow: $shadow-normal;
+        padding: 4px 8px;
+        width: fit-content !important;
+
+        &:hover {
+          background-color: $neutral-100;
+        }
+      }
+    }
+  }
+
+  &_pagination {
+    margin: 24px 0 0 !important;
+  }
+
   &_noResults {
-    margin-top: 40px !important;
+    margin-top: 40px;
   }
 }
+

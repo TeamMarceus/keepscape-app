@@ -8,6 +8,7 @@ const OrdersService = {
   addOrderLogs: (orderId, body) => axios.post(`${BASE_URL}/sellers/${orderId}/logs`, body),
   cancelBuyerOrder: (orderId) => axios.post(`${BASE_URL}/buyers/${orderId}/cancel`),
   cancelSellerOrder: (orderId) => axios.post(`${BASE_URL}/sellers/${orderId}/cancel`),
+  confirmOrder: (orderId) => axios.post(`${BASE_URL}/buyers/${orderId}/confirm`),
   count: () => axios.get(`${BASE_URL}/buyers/orders/count`),
   deliverOrder: (orderId) => axios.post(`${BASE_URL}/sellers/${orderId}/deliver`),
   retrieveBuyerOrders: ({

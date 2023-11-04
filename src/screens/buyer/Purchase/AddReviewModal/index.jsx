@@ -4,15 +4,29 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { useSelector } from 'react-redux';
+import { 
+  buttonKinds, 
+  colorNames, 
+  iconButtonTypes, 
+  modalPositions, 
+  modalSizes, 
+  spinnerSizes 
+} from '@/app-globals';
 
-import { buttonKinds, colorNames, iconButtonTypes, modalPositions, modalSizes, spinnerSizes } from '@/app-globals';
-
-import { Button, ControlledTextArea, IconButton, Modal, RatingStars, Spinner } from '@/components';
+import {
+  Button, 
+  ControlledTextArea, 
+  IconButton, 
+  Modal, 
+  Preloader, 
+  Spinner 
+} from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 
-import { getUser } from '@/ducks';
+
+import { useAddProductReview, useProductReview, useUpdateProductReview } from '@/hooks';
+import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
@@ -33,11 +47,12 @@ const validate = (values) => {
 function AddReviewModal({
   isOpen,
   handleClose,
-  title,
+  productId,
 }) {
-  const user = useSelector(getUser);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {isLoading: isProductReviewLoading, productReview } = useProductReview(productId);
+  const {isLoading: isAdding, addProductReview } = useAddProductReview();
+  const {isLoading: isUpdating, updateProductReview } = useUpdateProductReview();
 
   return (
     <Modal
@@ -46,19 +61,20 @@ function AddReviewModal({
       isOpen={isOpen}
       position={modalPositions.CENTER}
       size={modalSizes.SM}
-      title={title}
+      title={ productReview ? 'Update Review' : 'Add Review'}
     >
-      <Formik
+      {isProductReviewLoading ? (
+        <Preloader />
+      ) : (
+        <Formik
         initialValues={{
-          review: '',
-          rating: '',
+          review: productReview?.review || '',
+          rating: productReview?.rating || 0,
         }}
         onSubmit={async (values, { setErrors }) => {
           const currentFormValues = {
             review: values.review,
             rating: values.rating,
-            userId: user.id,
-            userFullName: `${user.firstName} ${user.lastName}`,
           };
 
           const errors = validate(values);
@@ -66,9 +82,74 @@ function AddReviewModal({
             setErrors(errors);
             return;
           }
-          
-          setIsSubmitting(true);
-          setIsSubmitting(false);
+
+          if (!productReview?.id) {
+            const { responseCode: addProductReviewResponseCode } = await addProductReview(productId, currentFormValues);
+  
+            const addProductReviewCallbacks = {
+              created: () => {
+                toastSuccess('Review successfully added.');
+              
+                handleClose();
+              },
+              invalidFields: () => {
+                toastError('Invalid fields.');
+              },
+              internalError: () => {
+                toastError('Oops, something went wrong.');
+              },
+            };
+  
+            switch (addProductReviewResponseCode) {
+              case 200:
+                addProductReviewCallbacks.created();
+                break;
+              case 400:
+                addProductReviewCallbacks.invalidFields();
+                break;
+              case 401:
+                addProductReviewCallbacks.internalError();
+                break;
+              case 500:
+                addProductReviewCallbacks.internalError();
+                break;
+              default:
+                break;
+            }
+          } else {
+            const { responseCode: updateProductReviewResponseCode } = await updateProductReview(productId, currentFormValues);
+  
+            const updateProductReviewCallbacks = {
+              created: () => {
+                toastSuccess('Review successfully updated.');
+              
+                handleClose();
+              },
+              invalidFields: () => {
+                toastError('Invalid fields.');
+              },
+              internalError: () => {
+                toastError('Oops, something went wrong.');
+              },
+            };
+  
+            switch (updateProductReviewResponseCode) {
+              case 200:
+                updateProductReviewCallbacks.created();
+                break;
+              case 400:
+                updateProductReviewCallbacks.invalidFields();
+                break;
+              case 401:
+                updateProductReviewCallbacks.internalError();
+                break;
+              case 500:
+                updateProductReviewCallbacks.internalError();
+                break;
+              default:
+                break;
+            }
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
@@ -97,15 +178,15 @@ function AddReviewModal({
                   
             <Button
               className={styles.AddReviewModal_button}
-              disabled={isSubmitting}
+              disabled={isAdding || isUpdating}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
               <span
                 className={styles.AddReviewModal_button_buttonText}
               >
-                Submit
-                {isSubmitting && (
+                { productReview ? 'Update' : 'Add'}
+                {(isAdding || isUpdating) && (
                   <Spinner
                     className={styles.AddReviewModal_button_spinner}
                     colorName={colorNames.WHITE}
@@ -116,7 +197,8 @@ function AddReviewModal({
             </Button>
           </form>
         )}
-      </Formik>
+        </Formik>
+      )}
     </Modal>
   );
 }
@@ -124,7 +206,7 @@ function AddReviewModal({
 AddReviewModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  productId: PropTypes.string.isRequired,
 }
 
 export default AddReviewModal;

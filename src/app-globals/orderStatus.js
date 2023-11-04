@@ -10,6 +10,7 @@ export const ORDER_STATUS = {
   ON_GOING: 'Ongoing',
   ON_HOLD: 'Onhold',
   COMPLETED: 'Completed',
+  REPORTED: 'Reported',
 };
 
 export default ORDER_STATUS;

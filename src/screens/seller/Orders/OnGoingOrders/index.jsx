@@ -25,7 +25,7 @@ import { useSellerOrders, useWindowSize } from '@/hooks';
 import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
-import DeliveryLogsModal from '../CommonModals/DeliveryLogsModal';
+import DeliveryLogsModal from '../../../common/Modals/DeliveryLogsModal';
 
 import AddLogsModal from './AddLogsModal';
 import styles from './styles.module.scss';

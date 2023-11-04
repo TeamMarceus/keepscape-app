@@ -25,7 +25,7 @@ import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
 import DeliveryDetailsModal from '../../../common/Modals/DeliveryDetailsModal';
 
-import DeliveryLogsModal from '../CommonModals/DeliveryLogsModal';
+import DeliveryLogsModal from '../../../common/Modals/DeliveryLogsModal';
 
 import styles from './styles.module.scss';
 

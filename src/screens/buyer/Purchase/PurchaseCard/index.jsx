@@ -23,7 +23,7 @@ import AddReviewModal from '../AddReviewModal';
 import DeliveryLogsModal from '../DeliveryLogsModal';
 import QrCodeModal from '../QrCodeModal';
 
-import ReportProblemModal from '../ReportProblemModal';
+import ReportProblemModal from '../ReportOrderModal';
 
 import styles from './styles.module.scss';
 
