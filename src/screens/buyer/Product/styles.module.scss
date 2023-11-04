@@ -52,6 +52,15 @@
       margin-left: 30px;
       width: 390px;
 
+      &_header {
+        @include flex-between;
+      }
+
+      &_flag {
+        color: $red-400;
+        font-size: 24px !important;
+      }
+
       &_link {
         cursor: pointer;
       }

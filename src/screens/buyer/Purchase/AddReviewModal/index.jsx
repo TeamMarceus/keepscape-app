@@ -185,7 +185,7 @@ function AddReviewModal({
               <span
                 className={styles.AddReviewModal_button_buttonText}
               >
-                { productReview ? 'Update' : 'Add'}
+                { productReview ? 'Update' : 'Submit'}
                 {(isAdding || isUpdating) && (
                   <Spinner
                     className={styles.AddReviewModal_button_spinner}
