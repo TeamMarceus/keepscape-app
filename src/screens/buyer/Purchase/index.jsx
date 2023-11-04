@@ -149,7 +149,7 @@ function Purchase() {
           className={styles.Purchase_search}
           icon='search'
           name="search"
-          placeholder="You can search by Seller Name, Product Name or Date Ordered"
+          placeholder="You can search by Seller Name, Product Name or Date Purchased"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -186,7 +186,7 @@ function Purchase() {
                               </Button>
 
                               <div className={styles.Purchase_info_date}>
-                                Date Ordered: 
+                                Date Purchased: 
                                 <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
