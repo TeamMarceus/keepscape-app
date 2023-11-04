@@ -240,7 +240,7 @@ function Purchase() {
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            ({ productId, productImageUrl, productName, price, quantity, customizedMessage  }) => (
                             <Card key={productId} className={styles.Purchase_item}>
                               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                               <div 
@@ -291,12 +291,12 @@ function Purchase() {
 
                               <div className={styles.Purchase_customizationText}>
                                 Customization:
-                                {customizationMessage  ? (
+                                {customizedMessage  ? (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {customizationMessage } 
+                                    {customizedMessage } 
                                   </Text>
                                   ) : (
                                   <Text 
