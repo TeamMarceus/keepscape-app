@@ -10,6 +10,7 @@ import {
   buttonTypes,
   colorClasses,
   orderStatus,
+  iconButtonTypes,
 } from '@/app-globals';
 
 import { 
@@ -20,7 +21,9 @@ import {
   Pagination,
   Card, 
   ConfirmModal,
-  PaypalButton
+  PaypalButton,
+  ButtonLink,
+  IconLink
 } from '@/components';
 
 import { useBuyerOrders, useWindowSize } from '@/hooks';
@@ -116,6 +119,24 @@ function Orders() {
               Awaiting Payment
             </Text>
           </Button>
+
+          <Button
+            className={cn(styles.Orders_filters_button, {
+              [styles.Orders_filters_button___active]: filter === orderStatus.CANCELLED,
+            })}
+            type={buttonTypes.TEXT.BLUE}
+            onClick={() => {
+              router.push(`/buyer/account?activeTab=orders&page=${1}&filter=${orderStatus.CANCELLED}`, { scroll: false })
+            }}
+          >
+            <Text
+              className={styles.Orders_filters_button_text}
+              colorClass={colorClasses.NEUTRAL['400']}
+              type={textTypes.HEADING.XXXS}
+            >
+              Cancelled
+            </Text>
+          </Button>
         </div>
 
         <ControlledInput
@@ -172,11 +193,23 @@ function Orders() {
                             <div className={styles.Orders_info_buttons}>
                               <Button
                                 className={styles.Orders_info_statusButton}
-                                icon={status === orderStatus.AWAITING_BUYER ?
-                                  'payments' : 'pending'
+                                icon={(()=> {
+                                  if (status === orderStatus.AWAITING_BUYER) {
+                                    return 'payments';
+                                  } if (status === orderStatus.PENDING) {
+                                    return 'pending';
+                                  } 
+                                    return 'cancel';
+                                  })()
                                 }
-                                type={status === orderStatus.AWAITING_BUYER ? 
-                                  buttonTypes.TEXT.GREEN : buttonTypes.TEXT.BLUE
+                                type={(() => {
+                                    if (status === orderStatus.AWAITING_BUYER) {
+                                      return buttonTypes.TEXT.GREEN
+                                    } if (status === orderStatus.PENDING) {
+                                      return buttonTypes.TEXT.BLUE;
+                                    } 
+                                      return buttonTypes.TEXT.RED;
+                                  })()
                                 }
                                 onClick={() => {
                                   setSelectedOrder({id, deliveryAddress, deliveryFullName, altMobileNumber, phoneNumber});
@@ -184,7 +217,9 @@ function Orders() {
                                   setIsDeliveryDetailsModalOpen(true);
                                 }}
                               >
-                                {status === orderStatus.AWAITING_BUYER ? 'Awaiting Payment' : 'Pending'}
+                                {status === orderStatus.AWAITING_BUYER && 'Awaiting Payment'}
+                                {status === orderStatus.PENDING && 'Pending'}
+                                {status === orderStatus.CANCELLED && 'Cancelled'}
                               </Button>
                             </div>
                             
@@ -252,6 +287,17 @@ function Orders() {
                                   ₱{price.toLocaleString()}
                                 </Text>
                               </div>
+
+                              {status === orderStatus.CANCELLED && 
+                                <IconLink
+                                  className={styles.Orders_buyAgain}
+                                  icon="redo"
+                                  to={`/buyer/product/${productId}`}
+                                  type={iconButtonTypes.OUTLINE.SM}
+                                >
+                                  Buy Again
+                                </IconLink>
+                              }
                             </div>
                             )
                           )}
@@ -311,16 +357,18 @@ function Orders() {
                                 />
                               )}
 
-                              <Button
-                                className={styles.Orders_orderTotal_buttons_button}
-                                type={buttonTypes.SECONDARY.BLUE}
-                                onClick={() => {
-                                  setSelectedOrder({ id });
-                                  toggleCancelConfirmation(true);
-                                }}
-                              >
-                                Cancel Order
-                              </Button>
+                              {status !== orderStatus.CANCELLED && (
+                                <Button
+                                  className={styles.Orders_orderTotal_buttons_button}
+                                  type={buttonTypes.SECONDARY.BLUE}
+                                  onClick={() => {
+                                    setSelectedOrder({ id });
+                                    toggleCancelConfirmation(true);
+                                  }}
+                                >
+                                  Cancel Order
+                                </Button>
+                              )}
                             </div>
                           </div>
                         </Card>

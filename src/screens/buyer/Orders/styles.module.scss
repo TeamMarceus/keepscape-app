@@ -127,6 +127,10 @@
     grid-column: 9/11;
   }
 
+  &_buyAgain {
+    grid-column: 12/13;
+  }
+
   &_orderTotal {
     background-color: $blue-0;
     border-radius: 0 0 5px 5px;
