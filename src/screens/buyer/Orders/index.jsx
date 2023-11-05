@@ -226,7 +226,7 @@ function Orders() {
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizedMessage  }) => (
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
                             <div key={productId} className={styles.Orders_item}>
                               <div className={styles.Orders_product}>
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -260,12 +260,12 @@ function Orders() {
 
                               <div className={styles.Orders_customizationText}>
                                 Customization:
-                                {customizedMessage  ? (
+                                {customizationMessage  ? (
                                   <Text 
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
-                                    {customizedMessage } 
+                                    {customizationMessage } 
                                   </Text>
                                   ) : (
                                   <Text 
