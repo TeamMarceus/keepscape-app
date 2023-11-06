@@ -19,9 +19,11 @@ import {
   Icon, 
   NoResults, 
   Text, 
-  Pagination
+  Pagination,
+  ControlledTextArea
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
 import IdModal from '../../CommonModals/IdModal';
@@ -145,7 +147,7 @@ function ApprovedSellers() {
                       className={cn(
                         styles.ApprovedSellers_grid_header,
                         styles.ApprovedSellers_grid_column
-                      )}
+                     )}
                     >
                       Description
                     </div>
@@ -207,14 +209,22 @@ function ApprovedSellers() {
                             {phoneNumber}
                           </div>
 
-                          <div className={styles.ApprovedSellers_grid_column}>
-                            {description}
-                          </div>
+                          <ControlledTextArea
+                            disabled
+                            inputClassName={cn(styles.ApprovedSellers_grid_column,
+                              styles.ApprovedSellers_grid_column_description)}
+                            name="description"
+                            type={textAreaTypes.SLIM}
+                            value={description}
+                          />
 
-                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                           {/* eslint-disable-next-line @next/next/no-img-element, 
+                           jsx-a11y/click-events-have-key-events, 
+                           jsx-a11y/no-noninteractive-element-interactions */}
                            <img
                             alt="Valid Id"
-                            className={cn(styles.ApprovedSellers_grid_column, styles.ApprovedSellers_grid_column_id)}
+                            className={cn(styles.ApprovedSellers_grid_column, 
+                              styles.ApprovedSellers_grid_column_id)}
                             height={60}
                             src={idImageUrl}
                             width={60}
@@ -224,10 +234,13 @@ function ApprovedSellers() {
                             }}
                           />
 
-                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          {/* eslint-disable-next-line @next/next/no-img-element, 
+                          jsx-a11y/click-events-have-key-events, 
+                          jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.ApprovedSellers_grid_column, styles.ApprovedSellers_grid_column_id)}
+                            className={cn(styles.ApprovedSellers_grid_column, 
+                              styles.ApprovedSellers_grid_column_id)}
                             height={60}
                             src={businessPermitUrl}
                             width={60}

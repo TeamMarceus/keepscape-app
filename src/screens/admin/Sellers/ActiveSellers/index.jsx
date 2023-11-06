@@ -18,9 +18,11 @@ import {
   Icon, 
   NoResults, 
   Text,
-  Pagination, 
+  Pagination,
+  ControlledTextArea, 
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { useSellers, useWindowSize } from '@/hooks';
 
 import IdModal from '../../CommonModals/IdModal';
@@ -206,14 +208,22 @@ function ActiveSellers() {
                             {phoneNumber} 
                           </div>
 
-                          <div className={styles.ActiveSellers_grid_column}>
-                            {description}
-                          </div>
+                          <ControlledTextArea
+                            disabled
+                            inputClassName={cn(styles.ActiveSellers_grid_column,
+                              styles.ActiveSellers_grid_column_description)}
+                            name="description"
+                            type={textAreaTypes.SLIM}
+                            value={description}
+                          />
 
-                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          {/* eslint-disable-next-line @next/next/no-img-element, 
+                          jsx-a11y/click-events-have-key-events, 
+                          jsx-a11y/no-noninteractive-element-interactions */}
                           <img
-                            alt="Government Id"
-                            className={cn(styles.ActiveSellers_grid_column, styles.ActiveSellers_grid_column_id)}
+                            alt="Valid Id"
+                            className={cn(styles.ActiveSellers_grid_column, 
+                              styles.ActiveSellers_grid_column_id)}
                             height={60}
                             src={idImageUrl}
                             width={60}
@@ -223,10 +233,12 @@ function ActiveSellers() {
                             }}
                           />
 
-                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, 
+                          jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.ActiveSellers_grid_column, styles.ActiveSellers_grid_column_id)}
+                            className={cn(styles.ActiveSellers_grid_column, 
+                              styles.ActiveSellers_grid_column_id)}
                             height={60}
                             src={businessPermitUrl}
                             width={60}

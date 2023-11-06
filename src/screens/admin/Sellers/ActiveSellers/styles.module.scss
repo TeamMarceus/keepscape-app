@@ -36,12 +36,16 @@
           box-shadow: $shadow-raised;
         }
       }
+
+      &_description {
+        text-align: left;
+      }
     }
 
     &_sellerGrid {
       display: grid;
       grid-template-columns: repeat(9, 1fr);
-      gap: 4px;
+      gap: 8px;
       place-items: center;
       margin-top: 12px;
       padding: 20px 8px;

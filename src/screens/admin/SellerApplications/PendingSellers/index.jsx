@@ -19,9 +19,11 @@ import {
   Icon, 
   NoResults, 
   Text, 
-  Pagination
+  Pagination,
+  ControlledTextArea
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { useSellerApplications, useWindowSize } from '@/hooks';
 
 import IdModal from '../../CommonModals/IdModal';
@@ -183,7 +185,8 @@ function PendingSellers() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredApplications.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
+                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, 
+                      phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PendingSellers_grid_applicationGrid}>
@@ -207,14 +210,22 @@ function PendingSellers() {
                             {phoneNumber}
                           </div>
 
-                          <div className={styles.PendingSellers_grid_column}>
-                            {description}
-                          </div>
+                          <ControlledTextArea
+                            disabled
+                            inputClassName={cn(styles.PendingSellers_grid_column,
+                              styles.PendingSellers_grid_column_description)}
+                            name="description"
+                            type={textAreaTypes.SLIM}
+                            value={description}
+                          />
 
-                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                           {/* eslint-disable-next-line @next/next/no-img-element, 
+                           jsx-a11y/click-events-have-key-events, 
+                           jsx-a11y/no-noninteractive-element-interactions */}
                            <img
                             alt="Valid Id"
-                            className={cn(styles.PendingSellers_grid_column, styles.PendingSellers_grid_column_id)}
+                            className={cn(styles.PendingSellers_grid_column, 
+                              styles.PendingSellers_grid_column_id)}
                             height={60}
                             src={idImageUrl}
                             width={60}
@@ -224,10 +235,13 @@ function PendingSellers() {
                             }}
                           />
 
-                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          {/* eslint-disable-next-line @next/next/no-img-element,
+                          jsx-a11y/click-events-have-key-events, 
+                          jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.PendingSellers_grid_column, styles.PendingSellers_grid_column_id)}
+                            className={cn(styles.PendingSellers_grid_column, 
+                              styles.PendingSellers_grid_column_id)}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
