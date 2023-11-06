@@ -51,7 +51,7 @@ function PendingApprovals() {
     orders,
     totalPages,
   } = useSellerOrders({
-    status: orderStatus.AWAITING_BUYER,
+    status: orderStatus.AWAITING_CONFIRMATION,
     search,
     page,
     pageSize: 10,

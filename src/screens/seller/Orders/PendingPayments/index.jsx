@@ -51,7 +51,7 @@ function PendingPayements() {
     orders,
     totalPages,
   } = useSellerOrders({
-    status: orderStatus.AWAITING_CONFIRMATION,
+    status: orderStatus.AWAITING_BUYER,
     search,
     page,
     pageSize: 10,
