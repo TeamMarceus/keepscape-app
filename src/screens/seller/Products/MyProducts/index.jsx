@@ -167,7 +167,7 @@ function MyProducts() {
                     </div>
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, images, name, quantity, price, stars, totalSold  }) =>
+                    ({ id, dateTimeCreated, images, name, quantity, buyerPrice, stars, totalSold  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.MyProducts_grid_productGrid}>
@@ -193,7 +193,7 @@ function MyProducts() {
                           </div>
 
                           <div className={styles.MyProducts_grid_column}>
-                            ₱{price.toLocaleString()}
+                            ₱{buyerPrice.toLocaleString()}
                           </div>
                       
                           <div className={styles.MyProducts_grid_column}>

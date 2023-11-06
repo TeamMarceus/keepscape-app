@@ -179,7 +179,7 @@ function HiddenProducts() {
 
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, images, name, quantity, price, totalSold, stars  }) =>
+                    ({ id, dateTimeCreated, images, name, quantity, buyerPrice, totalSold, stars  }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
@@ -206,7 +206,7 @@ function HiddenProducts() {
                           </div>
 
                           <div className={styles.HiddenProducts_grid_column}>
-                            ₱{price.toLocaleString()}
+                            ₱{buyerPrice.toLocaleString()}
                           </div>
                       
                           <div className={styles.HiddenProducts_grid_column}>
