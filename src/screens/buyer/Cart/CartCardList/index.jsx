@@ -24,7 +24,7 @@ import {
 
 import { getCartCount } from '@/ducks';
 import { actions as usersActions } from '@/ducks/reducers/users';
-import { useActionDispatch } from '@/hooks';
+import { useActionDispatch, useUpdateCart } from '@/hooks';
 
 import { textAreaTypes } from '../../../../components/TextArea/constants';
 
@@ -46,6 +46,11 @@ function CartCardList({
   const loginUpdate = useActionDispatch(
     usersActions.loginActions.loginUpdate
   );
+
+  const {
+    isUpdating: isUpdatingCart,
+    updateCart,
+  } = useUpdateCart();
 
   useEffect (() => {
     // Iterate through all cartItems set the total price of all selected cartItems
@@ -179,9 +184,9 @@ function CartCardList({
     } 
   }
 
-  const onCustomizationChange = (cart, item, value) => {
-    // Set the cart item customization to be changed
-    setUserCart(userCart.map((prevCart) => {
+  const onCustomizationChange = async (cart, item, value) => {
+     // Set the cart item customization to be changed
+     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
         return {
           ...prevCart,
@@ -200,9 +205,19 @@ function CartCardList({
 
       return prevCart;
     }));
+
+    // Update the cart item customization
+    const { responsCode: updateCartResponseCode } = await updateCart({
+      cartItems: {
+        [item.id]: {
+          quantity: item.quantity,
+          customizationMessage: value,
+        }
+      }
+    });
   }
 
-  const onQuantityIncrement = (cart, item) => {
+  const onQuantityIncrement = async (cart, item) => {
     // Set the cart item quantity to be incremented
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
@@ -223,9 +238,19 @@ function CartCardList({
 
       return prevCart;
     }));
+
+    // Update the cart item quantity
+    const { responsCode: updateCartResponseCode } = await updateCart({
+      cartItems: {
+        [item.id]: {
+          quantity: item.quantity + 1,
+          customizationMessage: item.customizationMessage,
+        }
+      }
+    });
   }
 
-  const onQuantityDecrement = (cart, item) => {
+  const onQuantityDecrement = async (cart, item) => {
     // Set the cart item quantity to be decremented
     setUserCart(userCart.map((prevCart) => {
       if (prevCart.id === cart.id) {
@@ -246,6 +271,16 @@ function CartCardList({
 
       return prevCart;
     }));
+
+    // Update the cart item quantity
+    const { responsCode: updateCartResponseCode } = await updateCart({
+      cartItems: {
+        [item.id]: {
+          quantity: item.quantity - 1,
+          customizationMessage: item.customizationMessage,
+        }
+      }
+    });
   }
 
   const onDelete = async (cart, item) => {
@@ -262,8 +297,6 @@ function CartCardList({
 
       return prevCart;
     }));
-
-    loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - 1 });
   }
 
   return (

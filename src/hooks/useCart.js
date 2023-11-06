@@ -25,7 +25,7 @@ const useCart = () => {
       if (deleteCartItemStatus === 200) {
         toastSuccess(itemIds.length > 1 ? 'Items successfully deleted' : 'Item successfully deleted');
         
-        loginUpdate({ cart_count: cartCount === 1 ? {} : cartCount - itemIds.length });
+        loginUpdate({ cart_count: cartCount - itemIds.length === 0 ? {} : cartCount - itemIds.length });
       } 
 
       setIsDeleting(false);

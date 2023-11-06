@@ -292,8 +292,7 @@ function Cart() {
                   disabled={totalPrice === 0}
                   to={(user?.deliveryFullName && user?.deliveryAddress) ? 
                     '/buyer/checkout' : '/buyer/delivery'}
-                  onClick={() => {
-                    // Update the checkout_cart property of the user with the only the selected cartItems
+                  onClick={ async () => {
                       loginUpdate({
                         checkout_cart: newUserCart.map((cart) => ({
                           ...cart,
