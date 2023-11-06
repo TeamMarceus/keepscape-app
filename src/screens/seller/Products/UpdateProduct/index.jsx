@@ -112,7 +112,7 @@ function UpdateProduct({id}) {
             categories: product.categories.map((category) => ({label: category.name, value: category.id})), 
             quantity: product.quantity,
             isCustomizable: product.isCustomizable,
-            price: product.price,
+            price: product.sellerPrice,
           }}
           onSubmit={async (values, { setErrors }) => {
             const currentFormValues = {

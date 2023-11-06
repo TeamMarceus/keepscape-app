@@ -181,7 +181,7 @@ function Product({ id }) {
                   colorClass={colorClasses.GREEN['200']}
                   type={textTypes.HEADING.MD}
                 >
-                  ₱{product.price.toLocaleString()}
+                  ₱{product.buyerPrice.toLocaleString()}
                 </Text>
               </div>
               
@@ -257,7 +257,7 @@ function Product({ id }) {
                               id: '1',
                               productId: product.id,
                               name: product.name,
-                              price: product.price,
+                              price: product.buyerPrice,
                               quantity,
                               productImageUrl: product.images[currentImageIndex],
                               customizationMessage: customInput,
