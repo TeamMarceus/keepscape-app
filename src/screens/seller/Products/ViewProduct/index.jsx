@@ -172,7 +172,7 @@ function ViewProduct({ id }) {
                 colorClass={colorClasses.GREEN['200']}
                 type={textTypes.HEADING.MD}
               >
-                ₱{product.price.toLocaleString()}
+                ₱{product.buyerPrice.toLocaleString()}
               </Text>
             </div>
             
