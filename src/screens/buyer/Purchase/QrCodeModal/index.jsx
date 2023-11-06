@@ -27,7 +27,7 @@ function QrCodeModal({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img 
-        alt="QR Code"
+        alt="Generating QR Code..."
         className={styles.QrCodeModal_qrCode}
         src={qrCode}
       />

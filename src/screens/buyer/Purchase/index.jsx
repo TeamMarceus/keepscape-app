@@ -318,7 +318,7 @@ function Purchase() {
                               <div className={styles.Purchase_qrCode}>
                               {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                                 <img
-                                  alt='QR Code'
+                                  alt='Generating QR Code...'
                                   className={styles.Purchase_qrCode_image}
                                   height={60}
                                   src={qrImageUrl}
