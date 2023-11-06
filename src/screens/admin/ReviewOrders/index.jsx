@@ -14,11 +14,9 @@ import {
 
 import { 
   Button, 
-  ButtonLink, 
   Card, 
   ConfirmModal, 
   ControlledInput, 
-  Icon, 
   IconButton, 
   NoResults, 
   Pagination, 
@@ -28,11 +26,13 @@ import {
 
 import { useReportedOrders, useWindowSize } from '@/hooks';
 
+import DeliveryFeeProofModal from '@/screens/common/Modals/DeliveryFeeProofModal';
+
+import DeliveryLogsModal from '@/screens/common/Modals/DeliveryLogsModal';
+
 import BuyerModal from '../../common/Modals/BuyerModal';
 
 import SellerModal from '../CommonModals/SellerModal';
-
-import DeliveryLogsModal from './DeliveryLogsModal';
 
 import OrderReportModal from './OrderReportModal';
 import PreloaderOrders from './Preloader';
@@ -50,6 +50,7 @@ function ReviewOrders() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
 
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
@@ -243,21 +244,47 @@ function ReviewOrders() {
                           </div>
 
                           <div className={styles.ReviewOrders_orderTotal}>
-                            <div className={styles.ReviewOrders_orderTotal_text}>
-                              <Text 
-                                colorClass={colorClasses.NEUTRAL['400']}
-                                type={textTypes.HEADING.XXXS}
+                            <div className={styles.ReviewOrders_orderTotal_fees}>
+                              <Button 
+                                className={cn(styles.ReviewOrders_orderTotal_text, 
+                                  styles.ReviewOrders_orderTotal_text_deliveryFee)}
+                                type={buttonTypes.TEXT.NEUTRAL}
+                                onClick={() => {
+                                  setSelectedOrder({id, deliveryFeeProofImageUrl});
+                                  setIsDeliveryFeeProofModalOpen(true);
+                                }}
                               >
-                                Order Total:
-                              </Text>
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXXS}
+                                >
+                                  Delivery Fee:
+                                </Text>
 
-                              <Text 
-                                colorClass={colorClasses.BLUE['300']}
-                                type={textTypes.HEADING.XXS}
-                              >
-                                ₱{totalPrice.toLocaleString()}
-                              </Text>    
-                            </div> 
+                                <Text 
+                                  colorClass={colorClasses.BLUE['300']}
+                                  type={textTypes.HEADING.XXXS}
+                                >
+                                  ₱{deliveryFee.toLocaleString()}
+                                </Text>    
+                              </Button> 
+                              
+                              <div className={styles.ReviewOrders_orderTotal_text}>
+                                <Text 
+                                  colorClass={colorClasses.NEUTRAL['400']}
+                                  type={textTypes.HEADING.XXS}
+                                >
+                                  Order Total:
+                                </Text>
+
+                                <Text 
+                                  colorClass={colorClasses.GREEN['300']}
+                                  type={textTypes.HEADING.XS}
+                                >
+                                  ₱{totalPrice.toLocaleString()}
+                                </Text>    
+                              </div> 
+                            </div>
 
                             <div className={styles.ReviewOrders_orderTotal_buttons}> 
                               <Button
@@ -318,15 +345,24 @@ function ReviewOrders() {
             )}
           </>
         )}
-
       </div>
+
+      {isDeliveryFeeProofModalOpen && (
+        <DeliveryFeeProofModal
+          handleClose={() => setIsDeliveryFeeProofModalOpen(false)}
+          isOpen={isDeliveryFeeProofModalOpen}
+          proof={selectedOrder.deliveryFeeProofImageUrl}
+          title="Delivery Fee Proof"
+        />
+      )}
 
       {isDeliveryLogsModalOpen &&
         <DeliveryLogsModal
           deliveryDetails={
             (() => ({
               fullName: selectedOrder.buyer.deliveryFullName,
-              contactNumber: selectedOrder.buyer.altMobileNumber,
+              contactNumber: selectedOrder.buyer.phoneNumber,
+              altMobileNumber: selectedOrder.buyer.altMobileNumber,
               fullAddress: selectedOrder.buyer.deliveryAddress,
             }))()
           }

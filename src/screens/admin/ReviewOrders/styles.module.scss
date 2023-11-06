@@ -104,6 +104,12 @@
     @include flex-between;
     padding: 24px 32px;
 
+    &_fees {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     &_buttons {
       display: flex;
       align-items: center;
@@ -125,6 +131,18 @@
       align-items: center;
       gap: 12px;
       margin-right: 12px;
+
+      &_deliveryFee {
+        background-color: $neutral-50;
+        border-radius: 5px;
+        box-shadow: $shadow-normal;
+        padding: 4px 8px !important;
+        width: fit-content !important;
+
+        &:hover {
+          background-color: $neutral-100;
+        }
+      }
     }
   }
 

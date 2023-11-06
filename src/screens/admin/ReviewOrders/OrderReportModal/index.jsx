@@ -41,12 +41,12 @@ function OrderReportModal({
           </div>
 
           <Text colorClass={colorClasses.NEUTRAL['400']}>
-            {report.dateTimeCreated.split('T')[0]}
+            {report?.dateTimeCreated.split('T')[0]}
           </Text>
         </div>
 
         <Text className={styles.OrderReportModal_report_reason}>
-          {report.reason}
+          {report?.reason}
         </Text>
       </Card>
     </Modal>

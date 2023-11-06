@@ -209,7 +209,7 @@ function PendingApprovals() {
                           )}
 
                           <div className={styles.PendingApprovals_orderTotal}>
-                          <Button 
+                            <Button 
                               className={cn(styles.PendingApprovals_orderTotal_text, 
                                 styles.PendingApprovals_orderTotal_text_deliveryFee)}
                               type={buttonTypes.TEXT.NEUTRAL}

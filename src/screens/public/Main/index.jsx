@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,6 @@ import { getUser } from '@/ducks';
 import { useBuyerSuggestions, useProductCategories, useProducts, useWindowSize } from '@/hooks';
 
 import { beaches } from '../constants/beaches';
-import { categories } from '../constants/categories';
 import { provinces } from '../constants/provinces';
 
 import styles from './styles.module.scss'
@@ -123,7 +122,7 @@ function Main() {
         </div>
       </div>
 
-      {user.id && (
+      {(user.id && user?.userType === userTypes.BUYER) && (
         isSuggestionsLoading ? (
           <Preloader />
         ) : (
