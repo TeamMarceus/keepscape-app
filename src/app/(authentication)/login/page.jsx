@@ -16,7 +16,6 @@ import {
   spinnerSizes,
   textTypes,
   userStatus,
-  userTypes,
 } from '@/app-globals';
 
 import {
