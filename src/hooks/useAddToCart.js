@@ -25,7 +25,7 @@ const useAddToCart = () => {
 
       if (addToCartStatus === 200) {
         toastSuccess('Product successfully added to cart.');
-        loginUpdate({ cart_count: isEmpty(cartCount)  ? 1 : cartCount + 1 });
+        loginUpdate({ cart_count: (Object.keys(cartCount).length === 0 && typeof cartCount !== 'number') ? 1 : cartCount + 1 });
       } else {
         toastError('Oops Something Went Wrong.');
       }
