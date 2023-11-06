@@ -2,6 +2,6 @@ import React from 'react';
 
 import ScreenLoader from '@/components/ScreenLoader';
 
-export default function MessageLoading() {
+export default function GiftLoading() {
   return <ScreenLoader />;
 }

@@ -13,7 +13,7 @@ function PayPalButton({
   setOrders 
 }) {
   const paypalRef = useRef();
-  const {isPaying, payOrder } = usePayOrder();
+  const {isPaying, payOrder, generateGift } = usePayOrder();
 
   useEffect(() => {
     window.paypal.Buttons({
@@ -29,11 +29,12 @@ function PayPalButton({
         const { responseCode: payOrderResponseCode } = await payOrder(orderId, details.id);
 
             const payOrderCallbacks = {
-              created: () => {
+              created: async () => {
                 toastSuccess('Transaction completed');
-                
                 // Remove the order from the list
                 setOrders((orders) => orders.filter((order) => order.id !== orderId));
+
+                await generateGift(orderId);
               },
               invalidFields: () => {
                 toastError('Oops, something went wrong.');

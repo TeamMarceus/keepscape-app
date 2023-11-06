@@ -3,15 +3,17 @@ import React from 'react';
 import cn from 'classnames';
 
 import Image from 'next/image';
-import Slider from 'react-slick';
+import PropTypes from 'prop-types';
 
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
-import { ButtonLink, Card, Text } from '@/components';
 
-import { useWindowSize } from '@/hooks';
+import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
+import { ButtonLink, Card, ScreenLoader, Text } from '@/components';
+
+import { useGift, useWindowSize } from '@/hooks';
 
 import { 
   boholBeaches, 
@@ -23,7 +25,7 @@ import {
 import styles from './styles.module.scss';
 
 
-function Message() {
+function Gift({ id }) {
   const { windowSize } = useWindowSize(); 
   
   const sliderSettings = {
@@ -35,8 +37,15 @@ function Message() {
     vertical: !(windowSize.width <= 991),
     verticalSwiping: !(windowSize.width <= 991),
   };
+  
+  const {isLoading: isGiftLoading, gift} = useGift(id);
 
-  const place = 'Bohol';
+
+  if (isGiftLoading) {
+    return <ScreenLoader />
+  }
+
+  const place = gift?.place;
 
   const beaches = (() => {
     if (place === 'Bohol') {
@@ -50,45 +59,43 @@ function Message() {
     return negrosOrientalBeaches;
   })();
 
+
   return (
-    <div className={cn(styles.Message, {
-      [styles.Message___negrosOriental]: place === 'Negros Oriental',
-      [styles.Message___cebu]: place === 'Cebu',
-      [styles.Message___siquijor]: place === 'Siquijor',
-      [styles.Message___bohol]: place === 'Bohol',
+    <div className={cn(styles.Gift, {
+      [styles.Gift___negrosOriental]: place === 'Negros Oriental',
+      [styles.Gift___cebu]: place === 'Cebu',
+      [styles.Gift___siquijor]: place === 'Siquijor',
+      [styles.Gift___bohol]: place === 'Bohol',
     })}>
-      <div className={cn(styles.Message_left, {
-        [styles.Message_left___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 991
+      <div className={cn(styles.Gift_left, {
+        [styles.Gift_left___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 991
       })}
       >
         <Text 
-         className={styles.Message_left_title}
+         className={styles.Gift_left_title}
          colorClass={(place === 'Negros Oriental' && windowSize.width <= 991) ? 
           colorClasses.NEUTRAL['800'] :  colorClasses.NEUTRAL['0']}
          type={textTypes.HEADING.XXL}
         >
-          <span className={cn(styles.Message_left_title_place, {
-            [styles.Message_left_title_place___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 575
+          <span className={cn(styles.Gift_left_title_place, {
+            [styles.Gift_left_title_place___negrosOriental]: place === 'Negros Oriental' && windowSize.width <= 575
           })}
           >
             {place}
           </span> {' '}
           
-          <span className={styles.Message_left_title_text}>resides within you</span>
+          <span className={styles.Gift_left_title_text}>resides within you</span>
         </Text>
  
         <Text 
-          colorClass={(place === 'Negros Oriental' && windowSize.width <= 991) ? 
-          colorClasses.NEUTRAL['800'] :  colorClasses.NEUTRAL['0']}
+          className={styles.Gift_left_message}
+          colorClass={colorClasses.NEUTRAL['0']}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid amet quam nihil ab ad debitis commodi dolores sed, dolorem unde sapiente, quo molestias exercitationem a laudantium! Dolorum aspernatur at repudiandae?
+         {gift.message}
         </Text>
 
         <ButtonLink
-          className={styles.Message_button}
+          className={styles.Gift_button}
           icon='login'
           iconPosition='right'
           to="/keepscape"
@@ -97,10 +104,10 @@ function Message() {
         </ButtonLink>
       </div>
 
-      <div className={styles.Message_right}>
-        <div className={styles.Message_right_links}>
+      <div className={styles.Gift_right}>
+        <div className={styles.Gift_right_links}>
           <ButtonLink 
-            className={styles.Message_right_button}
+            className={styles.Gift_right_button}
             to={(() => {
               if (place === 'Bohol') {
                 return 'https://www.aroundbohol.com/top-10-beaches-of-bohol/';
@@ -124,7 +131,7 @@ function Message() {
           </ButtonLink>
 
           <ButtonLink 
-            className={styles.Message_right_button}
+            className={styles.Gift_right_button}
             to={(() => {
               if (place === 'Bohol') {
                 return 'https://www.tripadvisor.com.ph/Attractions-g294259-Activities-Bohol_Island_Bohol_Province_Visayas.html';
@@ -148,14 +155,14 @@ function Message() {
           </ButtonLink>
         </div>
 
-        <div className={styles.Message_right_slider}>
+        <div className={styles.Gift_right_slider}>
           <Slider {...sliderSettings}>
             {beaches.map((beach) => (
-              <div key={beach.name} className={styles.Message_right_image}>
+              <div key={beach.name} className={styles.Gift_right_image}>
                 <Image
                   priority
                   alt={beach.name}
-                  className={styles.Message_right_image}
+                  className={styles.Gift_right_image}
                   src={beach.image}
                   width={500}
                 />
@@ -164,9 +171,9 @@ function Message() {
           </Slider>
         </div>
 
-        <Card className={styles.Message_right_card}>
+        <Card className={styles.Gift_right_card}>
           <Text
-            className={styles.Message_right_card_title}
+            className={styles.Gift_right_card_title}
             colorClass={colorClasses.NEUTRAL['0']}
             type={textTypes.HEADING.XXS}
           >
@@ -178,7 +185,7 @@ function Message() {
           </Text>
 
           <ButtonLink
-            className={styles.Message_right_card_button}
+            className={styles.Gift_right_card_button}
             icon='arrow_right'
             iconPosition='right'
             to={
@@ -206,4 +213,8 @@ function Message() {
   )
 }
 
-export default Message;
+Gift.propTypes = {
+  id: PropTypes.string.isRequired,
+}
+
+export default Gift;

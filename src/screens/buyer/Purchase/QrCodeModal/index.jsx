@@ -6,6 +6,8 @@ import { modalPositions, modalSizes } from '@/app-globals';
 
 import { Button, Modal } from '@/components';
 
+import { toastSuccess } from '@/utils/toasts';
+
 import styles from './styles.module.scss';
 
 function QrCodeModal({
@@ -32,7 +34,10 @@ function QrCodeModal({
 
       <Button
         className={styles.QrCodeModal_button}
-        onClick={() => {}}
+        onClick={() => {
+          navigator.clipboard.writeText(qrCode);
+          toastSuccess('Copied to clipboard');
+        }}
       >
         Share QR Code
       </Button>

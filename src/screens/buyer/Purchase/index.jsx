@@ -240,7 +240,7 @@ function Purchase() {
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
+                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage, qrImageUrl  }) => (
                             <Card key={productId} className={styles.Purchase_item}>
                               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                               <div 
@@ -325,10 +325,10 @@ function Purchase() {
                                   alt='QR Code'
                                   className={styles.Purchase_qrCode_image}
                                   height={60}
-                                  src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                                  src={qrImageUrl}
                                   width={60}
                                   onClick={() => {
-                                    setSelectedPurchase({id, qrCode: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg', name: productName});
+                                    setSelectedPurchase({id, qrCode: qrImageUrl, name: productName});
                                     setIsQrCodeModalOpen(true);
                                   }}
                                 />

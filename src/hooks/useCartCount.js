@@ -19,7 +19,6 @@ const useCartCount = () => {
       const { data: getCartCountResponse } = await CartsService.count();
   
       if (getCartCountResponse) {
-        console.log(getCartCountResponse);
         loginUpdate({ cart_count: getCartCountResponse === 0 ? {} : getCartCountResponse });
       }
   

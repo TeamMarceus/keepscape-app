@@ -24,7 +24,26 @@ const usePayOrder = () => {
     return { responseCode };
   };
 
-  return { isPaying, payOrder };
+  const generateGift = async (orderId) => {
+    setIsPaying(true);
+
+    let responseCode;
+
+    try {
+      const response = await OrdersService.generateGift(orderId);
+
+      responseCode = response.status;
+    } catch (error) {
+      responseCode = error.response.status;
+      setIsPaying(false);
+    }
+
+    setIsPaying(false);
+
+    return { responseCode };
+  };
+
+  return { isPaying, payOrder, generateGift };
 };
 
 export default usePayOrder;

@@ -24,7 +24,7 @@ const useAddToCart = () => {
 
       if (addToCartStatus === 200) {
         toastSuccess('Product successfully added to cart.');
-        loginUpdate({ cart_count: cartCount + 1 });
+        loginUpdate({ cart_count: cartCount === 0 ? 1 : cartCount + 1 });
       } else {
         toastError('Oops Something Went Wrong.');
       }

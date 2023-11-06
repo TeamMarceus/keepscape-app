@@ -11,6 +11,8 @@ const OrdersService = {
   confirmOrder: (orderId) => axios.post(`${BASE_URL}/buyers/${orderId}/confirm`),
   count: () => axios.get(`${BASE_URL}/buyers/orders/count`),
   deliverOrder: (orderId) => axios.post(`${BASE_URL}/sellers/${orderId}/deliver`),
+  generateGift: (orderId) => axios.post(`${BASE_URL}/buyers/${orderId}/gift`),
+  retrieveGift: (orderItemId) => axios.get(`${BASE_URL}/buyers/orders/gift/${orderItemId}`),
   retrieveBuyerOrders: ({
       status,
       search,

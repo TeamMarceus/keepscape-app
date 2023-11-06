@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import styles from './styles.module.scss';
 
 export const metadata = {
-  title: 'Keepscape Philippines | Message',
+  title: 'Keepscape Philippines | Gift',
 };
 
-export default function MessageLayout({ children }) {
+export default function GiftLayout({ children }) {
   return <section className={styles.container}>
     {children}
   </section>;
 }
 
-MessageLayout.propTypes = {
+GiftLayout.propTypes = {
   children: PropTypes.any,
 };

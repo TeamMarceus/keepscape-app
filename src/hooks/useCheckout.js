@@ -27,7 +27,7 @@ const useCheckout = () => {
         toastSuccess('Order successfully placed.');
 
         loginUpdate({ 
-          cart_count: cartCount === 1 ? {} : cartCount - cartItemIds.length, 
+          cart_count: cartCount === cartItemIds.length ? {} : cartCount - cartItemIds.length, 
           checkout_cart: [],
         });
       }

@@ -14,6 +14,7 @@ export { default as useCartCount } from './useCartCount';
 export { default as useCheckout } from './useCheckout';
 export { default as useCookies } from './useCookies';
 export { default as useInterval } from './useInterval';
+export { default as useGift } from './useGift';
 export { default as useNoAuthRoute } from './useNoAuthRoute';
 export { default as useOnClickOutside } from './useOnClickOutside';
 export { default as usePayOrder } from './usePayOrder';
