@@ -170,6 +170,9 @@ function AddProduct() {
               invalidFields: () => {
                 toastError('Invalid fields.');
               },
+              tryAgain: () => {
+                toastError('Oops, something went wrong. Please try again.');
+              },
               internalError: () => {
                 toastError('Oops, something went wrong.');
               },
@@ -184,6 +187,9 @@ function AddProduct() {
                 break;
               case 401:
                 addProductCallbacks.internalError();
+                break;
+              case 415:
+                addProductCallbacks.tryAgain();
                 break;
               case 500:
                 addProductCallbacks.internalError();
