@@ -350,6 +350,7 @@ function ReviewOrders() {
 
       {isBuyerModalOpen && (
         <BuyerModal
+          hasUserId
           buyer={selectedOrder.buyer}
           handleClose={() => setIsBuyerModalOpen(false)}
           isOpen={isBuyerModalOpen}
