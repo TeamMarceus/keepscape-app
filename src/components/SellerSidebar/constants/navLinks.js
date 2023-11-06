@@ -16,8 +16,12 @@ const navLinks = {
       icon: 'shopping_cart',
       subLinks: [
         {
-          label: 'Onhold Orders',
-          to: SELLER_ROUTES.ON_HOLD_ORDERS,
+          label: 'Pending Approvals',
+          to: SELLER_ROUTES.PENDING_APPROVAL,
+        },
+        {
+          label: 'Pending Payments',
+          to: SELLER_ROUTES.PENDING_PAYMENT,
         },
         {
           label: 'Pending Orders',

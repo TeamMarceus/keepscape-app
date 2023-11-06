@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import cn from 'classnames';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import {
@@ -23,14 +24,13 @@ import { useSellerOrders, useWindowSize } from '@/hooks';
 import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 import BuyerModal from '@/screens/common/Modals/BuyerModal';
 
-import DeliveryDetailsModal from '../../../common/Modals/DeliveryDetailsModal';
+import DeliveryFeeProofModal from '@/screens/common/Modals/DeliveryFeeProofModal';
 
-import DeliveryLogsModal from '../../../common/Modals/DeliveryLogsModal';
+import DeliveryDetailsModal from '../../../common/Modals/DeliveryDetailsModal';
 
 import styles from './styles.module.scss';
 
-
-function OnholdOrders() {
+function PendingApprovals() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { windowSize } = useWindowSize();
@@ -40,7 +40,7 @@ function OnholdOrders() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1)
 
-  const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
   const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
 
@@ -51,7 +51,7 @@ function OnholdOrders() {
     orders,
     totalPages,
   } = useSellerOrders({
-    status: orderStatus.ON_HOLD,
+    status: orderStatus.AWAITING_BUYER,
     search,
     page,
     pageSize: 10,
@@ -69,13 +69,13 @@ function OnholdOrders() {
   });
   return (
     <>
-      <div className={styles.OnholdOrders}>
+      <div className={styles.PendingApprovals}>
         <Text type={textTypes.HEADING.XS}>
-          Onhold Orders
+          Pending Approvals
         </Text>
 
         <ControlledInput
-          className={styles.OnholdOrders_search}
+          className={styles.PendingApprovals_search}
           icon="search"
           name="search"
           placeholder="You can search by Buyer Name, Date Ordered, or Product Name"
@@ -90,17 +90,17 @@ function OnholdOrders() {
           <>
             {filteredOrders.length ? (
               <>
-                <div className={styles.OnholdOrders_orders}>
+                <div className={styles.PendingApprovals_orders}>
                   {filteredOrders.map(
                     ({ id, buyer, dateTimeCreated, items, totalPrice, status,
                       deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.OnholdOrders_order}>
-                          <div className={styles.OnholdOrders_info}>
-                            <div className={styles.OnholdOrders_info_left}>
+                        <Card key={id} className={styles.PendingApprovals_order}>
+                          <div className={styles.PendingApprovals_info}>
+                            <div className={styles.PendingApprovals_info_left}>
                               <Button
-                                className={styles.OnholdOrders_info_text}
+                                className={styles.PendingApprovals_info_text}
                                 icon="person"
                                 type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
@@ -113,7 +113,7 @@ function OnholdOrders() {
                                 </Text>
                               </Button>
 
-                              <div className={styles.OnholdOrders_info_date}>
+                              <div className={styles.PendingApprovals_info_date}>
                                 Date Ordered: 
 
                                 <Text
@@ -125,36 +125,17 @@ function OnholdOrders() {
                               </div>
                             </div>
 
-                            <div className={styles.OnholdOrders_info_buttons}>
+                            <div className={styles.PendingApprovals_info_buttons}>
                               <Button
-                                className={styles.OnholdOrders_info_statusButton}
-                                icon={
-                                  (() => {
-                                    if (status === orderStatus.AWAITING_BUYER) {
-                                      return 'check';
-                                    } 
-                                      return 'payments';
-                                  })()
-                                }
-                                type={
-                                  (() => {
-                                    if (status === orderStatus.AWAITING_BUYER) {
-                                      return buttonTypes.TEXT.BLUE;
-                                    } 
-                                      return buttonTypes.TEXT.GREEN;
-                                  })()
-                                }
+                                className={styles.PendingApprovals_info_statusButton}
+                                icon='check'
+                                type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
                                   setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
-                                  
-                                  if (status === orderStatus.AWAITING_BUYER) {
-                                    setIsDeliveryDetailsModalOpen(true);
-                                  } else {
-                                    setIsDeliveryLogsModalOpen(true);
-                                  }
+                                  setIsDeliveryDetailsModalOpen(true);
                                 }}
                               >
-                                {status === orderStatus.AWAITING_BUYER ? 'Awaiting Confirmation' : 'Awaiting Payment'}
+                               Awaiting Confirmation
                               </Button>
                             </div>
                             
@@ -162,12 +143,12 @@ function OnholdOrders() {
 
                           {items.map(
                             ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                            <div key={productId} className={styles.OnholdOrders_item}>
-                              <div className={styles.OnholdOrders_product}>
+                            <div key={productId} className={styles.PendingApprovals_item}>
+                              <div className={styles.PendingApprovals_product}>
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   alt="Product"
-                                  className={styles.OnholdOrders_product_image}
+                                  className={styles.PendingApprovals_product_image}
                                   height={60}
                                   src={productImageUrl}
                                   width={60}
@@ -175,7 +156,7 @@ function OnholdOrders() {
 
                                 <div>
                                   <Text 
-                                    className={styles.OnholdOrders_product_text}
+                                    className={styles.PendingApprovals_product_text}
                                     type={textTypes.HEADING.XXS}
                                   >
                                     {productName}
@@ -183,7 +164,7 @@ function OnholdOrders() {
                                 </div>
                               </div>
 
-                              <div className={styles.OnholdOrders_quantity}>
+                              <div className={styles.PendingApprovals_quantity}>
                                 Quantity:
                                 <Text 
                                   colorClass={colorClasses.NEUTRAL['400']}
@@ -193,7 +174,7 @@ function OnholdOrders() {
                                 </Text>
                               </div>
 
-                              <div className={styles.OnholdOrders_customizationText}>
+                              <div className={styles.PendingApprovals_customizationText}>
                                 Customization:
                                 {customizationMessage  ? (
                                   <Text 
@@ -213,10 +194,10 @@ function OnholdOrders() {
                               </div>
                             
 
-                              <div className={styles.OnholdOrders_price}>
+                              <div className={styles.PendingApprovals_price}>
                                 Price:
                                 <Text
-                                  className={styles.OnholdOrders_price_text}
+                                  className={styles.PendingApprovals_price_text}
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXS}
                                 >
@@ -227,8 +208,16 @@ function OnholdOrders() {
                             )
                           )}
 
-                          <div className={styles.OnholdOrders_orderTotal}>
-                            <div className={styles.OnholdOrders_orderTotal_text}>
+                          <div className={styles.PendingApprovals_orderTotal}>
+                          <Button 
+                              className={cn(styles.PendingApprovals_orderTotal_text, 
+                                styles.PendingApprovals_orderTotal_text_deliveryFee)}
+                              type={buttonTypes.TEXT.NEUTRAL}
+                              onClick={() => {
+                                setSelectedOrder({id, deliveryFeeProofImageUrl});
+                                setIsDeliveryFeeProofModalOpen(true);
+                              }}
+                            >
                               <Text 
                                 colorClass={colorClasses.NEUTRAL['400']}
                                 type={textTypes.HEADING.XXXS}
@@ -240,11 +229,11 @@ function OnholdOrders() {
                                 colorClass={colorClasses.BLUE['300']}
                                 type={textTypes.HEADING.XXXS}
                               >
-                                ₱{deliveryFee}
+                                ₱{deliveryFee.toLocaleString()}
                               </Text>    
-                            </div> 
+                            </Button> 
 
-                            <div className={styles.OnholdOrders_orderTotal_text}>
+                            <div className={styles.PendingApprovals_orderTotal_text}>
                               <Text 
                                 colorClass={colorClasses.NEUTRAL['400']}
                                 type={textTypes.HEADING.XXS}
@@ -270,7 +259,7 @@ function OnholdOrders() {
                 </div>
 
                 <Pagination 
-                  className={styles.OnholdOrders_pagination}
+                  className={styles.PendingApprovals_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
@@ -281,7 +270,7 @@ function OnholdOrders() {
               </>
             ) : (
               <NoResults
-                className={styles.OnholdOrders_noResults}
+                className={styles.PendingApprovals_noResults}
                 message="No orders found"
               />
             )}
@@ -289,26 +278,16 @@ function OnholdOrders() {
         )}
 
       </div>
-      
-      {isDeliveryLogsModalOpen &&
-        <DeliveryLogsModal
-          deliveryDetails={
-            (() => ({
-              fullName: selectedOrder.buyer.deliveryFullName,
-              contactNumber: selectedOrder.buyer.phoneNumber,
-              altMobileNumber: selectedOrder.buyer.altMobileNumber,
-              fullAddress: selectedOrder.buyer.deliveryAddress,
-            }))()
-          }
-          deliveryFee={selectedOrder.deliveryFee}
-          deliveryLogs={selectedOrder.deliveryLogs}
-          handleClose={() => setIsDeliveryLogsModalOpen(false)}
-          isOpen={isDeliveryLogsModalOpen}
-          title="Order Delivery Details"
+
+      {isDeliveryFeeProofModalOpen && (
+        <DeliveryFeeProofModal
+          handleClose={() => setIsDeliveryFeeProofModalOpen(false)}
+          isOpen={isDeliveryFeeProofModalOpen}
+          proof={selectedOrder.deliveryFeeProofImageUrl}
+          title="Delivery Fee Proof"
         />
-      }
-
-
+      )}
+      
       {isDeliveryDetailsModalOpen && (
         <DeliveryDetailsModal
           altMobileNumber={selectedOrder.buyer.altMobileNumber}
@@ -332,4 +311,4 @@ function OnholdOrders() {
     </>
 )
 }
-export default OnholdOrders;
+export default PendingApprovals;

@@ -4,6 +4,6 @@ import React from 'react';
 
 import ScreenLoader from '@/components/ScreenLoader';
 
-export default function OnHoldOrdersLoading() {
+export default function PendingApprovalsLoading() {
   return <ScreenLoader />;
 }

@@ -18,7 +18,7 @@ function DeliveryLogsModal({
   deliveryLogs,
   deliveryFee,
 }) {
-
+  
   return (
     <Modal
       className={styles.DeliveryLogsModal}

@@ -1,41 +1,11 @@
-@import "@/styles/mixins";
-@import "@/styles/variables";
+@import '@/styles/variables';
+@import '@/styles/mixins';
 
-.Purchase {
-  &_title {
-    margin-bottom: 20px !important;
-  }
-
-  &_filters {
-    background-color: $neutral-50;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    
-    &_button {
-      width: 100%;
-      padding: 12px 0 !important;
-
-      &___active {
-        border-bottom: 2px solid $blue-400 !important;
-        background-color: $blue-25 !important;
-
-        > h6 {
-          color: $blue-400;
-        }
-      }
-
-      &:hover {
-        > h6 {
-          color: $blue-400;
-        }
-      }
-    }
-  }
+.PendingApprovals {
+  padding-top: 24px;
 
   &_search {
-    margin-top: 18px;
+    margin-top: 20px;
   }
 
   &_orders {
@@ -83,6 +53,7 @@
   }
 
   &_item {
+    box-shadow: $shadow-normal;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     place-items: center;
@@ -93,29 +64,12 @@
   &_product {
     display: flex;
     align-items: center;
-    grid-column: 1/5;
+    grid-column: 2/6;
     place-self: normal;
     gap: 12px;
 
     &_text {
       margin-bottom: 8px !important;
-    }
-
-    &_icon {
-      color: $yellow-400;
-      font-size: 24px;
-    }
-
-    &___delivered {
-      box-shadow: $shadow-normal;
-      border-radius: 5px;
-      cursor: pointer;
-      padding: 6px 12px;
-
-      &:hover {
-        background-color: $neutral-50;
-        box-shadow: $shadow-raised;
-      }
     }
   }
 
@@ -143,33 +97,14 @@
     grid-column: 9/11;
   }
 
-  &_qrCode {
-    cursor: pointer;
-    grid-column: 12/13;
-    
-    &_image {
-      box-shadow: $shadow-normal;
-      border-radius: 5px;
-
-      &:hover {
-        border: 1px solid $blue-400;
-        box-shadow: $shadow-raised;
-      }
-    }
-  }
-
   &_orderTotal {
     background-color: $blue-0;
     border-radius: 0 0 5px 5px;
     border-top: dashed 2px $blue-100;
-    @include flex-between;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     padding: 24px 32px;
-
-    &_fees {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
 
     &_buttons {
       display: flex;
@@ -208,11 +143,10 @@
   }
 
   &_pagination {
-    margin: 24px 0 0 !important;
+    margin-top: 60px;
   }
 
   &_noResults {
     margin-top: 40px;
   }
 }
-

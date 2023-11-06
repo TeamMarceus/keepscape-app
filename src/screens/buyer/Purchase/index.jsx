@@ -10,7 +10,6 @@ import {
   buttonTypes,
   colorClasses,
   orderStatus,
-  iconButtonTypes,
 } from '@/app-globals';
 
 import { 
@@ -21,9 +20,6 @@ import {
   Pagination,
   Card, 
   ConfirmModal,
-  PaypalButton,
-  ButtonLink,
-  IconLink,
   Icon
 } from '@/components';
 
@@ -32,7 +28,7 @@ import { useBuyerOrders, useWindowSize } from '@/hooks';
 import PreloaderPurchase from '@/screens/admin/ReviewOrders/Preloader';
 import DeliveryLogsModal from '@/screens/common/Modals/DeliveryLogsModal';
 
-import DeliveryFeeProofModal from '../CommonModals/DeliveryFeeProofModal';
+import DeliveryFeeProofModal from '../../common/Modals/DeliveryFeeProofModal';
 import SellerModal from '../CommonModals/SellerModal';
 
 import AddReviewModal from './AddReviewModal';
@@ -363,7 +359,6 @@ function Purchase() {
                                 </Text>    
                               </Button> 
                      
-
                               <div className={styles.Purchase_orderTotal_text}>
                                 <Text 
                                   colorClass={colorClasses.NEUTRAL['400']}

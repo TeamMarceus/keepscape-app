@@ -32,7 +32,7 @@ import PreloaderOrders from '@/screens/admin/ReviewOrders/Preloader';
 
 import DeliveryDetailsModal from '@/screens/common/Modals/DeliveryDetailsModal';
 
-import DeliveryFeeProofModal from '../CommonModals/DeliveryFeeProofModal';
+import DeliveryFeeProofModal from '../../common/Modals/DeliveryFeeProofModal';
 import SellerModal from '../CommonModals/SellerModal';
 
 import styles from './styles.module.scss';
