@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { isEmpty } from 'lodash-es';
 import { useSelector } from 'react-redux';
 
 import { getCartCount } from '@/ducks';
@@ -25,7 +24,12 @@ const useAddToCart = () => {
 
       if (addToCartStatus === 200) {
         toastSuccess('Product successfully added to cart.');
-        loginUpdate({ cart_count: (Object.keys(cartCount).length === 0 && typeof cartCount !== 'number') ? 1 : cartCount + 1 });
+        
+        const { data: getCartCountResponse } = await CartsService.count();
+        
+        if (getCartCountResponse) {
+          loginUpdate({ cart_count: getCartCountResponse === 0 ? {} : getCartCountResponse });
+        }
       } else {
         toastError('Oops Something Went Wrong.');
       }
