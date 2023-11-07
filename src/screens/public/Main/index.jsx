@@ -297,7 +297,7 @@ function Main() {
             } 
 
             if (totalPages === 1) {
-              setPageSize(pageSize - 5);
+              setPageSize(10);
             }
           }}
         >
