@@ -1,9 +1,9 @@
 import { isLocal } from '../utils/destinations';
 
-let apiUrl = 'https://keepscape-api20231018021452.azurewebsites.net';
+let apiUrl = 'https://keepscape-api20231108194606.azurewebsites.net/';
 
 if (isLocal) {
-  apiUrl = 'https://keepscape-api20231018021452.azurewebsites.net';
+  apiUrl = 'https://keepscape-api20231108194606.azurewebsites.net/';
 }
 
 const config = {
