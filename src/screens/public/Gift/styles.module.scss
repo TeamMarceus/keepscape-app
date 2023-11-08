@@ -7,9 +7,11 @@
   background-size: cover;
   display: flex;
   align-items: center;
+  height: 100%;
   justify-content: center;
 
   @include breakpoint(md) {
+    height: unset;
     flex-direction: column;
   }
 
@@ -99,7 +101,7 @@
 
     &_links {
       @include flex-between;
-      margin-bottom: 24px;
+      margin-bottom: 40px;
     }
 
     &_button {
@@ -132,9 +134,7 @@
     }
 
     &_image {
-      @include breakpoint(md) {
-        height: 250px;
-      }
+      height: 250px;
 
       @include breakpoint(xs) {
         height: 200px;
@@ -144,7 +144,7 @@
 
     &_card {
       background: transparent;
-      margin-top: 24px !important;
+      margin-top: 40px !important;
       padding: 24px;
 
       &_title {

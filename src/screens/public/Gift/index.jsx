@@ -27,15 +27,15 @@ import styles from './styles.module.scss';
 
 function Gift({ id }) {
   const { windowSize } = useWindowSize(); 
-  
+
   const sliderSettings = {
-    className: windowSize.width <= 991 ? null : 'center',
-    centerMode: !(windowSize.width <= 991),
+    lazyLoad: true,
+    dots: false,
     infinite: true,
-    centerPadding: windowSize.width <= 991 ? null : '60px',
-    slidesToShow: windowSize.width <= 991 ? 1 : 2,
-    vertical: !(windowSize.width <= 991),
-    verticalSwiping: !(windowSize.width <= 991),
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
   };
   
   const {isLoading: isGiftLoading, gift} = useGift(id);
@@ -164,7 +164,7 @@ function Gift({ id }) {
                   alt={beach.name}
                   className={styles.Gift_right_image}
                   src={beach.image}
-                  width={500}
+                  width={450}
                 />
               </div>
             ))}
