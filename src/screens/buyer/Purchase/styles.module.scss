@@ -102,8 +102,8 @@
     }
 
     &_icon {
-      color: $yellow-400;
-      font-size: 24px;
+      color: $yellow-400 !important;
+      font-size: 24px !important;
     }
 
     &___delivered {
