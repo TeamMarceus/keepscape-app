@@ -21,6 +21,7 @@ const RedirectPreloader = dynamic(() => import('@/components/Preloader'), {
 
 export default function BuyerEffects({ children }) {
   const pathname = usePathname();
+  const onAccountPage = pathname === '/buyer/account'
   const onCartPage = pathname === '/buyer/cart';
   const onCheckoutPage = pathname === '/buyer/checkout';
 
@@ -51,7 +52,7 @@ export default function BuyerEffects({ children }) {
       <section className={styles.container}>
         {children}
       </section>
-      {!onCartPage && !onCheckoutPage && <Footer />}
+      {!onAccountPage && !onCartPage && !onCheckoutPage && <Footer />}
     </>
   );
 }
