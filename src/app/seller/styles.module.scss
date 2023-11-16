@@ -6,16 +6,15 @@
   max-width: 1440px;
   padding: 75px 60px 80px 260px;
 
-  @include breakpoint(lg) {
-    padding: 0 16px;
-    max-width: 960px;
-  }
-
   @include breakpoint(md) {
-    max-width: 720px;
+    padding-left: 60px;
   }
 
   @include breakpoint(sm) {
-    max-width: 540px;
+    padding: 75px 40px 80px 40px;
+  }
+
+  @include breakpoint(xs) {
+    padding: 75px 24px 80px 24px;
   }
 }

@@ -1,4 +1,5 @@
 @import "@/styles/variables";
+@import "@/styles/mixins";
 
 .AdminSidebar {
   background: $neutral-0;
@@ -10,5 +11,35 @@
   position: fixed;
   top: 65px;
   width: 220px;
+  transition: transform 0.25s, opacity 0.25s, top 0.35s, height 0.35s,
+  -webkit-transform 0.25s, -moz-transform 0.25s, -o-transform 0.25s;
+  transform: translate3d(0, 0, 0);
   z-index: 1000;
+
+  @include breakpoint(md) {
+    height: 100%;
+    padding-top: 12px;
+    top: 0;
+    z-index: 1030;
+  }
+
+  &___toggled {
+    transform: translate3d(-220px, 0, 0);
+  }
+
+  &_close {
+    color: $blue-300;
+    display: none;
+    margin-left: auto;
+
+    &:hover {
+      > i {
+        color: $blue-400;
+      }
+    }
+
+    @include breakpoint(md) {
+      display: block;
+    }
+  }
 }

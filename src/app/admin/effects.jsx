@@ -21,6 +21,8 @@ export default function AdminEffects({ children }) {
   const user = useSelector((store) => getUser(store));
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));
+  
+  const [isSidebarToggled, toggleSidebar] = useState(false);
 
   usePrivateRoute({ forUserType: userTypes.ADMIN });
 
@@ -41,8 +43,16 @@ export default function AdminEffects({ children }) {
 
   return (
     <>
-      <Navbar />
-      <AdminSidebar />
+      <Navbar 
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar} 
+      />
+
+      <AdminSidebar 
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+
       <section className={styles.container}>
         {children}
       </section>

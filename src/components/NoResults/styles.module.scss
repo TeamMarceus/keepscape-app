@@ -1,3 +1,5 @@
+@import '@/styles/mixins';
+
 .NoResults {
   display: flex;
   align-items: center;
@@ -6,5 +8,11 @@
 
   &_text {
     margin-top: 24px !important;
+  }
+
+  &_image {
+    @include breakpoint(xs) {
+      width: 300px;
+    }
   }
 }

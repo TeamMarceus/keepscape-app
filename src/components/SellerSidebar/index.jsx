@@ -1,19 +1,39 @@
+import cn from 'classnames';
 import { usePathname } from 'next/navigation';
+
+import PropTypes from 'prop-types';
 
 import { SELLER_ROUTES } from '@/app/seller/routes';
 
+import { iconButtonTypes } from '@/app-globals';
+import { useWindowSize } from '@/hooks';
+
+import IconButton from '../Button/IconButton'
+
 import SidebarLink from './Link';
 import navLinks from './constants/navLinks';
-
 import styles from './styles.module.scss';
 
-function SellerSidebar() {
+
+function SellerSidebar({ isSidebarToggled, toggleSidebar }) {
   const pathname = usePathname();
+  const { windowSize } = useWindowSize();
 
   return (
     <nav
-      className={styles.SellerSidebar}
+      className={cn(styles.SellerSidebar, {
+        [styles.SellerSidebar___toggled] : isSidebarToggled && windowSize.width <= 991
+      })}
     >
+      <IconButton
+        className={styles.SellerSidebar_close}
+        icon="keyboard_double_arrow_left"
+        type={iconButtonTypes.ICON.LG}
+        onClick={()=>{
+            toggleSidebar(true);
+        }}
+      />
+
       <SidebarLink
         icon={navLinks.HOME.icon}
         isActive={pathname === SELLER_ROUTES.DASHBOARD}
@@ -51,5 +71,11 @@ function SellerSidebar() {
     </nav>
   );
 }
+
+SellerSidebar.propTypes = {
+  isSidebarToggled: PropTypes.bool,
+  toggleSidebar: PropTypes.func,
+};
+
 
 export default SellerSidebar;

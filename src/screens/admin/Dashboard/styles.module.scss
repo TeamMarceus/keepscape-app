@@ -15,13 +15,27 @@
     padding: 100px 24px;
     margin: 32px 0 40px;
 
+    @include breakpoint(sm) {
+      flex-direction: column;
+      padding: 40px 60px;
+    }
+
     &_details {
       text-align: center;
       width: 100%;
 
+      @include breakpoint(sm) {
+        padding: 24px;
+      }
+
       &:nth-of-type(1),
       &:nth-of-type(2) {
-        border-right: 1px solid $neutral-200;
+        border-right: 1px solid $neutral-200; 
+
+        @include breakpoint(sm) {
+          border-right: unset;
+          border-bottom: 1px solid $neutral-200;
+        }
       }
     }
 
@@ -32,17 +46,17 @@
 
     &_assignmentIcon {
       margin-right: 8px;
-      color: $neutral-400;
+      color: $neutral-400 !important;
     }
 
     &_ongoingIcon {
       margin-right: 8px;
-      color: $blue-400;
+      color: $blue-400 !important;
     }
 
     &_shoppingIcon {
       margin-right: 8px;
-      color: $green-400;
+      color: $green-400 !important;
     }
   }
 

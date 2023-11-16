@@ -4,6 +4,7 @@ import cn from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 import { Link as LinkScroll } from 'react-scroll';
@@ -18,7 +19,7 @@ import { useCartCount, useOnClickOutside } from '@/hooks';
 
 import styles from './styles.module.scss';
 
-function Navbar() {
+function Navbar({ isSidebarToggled, toggleSidebar }) {
   const ref = useRef();
   const router = useRouter();
   const pathname = usePathname();
@@ -50,105 +51,116 @@ function Navbar() {
         <div className={cn(styles.Navbar_links, {
           [styles.Navbar_links___seller]: isSellerOrAdmin && pathname !== PUBLIC_ROUTES.MAIN_PAGE,
         })}>
-          <div className={styles.Navbar_links_scrollLinks}>
-            {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
-              <>
-                {userType === userTypes.BUYER &&
-                  <>
-                    <LinkScroll
-                      key="preferences"
-                      smooth
-                      className={styles.Navbar_links_link}
-                      duration={300}
-                  offset={-200}
-                      to="preferences"
-                    >
-                      <Text
-                        className={styles.Navbar_links_link_text}
-                        colorClass={colorClasses.NEUTRAL['0']}
+          <div className={styles.Navbar_links_left}>
+            {isSellerOrAdmin && 
+              <IconButton
+                className={styles.Navbar_sidebar}
+                icon="menu"
+                type={iconButtonTypes.ICON.LG}
+                onClick={()=> toggleSidebar(!isSidebarToggled)}
+              />
+            }
+
+            <div className={styles.Navbar_links_scrollLinks}>
+              {pathname === PUBLIC_ROUTES.MAIN_PAGE ? (
+                <>
+                  {userType === userTypes.BUYER &&
+                    <>
+                      <LinkScroll
+                        key="preferences"
+                        smooth
+                        className={styles.Navbar_links_link}
+                        duration={300}
+                    offset={-200}
+                        to="preferences"
                       >
-                        Shop by Preferences
-                      </Text>
-                    </LinkScroll>
-                    |
-                  </>
-                }
-                <LinkScroll
-                  key="province"
-                  smooth
-                  className={styles.Navbar_links_link}
-                  duration={300}
-                  offset={-200}
-                  to="province"
-                >
-                  <Text
-                    className={styles.Navbar_links_link_text}
-                    colorClass={colorClasses.NEUTRAL['0']}
-                  >
-                    Shop by Province
-                  </Text>
-                </LinkScroll>
-                |
-                <LinkScroll
-                  key="category"
-                  smooth
-                  className={styles.Navbar_links_link}
-                  duration={300}
-                  offset={-200}
-                  to="category"
-                >
-                  <Text
-                    className={styles.Navbar_links_link_text}
-                    colorClass={colorClasses.NEUTRAL['0']}
-                  >
-                    Shop by Category
-                  </Text>
-                </LinkScroll>
-                |
-                <LinkScroll
-                  key="discover"
-                  smooth
-                  className={styles.Navbar_links_link}
-                  duration={300}
-                  offset={-200}
-                  to="discover"
-                >
-                  <Text
-                    className={styles.Navbar_links_link_text}
-                    colorClass={colorClasses.NEUTRAL['0']}
-                  >
-                    Discover More
-                  </Text>
-                </LinkScroll>
-              </>
-            ) : (
-              <>
-                {userType === userTypes.BUYER &&
-                  <Link
+                        <Text
+                          className={styles.Navbar_links_link_text}
+                          colorClass={colorClasses.NEUTRAL['0']}
+                        >
+                          Shop by Preferences
+                        </Text>
+                      </LinkScroll>
+                      |
+                    </>
+                  }
+                  <LinkScroll
+                    key="province"
+                    smooth
                     className={styles.Navbar_links_link}
-                    href="/"
+                    duration={300}
+                    offset={-200}
+                    to="province"
                   >
                     <Text
                       className={styles.Navbar_links_link_text}
                       colorClass={colorClasses.NEUTRAL['0']}
                     >
-                      Keepscape Home
+                      Shop by Province
                     </Text>
-                  </Link>
-                }
-                {isSellerOrAdmin &&
-                  <Link href={userType === userTypes.SELLER ? '/seller/dashboard' : '/admin/dashboard'}>
-                    <Image
-                      alt="Keepscape"
-                      className={styles.Navbar_logo}
-                      src={Logo}
-                      width={200}
-                    />
-                  </Link>
-                }
-              </>
-            )
-          }
+                  </LinkScroll>
+                  |
+                  <LinkScroll
+                    key="category"
+                    smooth
+                    className={styles.Navbar_links_link}
+                    duration={300}
+                    offset={-200}
+                    to="category"
+                  >
+                    <Text
+                      className={styles.Navbar_links_link_text}
+                      colorClass={colorClasses.NEUTRAL['0']}
+                    >
+                      Shop by Category
+                    </Text>
+                  </LinkScroll>
+                  |
+                  <LinkScroll
+                    key="discover"
+                    smooth
+                    className={styles.Navbar_links_link}
+                    duration={300}
+                    offset={-200}
+                    to="discover"
+                  >
+                    <Text
+                      className={styles.Navbar_links_link_text}
+                      colorClass={colorClasses.NEUTRAL['0']}
+                    >
+                      Discover More
+                    </Text>
+                  </LinkScroll>
+                </>
+              ) : (
+                <>
+                  {userType === userTypes.BUYER &&
+                    <Link
+                      className={styles.Navbar_links_link}
+                      href="/"
+                    >
+                      <Text
+                        className={styles.Navbar_links_link_text}
+                        colorClass={colorClasses.NEUTRAL['0']}
+                      >
+                        Keepscape Home
+                      </Text>
+                    </Link>
+                  }
+                  {isSellerOrAdmin &&
+                    <Link href={userType === userTypes.SELLER ? '/seller/dashboard' : '/admin/dashboard'}>
+                      <Image
+                        alt="Keepscape"
+                        className={styles.Navbar_logo}
+                        src={Logo}
+                        width={200}
+                      />
+                    </Link>
+                  }
+                </>
+              )
+            }
+            </div>
           </div>
           
           {userId ?
@@ -321,5 +333,10 @@ function Navbar() {
     </div>
   );
 }
+
+Navbar.propTypes = {
+  isSidebarToggled: PropTypes.bool,
+  toggleSidebar: PropTypes.func,
+};
 
 export default Navbar;

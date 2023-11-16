@@ -24,6 +24,8 @@ export default function SellerEffects({ children }) {
   const user = useSelector((store) => getUser(store));
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));
+  
+  const [isSidebarToggled, toggleSidebar] = useState(false);
 
   usePrivateRoute({ forUserType: userTypes.SELLER });
   
@@ -44,8 +46,16 @@ export default function SellerEffects({ children }) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Navbar />
-      <SellerSidebar />
+      <Navbar 
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar} 
+      />
+
+      <SellerSidebar 
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+
       <section className={styles.container}>
         {children}
       </section>

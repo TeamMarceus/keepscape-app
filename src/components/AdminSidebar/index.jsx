@@ -1,19 +1,39 @@
+import cn from 'classnames';
 import { usePathname } from 'next/navigation';
+
+import PropTypes from 'prop-types';
 
 import { ADMIN_ROUTES } from '@/app/admin/routes';
 
+import { iconButtonTypes } from '@/app-globals';
+
+import { useWindowSize } from '@/hooks';
+
+import IconButton from '../Button/IconButton'
+
 import SidebarLink from './Link';
 import navLinks from './constants/navLinks';
-
 import styles from './styles.module.scss';
 
-function AdminSidebar() {
+function AdminSidebar( {isSidebarToggled, toggleSidebar}) {
   const pathname = usePathname();
+  const { windowSize } = useWindowSize();
 
   return (
     <nav
-      className={styles.AdminSidebar}
+      className={cn(styles.AdminSidebar, {
+        [styles.AdminSidebar___toggled] : isSidebarToggled && windowSize.width <= 991
+      })}
     >
+      <IconButton
+        className={styles.AdminSidebar_close}
+        icon="keyboard_double_arrow_left"
+        type={iconButtonTypes.ICON.LG}
+        onClick={()=>{
+            toggleSidebar(true);
+        }}
+      />
+
       <SidebarLink
         icon={navLinks.HOME.icon}
         isActive={pathname === ADMIN_ROUTES.DASHBOARD}
@@ -72,5 +92,10 @@ function AdminSidebar() {
     </nav>
   );
 }
+
+AdminSidebar.propTypes = {
+  isSidebarToggled: PropTypes.bool,
+  toggleSidebar: PropTypes.func,
+};
 
 export default AdminSidebar;
