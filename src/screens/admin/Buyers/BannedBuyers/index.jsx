@@ -18,9 +18,11 @@ import {
   Icon, 
   NoResults, 
   Text,
-  Pagination, 
+  Pagination,
+  ControlledTextArea, 
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { useBuyers, useWindowSize } from '@/hooks';
 
 import PreloaderBannedBuyers from '../Preloader';
@@ -164,9 +166,15 @@ function BannedBuyers() {
                           {phoneNumber} 
                         </div>
 
-                        <div className={styles.BannedBuyers_grid_column}>
-                          {description}
-                        </div>
+                        <ControlledTextArea
+                            disabled
+                            inputClassName={cn(styles.BannedBuyers_grid_column,
+                              styles.BannedBuyers_grid_column_description)}
+                            name="description"
+                            type={textAreaTypes.SLIM}
+                            value={description}
+                          />
+
 
                         <div className={styles.BannedBuyers_grid_column}>
                           <div className={styles.BannedBuyers_grid_buttons}>

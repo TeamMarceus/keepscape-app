@@ -18,9 +18,11 @@ import {
   Icon, 
   NoResults, 
   Text,
-  Pagination, 
+  Pagination,
+  ControlledTextArea, 
 } from '@/components';
 
+import { textAreaTypes } from '@/components/TextArea/constants';
 import { useBuyers, useWindowSize } from '@/hooks';
 
 import ReasonModal from '../../CommonModals/ReasonModal';
@@ -171,9 +173,14 @@ function ActiveBuyers() {
                             {phoneNumber} 
                           </div>
 
-                          <div className={styles.ActiveBuyers_grid_column}>
-                            {description}
-                          </div>
+                          <ControlledTextArea
+                            disabled
+                            inputClassName={cn(styles.ActiveBuyers_grid_column,
+                              styles.ActiveBuyers_grid_column_description)}
+                            name="description"
+                            type={textAreaTypes.SLIM}
+                            value={description}
+                          />
 
                           <div className={styles.ActiveBuyers_grid_column}>
                             <div className={styles.ActiveBuyers_grid_buttons}>
