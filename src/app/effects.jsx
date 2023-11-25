@@ -8,10 +8,10 @@ import { AUTHENTICATION_ROUTES } from './(authentication)/routes';
 
 export default function AppEffects({ children }) {
   const router = useRouter();
- 
+
   useEffect(() => {
     const channel = new BroadcastChannel('keepscape-logout');
-  
+
     const handleLogout = () => {
       // Go to logout page first to reset all user data. This will also
       // ensure that no api calls would result in errors.
@@ -24,14 +24,14 @@ export default function AppEffects({ children }) {
       setTimeout(() => {
         router.push(AUTHENTICATION_ROUTES.LOGIN);
       }, [1000]);
-    }
+    };
     channel.addEventListener('message', handleLogout);
-  
+
     return () => {
       channel.removeEventListener('message', handleLogout);
       channel.close();
     };
   }, []);
- 
+
   return children;
 }

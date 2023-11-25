@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
@@ -14,12 +14,12 @@ import {
   buttonTypes,
   colorClasses,
 } from '@/app-globals';
-import { 
-  ControlledInput, 
-  Text, 
-  Button, 
+import {
+  ControlledInput,
+  Text,
+  Button,
   Spinner,
-  ButtonLink 
+  ButtonLink,
 } from '@/components';
 
 import { UsersService } from '@/services';
@@ -31,11 +31,14 @@ const validate = (values) => {
 
   if (!values.newPassword) {
     errors.newPassword = 'This field is required.';
-  } 
-  
+  }
+
   if (!values.confirmPassword) {
     errors.confirmPassword = 'This field is required.';
-  } else if (values.newPassword && values.newPassword !== values.confirmPassword) {
+  } else if (
+    values.newPassword &&
+    values.newPassword !== values.confirmPassword
+  ) {
     errors.confirmPassword = 'This must match with your new password.';
   }
 
@@ -44,23 +47,21 @@ const validate = (values) => {
 
 function ChangePassword() {
   const router = useRouter();
-  const searchParams  = useSearchParams();
+  const searchParams = useSearchParams();
   const email = searchParams.get('email');
   const code = searchParams.get('code');
 
-  const [isUpdatingPassword , setIsUpdatingPassword] = useState(false);
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
   return (
     <div className={styles.ChangePassword}>
       <div className={styles.ChangePassword_header}>
-      <Text type={textTypes.HEADING.LG} >
-      New Beginnings
-      </Text>
+        <Text type={textTypes.HEADING.LG}>New Beginnings</Text>
 
-      <Text type={textTypes.BODY.LG}>
-        For security purposes, please enter your new password below
-      </Text>
-    </div>
+        <Text type={textTypes.BODY.LG}>
+          For security purposes, please enter your new password below
+        </Text>
+      </div>
       <Formik
         initialValues={{ newPassword: '', confirmPassword: '' }}
         onSubmit={async (values, { setErrors }) => {
@@ -80,15 +81,14 @@ function ChangePassword() {
           setIsUpdatingPassword(true);
 
           try {
-            const { status: resetPasswordStatusCode } = 
+            const { status: resetPasswordStatusCode } =
               await UsersService.resetPassword(userToBeUpdated);
 
             if (resetPasswordStatusCode === 200) {
               router.push('/forgot-password/success');
             }
-
           } catch (error) {
-            const {status} = error.response;
+            const { status } = error.response;
 
             switch (status) {
               case 400:
@@ -103,7 +103,7 @@ function ChangePassword() {
                 setErrors({
                   overall: 'The user is banned.',
                 });
-              break;
+                break;
 
               case 401:
                 setIsUpdatingPassword(false);
@@ -158,18 +158,24 @@ function ChangePassword() {
 
             <div className={styles.ChangePassword_content_buttonGroup}>
               <Button
-                className={styles.ChangePassword_content_buttonGroup_submitButton}
+                className={
+                  styles.ChangePassword_content_buttonGroup_submitButton
+                }
                 disabled={isUpdatingPassword}
                 kind={buttonKinds.SUBMIT}
                 onClick={() => {}}
               >
                 <span
-                  className={styles.ChangePassword_content_buttonGroup_buttonText}
+                  className={
+                    styles.ChangePassword_content_buttonGroup_buttonText
+                  }
                 >
                   Proceed
                   {isUpdatingPassword && (
                     <Spinner
-                      className={styles.ChangePassword_content_buttonGroup_spinner}
+                      className={
+                        styles.ChangePassword_content_buttonGroup_spinner
+                      }
                       colorName={colorNames.WHITE}
                       size={spinnerSizes.XS}
                     />
@@ -178,8 +184,8 @@ function ChangePassword() {
               </Button>
 
               <ButtonLink
-                icon='arrow_back'
-                to='/login'
+                icon="arrow_back"
+                to="/login"
                 type={buttonTypes.TEXT.BLUE}
               >
                 Back to Login

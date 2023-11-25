@@ -4,20 +4,17 @@ import cn from 'classnames';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  colorClasses,
-  textTypes,
-} from '@/app-globals';
+import { colorClasses, textTypes } from '@/app-globals';
 
-import { 
+import {
   Button,
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   ScreenLoader,
-  Pagination
+  Pagination,
 } from '@/components';
 
 import { useBalance, useSellerLogs, useWindowSize } from '@/hooks';
@@ -26,9 +23,7 @@ import RequestModal from '../RequestModal';
 
 import PreloaderHistories from './Preloader';
 
-
 import styles from './styles.module.scss';
-
 
 function Histories() {
   const router = useRouter();
@@ -40,15 +35,15 @@ function Histories() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [balanceAmount, setBalanceAmount] = useState(0); 
+  const [balanceAmount, setBalanceAmount] = useState(0);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [clickedPaymentMethod, setClickedPaymentMethod] = useState(null);
-  
+
   const { isLoading: isBalanceLoading, balance } = useBalance();
   const {
-    isLoading: isRecordsLoading, 
-    logs, 
-    totalPages
+    isLoading: isRecordsLoading,
+    logs,
+    totalPages,
   } = useSellerLogs({ page, pageSize: 10 });
 
   const filteredRecords = logs.filter((record) => {
@@ -59,8 +54,8 @@ function Histories() {
       record.amount === Number(searchLowerCase) ||
       record.remarks.toLowerCase().includes(searchLowerCase)
     );
-  })
-  
+  });
+
   useEffect(() => {
     setBalanceAmount(!isBalanceLoading ? balance.amount : 0);
   }, [isBalanceLoading]);
@@ -72,26 +67,24 @@ function Histories() {
   return (
     <>
       <div className={styles.Histories}>
-        <Text type={textTypes.HEADING.XS}>
-          Transaction Histories
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Transaction Histories</Text>
 
         <div className={styles.Histories_header}>
-          <Text 
+          <Text
             colorClass={colorClasses.GREEN['400']}
             type={textTypes.HEADING.MD}
           >
-            ₱{balanceAmount} 
+            ₱{balanceAmount}
           </Text>
 
-          <Text 
+          <Text
             className={styles.Histories_header_balance}
             type={textTypes.HEADING.XXXS}
           >
             Your Balance
           </Text>
 
-          <Text 
+          <Text
             className={styles.Histories_header_withdraw}
             colorClass={colorClasses.NEUTRAL['400']}
           >
@@ -193,24 +186,31 @@ function Histories() {
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, dateTimeCreated, amount, remarks  }) =>
+                    ({ id, dateTimeCreated, amount, remarks }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.Histories_grid_recordGrid}>
+                        <Card
+                          key={id}
+                          className={styles.Histories_grid_recordGrid}
+                        >
                           <div className={styles.Histories_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                          <Text 
+                          <Text
                             className={styles.Histories_grid_column}
-                            colorClass={amount < 0 ? colorClasses.RED['300'] : colorClasses.GREEN['300']}
+                            colorClass={
+                              amount < 0
+                                ? colorClasses.RED['300']
+                                : colorClasses.GREEN['300']
+                            }
                           >
                             {amount}
                           </Text>
 
                           <div className={styles.Histories_grid_column}>
                             {remarks}
-                          </div>                      
+                          </div>
                         </Card>
                       ) : (
                         // Mobile View
@@ -246,13 +246,15 @@ function Histories() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Histories_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/seller/finance/histories?page=${value}`, { scroll: false })
+                    router.push(`/seller/finance/histories?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -265,7 +267,6 @@ function Histories() {
             )}
           </>
         )}
-
       </div>
 
       {isRequestModalOpen && (
@@ -279,6 +280,6 @@ function Histories() {
         />
       )}
     </>
-  )
+  );
 }
 export default Histories;

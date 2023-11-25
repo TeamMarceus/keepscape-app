@@ -10,31 +10,25 @@ function ForgotPasswordSuccess() {
   return (
     <div className={styles.ForgotPasswordSuccess}>
       <Image
-        alt='Success'
+        alt="Success"
         className={styles.ForgotPasswordSuccess_image}
         src={Success}
       />
 
       <div className={styles.ForgotPasswordSuccess_header}>
-        <Text type={textTypes.HEADING.LG} >
-          Success!
-        </Text>
+        <Text type={textTypes.HEADING.LG}>Success!</Text>
 
         <Text type={textTypes.BODY.LG}>
-          You have successfully changed your password. You can now <br/>
+          You have successfully changed your password. You can now <br />
           login with that new password
         </Text>
       </div>
 
-      <ButtonLink 
-        className={styles.ForgotPasswordSuccess_button}
-        to='/login' 
-      >
+      <ButtonLink className={styles.ForgotPasswordSuccess_button} to="/login">
         Go To Login
       </ButtonLink>
     </div>
   );
-};
-
+}
 
 export default ForgotPasswordSuccess;

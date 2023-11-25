@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import cn from 'classnames';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -6,14 +6,21 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import {  Filters, NoResults, Pagination, Preloader, RatingStars, Text } from '@/components'
+import {
+  Filters,
+  NoResults,
+  Pagination,
+  Preloader,
+  RatingStars,
+  Text,
+} from '@/components';
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
 import { useProducts, useSellerProfile } from '@/hooks';
 
 import PreloaderSellerProfile from './Preloader';
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 function SellerProducts({ id }) {
   const router = useRouter();
@@ -28,74 +35,80 @@ function SellerProducts({ id }) {
 
   const page = searchParams.get('page') || 1;
 
-  const[currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const {
-    isLoading: isProductsLoading, 
-    products, 
-    totalPages 
-  } = useProducts({ 
-    page, 
+    isLoading: isProductsLoading,
+    products,
+    totalPages,
+  } = useProducts({
+    page,
     pageSize: 15,
-    isHidden: false ,
+    isHidden: false,
     rating: ratings,
     minPrice: minimumPriceParam,
     maxPrice: maximumPriceParam,
     sellerProfileId: id,
   });
 
-  const {isLoading: isSellerProfileLoading, sellerProfile} = useSellerProfile(id);
+  const { isLoading: isSellerProfileLoading, sellerProfile } =
+    useSellerProfile(id);
 
   return (
     <div className={styles.SellerProducts}>
       {isSellerProfileLoading ? (
-          <PreloaderSellerProfile/>
-        ) : (
-          <div className={styles.SellerProducts_banner}>
-            <Text 
-              className={styles.SellerProducts_banner_text}
-              colorClass={colorClasses.NEUTRAL['0']}
-              type={textTypes.HEADING.XXL}
-            >
-              {sellerProfile.name}
-            </Text>
+        <PreloaderSellerProfile />
+      ) : (
+        <div className={styles.SellerProducts_banner}>
+          <Text
+            className={styles.SellerProducts_banner_text}
+            colorClass={colorClasses.NEUTRAL['0']}
+            type={textTypes.HEADING.XXL}
+          >
+            {sellerProfile.name}
+          </Text>
 
-            <RatingStars 
-              className={styles.SellerProducts_banner_rating}
-              rating={sellerProfile.stars}
-            />
+          <RatingStars
+            className={styles.SellerProducts_banner_rating}
+            rating={sellerProfile.stars}
+          />
 
           <div className={styles.SellerProducts_banner_additional}>
-            <Text 
+            <Text
               colorClass={colorClasses.NEUTRAL['200']}
               type={textTypes.HEADING.XXXS}
             >
-              Total Products Sold: {' '}
-              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.totalSold}</span>
+              Total Products Sold:{' '}
+              <span className={styles.SellerProducts_banner_additional_text}>
+                {sellerProfile.totalSold}
+              </span>
             </Text>
 
-            <Text 
+            <Text
               colorClass={colorClasses.NEUTRAL['200']}
               type={textTypes.HEADING.XXXS}
             >
-              Email: {' '}
-              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.email}</span>
+              Email:{' '}
+              <span className={styles.SellerProducts_banner_additional_text}>
+                {sellerProfile.email}
+              </span>
             </Text>
 
-            <Text 
+            <Text
               colorClass={colorClasses.NEUTRAL['200']}
               type={textTypes.HEADING.XXXS}
             >
-              Contact Number: {' '}
-              <span className={styles.SellerProducts_banner_additional_text}>{sellerProfile.phone}</span>
+              Contact Number:{' '}
+              <span className={styles.SellerProducts_banner_additional_text}>
+                {sellerProfile.phone}
+              </span>
             </Text>
           </div>
-          </div>
-        )
-      }
+        </div>
+      )}
 
       <div className={styles.SellerProducts_content}>
-        <Filters 
+        <Filters
           hasPriceRange
           hasRatings
           className={styles.SellerProducts_filters}
@@ -104,12 +117,14 @@ function SellerProducts({ id }) {
           title="All Products"
         />
         {isProductsLoading ? (
-            <Preloader/>
-          ) : (
-          <div className={cn(styles.SellerProducts_products, {
-            [styles.SellerProducts_products_empty]: products.length === 0
-          })}>
-            {products.length > 0 ?
+          <Preloader />
+        ) : (
+          <div
+            className={cn(styles.SellerProducts_products, {
+              [styles.SellerProducts_products_empty]: products.length === 0,
+            })}
+          >
+            {products.length > 0 ? (
               <>
                 <div className={styles.SellerProducts_products_list}>
                   {products.map((product) => (
@@ -128,35 +143,37 @@ function SellerProducts({ id }) {
                   ))}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.SellerProducts_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    
+
                     newSearchParams.delete('page');
                     newSearchParams.append('page', value);
-                    router.push(`/buyer/seller-products?${newSearchParams.toString()}`, { scroll: false })
+                    router.push(
+                      `/buyer/seller-products?${newSearchParams.toString()}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
               </>
-            :
-              <NoResults 
+            ) : (
+              <NoResults
                 className={styles.SellerProducts_noResults}
                 message="No products found"
               />
-            }
+            )}
           </div>
         )}
-
       </div>
     </div>
-  )
+  );
 }
 
 SellerProducts.propTypes = {
   id: PropTypes.string.isRequired,
-}
+};
 
-export default SellerProducts
+export default SellerProducts;

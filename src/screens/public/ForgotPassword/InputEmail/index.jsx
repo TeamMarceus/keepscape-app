@@ -14,14 +14,14 @@ import {
   textTypes,
 } from '@/app-globals';
 import {
-  Button, 
-  ButtonLink, 
-  ControlledInput, 
-  Spinner, 
-  Text
- } from '@/components';
+  Button,
+  ButtonLink,
+  ControlledInput,
+  Spinner,
+  Text,
+} from '@/components';
 
- import { UsersService } from '@/services';
+import { UsersService } from '@/services';
 
 import styles from './styles.module.scss';
 
@@ -42,13 +42,11 @@ function InputEmail() {
   return (
     <div className={styles.InputEmail}>
       <div className={styles.InputEmail_header}>
-      <Text type={textTypes.HEADING.LG} >
-        Just Checking
-      </Text>
+        <Text type={textTypes.HEADING.LG}>Just Checking</Text>
 
-      <Text type={textTypes.BODY.LG}>
-        For security purposes, we need your email address
-      </Text>
+        <Text type={textTypes.BODY.LG}>
+          For security purposes, we need your email address
+        </Text>
       </div>
 
       <Formik
@@ -58,22 +56,21 @@ function InputEmail() {
           if (!isEmpty(errors)) {
             setErrors(errors);
             return;
-          } 
+          }
 
           toggleIsVerifying(true);
 
           try {
             // Send confirmation code to user's email address
             // This API will also verify if the user exists
-            const {
-              status: sendConfirmationCodeResponseStatus,
-            } = await UsersService.acquireCode(values.emailAddress);
+            const { status: sendConfirmationCodeResponseStatus } =
+              await UsersService.acquireCode(values.emailAddress);
 
             if (sendConfirmationCodeResponseStatus === 200) {
               router.push(`/forgot-password/code?email=${values.emailAddress}`);
             }
           } catch (error) {
-            const {status} = error.response;
+            const { status } = error.response;
 
             switch (status) {
               case 400:
@@ -117,9 +114,7 @@ function InputEmail() {
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
-          <form 
-            className={styles.InputEmail_content} 
-            onSubmit={handleSubmit}>
+          <form className={styles.InputEmail_content} onSubmit={handleSubmit}>
             <ControlledInput
               error={errors.emailAddress}
               name="emailAddress"
@@ -161,11 +156,11 @@ function InputEmail() {
               </Button>
 
               <ButtonLink
-                icon='arrow_back'
-                to='/login'
+                icon="arrow_back"
+                to="/login"
                 type={buttonTypes.TEXT.BLUE}
               >
-                Back to Login 
+                Back to Login
               </ButtonLink>
             </div>
           </form>

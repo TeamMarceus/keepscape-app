@@ -13,17 +13,17 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  IconButton, 
-  ButtonLink, 
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+import {
+  IconButton,
+  ButtonLink,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   IconLink,
   Pagination,
-  ConfirmModal
+  ConfirmModal,
 } from '@/components';
 
 import { useSellerProducts, useWindowSize } from '@/hooks';
@@ -38,10 +38,11 @@ function MyProducts() {
   const { windowSize } = useWindowSize();
 
   const page = searchParams.get('page') || 1;
-  
+
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] =
+    useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const {
@@ -49,12 +50,12 @@ function MyProducts() {
     products,
     totalPages,
     isDeleting,
-    deleteProduct 
-  } = useSellerProducts({ 
-    search, 
-    isHidden: false, 
+    deleteProduct,
+  } = useSellerProducts({
+    search,
+    isHidden: false,
     page,
-    pageSize: 10 
+    pageSize: 10,
   });
 
   const filteredProducts = products.filter((product) => {
@@ -66,9 +67,7 @@ function MyProducts() {
   return (
     <>
       <div className={styles.MyProducts}>
-        <Text type={textTypes.HEADING.XS}>
-          My Products
-        </Text>
+        <Text type={textTypes.HEADING.XS}>My Products</Text>
 
         <ControlledInput
           className={styles.MyProducts_search}
@@ -167,10 +166,22 @@ function MyProducts() {
                     </div>
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, images, name, quantity, buyerPrice, stars, totalSold  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      images,
+                      name,
+                      quantity,
+                      buyerPrice,
+                      stars,
+                      totalSold,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.MyProducts_grid_productGrid}>
+                        <Card
+                          key={id}
+                          className={styles.MyProducts_grid_productGrid}
+                        >
                           <div className={styles.MyProducts_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -187,7 +198,7 @@ function MyProducts() {
                           <div className={styles.MyProducts_grid_column}>
                             {name}
                           </div>
-      
+
                           <div className={styles.MyProducts_grid_column}>
                             {quantity}
                           </div>
@@ -195,7 +206,7 @@ function MyProducts() {
                           <div className={styles.MyProducts_grid_column}>
                             ₱{buyerPrice.toLocaleString()}
                           </div>
-                      
+
                           <div className={styles.MyProducts_grid_column}>
                             {stars}
                           </div>
@@ -266,13 +277,15 @@ function MyProducts() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.MyProducts_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/seller/products?page=${value}`, { scroll: false })
+                    router.push(`/seller/products?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -285,7 +298,6 @@ function MyProducts() {
             )}
           </>
         )}
-
       </div>
 
       <ConfirmModal
@@ -315,6 +327,6 @@ function MyProducts() {
         title="Delete?"
       />
     </>
-  )
+  );
 }
 export default MyProducts;

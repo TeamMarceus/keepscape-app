@@ -21,7 +21,7 @@ export default function LogoutPage() {
         const { status } = await UsersService.logout();
 
         if (status === 200) {
-          loginRestart();  
+          loginRestart();
           router.push('/login');
         }
       } catch (error) {
@@ -29,9 +29,8 @@ export default function LogoutPage() {
         router.push('/login');
       }
     };
-    
-    logoutUser();
 
+    logoutUser();
   }, []);
 
   return null;

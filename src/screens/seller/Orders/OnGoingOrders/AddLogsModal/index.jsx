@@ -7,19 +7,19 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { 
-  buttonKinds, 
-  colorNames, 
-  modalPositions, 
-  modalSizes, 
-  spinnerSizes 
+import {
+  buttonKinds,
+  colorNames,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
 } from '@/app-globals';
-import { 
+import {
   DateTimePicker,
-  Button, 
-  ControlledTextArea, 
-  Modal, 
-  Spinner 
+  Button,
+  ControlledTextArea,
+  Modal,
+  Spinner,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -30,7 +30,7 @@ import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.log) {
@@ -44,7 +44,6 @@ const validate = (values) => {
   return errors;
 };
 
-
 function AddLogsModal({
   isOpen,
   handleClose,
@@ -53,14 +52,10 @@ function AddLogsModal({
   setOrders,
   orders,
 }) {
-
   dayjs.extend(utc);
   dayjs.extend(timezone);
 
-  const {
-    isAdding,
-    addOrderLogs,
-  } = useAddOrderLogs();
+  const { isAdding, addOrderLogs } = useAddOrderLogs();
 
   return (
     <Modal
@@ -88,61 +83,66 @@ function AddLogsModal({
             setErrors(errors);
             return;
           }
-          
-          const { responseCode: addOrderLogsResponseCode } = await addOrderLogs(orderId, currentFormValues);
 
-            const addOrderLogsCallbacks = {
-              created: () => {
-                toastSuccess('Delivery log successfully added.');
+          const { responseCode: addOrderLogsResponseCode } = await addOrderLogs(
+            orderId,
+            currentFormValues
+          );
 
-                const newOrders = orders.map((order) => {
-                  if (order.id === orderId) {
-                    return {
-                      ...order,
-                      deliveryLogs: [
-                        {
-                          // subtract 8 hours to the dateTime
-                          dateTime: dayjs(currentFormValues.dateTime).subtract(8, 'hour').format('MM/DD/YYYY hh:mm A'),
-                          log: currentFormValues.log,
-                        },
-                        ...order.deliveryLogs,
-                      ],
-                    };
-                  }
+          const addOrderLogsCallbacks = {
+            created: () => {
+              toastSuccess('Delivery log successfully added.');
 
-                  return order;
-                });
+              const newOrders = orders.map((order) => {
+                if (order.id === orderId) {
+                  return {
+                    ...order,
+                    deliveryLogs: [
+                      {
+                        // subtract 8 hours to the dateTime
+                        dateTime: dayjs(currentFormValues.dateTime)
+                          .subtract(8, 'hour')
+                          .format('MM/DD/YYYY hh:mm A'),
+                        log: currentFormValues.log,
+                      },
+                      ...order.deliveryLogs,
+                    ],
+                  };
+                }
 
-                setOrders(newOrders);
+                return order;
+              });
 
-                // Reset form values
-                setFieldValue('log', '');
-                setFieldValue('dateTime', dayjs());
-              },
-              invalidFields: () => {
-                toastError('Invalid fields.');
-              },
-              internalError: () => {
-                toastError('Oops, something went wrong.');
-              },
-            };
+              setOrders(newOrders);
 
-            switch (addOrderLogsResponseCode) {
-              case 200:
-                addOrderLogsCallbacks.created();
-                break;
-              case 400:
-                addOrderLogsCallbacks.invalidFields();
-                break;
-              case 401:
-                addOrderLogsCallbacks.internalError();
-                break;
-              case 500:
-                addOrderLogsCallbacks.internalError();
-                break;
-              default:
-                break;
-            } 
+              // Reset form values
+              setFieldValue('log', '');
+              setFieldValue('dateTime', dayjs());
+            },
+            invalidFields: () => {
+              toastError('Invalid fields.');
+            },
+            internalError: () => {
+              toastError('Oops, something went wrong.');
+            },
+          };
+
+          switch (addOrderLogsResponseCode) {
+            case 200:
+              addOrderLogsCallbacks.created();
+              break;
+            case 400:
+              addOrderLogsCallbacks.invalidFields();
+              break;
+            case 401:
+              addOrderLogsCallbacks.internalError();
+              break;
+            case 500:
+              addOrderLogsCallbacks.internalError();
+              break;
+            default:
+              break;
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
@@ -164,16 +164,14 @@ function AddLogsModal({
               value={values.log}
               onChange={(e) => setFieldValue('log', e.target.value)}
             />
-                  
+
             <Button
               className={styles.AddLogsModal_button}
               disabled={isAdding}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.AddLogsModal_button_buttonText}
-              >
+              <span className={styles.AddLogsModal_button_buttonText}>
                 Add
                 {isAdding && (
                   <Spinner
@@ -198,6 +196,6 @@ AddLogsModal.propTypes = {
   title: PropTypes.string.isRequired,
   setOrders: PropTypes.func.isRequired,
   orders: PropTypes.array.isRequired,
-}
+};
 
 export default AddLogsModal;

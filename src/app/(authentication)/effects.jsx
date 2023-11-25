@@ -23,7 +23,6 @@ const RedirectPreloader = dynamic(() => import('@/components/Preloader'), {
   ssr: false,
 });
 
-
 export default function AuthenticationEffects({ children }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -43,9 +42,8 @@ export default function AuthenticationEffects({ children }) {
 
   // This state is used to prevent logo and subdomain assets from rendering on login redirect
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(false);
-  
-  const redirectUserLogin = async () => {
 
+  const redirectUserLogin = async () => {
     loginUpdate({
       user,
       access_token: accessToken,
@@ -84,7 +82,6 @@ export default function AuthenticationEffects({ children }) {
     if (!userTypeParam) {
       setIsRedirectSuccessful(false);
     }
-    
   }, [userTypeParam, isRedirected]);
 
   if (isRedirectedLoggingIn) {
@@ -94,19 +91,19 @@ export default function AuthenticationEffects({ children }) {
   return (
     <section className={styles.container}>
       {!isRedirectSuccessful && (
-            <Image
-              priority
-              alt="Logo"
-              className={styles.container_logo}
-              src={Logo}
-              width={300}
-            />
-        )} 
+        <Image
+          priority
+          alt="Logo"
+          className={styles.container_logo}
+          src={Logo}
+          width={300}
+        />
+      )}
 
-        <AuthenticationContext.Provider value={userType}>
-          {children}
-        </AuthenticationContext.Provider>
-      </section>
+      <AuthenticationContext.Provider value={userType}>
+        {children}
+      </AuthenticationContext.Provider>
+    </section>
   );
 }
 

@@ -9,10 +9,5 @@ export const metadata = {
 };
 
 export default function AppNotFound() {
-  return (
-    <PageNotFound
-      buttonLink='/'
-      buttonText='Back to Home'
-    />
-  );
+  return <PageNotFound buttonLink="/" buttonText="Back to Home" />;
 }

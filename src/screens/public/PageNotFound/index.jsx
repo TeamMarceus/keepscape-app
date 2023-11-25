@@ -7,10 +7,9 @@ import { colorClasses, textTypes } from '@/app-globals';
 
 import { ButtonLink, Text } from '@/components';
 
-
 import styles from './styles.module.scss';
 
-function PageNotFound({buttonText, buttonLink}) {
+function PageNotFound({ buttonText, buttonLink }) {
   return (
     <div className={styles.PageNotFound}>
       <Image
@@ -46,6 +45,5 @@ PageNotFound.propTypes = {
   buttonText: PropTypes.string.isRequired,
   buttonLink: PropTypes.string.isRequired,
 };
-
 
 export default PageNotFound;

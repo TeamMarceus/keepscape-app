@@ -10,5 +10,5 @@ export default function CategoryPage() {
   const params = useParams();
   const { category } = params;
 
- return <Category category={category}/>
+  return <Category category={category} />;
 }

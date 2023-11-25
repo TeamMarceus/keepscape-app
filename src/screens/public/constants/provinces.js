@@ -19,5 +19,5 @@ export const provinces = [
   {
     name: 'siquijor',
     image: Siquijor,
-  }
+  },
 ];

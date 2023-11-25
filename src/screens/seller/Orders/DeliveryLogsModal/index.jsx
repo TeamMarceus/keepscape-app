@@ -3,20 +3,18 @@ import React from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 
-import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
+import {
+  colorClasses,
+  modalPositions,
+  modalSizes,
+  textTypes,
+} from '@/app-globals';
 
 import { Modal, Text } from '@/components';
 
-
 import styles from './styles.module.scss';
 
-function DeliveryLogsModal({
-  isOpen,
-  handleClose,
-  title,
-  deliveryDetails,
-}) {
-
+function DeliveryLogsModal({ isOpen, handleClose, title, deliveryDetails }) {
   const deliveryLogs = [
     {
       id: '11',
@@ -87,8 +85,8 @@ function DeliveryLogsModal({
       id: '10',
       dateTime: '2021-08-01 12:00:00',
       description: 'Product has been ordered',
-    }
-  ]
+    },
+  ];
 
   return (
     <Modal
@@ -101,7 +99,7 @@ function DeliveryLogsModal({
     >
       <div className={styles.DeliveryLogsModal_content}>
         <div className={styles.DeliveryLogsModal_delivery}>
-          <Text 
+          <Text
             className={styles.DeliveryLogsModal_delivery_title}
             type={textTypes.HEADING.XXS}
           >
@@ -115,11 +113,11 @@ function DeliveryLogsModal({
             {deliveryDetails.fullName}
           </Text>
 
-          <Text 
+          <Text
             className={styles.DeliveryLogsModal_delivery_number}
             colorClass={colorClasses.NEUTRAL['400']}
           >
-            {deliveryDetails?.contactNumber} 
+            {deliveryDetails?.contactNumber}
           </Text>
 
           <Text colorClass={colorClasses.NEUTRAL['400']}>
@@ -129,35 +127,29 @@ function DeliveryLogsModal({
 
         <div className={styles.DeliveryLogsModal_logs}>
           {deliveryLogs.map((log, index) => (
-            <div
-              key={log.id}
-              className={styles.DeliveryLogsModal_logs_log}
-            >
-              <div className={cn(styles.DeliveryLogsModal_logs_circle, 
-                  index === 0 && styles.DeliveryLogsModal_logs_circle___green,
-              )}/>
+            <div key={log.id} className={styles.DeliveryLogsModal_logs_log}>
+              <div
+                className={cn(
+                  styles.DeliveryLogsModal_logs_circle,
+                  index === 0 && styles.DeliveryLogsModal_logs_circle___green
+                )}
+              />
 
               <div className={styles.DeliveryLogsModal_logs_log_dateTime}>
-                <Text>
-                  {log.dateTime}
-                </Text>
+                <Text>{log.dateTime}</Text>
               </div>
 
               <div className={styles.DeliveryLogsModal_logs_log_description}>
-                <Text
-                  colorClass={colorClasses.NEUTRAL['400']}
-                >
+                <Text colorClass={colorClasses.NEUTRAL['400']}>
                   {log.description}
                 </Text>
               </div>
             </div>
-          ))
-
-          }
+          ))}
         </div>
       </div>
     </Modal>
-  )
+  );
 }
 
 DeliveryLogsModal.propTypes = {
@@ -165,6 +157,6 @@ DeliveryLogsModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   deliveryDetails: PropTypes.object.isRequired,
-}
+};
 
 export default DeliveryLogsModal;

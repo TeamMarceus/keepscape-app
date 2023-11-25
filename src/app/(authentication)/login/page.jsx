@@ -51,181 +51,174 @@ const validate = (values) => {
 export default function LoginPage() {
   const router = useRouter();
   const { redirect } = useSubdomainRedirect();
-  const loginUpdate = useActionDispatch(
-    usersActions.loginActions.loginUpdate
-  );
+  const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   return (
-      <section className={styles.LoginPage}>
-        <Text 
-          className={styles.LoginPage_header}
-          type={textTypes.HEADING.XL}
-        >
-          Welcome!
-        </Text>
-       
-        <div className={styles.LoginPage_content}>
-          <Formik
-            initialValues={{
-              email: '',
-              password: '',
-            }}
-            onSubmit={async (values, { setErrors }) => {
-              const currentFormValues = {
-                email: values.email,
-                password: values.password,
-              };
+    <section className={styles.LoginPage}>
+      <Text className={styles.LoginPage_header} type={textTypes.HEADING.XL}>
+        Welcome!
+      </Text>
 
-              const errors = validate(values);
-              if (!isEmpty(errors)) {
-                setErrors(errors);
-                return;
-              }
+      <div className={styles.LoginPage_content}>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={async (values, { setErrors }) => {
+            const currentFormValues = {
+              email: values.email,
+              password: values.password,
+            };
 
-              setIsLoggingIn(true);
+            const errors = validate(values);
+            if (!isEmpty(errors)) {
+              setErrors(errors);
+              return;
+            }
 
-              // LoginPage the user
-              try {
-                const { data: loginPageResponse } = await UsersService.login(
-                  currentFormValues
-                );
+            setIsLoggingIn(true);
 
-                // Call the Acquire Tokens endpoint to set the tokens
-                const { data: acquireResponse } = await TokensService.acquire({
-                  email: currentFormValues.email,
-                  password: currentFormValues.password,
-                });
-                
-                // Update login
-                loginUpdate({
-                  user: loginPageResponse,
-                  access_token: acquireResponse.accessToken,
-                  refresh_token: acquireResponse.refreshToken,
-                });
+            // LoginPage the user
+            try {
+              const { data: loginPageResponse } =
+                await UsersService.login(currentFormValues);
 
-                // Redirect the user
-                redirect(
-                  loginPageResponse, 
-                  acquireResponse.accessToken, 
-                  acquireResponse.refreshToken
-                );                
-              } catch (error) {
-                setIsLoggingIn(false);
-                const { status } = error.response;
-                const { data } = error.response;
-     
-                switch (status) {
-                  case 400:
-                    setIsLoggingIn(false);
-                    
-                    if (data.userStatus === userStatus.PENDING || 
-                      data.userStatus === userStatus.REJECTED || 
-                      data.userStatus === userStatus.BANNED) {
+              // Call the Acquire Tokens endpoint to set the tokens
+              const { data: acquireResponse } = await TokensService.acquire({
+                email: currentFormValues.email,
+                password: currentFormValues.password,
+              });
 
-                        loginUpdate({
-                          user: data,
-                        });
+              // Update login
+              loginUpdate({
+                user: loginPageResponse,
+                access_token: acquireResponse.accessToken,
+                refresh_token: acquireResponse.refreshToken,
+              });
 
-                        router.push(AUTHENTICATION_ROUTES.SELLER_APPLICATION);
+              // Redirect the user
+              redirect(
+                loginPageResponse,
+                acquireResponse.accessToken,
+                acquireResponse.refreshToken
+              );
+            } catch (error) {
+              setIsLoggingIn(false);
+              const { status } = error.response;
+              const { data } = error.response;
 
-                    } else {
-                      setErrors({
-                        overall: 'Invalid email and/or password.',
-                      });
-                    }
-                    break;
+              switch (status) {
+                case 400:
+                  setIsLoggingIn(false);
 
-                  case 500:
-                    setIsLoggingIn(false);
-                    setErrors({
-                      overall: 'Oops, something went wrong.',
+                  if (
+                    data.userStatus === userStatus.PENDING ||
+                    data.userStatus === userStatus.REJECTED ||
+                    data.userStatus === userStatus.BANNED
+                  ) {
+                    loginUpdate({
+                      user: data,
                     });
-                    break;
-                  default:
-                    break;
-                }
-                setIsLoggingIn(false);
+
+                    router.push(AUTHENTICATION_ROUTES.SELLER_APPLICATION);
+                  } else {
+                    setErrors({
+                      overall: 'Invalid email and/or password.',
+                    });
+                  }
+                  break;
+
+                case 500:
+                  setIsLoggingIn(false);
+                  setErrors({
+                    overall: 'Oops, something went wrong.',
+                  });
+                  break;
+                default:
+                  break;
               }
-            }}
-          >
-            {({ errors, values, handleSubmit, setFieldValue }) => (
-              <form onSubmit={handleSubmit}>
-                <ControlledInput
-                  className={styles.LoginPage_content_input}
-                  error={errors.email}
-                  name="email"
-                  placeholder="Email Address"
-                  value={values.email}
-                  onChange={(e) => setFieldValue('email', e.target.value)}
-                />
+              setIsLoggingIn(false);
+            }
+          }}
+        >
+          {({ errors, values, handleSubmit, setFieldValue }) => (
+            <form onSubmit={handleSubmit}>
+              <ControlledInput
+                className={styles.LoginPage_content_input}
+                error={errors.email}
+                name="email"
+                placeholder="Email Address"
+                value={values.email}
+                onChange={(e) => setFieldValue('email', e.target.value)}
+              />
 
-                <ControlledInput
-                  className={styles.LoginPage_content_input}
-                  error={errors.password}
-                  kind={inputKinds.PASSWORD}
-                  name="password"
-                  placeholder="Password"
-                  value={values.password}
-                  onChange={(e) => setFieldValue('password', e.target.value)}
-                />
-                
-                {errors.overall && (
-                  <Text
-                    className={styles.LoginPage_content_input_errorMessage}
-                    colorClass={colorClasses.RED['400']}
-                    type={textTypes.BODY.XS}
-                  >
-                    {errors.overall}
-                  </Text>
-                )}
+              <ControlledInput
+                className={styles.LoginPage_content_input}
+                error={errors.password}
+                kind={inputKinds.PASSWORD}
+                name="password"
+                placeholder="Password"
+                value={values.password}
+                onChange={(e) => setFieldValue('password', e.target.value)}
+              />
 
-                <Button
-                  className={styles.LoginPage_content_loginButton}
-                  disabled={isLoggingIn}
-                  kind={buttonKinds.SUBMIT}
-                  onClick={() => {}}
+              {errors.overall && (
+                <Text
+                  className={styles.LoginPage_content_input_errorMessage}
+                  colorClass={colorClasses.RED['400']}
+                  type={textTypes.BODY.XS}
                 >
-                  <span
-                    className={styles.LoginPage_content_loginButton_buttonText}
+                  {errors.overall}
+                </Text>
+              )}
+
+              <Button
+                className={styles.LoginPage_content_loginButton}
+                disabled={isLoggingIn}
+                kind={buttonKinds.SUBMIT}
+                onClick={() => {}}
+              >
+                <span
+                  className={styles.LoginPage_content_loginButton_buttonText}
+                >
+                  login
+                  {isLoggingIn && (
+                    <Spinner
+                      className={styles.LoginPage_content_loginButton_spinner}
+                      colorName={colorNames.WHITE}
+                      size={spinnerSizes.XS}
+                    />
+                  )}
+                </span>
+              </Button>
+
+              <div className={styles.LoginPage_content_textLink}>
+                <ButtonLink
+                  className={styles.LoginPage_content_forgotPassword}
+                  to="/forgot-password/email"
+                  type={buttonTypes.TEXT.BLUE}
+                >
+                  Forgot Password?
+                </ButtonLink>
+
+                <Text>
+                  Don't have an account?{' '}
+                  <Link
+                    className={styles.LoginPage_content_textLink_signUp}
+                    href="/signup"
+                    onClick={isLoggingIn ? (e) => e.preventDefault() : () => {}}
                   >
-                    login
-                    {isLoggingIn && (
-                      <Spinner
-                        className={styles.LoginPage_content_loginButton_spinner}
-                        colorName={colorNames.WHITE}
-                        size={spinnerSizes.XS}
-                      />
-                    )}
-                  </span>
-                </Button>
-
-                <div className={styles.LoginPage_content_textLink}>
-                  <ButtonLink
-                    className={styles.LoginPage_content_forgotPassword}
-                    to="/forgot-password/email"
-                    type={buttonTypes.TEXT.BLUE}
-                  >
-                    Forgot Password?
-                  </ButtonLink>
-
-
-                  <Text>
-                    Don't have an account?{' '}
-                    <Link
-                      className={styles.LoginPage_content_textLink_signUp}
-                      href="/signup"
-                      onClick={isLoggingIn ? (e) => e.preventDefault() : () => {}}
-                    >
-                      Sign Up
-                    </Link>
-                  </Text>
-                </div>
-              </form>
-            )}
-          </Formik>
-        </div>
-      </section>
+                    Sign Up
+                  </Link>
+                </Text>
+              </div>
+            </form>
+          )}
+        </Formik>
+      </div>
+    </section>
   );
 }

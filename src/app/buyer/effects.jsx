@@ -21,7 +21,7 @@ const RedirectPreloader = dynamic(() => import('@/components/Preloader'), {
 
 export default function BuyerEffects({ children }) {
   const pathname = usePathname();
-  const onAccountPage = pathname === '/buyer/account'
+  const onAccountPage = pathname === '/buyer/account';
   const onCartPage = pathname === '/buyer/cart';
   const onCheckoutPage = pathname === '/buyer/checkout';
 
@@ -32,14 +32,13 @@ export default function BuyerEffects({ children }) {
   usePrivateRoute({ forUserType: userTypes.BUYER });
 
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken && user.userType === userTypes.BUYER,
+    !!accessToken && !!refreshToken && user.userType === userTypes.BUYER
   );
 
   useEffect(() => {
     if (!user.id) {
       setIsRedirectSuccessful(false);
     }
-    
   }, [user]);
 
   if (!isRedirectSuccessful) {
@@ -49,9 +48,7 @@ export default function BuyerEffects({ children }) {
   return (
     <>
       <Navbar />
-      <section className={styles.container}>
-        {children}
-      </section>
+      <section className={styles.container}>{children}</section>
       {!onAccountPage && !onCartPage && !onCheckoutPage && <Footer />}
     </>
   );

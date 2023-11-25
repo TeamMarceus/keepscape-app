@@ -4,20 +4,16 @@ import cn from 'classnames';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  buttonTypes,
-  colorClasses,
-  textTypes,
-} from '@/app-globals';
+import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
 
-import { 
+import {
   Button,
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
-  Pagination
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
+  Pagination,
 } from '@/components';
 
 import { useWindowSize, useAdminWithdrawals } from '@/hooks';
@@ -39,23 +35,23 @@ function RejectedPayments() {
 
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isProofModalOpen, setIsProofModalOpen] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState({});
-  
+
   const {
     isLoading: isRecordsLoading,
     withdrawals,
-    totalPages, 
+    totalPages,
   } = useAdminWithdrawals({
     page,
     pageSize: 10,
     paymentStatus: 'Rejected',
     search,
-  })
+  });
 
   const filteredRecords = withdrawals.filter((record) => {
     const searchLowerCase = search.toLowerCase();
@@ -69,9 +65,7 @@ function RejectedPayments() {
   return (
     <>
       <div className={styles.RejectedPayments}>
-        <Text type={textTypes.HEADING.XS}>
-          Rejected Payments
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Rejected Payments</Text>
 
         <ControlledInput
           className={styles.RejectedPayments_search}
@@ -122,7 +116,7 @@ function RejectedPayments() {
                     >
                       Full Name
                     </div>
-                    
+
                     <div
                       className={cn(
                         styles.RejectedPayments_grid_header,
@@ -157,16 +151,31 @@ function RejectedPayments() {
                       )}
                     >
                       Status
-                    </div>                    
+                    </div>
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id,dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
-                      paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      sellerId,
+                      sellerName,
+                      fullName,
+                      amount,
+                      paymentMethod,
+                      paymentDetails,
+                      paymentProfileImageUrl,
+                      paymentProofImageUrl,
+                      remarks,
+                      status,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.RejectedPayments_grid_recordGrid}>
+                        <Card
+                          key={id}
+                          className={styles.RejectedPayments_grid_recordGrid}
+                        >
                           <div className={styles.RejectedPayments_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -175,7 +184,7 @@ function RejectedPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, sellerId, sellerName});
+                              setSelectedRecord({ id, sellerId, sellerName });
                               setIsSellerModalOpen(true);
                             }}
                           >
@@ -194,8 +203,13 @@ function RejectedPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, paymentMethod, paymentDetails, 
-                                paymentProfileImageUrl, paymentProofImageUrl});
+                              setSelectedRecord({
+                                id,
+                                paymentMethod,
+                                paymentDetails,
+                                paymentProfileImageUrl,
+                                paymentProofImageUrl,
+                              });
                               setIsPaymentModalOpen(true);
                             }}
                           >
@@ -216,10 +230,18 @@ function RejectedPayments() {
                           key={id}
                           className={styles.RejectedPayments_grid_recordGrid}
                         >
-                          <summary className={styles.RejectedPayments_grid_title}>
-                            <div className={styles.RejectedPayments_grid_title_info}>
+                          <summary
+                            className={styles.RejectedPayments_grid_title}
+                          >
+                            <div
+                              className={
+                                styles.RejectedPayments_grid_title_info
+                              }
+                            >
                               <Icon
-                                className={styles.RejectedPayments_grid_title_icon}
+                                className={
+                                  styles.RejectedPayments_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -244,12 +266,14 @@ function RejectedPayments() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.RejectedPayments_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/finance/rejected?page=${value}`, { scroll: false })
+                    router.push(`/admin/finance/rejected?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -262,7 +286,6 @@ function RejectedPayments() {
             )}
           </>
         )}
-
       </div>
 
       {isSellerModalOpen && (
@@ -285,15 +308,15 @@ function RejectedPayments() {
         />
       )}
 
-      {isProofModalOpen &&
+      {isProofModalOpen && (
         <IdModal
           handleClose={() => setIsProofModalOpen(false)}
           image={selectedRecord.paymentProfileImageUrl}
           isOpen={isProofModalOpen}
           title={`${selectedRecord.sellerName} Payment Proof`}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default RejectedPayments;

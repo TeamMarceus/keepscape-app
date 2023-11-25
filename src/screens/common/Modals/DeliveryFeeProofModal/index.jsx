@@ -8,12 +8,7 @@ import { Button, Modal } from '@/components';
 
 import styles from './styles.module.scss';
 
-function DeliveryFeeProofModal({
-  isOpen,
-  handleClose,
-  proof,
-  title,
-}) {
+function DeliveryFeeProofModal({ isOpen, handleClose, proof, title }) {
   return (
     <Modal
       className={styles.DeliveryFeeProofModal}
@@ -24,13 +19,13 @@ function DeliveryFeeProofModal({
       title={title}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
+      <img
         alt="Proof of delivery fee"
         className={styles.DeliveryFeeProofModal_proof}
         src={proof}
       />
-  </Modal>
-  )
+    </Modal>
+  );
 }
 
 DeliveryFeeProofModal.propTypes = {
@@ -38,6 +33,6 @@ DeliveryFeeProofModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   proof: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default DeliveryFeeProofModal;

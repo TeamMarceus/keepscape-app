@@ -9,10 +9,5 @@ export const metadata = {
 };
 
 export default function KeepscapeNotFound() {
-  return (
-    <PageNotFound
-      buttonLink="/"
-      buttonText="Back to Home"
-    />
-  );
+  return <PageNotFound buttonLink="/" buttonText="Back to Home" />;
 }

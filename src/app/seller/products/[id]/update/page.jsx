@@ -10,5 +10,5 @@ export default function UpdateProductPage() {
   const params = useParams();
   const { id } = params;
 
- return <UpdateProduct id={id}/>
+  return <UpdateProduct id={id} />;
 }

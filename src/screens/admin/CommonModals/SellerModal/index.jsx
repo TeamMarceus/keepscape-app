@@ -2,22 +2,19 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
+import {
+  colorClasses,
+  modalPositions,
+  modalSizes,
+  textTypes,
+} from '@/app-globals';
 import { Card, Modal, Preloader, Text } from '@/components';
 import { useSellers } from '@/hooks';
 
 import styles from './styles.module.scss';
 
-function SellerModal({
-  isOpen,
-  handleClose,
-  sellerId,
-  title,
-}) {
-  const {
-    isLoading: isSellerLoading, 
-    seller, 
-   } = useSellers({ sellerId });
+function SellerModal({ isOpen, handleClose, sellerId, title }) {
+  const { isLoading: isSellerLoading, seller } = useSellers({ sellerId });
 
   return (
     <Modal
@@ -29,92 +26,84 @@ function SellerModal({
       title={title}
     >
       {isSellerLoading ? (
-        <Preloader/>
-        ) : (
+        <Preloader />
+      ) : (
         <>
           <Card className={styles.SellerModal_profile}>
-          <div className={styles.SellerModal_profile_info}>
-            {/* eslint-disable-next-line @next/next/no-img-element  */}
-            <img 
-              alt={title}
-              className={styles.SellerModal_id}
-              height={100}
-              src={seller.idImageUrl}
-              width={100}
-            />
-            
-            <div className={styles.SellerModal_profile_name}>
-              <Text 
-                className={styles.SellerModal_profile_sellerName}
-                type={textTypes.HEADING.XS}
-              >
-                {seller.sellerName}
-              </Text>
+            <div className={styles.SellerModal_profile_info}>
+              {/* eslint-disable-next-line @next/next/no-img-element  */}
+              <img
+                alt={title}
+                className={styles.SellerModal_id}
+                height={100}
+                src={seller.idImageUrl}
+                width={100}
+              />
 
-              <div className={styles.SellerModal_info}>
-                <Text colorClass={colorClasses.NEUTRAL['400']}>
-                  Full Name:
+              <div className={styles.SellerModal_profile_name}>
+                <Text
+                  className={styles.SellerModal_profile_sellerName}
+                  type={textTypes.HEADING.XS}
+                >
+                  {seller.sellerName}
                 </Text>
-                {seller.firstName} {seller.lastName}
-              </div>
 
-              <div className={styles.SellerModal_info}>
-                <Text colorClass={colorClasses.NEUTRAL['400']}>
-                  Email: 
-                </Text>
-                {seller.email}
-              </div>
+                <div className={styles.SellerModal_info}>
+                  <Text colorClass={colorClasses.NEUTRAL['400']}>
+                    Full Name:
+                  </Text>
+                  {seller.firstName} {seller.lastName}
+                </div>
 
-              <div className={styles.SellerModal_info}>
-                <Text  colorClass={colorClasses.NEUTRAL['400']}>
-                  Mobile Number: 
-                </Text>
-                {seller.phoneNumber}
+                <div className={styles.SellerModal_info}>
+                  <Text colorClass={colorClasses.NEUTRAL['400']}>Email:</Text>
+                  {seller.email}
+                </div>
+
+                <div className={styles.SellerModal_info}>
+                  <Text colorClass={colorClasses.NEUTRAL['400']}>
+                    Mobile Number:
+                  </Text>
+                  {seller.phoneNumber}
+                </div>
               </div>
             </div>
-          </div>
 
-            <Text>
-              {seller.description}
-            </Text>
+            <Text>{seller.description}</Text>
           </Card>
 
-          <Text type={textTypes.HEADING.XXS}>
-            Additional Information
-          </Text>
-          
+          <Text type={textTypes.HEADING.XXS}>Additional Information</Text>
+
           <div className={styles.SellerModal_additionalContainer}>
             <div className={styles.SellerModal_additionalInfo}>
               <Text colorClass={colorClasses.NEUTRAL['400']}>
-                Date Created: 
+                Date Created:
               </Text>
               {seller.dateTimeCreated.split('T')[0]}
             </div>
 
             <div className={styles.SellerModal_additionalInfo}>
               <Text colorClass={colorClasses.NEUTRAL['400']}>
-                Date Approved: 
+                Date Approved:
               </Text>
               {seller.dateTimeApproved.split('T')[0]}
             </div>
 
             <div className={styles.SellerModal_additionalInfo}>
-              <Text colorClass={colorClasses.NEUTRAL['400']}>
-                User ID: 
-              </Text>
+              <Text colorClass={colorClasses.NEUTRAL['400']}>User ID:</Text>
               {seller.id}
             </div>
 
             <div className={styles.SellerModal_additionalInfo}>
               <Text colorClass={colorClasses.NEUTRAL['400']}>
-                Seller Profile ID: 
+                Seller Profile ID:
               </Text>
               {seller.sellerProfileId}
             </div>
 
             <div className={styles.SellerModal_additionalInfo}>
               <Text colorClass={colorClasses.NEUTRAL['400']}>
-                Seller Application ID: 
+                Seller Application ID:
               </Text>
               {seller.sellerApplicationId}
             </div>
@@ -122,7 +111,7 @@ function SellerModal({
         </>
       )}
     </Modal>
-  )
+  );
 }
 
 SellerModal.propTypes = {
@@ -130,6 +119,6 @@ SellerModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   sellerId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default SellerModal;

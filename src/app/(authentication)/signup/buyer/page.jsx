@@ -29,7 +29,6 @@ import { useActionDispatch, useSubdomainRedirect } from '@/hooks';
 import { TokensService, UsersService } from '@/services';
 import { isValidEmail } from '@/utils/string';
 
-
 import styles from './styles.module.scss';
 
 const validate = (values) => {
@@ -55,7 +54,7 @@ const validate = (values) => {
     errors.email = 'This field is required.';
   } else if (!isValidEmail(values.email)) {
     errors.email = 'This must be a valid email address.';
-  } 
+  }
 
   if (!values.phoneNumber) {
     errors.phoneNumber = 'This field is required.';
@@ -96,15 +95,14 @@ export default function BuyerSignUpPage() {
 
   const [isSigningUp, setIsSigningUp] = useState(false);
 
-
   return (
     <section className={styles.BuyerSignUpPage}>
-        <Text 
-          className={styles.BuyerSignUpPage_header}
-          type={textTypes.HEADING.MD}
-        >
-          Enter your account details
-        </Text>
+      <Text
+        className={styles.BuyerSignUpPage_header}
+        type={textTypes.HEADING.MD}
+      >
+        Enter your account details
+      </Text>
 
       <div className={styles.BuyerSignUpPage_content}>
         <Formik
@@ -142,9 +140,8 @@ export default function BuyerSignUpPage() {
 
             // Sign up the buyer
             try {
-              const { data: signUpResponse } = await UsersService.signupBuyer(
-                currentFormValues
-              );
+              const { data: signUpResponse } =
+                await UsersService.signupBuyer(currentFormValues);
 
               // If the creation of the user is successful
               // then we need to log the user in
@@ -153,7 +150,7 @@ export default function BuyerSignUpPage() {
                 email: currentFormValues.email,
                 password: currentFormValues.password,
               });
-              
+
               // Update login
               loginUpdate({
                 user: signUpResponse,
@@ -166,10 +163,10 @@ export default function BuyerSignUpPage() {
 
               // Redirect the buyer
               redirect(
-                signUpResponse, 
-                acquireResponse.accessToken, 
-                acquireResponse.refreshToken);
-
+                signUpResponse,
+                acquireResponse.accessToken,
+                acquireResponse.refreshToken
+              );
             } catch (error) {
               setIsSigningUp(false);
               const responseData = error.response.data;
@@ -182,7 +179,7 @@ export default function BuyerSignUpPage() {
                 setIsSigningUp(false);
               }
 
-              const {status} = error.response;
+              const { status } = error.response;
               const dataErrors = responseData.errors;
 
               switch (status) {
@@ -199,7 +196,7 @@ export default function BuyerSignUpPage() {
                     });
                   }
                   break;
-                
+
                 case 401:
                   setIsSigningUp(false);
                   setErrors({
@@ -259,7 +256,7 @@ export default function BuyerSignUpPage() {
                 onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
               />
 
-              <Text 
+              <Text
                 className={styles.BuyerSignUpPage_content_personalized}
                 type={textTypes.HEADING.XXXS}
               >
@@ -325,12 +322,16 @@ export default function BuyerSignUpPage() {
                   onClick={() => {}}
                 >
                   <span
-                    className={styles.BuyerSignUpPage_content_buttonGroup_buttonText}
+                    className={
+                      styles.BuyerSignUpPage_content_buttonGroup_buttonText
+                    }
                   >
                     Sign Up
                     {isSigningUp && (
                       <Spinner
-                        className={styles.BuyerSignUpPage_content_buttonGroup_spinner}
+                        className={
+                          styles.BuyerSignUpPage_content_buttonGroup_spinner
+                        }
                         colorName={colorNames.WHITE}
                         size={spinnerSizes.XS}
                       />

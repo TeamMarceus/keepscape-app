@@ -4,7 +4,13 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { buttonKinds, colorNames, modalPositions, modalSizes, spinnerSizes } from '@/app-globals';
+import {
+  buttonKinds,
+  colorNames,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
+} from '@/app-globals';
 
 import { Button, ControlledTextArea, Modal, Spinner } from '@/components';
 
@@ -12,7 +18,7 @@ import { textAreaTypes } from '@/components/TextArea/constants';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.reason) {
@@ -31,7 +37,6 @@ function ReasonModal({
   status,
   isUpdating,
 }) {
-
   return (
     <Modal
       className={styles.ReasonModal}
@@ -46,7 +51,6 @@ function ReasonModal({
           reason: '',
         }}
         onSubmit={async (values, { setErrors }) => {
-
           const errors = validate(values);
           if (!isEmpty(errors)) {
             setErrors(errors);
@@ -71,16 +75,14 @@ function ReasonModal({
               value={values.reason}
               onChange={(e) => setFieldValue('reason', e.target.value)}
             />
-                  
+
             <Button
               className={styles.ReasonModal_button}
               disabled={isUpdating}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.ReasonModal_button_buttonText}
-              >
+              <span className={styles.ReasonModal_button_buttonText}>
                 Submit
                 {isUpdating && (
                   <Spinner
@@ -106,6 +108,6 @@ ReasonModal.propTypes = {
   userId: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   isUpdating: PropTypes.bool.isRequired,
-}
+};
 
 export default ReasonModal;

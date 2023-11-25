@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import cn from 'classnames';
-import { useSearchParams , useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -15,27 +15,25 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  IconButton,  
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+import {
+  IconButton,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   Button,
   Pagination,
   ConfirmModal,
-  Spinner
+  Spinner,
 } from '@/components';
 
 import { useReportedProducts, useWindowSize } from '@/hooks';
-
 
 import SellerModal from '../CommonModals/SellerModal';
 
 import PreloaderProducts from './Preloader';
 import ProductReportsModal from './ProductReportsModal';
-
 
 import styles from './styles.module.scss';
 
@@ -58,41 +56,42 @@ function ReviewProducts() {
 
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
-  const [isProductReportsModalOpen, setIsProductReportsModalOpen] = useState(false);
-  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false);
+  const [isProductReportsModalOpen, setIsProductReportsModalOpen] =
+    useState(false);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] =
+    useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const {
-    isLoading: isReportedProductsLoading, 
+    isLoading: isReportedProductsLoading,
     isDeletingLoading,
     isResolvingLoading,
     reportedProducts,
     deleteProduct,
     resolveProductReports,
-    totalPages
-  } = useReportedProducts({page, pageSize: 10});
+    totalPages,
+  } = useReportedProducts({ page, pageSize: 10 });
 
   if (isReportedProductsLoading) return;
 
   const filteredProducts = reportedProducts.filter((product) => {
-
     if (productIdParam && search === '') {
       return product.id === productIdParam;
     }
 
-    return product.name.toLowerCase().includes(search.toLowerCase()) ||
-      product.sellerUserId.toLowerCase().includes(search.toLowerCase());
+    return (
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      product.sellerUserId.toLowerCase().includes(search.toLowerCase())
+    );
   });
 
   return (
     <>
       <div className={styles.ReviewProducts}>
-        <Text type={textTypes.HEADING.XS}>
-          Review Products
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Review Products</Text>
 
         <ControlledInput
           className={styles.ReviewProducts_search}
@@ -196,10 +195,22 @@ function ReviewProducts() {
 
                   {/* Body of OrderGrid starts here */}
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, name, quantity, imageUrls, totalSold, totalReports, sellerUserId  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      name,
+                      quantity,
+                      imageUrls,
+                      totalSold,
+                      totalReports,
+                      sellerUserId,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.ReviewProducts_grid_productGrid}>
+                        <Card
+                          key={id}
+                          className={styles.ReviewProducts_grid_productGrid}
+                        >
                           <div className={styles.ReviewProducts_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -207,14 +218,17 @@ function ReviewProducts() {
                           <div className={styles.ReviewProducts_grid_column}>
                             {name}
                           </div>
-            
+
                           <div className={styles.ReviewProducts_grid_column}>
                             {quantity}
                           </div>
 
-                          <div className={cn(styles.ReviewProducts_grid_column,
-                            styles.ReviewProducts_grid_column_images
-                          )}>
+                          <div
+                            className={cn(
+                              styles.ReviewProducts_grid_column,
+                              styles.ReviewProducts_grid_column_images
+                            )}
+                          >
                             <Slider {...sliderSettings}>
                               {imageUrls.map((image, index) => (
                                 // eslint-disable-next-line @next/next/no-img-element
@@ -226,7 +240,7 @@ function ReviewProducts() {
                                   src={image}
                                   width={50}
                                 />
-                              ))}  
+                              ))}
                             </Slider>
                           </div>
 
@@ -244,48 +258,60 @@ function ReviewProducts() {
                           >
                             {totalReports}
                           </Button>
-                          
+
                           <IconButton
-                            className={cn(styles.ReviewProducts_grid_column, styles.ReviewProducts_grid_column_link)}
+                            className={cn(
+                              styles.ReviewProducts_grid_column,
+                              styles.ReviewProducts_grid_column_link
+                            )}
                             icon="storefront"
                             type={iconButtonTypes.OUTLINE.MD}
                             onClick={() => {
-                              setSelectedProduct({ sellerUserId, name});
+                              setSelectedProduct({ sellerUserId, name });
                               setIsSellerModalOpen(true);
                             }}
                           />
 
                           <div className={styles.ReviewProducts_grid_column}>
-                            {!isResolvingLoading &&
-                              <div className={styles.ReviewProducts_grid_buttons}>
+                            {!isResolvingLoading && (
+                              <div
+                                className={styles.ReviewProducts_grid_buttons}
+                              >
                                 <IconButton
-                                  className={styles.ReviewProducts_grid_resolveButton}
+                                  className={
+                                    styles.ReviewProducts_grid_resolveButton
+                                  }
                                   icon="check_circle_outline"
                                   type={iconButtonTypes.ICON.MD}
-                                  onClick={ async () => {
+                                  onClick={async () => {
                                     setSelectedProduct({ id });
                                     await resolveProductReports(id);
                                   }}
                                 />
 
                                 <IconButton
-                                  className={styles.ReviewProducts_grid_deleteButton}
+                                  className={
+                                    styles.ReviewProducts_grid_deleteButton
+                                  }
                                   icon="delete"
                                   type={iconButtonTypes.ICON.MD}
                                   onClick={() => {
                                     setSelectedProduct({ id });
                                     toggleDeleteConfirmation(true);
                                   }}
-                                  />
+                                />
                               </div>
-                            }
-                            {(isResolvingLoading && selectedProduct.id === id) &&
-                              <Spinner
-                                className={styles.ReviewProducts_grid_buttons_spinner}
-                                colorName={colorNames.BLUE}
-                                size={spinnerSizes.MD}
-                              />
-                            }
+                            )}
+                            {isResolvingLoading &&
+                              selectedProduct.id === id && (
+                                <Spinner
+                                  className={
+                                    styles.ReviewProducts_grid_buttons_spinner
+                                  }
+                                  colorName={colorNames.BLUE}
+                                  size={spinnerSizes.MD}
+                                />
+                              )}
                           </div>
                         </Card>
                       ) : (
@@ -295,9 +321,13 @@ function ReviewProducts() {
                           className={styles.ReviewProducts_grid_productGrid}
                         >
                           <summary className={styles.ReviewProducts_grid_title}>
-                            <div className={styles.ReviewProducts_grid_title_info}>
+                            <div
+                              className={styles.ReviewProducts_grid_title_info}
+                            >
                               <Icon
-                                className={styles.ReviewProducts_grid_title_icon}
+                                className={
+                                  styles.ReviewProducts_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -323,12 +353,14 @@ function ReviewProducts() {
                   {/* Body of OrderGrid ends here */}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.ReviewProducts_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/review-products?page=${value}`, { scroll: false })
+                    router.push(`/admin/review-products?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -388,6 +420,6 @@ function ReviewProducts() {
         title="Delete?"
       />
     </>
-  )
+  );
 }
 export default ReviewProducts;

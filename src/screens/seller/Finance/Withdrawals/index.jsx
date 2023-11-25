@@ -4,20 +4,16 @@ import cn from 'classnames';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  buttonTypes,
-  colorClasses,
-  textTypes,
-} from '@/app-globals';
+import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
 
-import { 
+import {
   Button,
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
-  Pagination
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
+  Pagination,
 } from '@/components';
 
 import { useSellerWithdrawals, useWindowSize } from '@/hooks';
@@ -44,27 +40,25 @@ function Withdrawals() {
   const [isProofModalOpen, setIsProofModalOpen] = useState(false);
 
   const {
-    isLoading: isWithdrawalsLoading, 
+    isLoading: isWithdrawalsLoading,
     withdrawals,
     totalPages,
-  } = useSellerWithdrawals({page, pageSize: 10});
+  } = useSellerWithdrawals({ page, pageSize: 10 });
 
   const filteredRecords = withdrawals.filter((record) => {
-      const searchLowerCase = search.toLowerCase();
+    const searchLowerCase = search.toLowerCase();
 
-      return (
-        record.dateTimeCreated.toLowerCase().includes(searchLowerCase) ||
-        record.status.toLowerCase().includes(searchLowerCase) ||
-        record.paymentMethod.toLowerCase().includes(searchLowerCase)
-      );
-    }) 
+    return (
+      record.dateTimeCreated.toLowerCase().includes(searchLowerCase) ||
+      record.status.toLowerCase().includes(searchLowerCase) ||
+      record.paymentMethod.toLowerCase().includes(searchLowerCase)
+    );
+  });
 
   return (
     <>
       <div className={styles.Withdrawals}>
-        <Text type={textTypes.HEADING.XS}>
-          Withdrawals Made
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Withdrawals Made</Text>
 
         <ControlledInput
           className={styles.Withdrawals_search}
@@ -139,80 +133,102 @@ function Withdrawals() {
                       className={cn(
                         styles.Withdrawals_grid_header,
                         styles.Withdrawals_grid_column,
-                        styles.Withdrawals_grid_header_action,
+                        styles.Withdrawals_grid_header_action
                       )}
                     >
                       Paid Proof
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
                   {filteredRecords.map(
-                    ({ id, dateTimeCreated, sellerName, amount, paymentDetails, paymentProfileImageUrl, 
-                      paymentProofImageUrl, paymentMethod, remarks, status  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      sellerName,
+                      amount,
+                      paymentDetails,
+                      paymentProfileImageUrl,
+                      paymentProofImageUrl,
+                      paymentMethod,
+                      remarks,
+                      status,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.Withdrawals_grid_recordGrid}>
+                        <Card
+                          key={id}
+                          className={styles.Withdrawals_grid_recordGrid}
+                        >
                           <div className={styles.Withdrawals_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                          <Text 
+                          <Text
                             className={styles.Withdrawals_grid_column}
                             colorClass={(() => {
                               if (status === 'Pending') {
                                 return colorClasses.BLUE['300'];
-                              } if (status === 'Paid') {
+                              }
+                              if (status === 'Paid') {
                                 return colorClasses.GREEN['300'];
                               }
 
                               return colorClasses.RED['300'];
-                            })()
-                            }
+                            })()}
                           >
                             {amount}
                           </Text>
 
                           <div className={styles.Withdrawals_grid_column}>
                             {status}
-                          </div> 
+                          </div>
 
                           <div className={styles.Withdrawals_grid_column}>
                             {remarks || '-'}
-                          </div>              
+                          </div>
                           <Button
                             className={styles.Withdrawals_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, paymentMethod, paymentDetails, 
-                                paymentProfileImageUrl});
+                              setSelectedRecord({
+                                id,
+                                paymentMethod,
+                                paymentDetails,
+                                paymentProfileImageUrl,
+                              });
                               setIsPaymentModalOpen(true);
                             }}
                           >
                             {paymentMethod}
-                          </Button>     
+                          </Button>
 
-                         { status === 'Paid' ? (
-                              //  eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions 
-                              <img
+                          {status === 'Paid' ? (
+                            //  eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+                            <img
                               alt="Payment Proof"
-                              className={cn(styles.Withdrawals_grid_column, styles.Withdrawals_grid_column_proof)}
+                              className={cn(
+                                styles.Withdrawals_grid_column,
+                                styles.Withdrawals_grid_column_proof
+                              )}
                               height={60}
                               src={paymentProofImageUrl}
                               width={60}
                               onClick={() => {
                                 setIsProofModalOpen(true);
-                                setSelectedRecord({ sellerName, paymentProofImageUrl })
+                                setSelectedRecord({
+                                  sellerName,
+                                  paymentProofImageUrl,
+                                });
                               }}
                             />
-
-                           ) : (
-                              <div className={styles.Withdrawals_grid_column}>
-                                -
-                              </div>
-                           )}
+                          ) : (
+                            <div className={styles.Withdrawals_grid_column}>
+                              -
+                            </div>
+                          )}
                         </Card>
                       ) : (
                         // Mobile View
@@ -249,13 +265,15 @@ function Withdrawals() {
                   {/* Body of OrderGrid ends here */}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Withdrawals_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/seller/finance/withdrawals?page=${value}`, { scroll: false })
+                    router.push(`/seller/finance/withdrawals?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -281,15 +299,15 @@ function Withdrawals() {
         />
       )}
 
-      {isProofModalOpen &&
+      {isProofModalOpen && (
         <IdModal
           handleClose={() => setIsProofModalOpen(false)}
           image={selectedRecord.paymentProofImageUrl}
           isOpen={isProofModalOpen}
           title="Proof of Payment"
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default Withdrawals;

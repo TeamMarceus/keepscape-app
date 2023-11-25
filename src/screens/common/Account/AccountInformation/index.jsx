@@ -14,12 +14,12 @@ import {
   userTypes,
 } from '@/app-globals';
 
-import { 
+import {
   Button,
-  ControlledInput, 
-  Text, 
-  Spinner, 
-  ControlledTextArea 
+  ControlledInput,
+  Text,
+  Spinner,
+  ControlledTextArea,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -37,10 +37,7 @@ function AccountInformation() {
   const user = useSelector((store) => getUser(store));
   const loginUpdate = useActionDispatch(usersActions.loginActions.loginUpdate);
 
-  const {
-    isUpdating: isUserUpdating,
-    updateAccount,
-  } = useUpdateUser();
+  const { isUpdating: isUserUpdating, updateAccount } = useUpdateUser();
 
   const validate = (values) => {
     const errors = {};
@@ -68,7 +65,8 @@ function AccountInformation() {
     if (!values.description) {
       errors.description = 'This field is required.';
     } else if (values.description.length > 500) {
-      errors.description = 'The maximum length of this field is 500 characters.';
+      errors.description =
+        'The maximum length of this field is 500 characters.';
     } else if (values.description.length < 10) {
       errors.description = 'The minimum length of this field is 10 characters.';
     }
@@ -78,9 +76,11 @@ function AccountInformation() {
       if (!values.sellerName) {
         errors.sellerName = 'This field is required.';
       } else if (values.sellerName.length > 50) {
-        errors.sellerName = 'The maximum length of this field is 50 characters.';
+        errors.sellerName =
+          'The maximum length of this field is 50 characters.';
       } else if (values.sellerName.length < 2) {
-        errors.sellerName = 'The minimum length of this field is two characters.';
+        errors.sellerName =
+          'The minimum length of this field is two characters.';
       }
     }
 
@@ -89,15 +89,18 @@ function AccountInformation() {
       if (!values.preferences) {
         errors.preferences = 'This field is required.';
       } else if (values.preferences.length > 500) {
-        errors.preferences = 'The maximum length of this field is 500 characters.';
+        errors.preferences =
+          'The maximum length of this field is 500 characters.';
       } else if (values.preferences.length < 10) {
-        errors.preferences = 'The minimum length of this field is 10 characters.';
+        errors.preferences =
+          'The minimum length of this field is 10 characters.';
       }
 
       if (!values.interests) {
         errors.interests = 'This field is required.';
       } else if (values.interests.length > 500) {
-        errors.interests = 'The maximum length of this field is 500 characters.';
+        errors.interests =
+          'The maximum length of this field is 500 characters.';
       } else if (values.interests.length < 10) {
         errors.interests = 'The minimum length of this field is 10 characters.';
       }
@@ -119,7 +122,7 @@ function AccountInformation() {
         initialValues={{
           phoneNumber: user.phoneNumber,
           description: user.description,
-          
+
           // Buyer Only
           firstName: user.firstName,
           lastName: user.lastName,
@@ -128,7 +131,6 @@ function AccountInformation() {
 
           // Seller only
           sellerName: user.sellerName,
-
         }}
         onSubmit={async (values, { setErrors }) => {
           const buyerFormValues = {
@@ -138,13 +140,13 @@ function AccountInformation() {
             preferences: values.preferences,
             interests: values.interests,
             description: values.description,
-          }
+          };
 
           const sellerFormValues = {
             sellerName: values.sellerName,
             phoneNumber: values.phoneNumber,
             description: values.description,
-          }
+          };
 
           const errors = validate(values);
           if (!isEmpty(errors)) {
@@ -152,10 +154,14 @@ function AccountInformation() {
             return;
           }
 
-          const userType = user.userType === userTypes.BUYER ? 'buyers' : 'sellers';
-          const currentFormValues = user.userType === userTypes.BUYER ? buyerFormValues : sellerFormValues;
+          const userType =
+            user.userType === userTypes.BUYER ? 'buyers' : 'sellers';
+          const currentFormValues =
+            user.userType === userTypes.BUYER
+              ? buyerFormValues
+              : sellerFormValues;
 
-          const { responseCode: updateAccountResponseCode} =
+          const { responseCode: updateAccountResponseCode } =
             await updateAccount(userType, currentFormValues);
 
           const updateAccountCallbacks = {
@@ -222,7 +228,6 @@ function AccountInformation() {
                   value={values.firstName}
                   onChange={(e) => setFieldValue('firstName', e.target.value)}
                 />
-              
 
                 <ControlledInput
                   className={styles.AccountInformation_input}
@@ -235,7 +240,7 @@ function AccountInformation() {
               </>
             )}
 
-            { user.userType === userTypes.SELLER &&
+            {user.userType === userTypes.SELLER && (
               <ControlledInput
                 className={styles.AccountInformation_input}
                 error={errors.sellerName}
@@ -244,7 +249,7 @@ function AccountInformation() {
                 value={values.sellerName}
                 onChange={(e) => setFieldValue('sellerName', e.target.value)}
               />
-            }
+            )}
 
             <ControlledInput
               className={styles.AccountInformation_input}
@@ -256,7 +261,7 @@ function AccountInformation() {
               onChange={(e) => setFieldValue('phoneNumber', e.target.value)}
             />
 
-            {user.userType === userTypes.BUYER &&
+            {user.userType === userTypes.BUYER && (
               <>
                 <ControlledTextArea
                   className={styles.AccountInformation_input}
@@ -278,15 +283,17 @@ function AccountInformation() {
                   onChange={(e) => setFieldValue('interests', e.target.value)}
                 />
               </>
-            }
+            )}
 
             <ControlledTextArea
               className={styles.AccountInformation_input}
               error={errors.description}
               name="description"
-              placeholder={user.userType === userTypes.BUYER ? 
-                'Yourself (e.g. personality, likes, dislikes)' : 
-                'What do you sell and why you want to be a seller?'}
+              placeholder={
+                user.userType === userTypes.BUYER
+                  ? 'Yourself (e.g. personality, likes, dislikes)'
+                  : 'What do you sell and why you want to be a seller?'
+              }
               type={textAreaTypes.FORM}
               value={values.description}
               onChange={(e) => setFieldValue('description', e.target.value)}

@@ -10,5 +10,5 @@ export default function ProvincePage() {
   const params = useParams();
   const { province } = params;
 
- return <Province province={province}/>
+  return <Province province={province} />;
 }

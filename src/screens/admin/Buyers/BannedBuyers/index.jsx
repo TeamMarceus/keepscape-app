@@ -11,15 +11,15 @@ import {
   userStatus,
 } from '@/app-globals';
 
-import { 
-  IconButton, 
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
+import {
+  IconButton,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
   Text,
   Pagination,
-  ControlledTextArea, 
+  ControlledTextArea,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -40,10 +40,10 @@ function BannedBuyers() {
   const [search, setSearch] = useState('');
 
   const {
-   isLoading: isBannedBuyersLoading, 
-   buyers, 
-   totalPages,
-   updateBuyerStatus
+    isLoading: isBannedBuyersLoading,
+    buyers,
+    totalPages,
+    updateBuyerStatus,
   } = useBuyers({ page, pageSize: 10, isBanned: true, search });
 
   const filteredBannedBuyers = buyers.filter((buyer) => {
@@ -58,9 +58,7 @@ function BannedBuyers() {
 
   return (
     <div className={styles.BannedBuyers}>
-      <Text type={textTypes.HEADING.XS}>
-        Banne dBuyers
-      </Text>
+      <Text type={textTypes.HEADING.XS}>Banne dBuyers</Text>
 
       <ControlledInput
         className={styles.BannedBuyers_search}
@@ -77,7 +75,7 @@ function BannedBuyers() {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         <>
           {filteredBannedBuyers.length ? (
-            <> 
+            <>
               <div className={styles.BannedBuyers_grid}>
                 {/* Header of OrderGrid starts here */}
                 <Card
@@ -135,21 +133,32 @@ function BannedBuyers() {
                     className={cn(
                       styles.BannedBuyers_grid_header,
                       styles.BannedBuyers_grid_column,
-                      styles.BannedBuyers_grid_header_action,
+                      styles.BannedBuyers_grid_header_action
                     )}
                   >
                     Actions
                   </div>
-                  
+
                   {/* Header of OrderGrid ends here */}
                 </Card>
 
                 {/* Body of OrderGrid starts here */}
                 {filteredBannedBuyers.map(
-                  ({ id, dateTimeCreated, firstName, lastName, email, phoneNumber, description }) =>
+                  ({
+                    id,
+                    dateTimeCreated,
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber,
+                    description,
+                  }) =>
                     windowSize.width > 767 ? (
                       // Desktop View
-                      <Card key={id} className={styles.BannedBuyers_grid_buyerGrid}>
+                      <Card
+                        key={id}
+                        className={styles.BannedBuyers_grid_buyerGrid}
+                      >
                         <div className={styles.BannedBuyers_grid_column}>
                           {dateTimeCreated.split('T')[0]}
                         </div>
@@ -157,24 +166,25 @@ function BannedBuyers() {
                         <div className={styles.BannedBuyers_grid_column}>
                           {firstName} {lastName}
                         </div>
-                          
+
                         <div className={styles.BannedBuyers_grid_column}>
                           {email}
                         </div>
 
                         <div className={styles.BannedBuyers_grid_column}>
-                          {phoneNumber} 
+                          {phoneNumber}
                         </div>
 
                         <ControlledTextArea
-                            disabled
-                            inputClassName={cn(styles.BannedBuyers_grid_column,
-                              styles.BannedBuyers_grid_column_description)}
-                            name="description"
-                            type={textAreaTypes.SLIM}
-                            value={description}
-                          />
-
+                          disabled
+                          inputClassName={cn(
+                            styles.BannedBuyers_grid_column,
+                            styles.BannedBuyers_grid_column_description
+                          )}
+                          name="description"
+                          type={textAreaTypes.SLIM}
+                          value={description}
+                        />
 
                         <div className={styles.BannedBuyers_grid_column}>
                           <div className={styles.BannedBuyers_grid_buttons}>
@@ -224,13 +234,15 @@ function BannedBuyers() {
                 {/* Body of OrderGrid ends here */}
               </div>
 
-              <Pagination 
+              <Pagination
                 className={styles.BannedBuyers_pagination}
                 currentPage={currentPage}
                 pageJump={(value) => {
                   setCurrentPage(value);
 
-                  router.push(`/admin/buyers/banned/?page=${value}`, { scroll: false })
+                  router.push(`/admin/buyers/banned/?page=${value}`, {
+                    scroll: false,
+                  });
                 }}
                 totalPages={totalPages}
               />
@@ -244,6 +256,6 @@ function BannedBuyers() {
         </>
       )}
     </div>
-  )
+  );
 }
 export default BannedBuyers;

@@ -11,16 +11,15 @@ import {
   userStatus,
 } from '@/app-globals';
 
-
-import { 
-  IconButton,  
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+import {
+  IconButton,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   Pagination,
-  ControlledTextArea
+  ControlledTextArea,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -38,19 +37,25 @@ function RejectedSellers() {
   const { windowSize } = useWindowSize();
   const [search, setSearch] = useState('');
   const [isIdModalOpen, setIsIdModalOpen] = useState(false);
-  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
+  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] =
+    useState(false);
 
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
 
   const {
-    isLoading: isApplicationsLoading, 
-    sellerApplications, 
+    isLoading: isApplicationsLoading,
+    sellerApplications,
     totalPages,
-    updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Rejected', search});
+    updateSellerApplication,
+  } = useSellerApplications({
+    page: currentPage,
+    pageSize: 10,
+    applicationStatus: 'Rejected',
+    search,
+  });
 
-  const [selectedApplication, setSelectedApplication] = useState({})
+  const [selectedApplication, setSelectedApplication] = useState({});
 
   const filteredApplications = sellerApplications.filter((application) => {
     const searchLowerCase = search.toLowerCase();
@@ -66,9 +71,7 @@ function RejectedSellers() {
   return (
     <>
       <div className={styles.RejectedSellers}>
-        <Text type={textTypes.HEADING.XS}>
-          Rejected Seller Applications
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Rejected Seller Applications</Text>
 
         <ControlledInput
           className={styles.RejectedSellers_search}
@@ -170,22 +173,37 @@ function RejectedSellers() {
                       className={cn(
                         styles.RejectedSellers_grid_header,
                         styles.RejectedSellers_grid_column,
-                        styles.RejectedSellers_grid_header_action,
+                        styles.RejectedSellers_grid_header_action
                       )}
                     >
                       Actions
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
                   {filteredApplications.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email,
-                      phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      firstName,
+                      lastName,
+                      sellerName,
+                      email,
+                      phoneNumber,
+                      idImageUrl,
+                      businessPermitUrl,
+                      description,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.RejectedSellers_grid_applicationGrid}>
+                        <Card
+                          key={id}
+                          className={
+                            styles.RejectedSellers_grid_applicationGrid
+                          }
+                        >
                           <div className={styles.RejectedSellers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -197,7 +215,7 @@ function RejectedSellers() {
                           <div className={styles.RejectedSellers_grid_column}>
                             {sellerName}
                           </div>
-                            
+
                           <div className={styles.RejectedSellers_grid_column}>
                             {email}
                           </div>
@@ -208,26 +226,33 @@ function RejectedSellers() {
 
                           <ControlledTextArea
                             disabled
-                            inputClassName={cn(styles.RejectedSellers_grid_column,
-                              styles.RejectedSellers_grid_column_description)}
+                            inputClassName={cn(
+                              styles.RejectedSellers_grid_column,
+                              styles.RejectedSellers_grid_column_description
+                            )}
                             name="description"
                             type={textAreaTypes.SLIM}
                             value={description}
                           />
 
-                           {/* eslint-disable-next-line @next/next/no-img-element, 
+                          {/* eslint-disable-next-line @next/next/no-img-element, 
                            jsx-a11y/click-events-have-key-events, 
                            jsx-a11y/no-noninteractive-element-interactions */}
-                           <img
+                          <img
                             alt="Valid Id"
-                            className={cn(styles.RejectedSellers_grid_column, 
-                              styles.RejectedSellers_grid_column_id)}
+                            className={cn(
+                              styles.RejectedSellers_grid_column,
+                              styles.RejectedSellers_grid_column_id
+                            )}
                             height={60}
                             src={idImageUrl}
                             width={60}
                             onClick={() => {
                               setIsIdModalOpen(true);
-                              setSelectedApplication({ sellerName, idImageUrl })
+                              setSelectedApplication({
+                                sellerName,
+                                idImageUrl,
+                              });
                             }}
                           />
 
@@ -235,24 +260,34 @@ function RejectedSellers() {
                           jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.RejectedSellers_grid_column, 
-                              styles.RejectedSellers_grid_column_id)}
+                            className={cn(
+                              styles.RejectedSellers_grid_column,
+                              styles.RejectedSellers_grid_column_id
+                            )}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
                             onClick={() => {
                               setIsBusinessPermitModalOpen(true);
-                              setSelectedApplication({ sellerName, businessPermitUrl })
+                              setSelectedApplication({
+                                sellerName,
+                                businessPermitUrl,
+                              });
                             }}
                           />
 
                           <div className={styles.RejectedSellers_grid_column}>
                             <IconButton
-                              className={styles.RejectedSellers_grid_checkButton}
+                              className={
+                                styles.RejectedSellers_grid_checkButton
+                              }
                               icon="check_circle"
                               type={iconButtonTypes.ICON.MD}
                               onClick={() => {
-                                updateSellerApplication(id, userStatus.APPROVED);
+                                updateSellerApplication(
+                                  id,
+                                  userStatus.APPROVED
+                                );
                               }}
                             />
                           </div>
@@ -261,12 +296,20 @@ function RejectedSellers() {
                         // Mobile View
                         <details
                           key={id}
-                          className={styles.RejectedSellers_grid_applicationGrid}
+                          className={
+                            styles.RejectedSellers_grid_applicationGrid
+                          }
                         >
-                          <summary className={styles.RejectedSellers_grid_title}>
-                            <div className={styles.RejectedSellers_grid_title_info}>
+                          <summary
+                            className={styles.RejectedSellers_grid_title}
+                          >
+                            <div
+                              className={styles.RejectedSellers_grid_title_info}
+                            >
                               <Icon
-                                className={styles.RejectedSellers_grid_title_icon}
+                                className={
+                                  styles.RejectedSellers_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -284,7 +327,9 @@ function RejectedSellers() {
                               SellerName:
                             </Text>
 
-                            <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
+                            <Text type={textTypes.HEADING.XXS}>
+                              {sellerName}
+                            </Text>
                           </div>
                         </details>
                       )
@@ -292,13 +337,16 @@ function RejectedSellers() {
                   {/* Body of OrderGrid ends here */}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.RejectedSellers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/seller-applications/rejected?page=${value}`, { scroll: false })
+                    router.push(
+                      `/admin/seller-applications/rejected?page=${value}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
@@ -313,24 +361,24 @@ function RejectedSellers() {
         )}
       </div>
 
-      {isIdModalOpen &&
+      {isIdModalOpen && (
         <IdModal
           handleClose={() => setIsIdModalOpen(false)}
           image={selectedApplication.idImageUrl}
           isOpen={isIdModalOpen}
           title={`${selectedApplication.sellerName} ID`}
         />
-      }
+      )}
 
-      {isBusinessPermitModalOpen &&
+      {isBusinessPermitModalOpen && (
         <IdModal
           handleClose={() => setIsBusinessPermitModalOpen(false)}
           image={selectedApplication.businessPermitUrl}
           isOpen={isBusinessPermitModalOpen}
           title={`${selectedApplication.sellerName} Business Permit`}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default RejectedSellers;

@@ -13,16 +13,16 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  IconButton, 
+import {
+  IconButton,
   Button,
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   Spinner,
-  Pagination
+  Pagination,
 } from '@/components';
 
 import { useWindowSize, useAdminWithdrawals } from '@/hooks';
@@ -46,7 +46,7 @@ function PendingPayments() {
 
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
@@ -56,16 +56,16 @@ function PendingPayments() {
   // const isUpdatingRecord = true;
   const {
     isLoading: isRecordsLoading,
-    isUpdating: isUpdatingRecord, 
+    isUpdating: isUpdatingRecord,
     withdrawals,
-    totalPages, 
+    totalPages,
     updateWithdrawal,
   } = useAdminWithdrawals({
     page,
     pageSize: 10,
     paymentStatus: 'Pending',
     search,
-  })
+  });
 
   const filteredRecords = withdrawals.filter((record) => {
     const searchLowerCase = search.toLowerCase();
@@ -79,9 +79,7 @@ function PendingPayments() {
   return (
     <>
       <div className={styles.PendingPayments}>
-        <Text type={textTypes.HEADING.XS}>
-          Pending Payments
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Pending Payments</Text>
 
         <ControlledInput
           className={styles.PendingPayments_search}
@@ -132,7 +130,7 @@ function PendingPayments() {
                     >
                       Full Name
                     </div>
-                    
+
                     <div
                       className={cn(
                         styles.PendingPayments_grid_header,
@@ -169,26 +167,40 @@ function PendingPayments() {
                       Status
                     </div>
 
-
                     <div
                       className={cn(
                         styles.PendingPayments_grid_header,
                         styles.PendingPayments_grid_column,
-                        styles.PendingPayments_grid_header_action,
+                        styles.PendingPayments_grid_header_action
                       )}
                     >
                       Actions
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
-                      paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      sellerId,
+                      sellerName,
+                      fullName,
+                      amount,
+                      paymentMethod,
+                      paymentDetails,
+                      paymentProfileImageUrl,
+                      paymentProofImageUrl,
+                      remarks,
+                      status,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.PendingPayments_grid_recordGrid}>
+                        <Card
+                          key={id}
+                          className={styles.PendingPayments_grid_recordGrid}
+                        >
                           <div className={styles.PendingPayments_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -197,7 +209,7 @@ function PendingPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, sellerId, sellerName});
+                              setSelectedRecord({ id, sellerId, sellerName });
                               setIsSellerModalOpen(true);
                             }}
                           >
@@ -216,8 +228,13 @@ function PendingPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, paymentMethod, paymentDetails, 
-                                paymentProfileImageUrl, paymentProofImageUrl});
+                              setSelectedRecord({
+                                id,
+                                paymentMethod,
+                                paymentDetails,
+                                paymentProfileImageUrl,
+                                paymentProofImageUrl,
+                              });
                               setIsPaymentModalOpen(true);
                             }}
                           >
@@ -231,11 +248,15 @@ function PendingPayments() {
                           <div className={styles.PendingPayments_grid_column}>
                             {status}
                           </div>
-                          
+
                           <div className={styles.PendingPayments_grid_column}>
-                            <div className={styles.PendingPayments_grid_buttons}>
+                            <div
+                              className={styles.PendingPayments_grid_buttons}
+                            >
                               <IconButton
-                                className={styles.PendingPayments_grid_payButton}
+                                className={
+                                  styles.PendingPayments_grid_payButton
+                                }
                                 icon="paid"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
@@ -245,14 +266,16 @@ function PendingPayments() {
                               />
 
                               <IconButton
-                                className={styles.PendingPayments_grid_cancelButton}
+                                className={
+                                  styles.PendingPayments_grid_cancelButton
+                                }
                                 icon="cancel"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
                                   setSelectedRecord({ id });
                                   setIsRejectModalOpen(true);
                                 }}
-                                />
+                              />
                             </div>
                           </div>
                         </Card>
@@ -262,10 +285,16 @@ function PendingPayments() {
                           key={id}
                           className={styles.PendingPayments_grid_recordGrid}
                         >
-                          <summary className={styles.PendingPayments_grid_title}>
-                            <div className={styles.PendingPayments_grid_title_info}>
+                          <summary
+                            className={styles.PendingPayments_grid_title}
+                          >
+                            <div
+                              className={styles.PendingPayments_grid_title_info}
+                            >
                               <Icon
-                                className={styles.PendingPayments_grid_title_icon}
+                                className={
+                                  styles.PendingPayments_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -290,12 +319,14 @@ function PendingPayments() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.PendingPayments_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/finance/pending?page=${value}`, { scroll: false })
+                    router.push(`/admin/finance/pending?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -308,7 +339,6 @@ function PendingPayments() {
             )}
           </>
         )}
-
       </div>
 
       {isTransferModalOpen && (
@@ -353,6 +383,6 @@ function PendingPayments() {
         />
       )}
     </>
-  )
+  );
 }
 export default PendingPayments;

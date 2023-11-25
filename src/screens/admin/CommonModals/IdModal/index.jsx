@@ -8,12 +8,7 @@ import { Modal } from '@/components';
 
 import styles from './styles.module.scss';
 
-function IdModal({
-  isOpen,
-  handleClose,
-  image,
-  title,
-}) {
+function IdModal({ isOpen, handleClose, image, title }) {
   return (
     <Modal
       className={styles.IdModal}
@@ -24,13 +19,9 @@ function IdModal({
       title={title}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
-        alt={title}
-        className={styles.IdModal_id}
-        src={image}
-      />
+      <img alt={title} className={styles.IdModal_id} src={image} />
     </Modal>
-  )
+  );
 }
 
 IdModal.propTypes = {
@@ -38,6 +29,6 @@ IdModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default IdModal;

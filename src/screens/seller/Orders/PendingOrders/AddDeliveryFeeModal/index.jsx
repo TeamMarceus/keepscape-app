@@ -4,13 +4,13 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { 
+import {
   buttonKinds,
   colorNames,
   inputKinds,
   modalPositions,
   modalSizes,
-  spinnerSizes 
+  spinnerSizes,
 } from '@/app-globals';
 
 import {
@@ -18,12 +18,12 @@ import {
   ControlledInput,
   ImageDropzone,
   Modal,
-  Spinner 
+  Spinner,
 } from '@/components';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.deliveryFee) {
@@ -49,7 +49,6 @@ function AddDeliveryFeeModal({
   orderId,
   isAdding,
 }) {
-
   return (
     <Modal
       className={styles.AddDeliveryFeeModal}
@@ -104,16 +103,14 @@ function AddDeliveryFeeModal({
                 setFieldValue('deliveryFeeProofImage', image);
               }}
             />
-                  
+
             <Button
               className={styles.AddDeliveryFeeModal_button}
               disabled={isAdding}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.AddDeliveryFeeModal_button_buttonText}
-              >
+              <span className={styles.AddDeliveryFeeModal_button_buttonText}>
                 Add
                 {isAdding && (
                   <Spinner
@@ -138,6 +135,6 @@ AddDeliveryFeeModal.propTypes = {
   addDeliveryFee: PropTypes.func.isRequired,
   orderId: PropTypes.string.isRequired,
   isAdding: PropTypes.bool.isRequired,
-}
+};
 
 export default AddDeliveryFeeModal;

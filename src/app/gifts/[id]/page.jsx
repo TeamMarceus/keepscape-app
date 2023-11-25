@@ -10,5 +10,5 @@ export default function GiftPage() {
   const params = useParams();
   const { id } = params;
 
- return <Gift id={id} />
+  return <Gift id={id} />;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 import cn from 'classnames';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import { Filters, NoResults, Pagination, Preloader, Text } from '@/components'
+import { Filters, NoResults, Pagination, Preloader, Text } from '@/components';
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
 import { useProductCategories, useProducts } from '@/hooks';
 
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 function Province({ province }) {
   const router = useRouter();
@@ -28,20 +28,18 @@ function Province({ province }) {
 
   const page = searchParams.get('page') || 1;
 
-  const[currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [allCategories, setAllCategories] = useState([]);
 
-  const {
-    isLoading: isProductCategoriesLoading, 
-    productCategories
-  } = useProductCategories();
+  const { isLoading: isProductCategoriesLoading, productCategories } =
+    useProductCategories();
 
   useEffect(() => {
     if (!isProductCategoriesLoading) {
       const categories = productCategories.map((category) => ({
         ...category,
         isChecked: categoryParams.includes(category.name),
-        label: category.name
+        label: category.name,
       }));
 
       setAllCategories(categories);
@@ -49,25 +47,27 @@ function Province({ province }) {
   }, [searchParams, isProductCategoriesLoading]);
 
   const {
-    isLoading: isProductsLoading, 
-    products, 
-    totalPages 
-  } = useProducts({ 
-    page, 
+    isLoading: isProductsLoading,
+    products,
+    totalPages,
+  } = useProducts({
+    page,
     pageSize: 15,
-    isHidden: false ,
-    categories: categoryParams.length > 0 ? 
-      categoryParams.map((category) => `${decodeURI(category)}`) : null,
+    isHidden: false,
+    categories:
+      categoryParams.length > 0
+        ? categoryParams.map((category) => `${decodeURI(category)}`)
+        : null,
     provinces: [decodeURI(province)],
     rating: ratings,
     minPrice: minimumPriceParam,
-    maxPrice: maximumPriceParam
+    maxPrice: maximumPriceParam,
   });
 
   return (
     <div className={styles.Province}>
       <div className={styles.Province_banner}>
-        <Text 
+        <Text
           className={styles.Province_banner_text}
           colorClass={colorClasses.NEUTRAL['0']}
           type={textTypes.HEADING.XXL}
@@ -77,8 +77,8 @@ function Province({ province }) {
       </div>
 
       <div className={styles.Province_content}>
-        {!isProductCategoriesLoading &&
-          <Filters 
+        {!isProductCategoriesLoading && (
+          <Filters
             hasPriceRange
             hasRatings
             checkboxes={allCategories}
@@ -89,15 +89,17 @@ function Province({ province }) {
             title="All Products"
             type="By Category"
           />
-        }
+        )}
 
         {isProductsLoading ? (
           <Preloader />
         ) : (
-          <div className={cn(styles.Province_products, {
-            [styles.Province_products_empty]: products.length === 0
-          })}>
-            {products.length > 0 ?
+          <div
+            className={cn(styles.Province_products, {
+              [styles.Province_products_empty]: products.length === 0,
+            })}
+          >
+            {products.length > 0 ? (
               <>
                 <div className={styles.Province_products_list}>
                   {products.map((product) => (
@@ -116,7 +118,7 @@ function Province({ province }) {
                   ))}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Province_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
@@ -124,27 +126,29 @@ function Province({ province }) {
 
                     newSearchParams.delete('page');
                     newSearchParams.append('page', value);
-                    router.push(`/keepscape/province/${province}?${newSearchParams.toString()}`, { scroll: false })
+                    router.push(
+                      `/keepscape/province/${province}?${newSearchParams.toString()}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
               </>
-              :
-              <NoResults 
-              className={styles.Province_noResults}
-              message="No products found"
+            ) : (
+              <NoResults
+                className={styles.Province_noResults}
+                message="No products found"
               />
-            } 
+            )}
           </div>
         )}
-
       </div>
     </div>
-  )
+  );
 }
 
 Province.propTypes = {
   province: PropTypes.string.isRequired,
-}
+};
 
-export default Province
+export default Province;

@@ -13,26 +13,24 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  IconButton, 
-  ButtonLink, 
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+import {
+  IconButton,
+  ButtonLink,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   Pagination,
   IconLink,
-  ConfirmModal
+  ConfirmModal,
 } from '@/components';
 
 import { useSellerProducts, useWindowSize } from '@/hooks';
 
 import PreloaderProducts from '../Preloader';
 
-
 import styles from './styles.module.scss';
-
 
 const sliderSettings = {
   lazyLoad: true,
@@ -49,23 +47,24 @@ function HiddenProducts() {
   const { windowSize } = useWindowSize();
 
   const page = searchParams.get('page') || 1;
-  
+
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] =
+    useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const {
-    isLoading: isProductsLoading, 
+    isLoading: isProductsLoading,
     products,
     totalPages,
     isDeleting,
-    deleteProduct 
-  } = useSellerProducts({ 
-    search, 
-    isHidden: true, 
+    deleteProduct,
+  } = useSellerProducts({
+    search,
+    isHidden: true,
     page,
-    pageSize: 10 
+    pageSize: 10,
   });
 
   const filteredProducts = products.filter((product) => {
@@ -77,9 +76,7 @@ function HiddenProducts() {
   return (
     <>
       <div className={styles.HiddenProducts}>
-        <Text type={textTypes.HEADING.XS}>
-          Hidden Products
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Hidden Products</Text>
 
         <ControlledInput
           className={styles.HiddenProducts_search}
@@ -176,19 +173,30 @@ function HiddenProducts() {
                     >
                       Actions
                     </div>
-
                   </Card>
                   {filteredProducts.map(
-                    ({ id, dateTimeCreated, images, name, quantity, buyerPrice, totalSold, stars  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      images,
+                      name,
+                      quantity,
+                      buyerPrice,
+                      totalSold,
+                      stars,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.HiddenProducts_grid_productGrid}>
+                        <Card
+                          key={id}
+                          className={styles.HiddenProducts_grid_productGrid}
+                        >
                           <div className={styles.HiddenProducts_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
 
-                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                           <img
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
                             alt={name}
                             className={styles.HiddenProducts_grid_column}
                             height={60}
@@ -196,11 +204,10 @@ function HiddenProducts() {
                             width={60}
                           />
 
-
                           <div className={styles.HiddenProducts_grid_column}>
                             {name}
                           </div>
-      
+
                           <div className={styles.HiddenProducts_grid_column}>
                             {quantity}
                           </div>
@@ -208,7 +215,7 @@ function HiddenProducts() {
                           <div className={styles.HiddenProducts_grid_column}>
                             ₱{buyerPrice.toLocaleString()}
                           </div>
-                      
+
                           <div className={styles.HiddenProducts_grid_column}>
                             {stars}
                           </div>
@@ -220,21 +227,27 @@ function HiddenProducts() {
                           <div className={styles.HiddenProducts_grid_column}>
                             <div className={styles.HiddenProducts_grid_buttons}>
                               <IconLink
-                                className={styles.HiddenProducts_grid_viewButton}
+                                className={
+                                  styles.HiddenProducts_grid_viewButton
+                                }
                                 icon="visibility"
                                 to={`/seller/products/${id}`}
                                 type={iconButtonTypes.ICON.MD}
                               />
 
                               <IconLink
-                                className={styles.HiddenProducts_grid_editButton}
+                                className={
+                                  styles.HiddenProducts_grid_editButton
+                                }
                                 icon="edit"
                                 to={`/seller/products/${id}/update`}
                                 type={iconButtonTypes.ICON.MD}
                               />
 
                               <IconButton
-                                className={styles.HiddenProducts_grid_deleteButton}
+                                className={
+                                  styles.HiddenProducts_grid_deleteButton
+                                }
                                 icon="delete"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
@@ -252,9 +265,13 @@ function HiddenProducts() {
                           className={styles.HiddenProducts_grid_productGrid}
                         >
                           <summary className={styles.HiddenProducts_grid_title}>
-                            <div className={styles.HiddenProducts_grid_title_info}>
+                            <div
+                              className={styles.HiddenProducts_grid_title_info}
+                            >
                               <Icon
-                                className={styles.HiddenProducts_grid_title_icon}
+                                className={
+                                  styles.HiddenProducts_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -279,13 +296,15 @@ function HiddenProducts() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.HiddenProducts_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/seller/hidden?page=${value}`, { scroll: false })
+                    router.push(`/seller/hidden?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -298,7 +317,6 @@ function HiddenProducts() {
             )}
           </>
         )}
-
       </div>
 
       <ConfirmModal
@@ -328,6 +346,6 @@ function HiddenProducts() {
         title="Delete?"
       />
     </>
-  )
+  );
 }
 export default HiddenProducts;

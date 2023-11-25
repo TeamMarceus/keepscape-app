@@ -4,7 +4,13 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { buttonKinds, colorNames, modalPositions, modalSizes, spinnerSizes } from '@/app-globals';
+import {
+  buttonKinds,
+  colorNames,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
+} from '@/app-globals';
 
 import { Button, ControlledTextArea, Modal, Spinner } from '@/components';
 
@@ -12,7 +18,7 @@ import { textAreaTypes } from '@/components/TextArea/constants';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.reason) {
@@ -30,7 +36,6 @@ function RejectModal({
   balanceWithdrawalId,
   isUpdating,
 }) {
-
   return (
     <Modal
       className={styles.RejectModal}
@@ -45,7 +50,6 @@ function RejectModal({
           reason: '',
         }}
         onSubmit={async (values, { setErrors }) => {
-
           const errors = validate(values);
           if (!isEmpty(errors)) {
             setErrors(errors);
@@ -53,9 +57,9 @@ function RejectModal({
           }
 
           await updateWithdrawal({
-            balanceWithdrawalId, 
-            status: 'Rejected', 
-            reason: values.reason
+            balanceWithdrawalId,
+            status: 'Rejected',
+            reason: values.reason,
           });
 
           if (!isUpdating) {
@@ -74,16 +78,14 @@ function RejectModal({
               value={values.reason}
               onChange={(e) => setFieldValue('reason', e.target.value)}
             />
-                  
+
             <Button
               className={styles.RejectModal_button}
               disabled={isUpdating}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.RejectModal_button_buttonText}
-              >
+              <span className={styles.RejectModal_button_buttonText}>
                 Submit
                 {isUpdating && (
                   <Spinner
@@ -108,6 +110,6 @@ RejectModal.propTypes = {
   updateWithdrawal: PropTypes.func.isRequired,
   balanceWithdrawalId: PropTypes.string.isRequired,
   isUpdating: PropTypes.bool.isRequired,
-}
+};
 
 export default RejectModal;

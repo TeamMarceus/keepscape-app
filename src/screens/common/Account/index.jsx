@@ -5,7 +5,13 @@ import { useSearchParams } from 'next/navigation';
 
 import { useSelector } from 'react-redux';
 
-import { colorClasses, tabKinds, tabTypes, textTypes, userTypes } from '@/app-globals';
+import {
+  colorClasses,
+  tabKinds,
+  tabTypes,
+  textTypes,
+  userTypes,
+} from '@/app-globals';
 import { Card, Tabs, Text } from '@/components';
 import { getUser } from '@/ducks';
 
@@ -28,7 +34,7 @@ function Account() {
   const buyerTabs = [
     {
       name: accountTabs.ACCOUNT_INFORMATION.name,
-      value: (!activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value),
+      value: !activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value,
       kind: tabKinds.LINK,
       action: `/buyer/account?activeTab=${accountTabs.ACCOUNT_INFORMATION.value}`,
     },
@@ -55,7 +61,7 @@ function Account() {
   const sellerTabs = [
     {
       name: accountTabs.ACCOUNT_INFORMATION.name,
-      value: (!activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value),
+      value: !activeTab ? null : accountTabs.ACCOUNT_INFORMATION.value,
       kind: tabKinds.LINK,
       action: `/seller/account?activeTab=${accountTabs.ACCOUNT_INFORMATION.value}`,
     },
@@ -68,17 +74,22 @@ function Account() {
   ];
 
   return (
-    <div className={cn(styles.Account,{
-      [styles.Account_seller]: user.userType === userTypes.SELLER,
-    })}>
-      <div className={cn(styles.Account_tabs, {
-        [styles.Account_tabs_seller]: user.userType === userTypes.SELLER,
-      })}>
+    <div
+      className={cn(styles.Account, {
+        [styles.Account_seller]: user.userType === userTypes.SELLER,
+      })}
+    >
+      <div
+        className={cn(styles.Account_tabs, {
+          [styles.Account_tabs_seller]: user.userType === userTypes.SELLER,
+        })}
+      >
         <Text
           className={styles.Account_title}
-          colorClass={ user.userType === userTypes.SELLER ? 
-            colorClasses.NEUTRAL['800'] :
-            colorClasses.NEUTRAL['300']
+          colorClass={
+            user.userType === userTypes.SELLER
+              ? colorClasses.NEUTRAL['800']
+              : colorClasses.NEUTRAL['300']
           }
           type={textTypes.HEADING.XS}
         >
@@ -87,29 +98,26 @@ function Account() {
         <Tabs
           activeTab={activeTab}
           tabs={user.userType === userTypes.BUYER ? buyerTabs : sellerTabs}
-          type={user.userType === userTypes.BUYER ? tabTypes.VERTICAL.LG : tabTypes.HORIZONTAL.LG}
+          type={
+            user.userType === userTypes.BUYER
+              ? tabTypes.VERTICAL.LG
+              : tabTypes.HORIZONTAL.LG
+          }
         />
       </div>
-        
 
       <Card className={styles.Account_card}>
-        {(!activeTab ||  activeTab === accountTabs.ACCOUNT_INFORMATION.value)  && (
+        {(!activeTab ||
+          activeTab === accountTabs.ACCOUNT_INFORMATION.value) && (
           <AccountInformation />
         )}
 
-        {activeTab === accountTabs.ACCOUNT_ORDERS.value && (
-          <Orders />
-        )}
+        {activeTab === accountTabs.ACCOUNT_ORDERS.value && <Orders />}
 
-        {activeTab === accountTabs.ACCOUNT_PURCHASE.value && (
-          <Purchase />
-        )}
+        {activeTab === accountTabs.ACCOUNT_PURCHASE.value && <Purchase />}
 
-        {activeTab === accountTabs.CHANGE_PASSWORD.value && (
-          <ChangePassword />
-        )}
+        {activeTab === accountTabs.CHANGE_PASSWORD.value && <ChangePassword />}
       </Card>
-      
     </div>
   );
 }

@@ -54,8 +54,7 @@ export const configureAxios = (store) => {
 
           try {
             // We are certain that the access token already expired.
-            const { data: verifyResponseData
-            } = await TokensService.verify({
+            const { data: verifyResponseData } = await TokensService.verify({
               userId: user.id,
               refreshToken,
             });
@@ -69,8 +68,7 @@ export const configureAxios = (store) => {
             }
 
             // If the REFRESH TOKEN is still active, renew the ACCESS TOKEN and the REFRESH TOKEN
-            const { data: renewResponse
-            } = await TokensService.renew({
+            const { data: renewResponse } = await TokensService.renew({
               userId: user.id,
               refreshToken,
             });

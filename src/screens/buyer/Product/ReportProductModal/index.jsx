@@ -4,30 +4,24 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { 
-  buttonKinds, 
-  colorNames, 
-  modalPositions, 
-  modalSizes, 
-  spinnerSizes 
+import {
+  buttonKinds,
+  colorNames,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
 } from '@/app-globals';
 
-import { 
-  Button, 
-  ControlledTextArea, 
-  Modal, 
-  Spinner
-} from '@/components';
+import { Button, ControlledTextArea, Modal, Spinner } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
-
 
 import { useReportProduct } from '@/hooks';
 import { toastError, toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.reason) {
@@ -37,12 +31,7 @@ const validate = (values) => {
   return errors;
 };
 
-function ReportProductModal({
-  isOpen,
-  handleClose,
-  title,
-  productId
-}) {
+function ReportProductModal({ isOpen, handleClose, title, productId }) {
   const { isLoading: isSubmitting, reportProduct } = useReportProduct();
 
   return (
@@ -69,38 +58,39 @@ function ReportProductModal({
             return;
           }
 
-           const { responseCode: reportProductResponseCode } = await reportProduct(productId, currentFormValues);
+          const { responseCode: reportProductResponseCode } =
+            await reportProduct(productId, currentFormValues);
 
-            const reportProductCallbacks = {
-              created: () => {
-                toastSuccess('Product successfully reported.');
-              
-                handleClose();
-              },
-              invalidFields: () => {
-                toastError('Invalid fields.');
-              },
-              internalError: () => {
-                toastError('Oops, something went wrong.');
-              },
-            };
+          const reportProductCallbacks = {
+            created: () => {
+              toastSuccess('Product successfully reported.');
 
-            switch (reportProductResponseCode) {
-              case 200:
-                reportProductCallbacks.created();
-                break;
-              case 400:
-                reportProductCallbacks.invalidFields();
-                break;
-              case 401:
-                reportProductCallbacks.internalError();
-                break;
-              case 500:
-                reportProductCallbacks.internalError();
-                break;
-              default:
-                break;
-            }
+              handleClose();
+            },
+            invalidFields: () => {
+              toastError('Invalid fields.');
+            },
+            internalError: () => {
+              toastError('Oops, something went wrong.');
+            },
+          };
+
+          switch (reportProductResponseCode) {
+            case 200:
+              reportProductCallbacks.created();
+              break;
+            case 400:
+              reportProductCallbacks.invalidFields();
+              break;
+            case 401:
+              reportProductCallbacks.internalError();
+              break;
+            case 500:
+              reportProductCallbacks.internalError();
+              break;
+            default:
+              break;
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
@@ -114,16 +104,14 @@ function ReportProductModal({
               value={values.reason}
               onChange={(e) => setFieldValue('reason', e.target.value)}
             />
-                  
+
             <Button
               className={styles.ReportProductModal_button}
               disabled={isSubmitting}
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.ReportProductModal_button_buttonText}
-              >
+              <span className={styles.ReportProductModal_button_buttonText}>
                 Submit
                 {isSubmitting && (
                   <Spinner
@@ -146,6 +134,6 @@ ReportProductModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   productId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default ReportProductModal;

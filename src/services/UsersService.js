@@ -5,81 +5,83 @@ import config from './config';
 const BASE_URL = `${config.API_URL}/api/users`;
 
 const UsersService = {
-  acquireCode: (email) => axios.get(`${BASE_URL}/passwords/codes`, {
-    params: {
-      email,
-    },
-  }),
-  
+  acquireCode: (email) =>
+    axios.get(`${BASE_URL}/passwords/codes`, {
+      params: {
+        email,
+      },
+    }),
+
   login: (body) => axios.post(`${BASE_URL}/login`, body),
   logout: () => axios.post(`${BASE_URL}/logout`),
 
   retrieveBuyers: ({
-    page, 
+    page,
     pageSize,
     isBanned,
     search,
     isDescending,
     orderBy,
     userId,
-  }) => axios.get(`${BASE_URL}/buyers`, {
-    params: {
-      page, 
-      pageSize,
-      isBanned,
-      search,
-      isDescending,
-      orderBy,
-      userId,
-    },
-  }),
+  }) =>
+    axios.get(`${BASE_URL}/buyers`, {
+      params: {
+        page,
+        pageSize,
+        isBanned,
+        search,
+        isDescending,
+        orderBy,
+        userId,
+      },
+    }),
   retrieveBuyerSuggestions: () => axios.get(`${BASE_URL}/buyers/suggestions`),
   retrieveUser: (id) => axios.get(`${BASE_URL}/${id}`),
-  retrieveSellerApplications: ({
-    status, 
-    page, 
-    pageSize, 
-    search}) => axios.get(`${BASE_URL}/sellers/applications`, {
-    params: {
-      status,
-      page,
-      pageSize,
-      search,
-    },
-  }),
+  retrieveSellerApplications: ({ status, page, pageSize, search }) =>
+    axios.get(`${BASE_URL}/sellers/applications`, {
+      params: {
+        status,
+        page,
+        pageSize,
+        search,
+      },
+    }),
   retrieveSellers: ({
-    page, 
+    page,
     pageSize,
     isBanned,
     search,
     isDescending,
     orderBy,
     userId,
-  }) => axios.get(`${BASE_URL}/sellers`, {
-    params: {
-      page,
-      pageSize,
-      isBanned,
-      isDescending,
-      orderBy,
-      userId,
-      search,
-    },
-  }),
+  }) =>
+    axios.get(`${BASE_URL}/sellers`, {
+      params: {
+        page,
+        pageSize,
+        isBanned,
+        isDescending,
+        orderBy,
+        userId,
+        search,
+      },
+    }),
   resetPassword: (body) => axios.post(`${BASE_URL}/passwords/reset`, body),
 
   updateAccount: (userType, body) => axios.put(`${BASE_URL}/${userType}`, body),
   updateBuyerSuggestions: () => axios.put(`${BASE_URL}/buyers/suggestions`),
   updatePassword: (body) => axios.put(`${BASE_URL}/passwords/update`, body),
   updateUserStatus: (id, body) => axios.put(`${BASE_URL}/${id}`, body),
-  updateSellerApplication: (id, body) => axios.put(`${BASE_URL}/sellers/applications/${id}`, body),
+  updateSellerApplication: (id, body) =>
+    axios.put(`${BASE_URL}/sellers/applications/${id}`, body),
 
   signupBuyer: (body) => axios.post(`${BASE_URL}/buyers/register`, body),
-  signupSeller: (body) => axios.post(`${BASE_URL}/sellers/register`, body, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  }),
+  signupSeller: (body) =>
+    axios.post(`${BASE_URL}/sellers/register`, body, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
 
   verifyCode: (body) => axios.post(`${BASE_URL}/passwords/codes/verify`, body),
 };

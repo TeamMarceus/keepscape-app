@@ -1,14 +1,14 @@
 {
-  "[javascript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
   "[scss]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
+  "editor.formatOnSave": true,
   "eslint.packageManager": "yarn",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "eslint.validate": ["javascript"],
+  "eslint.alwaysShowStatus": true,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
@@ -16,9 +16,8 @@
   "editor.guides.bracketPairs": "active",
   "css.validate": false,
   "scss.validate": false,
-  "search.exclude": {
-    "**/node_modules": false,
-    "node_modules/**": true
-  },
-  "editor.formatOnSave": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

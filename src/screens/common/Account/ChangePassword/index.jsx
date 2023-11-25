@@ -1,4 +1,3 @@
-
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 
@@ -18,11 +17,7 @@ import { useUpdateUser } from '@/hooks';
 import styles from './styles.module.scss';
 
 function ChangePassword() {
-
-  const {
-    isUpdating: isUserUpdating,
-    updatePassword,
-  } = useUpdateUser();
+  const { isUpdating: isUserUpdating, updatePassword } = useUpdateUser();
 
   const validate = (values) => {
     const errors = {};
@@ -34,8 +29,7 @@ function ChangePassword() {
     if (!values.newPassword) {
       errors.newPassword = 'This field is required.';
     } else if (values.newPassword.length < 6) {
-      errors.newPassword =
-        'New Password must be at least 6 characters long.';
+      errors.newPassword = 'New Password must be at least 6 characters long.';
     }
 
     if (!values.confirmPassword) {
@@ -72,8 +66,10 @@ function ChangePassword() {
             return;
           }
 
-          const { responseCode: updateUserResponseCode, errors: updateUserResponseErrors } =
-            await updatePassword(currentFormValues);
+          const {
+            responseCode: updateUserResponseCode,
+            errors: updateUserResponseErrors,
+          } = await updatePassword(currentFormValues);
 
           const updateUserCallbacks = {
             updated: () => {

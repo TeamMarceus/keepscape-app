@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 import cn from 'classnames';
@@ -13,17 +12,17 @@ import {
   iconButtonTypes,
 } from '@/app-globals';
 
-import { 
+import {
   Button,
   Text,
   ControlledInput,
   NoResults,
   Pagination,
-  Card, 
+  Card,
   ConfirmModal,
   PaypalButton,
   ButtonLink,
-  IconLink
+  IconLink,
 } from '@/components';
 
 import { useBuyerOrders, useWindowSize } from '@/hooks';
@@ -44,16 +43,19 @@ function Orders() {
 
   const page = searchParams.get('page') || 1;
   const filter = searchParams.get('filter') || orderStatus.PENDING;
- 
+
   const [search, setSearch] = useState('');
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
-  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
-  const [isCancelConfirmationToggled, toggleCancelConfirmation] = useState(false);
-  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
+  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] =
+    useState(false);
+  const [isCancelConfirmationToggled, toggleCancelConfirmation] =
+    useState(false);
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] =
+    useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const { 
-    isLoading: isOrdersLoading, 
+  const {
+    isLoading: isOrdersLoading,
     orders,
     totalPages,
     isCancelling: isOrderCancelling,
@@ -65,14 +67,16 @@ function Orders() {
     page,
     pageSize: 5,
   });
-  
+
   const filteredOrders = orders.filter((order) => {
     const searchTerm = search.toLowerCase();
-  
+
     return (
       order.seller.sellerName.toLowerCase().includes(searchTerm) ||
-      order.dateTimeCreated.toLowerCase().includes(searchTerm)  ||
-      order.items.some(({ productName }) => productName.toLowerCase().includes(searchTerm))
+      order.dateTimeCreated.toLowerCase().includes(searchTerm) ||
+      order.items.some(({ productName }) =>
+        productName.toLowerCase().includes(searchTerm)
+      )
     );
   });
 
@@ -86,11 +90,17 @@ function Orders() {
         <div className={styles.Orders_filters}>
           <Button
             className={cn(styles.Orders_filters_button, {
-              [styles.Orders_filters_button___active]: filter === orderStatus.PENDING,
+              [styles.Orders_filters_button___active]:
+                filter === orderStatus.PENDING,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=orders&page=${1}&filter=${orderStatus.PENDING}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=orders&page=${1}&filter=${
+                  orderStatus.PENDING
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -104,11 +114,17 @@ function Orders() {
 
           <Button
             className={cn(styles.Orders_filters_button, {
-              [styles.Orders_filters_button___active]: filter === orderStatus.AWAITING_BUYER,
+              [styles.Orders_filters_button___active]:
+                filter === orderStatus.AWAITING_BUYER,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=orders&page=${1}&filter=${orderStatus.AWAITING_BUYER}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=orders&page=${1}&filter=${
+                  orderStatus.AWAITING_BUYER
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -122,11 +138,17 @@ function Orders() {
 
           <Button
             className={cn(styles.Orders_filters_button, {
-              [styles.Orders_filters_button___active]: filter === orderStatus.CANCELLED,
+              [styles.Orders_filters_button___active]:
+                filter === orderStatus.CANCELLED,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=orders&page=${1}&filter=${orderStatus.CANCELLED}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=orders&page=${1}&filter=${
+                  orderStatus.CANCELLED
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -141,7 +163,7 @@ function Orders() {
 
         <ControlledInput
           className={styles.Orders_search}
-          icon='search'
+          icon="search"
           name="search"
           placeholder="You can search by Seller Name, Product Name or Date Ordered"
           value={search}
@@ -157,9 +179,20 @@ function Orders() {
               <>
                 <div className={styles.Orders_orders}>
                   {filteredOrders.map(
-                    ({ id, seller, dateTimeCreated, items, totalPrice, status, 
-                      deliveryAddress, deliveryFullName, altMobileNumber, 
-                      phoneNumber, deliveryFeeProofImageUrl, deliveryFee}) =>
+                    ({
+                      id,
+                      seller,
+                      dateTimeCreated,
+                      items,
+                      totalPrice,
+                      status,
+                      deliveryAddress,
+                      deliveryFullName,
+                      altMobileNumber,
+                      phoneNumber,
+                      deliveryFeeProofImageUrl,
+                      deliveryFee,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Orders_order}>
@@ -170,8 +203,8 @@ function Orders() {
                                 icon="storefront"
                                 type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
-                                  setSelectedOrder({id, seller});
-                                  setIsSellerModalOpen(true)
+                                  setSelectedOrder({ id, seller });
+                                  setIsSellerModalOpen(true);
                                 }}
                               >
                                 <Text type={textTypes.HEADING.XXXS}>
@@ -180,7 +213,7 @@ function Orders() {
                               </Button>
 
                               <div className={styles.Orders_info_date}>
-                                Date Ordered: 
+                                Date Ordered:
                                 <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
@@ -193,164 +226,190 @@ function Orders() {
                             <div className={styles.Orders_info_buttons}>
                               <Button
                                 className={styles.Orders_info_statusButton}
-                                icon={(()=> {
+                                icon={(() => {
                                   if (status === orderStatus.AWAITING_BUYER) {
                                     return 'payments';
-                                  } if (status === orderStatus.PENDING) {
+                                  }
+                                  if (status === orderStatus.PENDING) {
                                     return 'pending';
-                                  } 
-                                    return 'cancel';
-                                  })()
-                                }
+                                  }
+                                  return 'cancel';
+                                })()}
                                 type={(() => {
-                                    if (status === orderStatus.AWAITING_BUYER) {
-                                      return buttonTypes.TEXT.GREEN
-                                    } if (status === orderStatus.PENDING) {
-                                      return buttonTypes.TEXT.BLUE;
-                                    } 
-                                      return buttonTypes.TEXT.RED;
-                                  })()
-                                }
+                                  if (status === orderStatus.AWAITING_BUYER) {
+                                    return buttonTypes.TEXT.GREEN;
+                                  }
+                                  if (status === orderStatus.PENDING) {
+                                    return buttonTypes.TEXT.BLUE;
+                                  }
+                                  return buttonTypes.TEXT.RED;
+                                })()}
                                 onClick={() => {
-                                  setSelectedOrder({id, deliveryAddress, deliveryFullName, altMobileNumber, phoneNumber});
-                                
+                                  setSelectedOrder({
+                                    id,
+                                    deliveryAddress,
+                                    deliveryFullName,
+                                    altMobileNumber,
+                                    phoneNumber,
+                                  });
+
                                   setIsDeliveryDetailsModalOpen(true);
                                 }}
                               >
-                                {status === orderStatus.AWAITING_BUYER && 'Awaiting Payment'}
+                                {status === orderStatus.AWAITING_BUYER &&
+                                  'Awaiting Payment'}
                                 {status === orderStatus.PENDING && 'Pending'}
-                                {status === orderStatus.CANCELLED && 'Cancelled'}
+                                {status === orderStatus.CANCELLED &&
+                                  'Cancelled'}
                               </Button>
                             </div>
-                            
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                            <div key={productId} className={styles.Orders_item}>
-                              <div className={styles.Orders_product}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  alt="Product"
-                                  className={styles.Orders_product_image}
-                                  height={60}
-                                  src={productImageUrl}
-                                  width={60}
-                                />
+                            ({
+                              productId,
+                              productImageUrl,
+                              productName,
+                              price,
+                              quantity,
+                              customizationMessage,
+                            }) => (
+                              <div
+                                key={productId}
+                                className={styles.Orders_item}
+                              >
+                                <div className={styles.Orders_product}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt="Product"
+                                    className={styles.Orders_product_image}
+                                    height={60}
+                                    src={productImageUrl}
+                                    width={60}
+                                  />
 
-                                <div>
-                                  <Text 
-                                    className={styles.Orders_product_text}
+                                  <div>
+                                    <Text
+                                      className={styles.Orders_product_text}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      {productName}
+                                    </Text>
+                                  </div>
+                                </div>
+
+                                <div className={styles.Orders_quantity}>
+                                  Quantity:
+                                  <Text
+                                    colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {productName}
+                                    {quantity}
                                   </Text>
                                 </div>
-                              </div>
 
-                              <div className={styles.Orders_quantity}>
-                                Quantity:
-                                <Text 
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
+                                <div
+                                  className={styles.Orders_customizationText}
                                 >
-                                  {quantity}
-                                </Text>
-                              </div>
-
-                              <div className={styles.Orders_customizationText}>
-                                Customization:
-                                {customizationMessage  ? (
-                                  <Text 
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXXS}
-                                  >
-                                    {customizationMessage } 
-                                  </Text>
+                                  Customization:
+                                  {customizationMessage ? (
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXXS}
+                                    >
+                                      {customizationMessage}
+                                    </Text>
                                   ) : (
-                                  <Text 
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      No Customization
+                                    </Text>
+                                  )}
+                                </div>
+
+                                <div className={styles.Orders_price}>
+                                  Price:
+                                  <Text
+                                    className={styles.Orders_price_text}
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    No Customization
+                                    ₱{price.toLocaleString()}
                                   </Text>
+                                </div>
+
+                                {status === orderStatus.CANCELLED && (
+                                  <IconLink
+                                    className={styles.Orders_buyAgain}
+                                    icon="redo"
+                                    to={`/buyer/product/${productId}`}
+                                    type={iconButtonTypes.OUTLINE.SM}
+                                  >
+                                    Buy Again
+                                  </IconLink>
                                 )}
                               </div>
-                            
-                              <div className={styles.Orders_price}>
-                                Price:
-                                <Text
-                                  className={styles.Orders_price_text}
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
-                                >
-                                  ₱{price.toLocaleString()}
-                                </Text>
-                              </div>
-
-                              {status === orderStatus.CANCELLED && 
-                                <IconLink
-                                  className={styles.Orders_buyAgain}
-                                  icon="redo"
-                                  to={`/buyer/product/${productId}`}
-                                  type={iconButtonTypes.OUTLINE.SM}
-                                >
-                                  Buy Again
-                                </IconLink>
-                              }
-                            </div>
                             )
                           )}
 
                           <div className={styles.Orders_orderTotal}>
                             <div className={styles.Orders_orderTotal_fees}>
                               {status === orderStatus.AWAITING_BUYER && (
-                                <Button 
-                                  className={cn(styles.Orders_orderTotal_text, 
-                                    styles.Orders_orderTotal_text_deliveryFee)}
+                                <Button
+                                  className={cn(
+                                    styles.Orders_orderTotal_text,
+                                    styles.Orders_orderTotal_text_deliveryFee
+                                  )}
                                   type={buttonTypes.TEXT.NEUTRAL}
                                   onClick={() => {
-                                    setSelectedOrder({id, deliveryFeeProofImageUrl});
+                                    setSelectedOrder({
+                                      id,
+                                      deliveryFeeProofImageUrl,
+                                    });
                                     setIsDeliveryFeeProofModalOpen(true);
                                   }}
                                 >
-                                  <Text 
+                                  <Text
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
                                   >
                                     Delivery Fee:
                                   </Text>
 
-                                  <Text 
+                                  <Text
                                     colorClass={colorClasses.BLUE['300']}
                                     type={textTypes.HEADING.XXXS}
                                   >
                                     ₱{deliveryFee.toLocaleString()}
-                                  </Text>    
-                                </Button> 
+                                  </Text>
+                                </Button>
                               )}
 
                               <div className={styles.Orders_orderTotal_text}>
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXS}
                                 >
                                   Order Total:
                                 </Text>
 
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.GREEN['300']}
                                   type={textTypes.HEADING.XS}
                                 >
                                   ₱{totalPrice.toLocaleString()}
-                                </Text>    
-                              </div> 
+                                </Text>
+                              </div>
                             </div>
 
                             <div className={styles.Orders_orderTotal_buttons}>
                               {status === orderStatus.AWAITING_BUYER && (
                                 <PaypalButton
-                                  className={styles.Orders_orderTotal_buttons_button}
+                                  className={
+                                    styles.Orders_orderTotal_buttons_button
+                                  }
                                   orderId={id}
                                   setOrders={setOrders}
                                   total={totalPrice}
@@ -359,7 +418,9 @@ function Orders() {
 
                               {status !== orderStatus.CANCELLED && (
                                 <Button
-                                  className={styles.Orders_orderTotal_buttons_button}
+                                  className={
+                                    styles.Orders_orderTotal_buttons_button
+                                  }
                                   type={buttonTypes.SECONDARY.BLUE}
                                   onClick={() => {
                                     setSelectedOrder({ id });
@@ -374,17 +435,19 @@ function Orders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <>
-                        </>
+                        <></>
                       )
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Orders_pagination}
                   currentPage={page}
                   pageJump={(value) => {
-                    router.push(`/buyer/account?activeTab=orders&page=${value}&filter=${filter}`, { scroll: false })
+                    router.push(
+                      `/buyer/account?activeTab=orders&page=${value}&filter=${filter}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />

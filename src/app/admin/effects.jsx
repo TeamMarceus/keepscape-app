@@ -21,20 +21,19 @@ export default function AdminEffects({ children }) {
   const user = useSelector((store) => getUser(store));
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));
-  
+
   const [isSidebarToggled, toggleSidebar] = useState(false);
 
   usePrivateRoute({ forUserType: userTypes.ADMIN });
 
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken && user.userType === userTypes.ADMIN,
+    !!accessToken && !!refreshToken && user.userType === userTypes.ADMIN
   );
 
   useEffect(() => {
     if (!user.id) {
       setIsRedirectSuccessful(false);
     }
-    
   }, [user]);
 
   if (!isRedirectSuccessful) {
@@ -43,19 +42,17 @@ export default function AdminEffects({ children }) {
 
   return (
     <>
-      <Navbar 
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar} 
-      />
-
-      <AdminSidebar 
+      <Navbar
         isSidebarToggled={isSidebarToggled}
         toggleSidebar={toggleSidebar}
       />
 
-      <section className={styles.container}>
-        {children}
-      </section>
+      <AdminSidebar
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+
+      <section className={styles.container}>{children}</section>
     </>
   );
 }

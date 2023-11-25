@@ -4,23 +4,23 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { 
-  buttonKinds, 
-  colorNames, 
-  inputKinds, 
-  modalPositions, 
-  modalSizes, 
-  spinnerSizes 
+import {
+  buttonKinds,
+  colorNames,
+  inputKinds,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
 } from '@/app-globals';
 
-import { 
-  Button, 
-  ControlledInput, 
-  ControlledSelect, 
-  ControlledTextArea, 
-  ImageDropzone, 
-  Modal, 
-  Spinner 
+import {
+  Button,
+  ControlledInput,
+  ControlledSelect,
+  ControlledTextArea,
+  ImageDropzone,
+  Modal,
+  Spinner,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -35,18 +35,18 @@ function RequestModal({
   isOpen,
   handleClose,
   title,
-  paymentMethod, 
+  paymentMethod,
   setBalanceAmount,
 }) {
-  const validate = (values) => {  
+  const validate = (values) => {
     const errors = {};
-  
+
     if (!values.amount) {
       errors.amount = 'This field is required.';
     } else if (values.amount > currentBalance) {
       errors.amount = 'Amount is greater than current balance.';
     }
-  
+
     if (paymentMethod === 'Gcash' || paymentMethod === 'Maya') {
       if (!values.accountName) {
         errors.accountName = 'This field is required.';
@@ -80,14 +80,11 @@ function RequestModal({
         errors.qrCode = 'This field is required.';
       }
     }
-  
+
     return errors;
   };
 
-  const {
-    isRequesting,
-    requestWithdraw,
-  } = useRequestWithdraw();
+  const { isRequesting, requestWithdraw } = useRequestWithdraw();
 
   return (
     <Modal
@@ -114,7 +111,7 @@ function RequestModal({
             amount: values.amount,
             paymentMethod,
             paymentDetails: `Account Name: ${values.accountName}, Account Number: ${values.accountNumber}`,
-            paymentProfileImage : values.qrImage,
+            paymentProfileImage: values.qrImage,
             remarks: values.remarks,
           };
 
@@ -148,51 +145,52 @@ function RequestModal({
             requestFormValue = bankTransferFormValues;
           }
 
-          const { responseCode: requestWithdrawResponseCode } = await requestWithdraw(requestFormValue);
+          const { responseCode: requestWithdrawResponseCode } =
+            await requestWithdraw(requestFormValue);
 
-            const requestWithdrawCallbacks = {
-              created: () => {
-                toastSuccess('Withdrawal successfully requested.');
+          const requestWithdrawCallbacks = {
+            created: () => {
+              toastSuccess('Withdrawal successfully requested.');
 
-                setBalanceAmount(currentBalance - values.amount);
+              setBalanceAmount(currentBalance - values.amount);
 
-                // Reset form values
-                setFieldValue('amount', '');
-                setFieldValue('accountName', '');
-                setFieldValue('accountNumber', '');
-                setFieldValue('qrImage', '');
-                setFieldValue('email', '');
-                setFieldValue('bank', '');
-                setFieldValue('qrCode', '');          
-                setFieldValue('remarks', '');      
-              },
-              invalidFields: () => {
-                toastError('Invalid fields.');
-              },
-              internalError: () => {
-                toastError('Oops, something went wrong.');
-              },
-            };
+              // Reset form values
+              setFieldValue('amount', '');
+              setFieldValue('accountName', '');
+              setFieldValue('accountNumber', '');
+              setFieldValue('qrImage', '');
+              setFieldValue('email', '');
+              setFieldValue('bank', '');
+              setFieldValue('qrCode', '');
+              setFieldValue('remarks', '');
+            },
+            invalidFields: () => {
+              toastError('Invalid fields.');
+            },
+            internalError: () => {
+              toastError('Oops, something went wrong.');
+            },
+          };
 
-            switch (requestWithdrawResponseCode) {
-              case 200:
-                requestWithdrawCallbacks.created();
-                break;
-              case 400:
-                requestWithdrawCallbacks.invalidFields();
-                break;
-              case 401:
-                requestWithdrawCallbacks.internalError();
-                break;
-              case 415:
-                requestWithdrawCallbacks.internalError();
-                break;
-              case 500:
-                requestWithdrawCallbacks.internalError();
-                break;
-              default:
-                break;
-            }
+          switch (requestWithdrawResponseCode) {
+            case 200:
+              requestWithdrawCallbacks.created();
+              break;
+            case 400:
+              requestWithdrawCallbacks.invalidFields();
+              break;
+            case 401:
+              requestWithdrawCallbacks.internalError();
+              break;
+            case 415:
+              requestWithdrawCallbacks.internalError();
+              break;
+            case 500:
+              requestWithdrawCallbacks.internalError();
+              break;
+            default:
+              break;
+          }
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
@@ -206,7 +204,7 @@ function RequestModal({
               value={values.amount}
               onChange={(e) => setFieldValue('amount', e.target.value)}
             />
-            
+
             {(paymentMethod === 'Gcash' || paymentMethod === 'Maya') && (
               <>
                 <ControlledInput
@@ -224,13 +222,15 @@ function RequestModal({
                   name="accountNumber"
                   placeholder="Account Number*"
                   value={values.accountNumber}
-                  onChange={(e) => setFieldValue('accountNumber', e.target.value)}
+                  onChange={(e) =>
+                    setFieldValue('accountNumber', e.target.value)
+                  }
                 />
-    
+
                 <ImageDropzone
                   className={styles.RequestModal_withMargin}
                   error={errors.qrImage}
-                  text="Upload QR Image" 
+                  text="Upload QR Image"
                   value={values.qrImage}
                   onChange={(image) => {
                     setFieldValue('qrImage', image);
@@ -239,7 +239,7 @@ function RequestModal({
               </>
             )}
 
-            {paymentMethod === 'Paypal'  && (
+            {paymentMethod === 'Paypal' && (
               <ControlledInput
                 className={styles.RequestModal_withMargin}
                 error={errors.email}
@@ -252,14 +252,14 @@ function RequestModal({
 
             {paymentMethod === 'BankTransfer' && (
               <>
-               <ControlledSelect
+                <ControlledSelect
                   className={styles.RequestModal_withMargin}
                   error={errors.bank}
                   name="bank"
                   options={[
                     {
                       label: 'BDO',
-                      value: 'BDO', 
+                      value: 'BDO',
                     },
                     {
                       label: 'BPI',
@@ -281,7 +281,9 @@ function RequestModal({
                   name="accountNumber"
                   placeholder="Account Number*"
                   value={values.accountNumber}
-                  onChange={(e) => setFieldValue('accountNumber', e.target.value)}
+                  onChange={(e) =>
+                    setFieldValue('accountNumber', e.target.value)
+                  }
                 />
 
                 <ControlledInput
@@ -311,9 +313,7 @@ function RequestModal({
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.RequestModal_button_buttonText}
-              >
+              <span className={styles.RequestModal_button_buttonText}>
                 Withdraw
                 {isRequesting && (
                   <Spinner
@@ -338,6 +338,6 @@ RequestModal.propTypes = {
   title: PropTypes.string.isRequired,
   paymentMethod: PropTypes.string.isRequired,
   setBalanceAmount: PropTypes.func.isRequired,
-}
+};
 
 export default RequestModal;

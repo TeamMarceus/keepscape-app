@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import cn from 'classnames';
 
@@ -10,32 +10,27 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { 
-  buttonTypes, 
-  colorClasses, 
-  textTypes 
-} from '@/app-globals';
+import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
 
-import { 
-  Button, 
-  ButtonLink, 
-  Card, 
-  Checkbox, 
-  ConfirmModal, 
-  Icon, 
-  NoResults, 
-  Pagination, 
-  RatingStars, 
-  ReviewCard, 
-  ScreenLoader, 
-  Text 
-} from '@/components'
+import {
+  Button,
+  ButtonLink,
+  Card,
+  Checkbox,
+  ConfirmModal,
+  Icon,
+  NoResults,
+  Pagination,
+  RatingStars,
+  ReviewCard,
+  ScreenLoader,
+  Text,
+} from '@/components';
 
 import { useProduct, useProductReviews, useUpdateProduct } from '@/hooks';
 
 import PreloaderProductReviews from './Preloader';
-import styles from './styles.module.scss'
-
+import styles from './styles.module.scss';
 
 const sliderSettings = {
   lazyLoad: true,
@@ -52,24 +47,25 @@ function ViewProduct({ id }) {
 
   const page = searchParams.get('page') || 1;
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [clickedRating, setClickedRating] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [clickedRating, setClickedRating] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isDeleteConfirmationToggled, toggleDeleteConfirmation] =
+    useState(false);
 
-  const { isUpdating: isUpdatingProduct, updateProduct} = useUpdateProduct();
+  const { isUpdating: isUpdatingProduct, updateProduct } = useUpdateProduct();
 
-  const { 
-    isLoading: isProductLoading, 
+  const {
+    isLoading: isProductLoading,
     product,
     isDeleting,
     deleteProduct,
   } = useProduct(id, isUpdatingProduct);
 
-  const { 
-    isLoading: isProductReviewsLoading, 
-    reviews, 
-    totalPages
+  const {
+    isLoading: isProductReviewsLoading,
+    reviews,
+    totalPages,
   } = useProductReviews({
     productId: id,
     stars: clickedRating === 0 ? null : clickedRating,
@@ -77,10 +73,11 @@ function ViewProduct({ id }) {
     pageSize: 10,
   });
 
-  const filteredReviews = clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) : reviews;
+  const filteredReviews =
+    clickedRating === 0 ? reviews.sort((a, b) => b.rating - a.rating) : reviews;
 
   if (isProductLoading) {
-    return <ScreenLoader/>
+    return <ScreenLoader />;
   }
 
   return (
@@ -89,7 +86,7 @@ function ViewProduct({ id }) {
         <Card className={styles.ViewProduct_content}>
           <div className={styles.ViewProduct_content_images}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
+            <img
               alt="ViewProduct"
               height={320}
               src={product.images[currentImageIndex]}
@@ -98,18 +95,20 @@ function ViewProduct({ id }) {
             <div className={styles.ViewProduct_content_slider}>
               <Slider {...sliderSettings}>
                 {product.images.map((image, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={styles.ViewProduct_content_slider_container}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                    <img 
+                    <img
                       alt={product.name}
-                      className={cn(styles.ViewProduct_content_slider_image, 
-                        {[styles.ViewProduct_content_slider_image___active]: currentImageIndex === index })}
+                      className={cn(styles.ViewProduct_content_slider_image, {
+                        [styles.ViewProduct_content_slider_image___active]:
+                          currentImageIndex === index,
+                      })}
                       height={70}
                       src={image}
-                      width={70} 
+                      width={70}
                       onClick={() => setCurrentImageIndex(index)}
                       onMouseEnter={() => setCurrentImageIndex(index)}
                     />
@@ -121,18 +120,14 @@ function ViewProduct({ id }) {
 
           <div className={styles.ViewProduct_content_info}>
             <div className={styles.ViewProduct_content_info_name}>
-              <Text
-                type={textTypes.HEADING.SM}
-              >
-                {product.name}
-              </Text> 
+              <Text type={textTypes.HEADING.SM}>{product.name}</Text>
 
               <Icon
                 className={styles.ViewProduct_content_info_icon}
                 icon={product.isHidden ? 'visibility_off' : 'visibility'}
               />
             </div>
-            
+
             <div className={styles.ViewProduct_content_info_reviews}>
               <Link
                 key="rating"
@@ -142,7 +137,10 @@ function ViewProduct({ id }) {
                 offset={-200}
                 to="reviews"
               >
-              <RatingStars className={styles.ViewProduct_content_info_reviews_stars} rating={product.stars} />
+                <RatingStars
+                  className={styles.ViewProduct_content_info_reviews_stars}
+                  rating={product.stars}
+                />
               </Link>
               |
               <Link
@@ -153,72 +151,84 @@ function ViewProduct({ id }) {
                 offset={-200}
                 to="reviews"
               >
-
-              <Text colorClass={colorClasses.NEUTRAL['500']}> 
-                Rated by: {' '}
-                <span className={styles.ViewProduct_content_info_reviews_span}>{product.totalRatings}</span> 
-                {' '} users
-              </Text>
-            </Link>
+                <Text colorClass={colorClasses.NEUTRAL['500']}>
+                  Rated by:{' '}
+                  <span
+                    className={styles.ViewProduct_content_info_reviews_span}
+                  >
+                    {product.totalRatings}
+                  </span>{' '}
+                  users
+                </Text>
+              </Link>
               |
-              <Text colorClass={colorClasses.NEUTRAL['500']}> 
-                Total sold: {' '}
-                <span className={styles.ViewProduct_content_info_reviews_span}>{product.totalSold}</span>
+              <Text colorClass={colorClasses.NEUTRAL['500']}>
+                Total sold:{' '}
+                <span className={styles.ViewProduct_content_info_reviews_span}>
+                  {product.totalSold}
+                </span>
               </Text>
             </div>
 
             <div className={styles.ViewProduct_content_info_price}>
-              <Text 
+              <Text
                 colorClass={colorClasses.GREEN['200']}
                 type={textTypes.HEADING.MD}
               >
                 ₱{product.buyerPrice.toLocaleString()}
               </Text>
             </div>
-            
+
             <Text
               className={styles.ViewProduct_content_info_customizable}
               colorClass={colorClasses.NEUTRAL['400']}
               type={textTypes.HEADING.XXS}
             >
-              {product.isCustomizable ? 'Product is Customizable' : 'Product is not customizable'}
+              {product.isCustomizable
+                ? 'Product is Customizable'
+                : 'Product is not customizable'}
             </Text>
-            
-            <Text 
+
+            <Text
               className={styles.ViewProduct_content_info_quantity}
               colorClass={colorClasses.NEUTRAL['400']}
               type={textTypes.HEADING.XXS}
             >
               {product.quantity} pieces available
             </Text>
-          
+
             <Text>
-              Province: <span className={styles.ViewProduct_content_info_category}>{product.province.name}</span> 
+              Province:{' '}
+              <span className={styles.ViewProduct_content_info_category}>
+                {product.province.name}
+              </span>
             </Text>
-  
+
             <Text>
-              Categories: {' '} 
-              <span className={styles.ViewProduct_content_info_category}>{product.categories.map((category) => category.name).join(', ')}</span>
+              Categories:{' '}
+              <span className={styles.ViewProduct_content_info_category}>
+                {product.categories.map((category) => category.name).join(', ')}
+              </span>
             </Text>
 
             <div className={styles.ViewProduct_content_info_buttons}>
-              <Button 
+              <Button
                 className={styles.ViewProduct_content_info_buttons_button}
                 disabled={isUpdatingProduct || isDeleting}
                 icon={product.isHidden ? 'visibility' : 'visibility_off'}
-                onClick={ async ()=>{
+                onClick={async () => {
                   const formData = new FormData();
                   formData.append('product', !product.isHidden);
 
                   await updateProduct({
-                      productId: id,
-                      body: { 
-                          isHidden: formData.get('product'),
-                        },
-                      isHide: !product.isHidden,
-                      isHidden: product.isHidden,
-                    })
-                  }}
+                    productId: id,
+                    body: {
+                      isHidden: formData.get('product'),
+                    },
+                    isHide: !product.isHidden,
+                    isHidden: product.isHidden,
+                  });
+                }}
               >
                 {product.isHidden ? 'Unhide' : 'Hide'}
               </Button>
@@ -249,38 +259,37 @@ function ViewProduct({ id }) {
         </Card>
 
         <div className={styles.ViewProduct_description}>
-          <Text 
+          <Text
             className={styles.ViewProduct_description_title}
             type={textTypes.HEADING.XXS}
           >
             PRODUCT DESCRIPTION
           </Text>
 
-          <Text>
-            {product.description}
-          </Text>
+          <Text>{product.description}</Text>
         </div>
 
         <div className={styles.ViewProduct_reviews} id="reviews">
-          <Text 
+          <Text
             className={styles.ViewProduct_reviews_title}
             type={textTypes.HEADING.XXS}
           >
             PRODUCT REVIEWS
           </Text>
 
-
           {isProductReviewsLoading ? (
-            <PreloaderProductReviews/>
+            <PreloaderProductReviews />
           ) : (
             <>
               <div className={styles.ViewProduct_reviews_ratings}>
                 <div className={styles.ViewProduct_reviews_rating}>
-                  <Text 
+                  <Text
                     colorClass={colorClasses.BLUE['400']}
                     type={textTypes.HEADING.XS}
-                  > 
-                    <span className={styles.ViewProduct_reviews_rating_span}>{product.stars}</span> {' '} 
+                  >
+                    <span className={styles.ViewProduct_reviews_rating_span}>
+                      {product.stars}
+                    </span>{' '}
                     out of 5
                   </Text>
                   <RatingStars rating={product.stars} />
@@ -289,43 +298,79 @@ function ViewProduct({ id }) {
                 <div className={styles.ViewProduct_reviews_buttons}>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 0 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(0) }}
+                    type={
+                      clickedRating === 0
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(0);
+                    }}
                   >
                     All
                   </Button>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 5 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(5) }}
+                    type={
+                      clickedRating === 5
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(5);
+                    }}
                   >
                     5 Stars
                   </Button>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 4 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(4) }}
+                    type={
+                      clickedRating === 4
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(4);
+                    }}
                   >
                     4 Stars
                   </Button>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 3 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(3) }}
+                    type={
+                      clickedRating === 3
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(3);
+                    }}
                   >
                     3 Stars
                   </Button>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 2 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(2) }}
+                    type={
+                      clickedRating === 2
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(2);
+                    }}
                   >
                     2 Stars
                   </Button>
                   <Button
                     className={styles.ViewProduct_reviews_buttons_button}
-                    type={clickedRating === 1 ? buttonTypes.PRIMARY.BLUE : buttonTypes.SECONDARY.BLUE}
-                    onClick={()=>{ setClickedRating(1) }}
+                    type={
+                      clickedRating === 1
+                        ? buttonTypes.PRIMARY.BLUE
+                        : buttonTypes.SECONDARY.BLUE
+                    }
+                    onClick={() => {
+                      setClickedRating(1);
+                    }}
                   >
                     1 Star
                   </Button>
@@ -344,16 +389,17 @@ function ViewProduct({ id }) {
                     />
                   ))}
 
-                <Pagination 
-                  className={styles.ViewProduct_pagination}
-                  currentPage={currentPage}
-                  pageJump={(value) => {
-                    setCurrentPage(value);
-                    router.push(`/seller/products/${id}?page=${value}`, { scroll: false })
-                  }}
-                  totalPages={totalPages}
-                />
-
+                  <Pagination
+                    className={styles.ViewProduct_pagination}
+                    currentPage={currentPage}
+                    pageJump={(value) => {
+                      setCurrentPage(value);
+                      router.push(`/seller/products/${id}?page=${value}`, {
+                        scroll: false,
+                      });
+                    }}
+                    totalPages={totalPages}
+                  />
                 </>
               ) : (
                 <NoResults
@@ -393,11 +439,11 @@ function ViewProduct({ id }) {
         title="Delete?"
       />
     </>
-  )
+  );
 }
 
 ViewProduct.propTypes = {
   id: PropTypes.string.isRequired,
-}
+};
 
-export default ViewProduct
+export default ViewProduct;

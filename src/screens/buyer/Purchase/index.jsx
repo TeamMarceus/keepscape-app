@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 import cn from 'classnames';
@@ -12,15 +11,15 @@ import {
   orderStatus,
 } from '@/app-globals';
 
-import { 
+import {
   Button,
   Text,
   ControlledInput,
   NoResults,
   Pagination,
-  Card, 
+  Card,
   ConfirmModal,
-  Icon
+  Icon,
 } from '@/components';
 
 import { useBuyerOrders, useWindowSize } from '@/hooks';
@@ -43,19 +42,21 @@ function Purchase() {
 
   const page = searchParams.get('page') || 1;
   const filter = searchParams.get('filter') || orderStatus.ON_GOING;
- 
+
   const [search, setSearch] = useState('');
   const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false);
-  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] =
+    useState(false);
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [isReportOrderModalOpen, setIsReportOrderModalOpen] = useState(false);
   const [isQrCodeModalOpen, setIsQrCodeModalOpen] = useState(false);
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
-  const [isConfirmOrderConfirmationToggled, toggleConfirmOrderConfirmation] = useState(false);
+  const [isConfirmOrderConfirmationToggled, toggleConfirmOrderConfirmation] =
+    useState(false);
   const [selectedPurchase, setSelectedPurchase] = useState({});
 
-  const { 
-    isLoading: isPurchaseLoading, 
+  const {
+    isLoading: isPurchaseLoading,
     orders: purchases,
     totalPages,
     isConfirming,
@@ -67,14 +68,16 @@ function Purchase() {
     page,
     pageSize: 5,
   });
-  
+
   const filteredPurchase = purchases.filter((order) => {
     const searchTerm = search.toLowerCase();
-  
+
     return (
       order.seller.sellerName.toLowerCase().includes(searchTerm) ||
-      order.dateTimeCreated.toLowerCase().includes(searchTerm)  ||
-      order.items.some(({ productName }) => productName.toLowerCase().includes(searchTerm))
+      order.dateTimeCreated.toLowerCase().includes(searchTerm) ||
+      order.items.some(({ productName }) =>
+        productName.toLowerCase().includes(searchTerm)
+      )
     );
   });
 
@@ -88,11 +91,17 @@ function Purchase() {
         <div className={styles.Purchase_filters}>
           <Button
             className={cn(styles.Purchase_filters_button, {
-              [styles.Purchase_filters_button___active]: filter === orderStatus.ON_GOING,
+              [styles.Purchase_filters_button___active]:
+                filter === orderStatus.ON_GOING,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=purchase&page=${1}&filter=${orderStatus.ON_GOING}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=purchase&page=${1}&filter=${
+                  orderStatus.ON_GOING
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -106,11 +115,17 @@ function Purchase() {
 
           <Button
             className={cn(styles.Purchase_filters_button, {
-              [styles.Purchase_filters_button___active]: filter === orderStatus.ON_HOLD,
+              [styles.Purchase_filters_button___active]:
+                filter === orderStatus.ON_HOLD,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=purchase&page=${1}&filter=${orderStatus.ON_HOLD}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=purchase&page=${1}&filter=${
+                  orderStatus.ON_HOLD
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -124,11 +139,17 @@ function Purchase() {
 
           <Button
             className={cn(styles.Purchase_filters_button, {
-              [styles.Purchase_filters_button___active]: filter === orderStatus.DELIVERED,
+              [styles.Purchase_filters_button___active]:
+                filter === orderStatus.DELIVERED,
             })}
             type={buttonTypes.TEXT.BLUE}
             onClick={() => {
-              router.push(`/buyer/account?activeTab=purchase&page=${1}&filter=${orderStatus.DELIVERED}`, { scroll: false })
+              router.push(
+                `/buyer/account?activeTab=purchase&page=${1}&filter=${
+                  orderStatus.DELIVERED
+                }`,
+                { scroll: false }
+              );
             }}
           >
             <Text
@@ -143,7 +164,7 @@ function Purchase() {
 
         <ControlledInput
           className={styles.Purchase_search}
-          icon='search'
+          icon="search"
           name="search"
           placeholder="You can search by Seller Name, Product Name or Date Purchased"
           value={search}
@@ -159,9 +180,21 @@ function Purchase() {
               <>
                 <div className={styles.Purchase_orders}>
                   {filteredPurchase.map(
-                    ({ id, seller, dateTimeCreated, items, totalPrice, status, 
-                      deliveryAddress, deliveryFullName, altMobileNumber, deliveryLogs,
-                      phoneNumber, deliveryFeeProofImageUrl, deliveryFee}) =>
+                    ({
+                      id,
+                      seller,
+                      dateTimeCreated,
+                      items,
+                      totalPrice,
+                      status,
+                      deliveryAddress,
+                      deliveryFullName,
+                      altMobileNumber,
+                      deliveryLogs,
+                      phoneNumber,
+                      deliveryFeeProofImageUrl,
+                      deliveryFee,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.Purchase_order}>
@@ -172,8 +205,8 @@ function Purchase() {
                                 icon="storefront"
                                 type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
-                                  setSelectedPurchase({id, seller});
-                                  setIsSellerModalOpen(true)
+                                  setSelectedPurchase({ id, seller });
+                                  setIsSellerModalOpen(true);
                                 }}
                               >
                                 <Text type={textTypes.HEADING.XXXS}>
@@ -182,7 +215,7 @@ function Purchase() {
                               </Button>
 
                               <div className={styles.Purchase_info_date}>
-                                Date Purchased: 
+                                Date Purchased:
                                 <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
@@ -195,211 +228,251 @@ function Purchase() {
                             <div className={styles.Purchase_info_buttons}>
                               <Button
                                 className={styles.Purchase_info_statusButton}
-                                icon={(()=> {
-                                  if (status === orderStatus.AWAITING_CONFIRMATION || status === orderStatus.REPORTED) {
+                                icon={(() => {
+                                  if (
+                                    status ===
+                                      orderStatus.AWAITING_CONFIRMATION ||
+                                    status === orderStatus.REPORTED
+                                  ) {
                                     return 'recommend';
-                                  } if (status === orderStatus.ON_GOING) {
+                                  }
+                                  if (status === orderStatus.ON_GOING) {
                                     return 'local_shipping';
-                                  } 
-                                    return 'done';
-                                  })()
-                                }
+                                  }
+                                  return 'done';
+                                })()}
                                 type={(() => {
-                                    if (status === orderStatus.AWAITING_CONFIRMATION || status === orderStatus.REPORTED) {
-                                      return buttonTypes.TEXT.NEUTRAL
-                                    } if (status === orderStatus.ON_GOING) {
-                                      return buttonTypes.TEXT.BLUE;
-                                    } 
-                                      return buttonTypes.TEXT.GREEN;
-                                  })()
-                                }
+                                  if (
+                                    status ===
+                                      orderStatus.AWAITING_CONFIRMATION ||
+                                    status === orderStatus.REPORTED
+                                  ) {
+                                    return buttonTypes.TEXT.NEUTRAL;
+                                  }
+                                  if (status === orderStatus.ON_GOING) {
+                                    return buttonTypes.TEXT.BLUE;
+                                  }
+                                  return buttonTypes.TEXT.GREEN;
+                                })()}
                                 onClick={() => {
                                   setSelectedPurchase({
-                                    id, 
-                                    deliveryAddress, 
-                                    deliveryFullName, 
-                                    altMobileNumber, 
-                                    phoneNumber, 
+                                    id,
+                                    deliveryAddress,
+                                    deliveryFullName,
+                                    altMobileNumber,
+                                    phoneNumber,
                                     deliveryLogs,
                                     deliveryFee,
                                   });
-                                
+
                                   setIsDeliveryLogsModalOpen(true);
                                 }}
                               >
-                                {(status === orderStatus.AWAITING_CONFIRMATION || status === orderStatus.REPORTED) && 'Awaiting Confirmation'}
+                                {(status ===
+                                  orderStatus.AWAITING_CONFIRMATION ||
+                                  status === orderStatus.REPORTED) &&
+                                  'Awaiting Confirmation'}
                                 {status === orderStatus.ON_GOING && 'On Going'}
-                                {status === orderStatus.DELIVERED && 'Delivered'}
+                                {status === orderStatus.DELIVERED &&
+                                  'Delivered'}
                               </Button>
                             </div>
-                            
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage, qrImageUrl  }) => (
-                            <Card key={productId} className={styles.Purchase_item}>
-                              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-                              <div 
-                                className={cn(styles.Purchase_product, {
-                                  [styles.Purchase_product___delivered]: status === orderStatus.DELIVERED,
-                                })}
-                                onClick={() => {
-                                  if (status === orderStatus.DELIVERED) {
-                                    setSelectedPurchase({ productId, productName });
-                                    setIsAddReviewModalOpen(true);
-                                  }
-                                }}
+                            ({
+                              productId,
+                              productImageUrl,
+                              productName,
+                              price,
+                              quantity,
+                              customizationMessage,
+                              qrImageUrl,
+                            }) => (
+                              <Card
+                                key={productId}
+                                className={styles.Purchase_item}
                               >
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  alt={productName}
-                                  className={styles.Purchase_product_image}
-                                  height={60}
-                                  src={productImageUrl}
-                                  width={60}
-                                />
-                  
-                                <Text 
-                                  className={styles.Purchase_product_text}
-                                  type={textTypes.HEADING.XXS}
+                                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+                                <div
+                                  className={cn(styles.Purchase_product, {
+                                    [styles.Purchase_product___delivered]:
+                                      status === orderStatus.DELIVERED,
+                                  })}
+                                  onClick={() => {
+                                    if (status === orderStatus.DELIVERED) {
+                                      setSelectedPurchase({
+                                        productId,
+                                        productName,
+                                      });
+                                      setIsAddReviewModalOpen(true);
+                                    }
+                                  }}
                                 >
-                                  {productName}
-                                </Text>
-
-                                {status === orderStatus.DELIVERED &&
-                                  <Icon
-                                    className={styles.Purchase_product_icon}
-                                    icon="rate_review"
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt={productName}
+                                    className={styles.Purchase_product_image}
+                                    height={60}
+                                    src={productImageUrl}
+                                    width={60}
                                   />
-                                }
-                    
-                              </div>
 
-                              <div className={styles.Purchase_quantity}>
-                                Quantity:
-                                <Text 
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
-                                >
-                                  {quantity}
-                                </Text>
-                              </div>
-
-                              <div className={styles.Purchase_customizationText}>
-                                Customization:
-                                {customizationMessage  ? (
-                                  <Text 
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXXS}
+                                  <Text
+                                    className={styles.Purchase_product_text}
+                                    type={textTypes.HEADING.XXS}
                                   >
-                                    {customizationMessage } 
+                                    {productName}
                                   </Text>
-                                  ) : (
-                                  <Text 
+
+                                  {status === orderStatus.DELIVERED && (
+                                    <Icon
+                                      className={styles.Purchase_product_icon}
+                                      icon="rate_review"
+                                    />
+                                  )}
+                                </div>
+
+                                <div className={styles.Purchase_quantity}>
+                                  Quantity:
+                                  <Text
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    No Customization
+                                    {quantity}
                                   </Text>
-                                )}
-                              </div>
-                            
-                              <div className={styles.Purchase_price}>
-                                Price:
-                                <Text
-                                  className={styles.Purchase_price_text}
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
-                                >
-                                  ₱{price.toLocaleString()}
-                                </Text>
-                              </div>
+                                </div>
 
-                              <div className={styles.Purchase_qrCode}>
-                              {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                                <img
-                                  alt='Generating QR Code...'
-                                  className={styles.Purchase_qrCode_image}
-                                  height={60}
-                                  src={qrImageUrl}
-                                  width={60}
-                                  onClick={() => {
-                                    setSelectedPurchase({id, qrCode: qrImageUrl, name: productName});
-                                    setIsQrCodeModalOpen(true);
-                                  }}
-                                />
-                              </div>
-                            </Card>
+                                <div
+                                  className={styles.Purchase_customizationText}
+                                >
+                                  Customization:
+                                  {customizationMessage ? (
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXXS}
+                                    >
+                                      {customizationMessage}
+                                    </Text>
+                                  ) : (
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      No Customization
+                                    </Text>
+                                  )}
+                                </div>
+
+                                <div className={styles.Purchase_price}>
+                                  Price:
+                                  <Text
+                                    className={styles.Purchase_price_text}
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    ₱{price.toLocaleString()}
+                                  </Text>
+                                </div>
+
+                                <div className={styles.Purchase_qrCode}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                                  <img
+                                    alt="Generating QR Code..."
+                                    className={styles.Purchase_qrCode_image}
+                                    height={60}
+                                    src={qrImageUrl}
+                                    width={60}
+                                    onClick={() => {
+                                      setSelectedPurchase({
+                                        id,
+                                        qrCode: qrImageUrl,
+                                        name: productName,
+                                      });
+                                      setIsQrCodeModalOpen(true);
+                                    }}
+                                  />
+                                </div>
+                              </Card>
                             )
                           )}
 
                           <div className={styles.Purchase_orderTotal}>
                             <div className={styles.Purchase_orderTotal_fees}>
-                              <Button 
-                                className={cn(styles.Purchase_orderTotal_text, 
-                                  styles.Purchase_orderTotal_text_deliveryFee)}
+                              <Button
+                                className={cn(
+                                  styles.Purchase_orderTotal_text,
+                                  styles.Purchase_orderTotal_text_deliveryFee
+                                )}
                                 type={buttonTypes.TEXT.NEUTRAL}
                                 onClick={() => {
-                                  setSelectedPurchase({id, deliveryFeeProofImageUrl});
+                                  setSelectedPurchase({
+                                    id,
+                                    deliveryFeeProofImageUrl,
+                                  });
                                   setIsDeliveryFeeProofModalOpen(true);
                                 }}
                               >
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
                                 >
                                   Delivery Fee:
                                 </Text>
 
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.BLUE['300']}
                                   type={textTypes.HEADING.XXXS}
                                 >
                                   ₱{deliveryFee.toLocaleString()}
-                                </Text>    
-                              </Button> 
-                     
+                                </Text>
+                              </Button>
+
                               <div className={styles.Purchase_orderTotal_text}>
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXS}
                                 >
                                   Order Total:
                                 </Text>
 
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.GREEN['300']}
                                   type={textTypes.HEADING.XS}
                                 >
                                   ₱{totalPrice.toLocaleString()}
-                                </Text>    
-                              </div> 
+                                </Text>
+                              </div>
                             </div>
 
                             <div className={styles.Purchase_orderTotal_buttons}>
-
-                              {(status === orderStatus.AWAITING_CONFIRMATION || status === orderStatus.REPORTED) && (
+                              {(status === orderStatus.AWAITING_CONFIRMATION ||
+                                status === orderStatus.REPORTED) && (
                                 <>
-                                 <Button
-                                  className={styles.Purchase_orderTotal_buttons_button}
-                                  onClick={() => {
-                                    setSelectedPurchase({ id  });
-                                    toggleConfirmOrderConfirmation(true);
-                                  }}
-                                >
-                                  Confirm Order
-                                </Button>
+                                  <Button
+                                    className={
+                                      styles.Purchase_orderTotal_buttons_button
+                                    }
+                                    onClick={() => {
+                                      setSelectedPurchase({ id });
+                                      toggleConfirmOrderConfirmation(true);
+                                    }}
+                                  >
+                                    Confirm Order
+                                  </Button>
 
-                                <Button
-                                  className={styles.Purchase_orderTotal_buttons_button}
-                                  type={buttonTypes.SECONDARY.BLUE}
-                                  onClick={() => {
-                                    setSelectedPurchase({ id  });
-                                    setIsReportOrderModalOpen(true);
-                                  }}
-                                >
-                                  Report a Problem
-                                </Button>
+                                  <Button
+                                    className={
+                                      styles.Purchase_orderTotal_buttons_button
+                                    }
+                                    type={buttonTypes.SECONDARY.BLUE}
+                                    onClick={() => {
+                                      setSelectedPurchase({ id });
+                                      setIsReportOrderModalOpen(true);
+                                    }}
+                                  >
+                                    Report a Problem
+                                  </Button>
                                 </>
                               )}
                             </div>
@@ -407,17 +480,19 @@ function Purchase() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <>
-                        </>
+                        <></>
                       )
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Purchase_pagination}
                   currentPage={page}
                   pageJump={(value) => {
-                    router.push(`/buyer/account?activeTab=purchase&page=${value}&filter=${filter}`, { scroll: false })
+                    router.push(
+                      `/buyer/account?activeTab=purchase&page=${value}&filter=${filter}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
@@ -432,49 +507,47 @@ function Purchase() {
         )}
       </div>
 
-      {isAddReviewModalOpen &&
+      {isAddReviewModalOpen && (
         <AddReviewModal
           handleClose={() => setIsAddReviewModalOpen(false)}
           isOpen={isAddReviewModalOpen}
           productId={selectedPurchase.productId}
         />
-      }
+      )}
 
-      {isReportOrderModalOpen &&
+      {isReportOrderModalOpen && (
         <ReportOrderModal
           handleClose={() => setIsReportOrderModalOpen(false)}
           isOpen={isReportOrderModalOpen}
           orderId={selectedPurchase.id}
           title="Report a Problem"
         />
-      }
+      )}
 
-      {isQrCodeModalOpen &&
+      {isQrCodeModalOpen && (
         <QrCodeModal
           handleClose={() => setIsQrCodeModalOpen(false)}
           isOpen={isQrCodeModalOpen}
           qrCode={selectedPurchase.qrCode}
           title={`${selectedPurchase.name} QR Code`}
-        />  
-      }
+        />
+      )}
 
-      {isDeliveryLogsModalOpen &&
+      {isDeliveryLogsModalOpen && (
         <DeliveryLogsModal
-          deliveryDetails={
-            (() => ({
-              fullName: selectedPurchase.deliveryFullName,
-              contactNumber: selectedPurchase.phoneNumber,
-              altMobileNumber: selectedPurchase.altMobileNumber,
-              fullAddress: selectedPurchase.deliveryAddress,
-            }))()
-          }
+          deliveryDetails={(() => ({
+            fullName: selectedPurchase.deliveryFullName,
+            contactNumber: selectedPurchase.phoneNumber,
+            altMobileNumber: selectedPurchase.altMobileNumber,
+            fullAddress: selectedPurchase.deliveryAddress,
+          }))()}
           deliveryFee={selectedPurchase.deliveryFee}
           deliveryLogs={selectedPurchase.deliveryLogs}
           handleClose={() => setIsDeliveryLogsModalOpen(false)}
           isOpen={isDeliveryLogsModalOpen}
           title="Purchase Delivery Details"
         />
-      }
+      )}
 
       {isDeliveryFeeProofModalOpen && (
         <DeliveryFeeProofModal

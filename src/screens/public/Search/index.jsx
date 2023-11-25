@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import cn from 'classnames';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { colorClasses, textTypes } from '@/app-globals';
-import {  Filters, NoResults, Pagination, Preloader, Text } from '@/components'
+import { Filters, NoResults, Pagination, Preloader, Text } from '@/components';
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
 import { useProducts } from '@/hooks';
 
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 function Search({ keyword }) {
   const router = useRouter();
@@ -27,27 +27,26 @@ function Search({ keyword }) {
 
   const page = searchParams.get('page') || 1;
 
-  const[currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const {
-    isLoading: isProductsLoading, 
-    products, 
-    totalPages 
-  } = useProducts({ 
+    isLoading: isProductsLoading,
+    products,
+    totalPages,
+  } = useProducts({
     search: keyword,
-    page, 
+    page,
     pageSize: 15,
     isHidden: false,
     rating: ratings,
     minPrice: minimumPriceParam,
-    maxPrice: maximumPriceParam
+    maxPrice: maximumPriceParam,
   });
-
 
   return (
     <div className={styles.Search}>
       <div className={styles.Search_banner}>
-        <Text 
+        <Text
           className={styles.Search_banner_text}
           colorClass={colorClasses.NEUTRAL['0']}
           type={textTypes.HEADING.XXL}
@@ -57,10 +56,10 @@ function Search({ keyword }) {
       </div>
 
       {isProductsLoading ? (
-          <Preloader />
-        ) : (
+        <Preloader />
+      ) : (
         <div className={styles.Search_content}>
-          <Filters 
+          <Filters
             hasPriceRange
             hasRatings
             className={styles.Search_filters}
@@ -69,10 +68,12 @@ function Search({ keyword }) {
             title="All Products"
           />
 
-          <div className={cn(styles.Search_products, {
-            [styles.Search_products_empty]: products.length === 0
-          })}>
-            {products.length > 0 ?
+          <div
+            className={cn(styles.Search_products, {
+              [styles.Search_products_empty]: products.length === 0,
+            })}
+          >
+            {products.length > 0 ? (
               <>
                 <div className={styles.Search_products_list}>
                   {products.map((product) => (
@@ -91,36 +92,37 @@ function Search({ keyword }) {
                   ))}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.Search_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    
+
                     newSearchParams.delete('page');
                     newSearchParams.append('page', value);
-                    router.push(`/keepscape/search?${newSearchParams.toString()}`, { scroll: false })
+                    router.push(
+                      `/keepscape/search?${newSearchParams.toString()}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
               </>
-            :
-              <NoResults 
+            ) : (
+              <NoResults
                 className={styles.Search_noResults}
                 message="No products found"
               />
-            }
+            )}
           </div>
-
         </div>
       )}
-
     </div>
-  )
+  );
 }
 
 Search.propTypes = {
   keyword: PropTypes.string.isRequired,
-}
+};
 
-export default Search
+export default Search;

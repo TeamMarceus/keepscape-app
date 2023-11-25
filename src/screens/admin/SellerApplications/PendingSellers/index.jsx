@@ -11,16 +11,15 @@ import {
   userStatus,
 } from '@/app-globals';
 
-
-import { 
-  IconButton,  
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
+import {
+  IconButton,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
   Pagination,
-  ControlledTextArea
+  ControlledTextArea,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -40,21 +39,27 @@ function PendingSellers() {
   const { windowSize } = useWindowSize();
   const [search, setSearch] = useState('');
   const [isIdModalOpen, setIsIdModalOpen] = useState(false);
-  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
+  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] =
+    useState(false);
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
 
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
 
   const {
-    isLoading: isApplicationsLoading, 
-    sellerApplications, 
+    isLoading: isApplicationsLoading,
+    sellerApplications,
     totalPages,
     isUpdating,
-    updateSellerApplication 
-  } = useSellerApplications({ page: currentPage, pageSize: 10, applicationStatus: 'Pending', search});
+    updateSellerApplication,
+  } = useSellerApplications({
+    page: currentPage,
+    pageSize: 10,
+    applicationStatus: 'Pending',
+    search,
+  });
 
-  const [selectedApplication, setSelectedApplication] = useState({})
+  const [selectedApplication, setSelectedApplication] = useState({});
 
   const filteredApplications = sellerApplications.filter((application) => {
     const searchLowerCase = search.toLowerCase();
@@ -70,9 +75,7 @@ function PendingSellers() {
   return (
     <>
       <div className={styles.PendingSellers}>
-        <Text type={textTypes.HEADING.XS}>
-          Pending Seller Applications
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Pending Seller Applications</Text>
 
         <ControlledInput
           className={styles.PendingSellers_search}
@@ -174,22 +177,35 @@ function PendingSellers() {
                       className={cn(
                         styles.PendingSellers_grid_header,
                         styles.PendingSellers_grid_column,
-                        styles.PendingSellers_grid_header_action,
+                        styles.PendingSellers_grid_header_action
                       )}
                     >
                       Actions
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
                   {filteredApplications.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email, 
-                      phoneNumber, idImageUrl, businessPermitUrl, description  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      firstName,
+                      lastName,
+                      sellerName,
+                      email,
+                      phoneNumber,
+                      idImageUrl,
+                      businessPermitUrl,
+                      description,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.PendingSellers_grid_applicationGrid}>
+                        <Card
+                          key={id}
+                          className={styles.PendingSellers_grid_applicationGrid}
+                        >
                           <div className={styles.PendingSellers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -201,7 +217,7 @@ function PendingSellers() {
                           <div className={styles.PendingSellers_grid_column}>
                             {sellerName}
                           </div>
-                            
+
                           <div className={styles.PendingSellers_grid_column}>
                             {email}
                           </div>
@@ -212,26 +228,33 @@ function PendingSellers() {
 
                           <ControlledTextArea
                             disabled
-                            inputClassName={cn(styles.PendingSellers_grid_column,
-                              styles.PendingSellers_grid_column_description)}
+                            inputClassName={cn(
+                              styles.PendingSellers_grid_column,
+                              styles.PendingSellers_grid_column_description
+                            )}
                             name="description"
                             type={textAreaTypes.SLIM}
                             value={description}
                           />
 
-                           {/* eslint-disable-next-line @next/next/no-img-element, 
+                          {/* eslint-disable-next-line @next/next/no-img-element, 
                            jsx-a11y/click-events-have-key-events, 
                            jsx-a11y/no-noninteractive-element-interactions */}
-                           <img
+                          <img
                             alt="Valid Id"
-                            className={cn(styles.PendingSellers_grid_column, 
-                              styles.PendingSellers_grid_column_id)}
+                            className={cn(
+                              styles.PendingSellers_grid_column,
+                              styles.PendingSellers_grid_column_id
+                            )}
                             height={60}
                             src={idImageUrl}
                             width={60}
                             onClick={() => {
                               setIsIdModalOpen(true);
-                              setSelectedApplication({ sellerName, idImageUrl })
+                              setSelectedApplication({
+                                sellerName,
+                                idImageUrl,
+                              });
                             }}
                           />
 
@@ -240,34 +263,46 @@ function PendingSellers() {
                           jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.PendingSellers_grid_column, 
-                              styles.PendingSellers_grid_column_id)}
+                            className={cn(
+                              styles.PendingSellers_grid_column,
+                              styles.PendingSellers_grid_column_id
+                            )}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
                             onClick={() => {
                               setIsBusinessPermitModalOpen(true);
-                              setSelectedApplication({ sellerName, businessPermitUrl })
+                              setSelectedApplication({
+                                sellerName,
+                                businessPermitUrl,
+                              });
                             }}
                           />
 
                           <div className={styles.PendingSellers_grid_column}>
                             <div className={styles.PendingSellers_grid_buttons}>
                               <IconButton
-                                className={styles.PendingSellers_grid_checkButton}
+                                className={
+                                  styles.PendingSellers_grid_checkButton
+                                }
                                 icon="check_circle"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
-                                  updateSellerApplication(id, userStatus.APPROVED);
+                                  updateSellerApplication(
+                                    id,
+                                    userStatus.APPROVED
+                                  );
                                 }}
                               />
 
                               <IconButton
-                                className={styles.PendingSellers_grid_closeButton}
+                                className={
+                                  styles.PendingSellers_grid_closeButton
+                                }
                                 icon="cancel"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
-                                  setSelectedApplication({ sellerName, id});
+                                  setSelectedApplication({ sellerName, id });
                                   setIsReasonModalOpen(true);
                                 }}
                               />
@@ -281,9 +316,13 @@ function PendingSellers() {
                           className={styles.PendingSellers_grid_applicationGrid}
                         >
                           <summary className={styles.PendingSellers_grid_title}>
-                            <div className={styles.PendingSellers_grid_title_info}>
+                            <div
+                              className={styles.PendingSellers_grid_title_info}
+                            >
                               <Icon
-                                className={styles.PendingSellers_grid_title_icon}
+                                className={
+                                  styles.PendingSellers_grid_title_icon
+                                }
                                 icon="expand_more"
                               />
 
@@ -301,7 +340,9 @@ function PendingSellers() {
                               SellerName:
                             </Text>
 
-                            <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
+                            <Text type={textTypes.HEADING.XXS}>
+                              {sellerName}
+                            </Text>
                           </div>
                         </details>
                       )
@@ -309,13 +350,16 @@ function PendingSellers() {
                   {/* Body of OrderGrid ends here */}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.PendingSellers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/seller-applications/pending?page=${value}`, { scroll: false })
+                    router.push(
+                      `/admin/seller-applications/pending?page=${value}`,
+                      { scroll: false }
+                    );
                   }}
                   totalPages={totalPages}
                 />
@@ -330,25 +374,25 @@ function PendingSellers() {
         )}
       </div>
 
-      {isIdModalOpen &&
+      {isIdModalOpen && (
         <IdModal
           handleClose={() => setIsIdModalOpen(false)}
           image={selectedApplication.idImageUrl}
           isOpen={isIdModalOpen}
           title={`${selectedApplication.sellerName} ID`}
         />
-      }
+      )}
 
-      {isBusinessPermitModalOpen &&
+      {isBusinessPermitModalOpen && (
         <IdModal
           handleClose={() => setIsBusinessPermitModalOpen(false)}
           image={selectedApplication.businessPermitUrl}
           isOpen={isBusinessPermitModalOpen}
           title={`${selectedApplication.sellerName} Business Permit`}
         />
-      }
+      )}
 
-      {isReasonModalOpen &&
+      {isReasonModalOpen && (
         <ReasonModal
           handleClose={() => setIsReasonModalOpen(false)}
           isOpen={isReasonModalOpen}
@@ -358,8 +402,8 @@ function PendingSellers() {
           updateUser={updateSellerApplication}
           userId={selectedApplication.id}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default PendingSellers;

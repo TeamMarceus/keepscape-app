@@ -4,12 +4,18 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 import PropTypes from 'prop-types';
 
-import { buttonKinds, colorNames, modalPositions, modalSizes, spinnerSizes } from '@/app-globals';
+import {
+  buttonKinds,
+  colorNames,
+  modalPositions,
+  modalSizes,
+  spinnerSizes,
+} from '@/app-globals';
 import { Button, ImageDropzone, Modal, Spinner } from '@/components';
 
 import styles from './styles.module.scss';
 
-const validate = (values) => {  
+const validate = (values) => {
   const errors = {};
 
   if (!values.paymentProofImage) {
@@ -48,9 +54,9 @@ function TrasnferModal({
           }
 
           await updateWithdrawal({
-            balanceWithdrawalId, 
-            status: 'Paid', 
-            paymentProofImage: values.paymentProofImage
+            balanceWithdrawalId,
+            status: 'Paid',
+            paymentProofImage: values.paymentProofImage,
           });
 
           if (!isUpdating) {
@@ -62,7 +68,7 @@ function TrasnferModal({
           <form onSubmit={handleSubmit}>
             <ImageDropzone
               error={errors.paymentProofImage}
-              text="Upload Payment Proof" 
+              text="Upload Payment Proof"
               value={values.paymentProofImage}
               onChange={(image) => {
                 setFieldValue('paymentProofImage', image);
@@ -75,9 +81,7 @@ function TrasnferModal({
               kind={buttonKinds.SUBMIT}
               onClick={() => {}}
             >
-              <span
-                className={styles.TrasnferModal_button_buttonText}
-              >
+              <span className={styles.TrasnferModal_button_buttonText}>
                 Transfer
                 {isUpdating && (
                   <Spinner
@@ -102,6 +106,6 @@ TrasnferModal.propTypes = {
   title: PropTypes.string.isRequired,
   updateWithdrawal: PropTypes.func.isRequired,
   isUpdating: PropTypes.bool.isRequired,
-}
+};
 
 export default TrasnferModal;

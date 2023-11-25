@@ -9,28 +9,29 @@ import { iconButtonTypes } from '@/app-globals';
 
 import { useWindowSize } from '@/hooks';
 
-import IconButton from '../Button/IconButton'
+import IconButton from '../Button/IconButton';
 
 import SidebarLink from './Link';
 import navLinks from './constants/navLinks';
 import styles from './styles.module.scss';
 
-function AdminSidebar( {isSidebarToggled, toggleSidebar}) {
+function AdminSidebar({ isSidebarToggled, toggleSidebar }) {
   const pathname = usePathname();
   const { windowSize } = useWindowSize();
 
   return (
     <nav
       className={cn(styles.AdminSidebar, {
-        [styles.AdminSidebar___toggled] : isSidebarToggled && windowSize.width <= 991
+        [styles.AdminSidebar___toggled]:
+          isSidebarToggled && windowSize.width <= 991,
       })}
     >
       <IconButton
         className={styles.AdminSidebar_close}
         icon="keyboard_double_arrow_left"
         type={iconButtonTypes.ICON.LG}
-        onClick={()=>{
-            toggleSidebar(true);
+        onClick={() => {
+          toggleSidebar(true);
         }}
       />
 

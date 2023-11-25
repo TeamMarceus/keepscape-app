@@ -10,12 +10,7 @@ import { toastSuccess } from '@/utils/toasts';
 
 import styles from './styles.module.scss';
 
-function QrCodeModal({
-  isOpen,
-  handleClose,
-  qrCode,
-  title,
-}) {
+function QrCodeModal({ isOpen, handleClose, qrCode, title }) {
   return (
     <Modal
       className={styles.QrCodeModal}
@@ -26,7 +21,7 @@ function QrCodeModal({
       title={title}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
+      <img
         alt="Generating QR Code..."
         className={styles.QrCodeModal_qrCode}
         src={qrCode}
@@ -41,8 +36,8 @@ function QrCodeModal({
       >
         Share QR Code
       </Button>
-  </Modal>
-  )
+    </Modal>
+  );
 }
 
 QrCodeModal.propTypes = {
@@ -50,6 +45,6 @@ QrCodeModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   qrCode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default QrCodeModal;

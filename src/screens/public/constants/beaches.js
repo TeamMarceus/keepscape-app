@@ -19,5 +19,5 @@ export const beaches = [
   {
     name: 'siquijor',
     image: Siquijor,
-  }
+  },
 ];

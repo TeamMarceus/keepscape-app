@@ -4,20 +4,16 @@ import cn from 'classnames';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  buttonTypes,
-  colorClasses,
-  textTypes,
-} from '@/app-globals';
+import { buttonTypes, colorClasses, textTypes } from '@/app-globals';
 
-import { 
+import {
   Button,
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
-  Text, 
-  Pagination
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
+  Text,
+  Pagination,
 } from '@/components';
 
 import { useWindowSize, useAdminWithdrawals } from '@/hooks';
@@ -39,23 +35,23 @@ function PaidPayments() {
 
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isProofModalOpen, setIsProofModalOpen] = useState(false);
 
   const [selectedRecord, setSelectedRecord] = useState({});
-  
+
   const {
     isLoading: isRecordsLoading,
     withdrawals,
-    totalPages, 
+    totalPages,
   } = useAdminWithdrawals({
     page,
     pageSize: 10,
     paymentStatus: 'Paid',
     search,
-  })
+  });
 
   const filteredRecords = withdrawals.filter((record) => {
     const searchLowerCase = search.toLowerCase();
@@ -69,9 +65,7 @@ function PaidPayments() {
   return (
     <>
       <div className={styles.PaidPayments}>
-        <Text type={textTypes.HEADING.XS}>
-          Paid Payments
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Paid Payments</Text>
 
         <ControlledInput
           className={styles.PaidPayments_search}
@@ -96,7 +90,6 @@ function PaidPayments() {
                       styles.PaidPayments_grid_headers
                     )}
                   >
-
                     <div
                       className={cn(
                         styles.PaidPayments_grid_header,
@@ -123,7 +116,7 @@ function PaidPayments() {
                     >
                       Full Name
                     </div>
-                    
+
                     <div
                       className={cn(
                         styles.PaidPayments_grid_header,
@@ -160,7 +153,6 @@ function PaidPayments() {
                       Status
                     </div>
 
-
                     <div
                       className={cn(
                         styles.PaidPayments_grid_header,
@@ -170,16 +162,31 @@ function PaidPayments() {
                     >
                       Paid Proof
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {filteredRecords.map(
-                    ({ id, dateTimeCreated, sellerId, sellerName, fullName, amount, paymentMethod, paymentDetails,
-                      paymentProfileImageUrl, paymentProofImageUrl, remarks, status  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      sellerId,
+                      sellerName,
+                      fullName,
+                      amount,
+                      paymentMethod,
+                      paymentDetails,
+                      paymentProfileImageUrl,
+                      paymentProofImageUrl,
+                      remarks,
+                      status,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.PaidPayments_grid_recordGrid}>
+                        <Card
+                          key={id}
+                          className={styles.PaidPayments_grid_recordGrid}
+                        >
                           <div className={styles.PaidPayments_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -188,7 +195,7 @@ function PaidPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, sellerId, sellerName});
+                              setSelectedRecord({ id, sellerId, sellerName });
                               setIsSellerModalOpen(true);
                             }}
                           >
@@ -207,8 +214,13 @@ function PaidPayments() {
                             className={styles.ReviewOrders_info_text}
                             type={buttonTypes.TEXT.NEUTRAL}
                             onClick={() => {
-                              setSelectedRecord({ id, paymentMethod, paymentDetails, 
-                                paymentProfileImageUrl, paymentProofImageUrl});
+                              setSelectedRecord({
+                                id,
+                                paymentMethod,
+                                paymentDetails,
+                                paymentProfileImageUrl,
+                                paymentProofImageUrl,
+                              });
                               setIsPaymentModalOpen(true);
                             }}
                           >
@@ -222,17 +234,23 @@ function PaidPayments() {
                           <div className={styles.PaidPayments_grid_column}>
                             {status}
                           </div>
-                          
-                           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
-                           <img
+
+                          {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
+                          <img
                             alt="Payment Proof"
-                            className={cn(styles.PaidPayments_grid_column, styles.PaidPayments_grid_column_proof)}
+                            className={cn(
+                              styles.PaidPayments_grid_column,
+                              styles.PaidPayments_grid_column_proof
+                            )}
                             height={60}
                             src={paymentProofImageUrl}
                             width={60}
                             onClick={() => {
                               setIsProofModalOpen(true);
-                              setSelectedRecord({ sellerName, paymentProofImageUrl })
+                              setSelectedRecord({
+                                sellerName,
+                                paymentProofImageUrl,
+                              });
                             }}
                           />
                         </Card>
@@ -243,7 +261,9 @@ function PaidPayments() {
                           className={styles.PaidPayments_grid_recordGrid}
                         >
                           <summary className={styles.PaidPayments_grid_title}>
-                            <div className={styles.PaidPayments_grid_title_info}>
+                            <div
+                              className={styles.PaidPayments_grid_title_info}
+                            >
                               <Icon
                                 className={styles.PaidPayments_grid_title_icon}
                                 icon="expand_more"
@@ -270,12 +290,14 @@ function PaidPayments() {
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.PaidPayments_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/finance/paid?page=${value}`, { scroll: false })
+                    router.push(`/admin/finance/paid?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -288,7 +310,6 @@ function PaidPayments() {
             )}
           </>
         )}
-
       </div>
 
       {isSellerModalOpen && (
@@ -311,15 +332,15 @@ function PaidPayments() {
         />
       )}
 
-      {isProofModalOpen &&
+      {isProofModalOpen && (
         <IdModal
           handleClose={() => setIsProofModalOpen(false)}
           image={selectedRecord.paymentProofImageUrl}
           isOpen={isProofModalOpen}
           title="Proof of Payment"
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default PaidPayments;

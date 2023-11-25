@@ -7,26 +7,26 @@ import Tshirt from '%/images/Categories/tshirt.png';
 export const categories = [
   {
     name: 'Bag',
-    image: Bag
+    image: Bag,
   },
   {
     name: 'Necklace',
-    image: Necklace
+    image: Necklace,
   },
   {
     name: 'Bracelet',
-    image: Bracelet
+    image: Bracelet,
   },
   {
     name: 'Keychain',
-    image: Keychain
+    image: Keychain,
   },
   {
     name: 'Tshirt',
-    image: Tshirt
+    image: Tshirt,
   },
   {
     name: 'Bag',
-    image: Bag
+    image: Bag,
   },
-]
+];

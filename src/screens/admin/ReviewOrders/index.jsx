@@ -12,16 +12,16 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  Button, 
-  Card, 
-  ConfirmModal, 
-  ControlledInput, 
-  IconButton, 
-  NoResults, 
-  Pagination, 
-  Spinner, 
-  Text 
+import {
+  Button,
+  Card,
+  ConfirmModal,
+  ControlledInput,
+  IconButton,
+  NoResults,
+  Pagination,
+  Spinner,
+  Text,
 } from '@/components';
 
 import { useReportedOrders, useWindowSize } from '@/hooks';
@@ -39,7 +39,6 @@ import PreloaderOrders from './Preloader';
 
 import styles from './styles.module.scss';
 
-
 function ReviewOrders() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,39 +47,40 @@ function ReviewOrders() {
   const page = searchParams.get('page') || 1;
 
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] = useState(false);
+  const [isDeliveryFeeProofModalOpen, setIsDeliveryFeeProofModalOpen] =
+    useState(false);
   const [isDeliveryLogsModalOpen, setIsDeliveryLogsModalOpen] = useState(false);
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
   const [isOrderReportModalOpen, setIsOrderReportModalOpen] = useState(false);
-  const [isRefundConfirmationToggled, toggleRefundConfirmation] = useState(false);
+  const [isRefundConfirmationToggled, toggleRefundConfirmation] =
+    useState(false);
 
   const [selectedOrder, setSelectedOrder] = useState({});
 
   const {
-    isLoading: isReportedOrdersLoading, 
+    isLoading: isReportedOrdersLoading,
     isResolvingLoading,
     isRefundingLoading,
     reportedOrders,
     resolveOrderReports,
     refundOrder,
-    totalPages, 
+    totalPages,
   } = useReportedOrders({ page, pageSize: 10, search });
 
-  const filteredOrders = reportedOrders.filter((order) => (
-    order.seller.sellerName.toLowerCase().includes(search.toLowerCase()) ||
-    order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
-    order.buyer.lastName.toLowerCase().includes(search.toLowerCase())
-  ));
+  const filteredOrders = reportedOrders.filter(
+    (order) =>
+      order.seller.sellerName.toLowerCase().includes(search.toLowerCase()) ||
+      order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      order.buyer.lastName.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
       <div className={styles.ReviewOrders}>
-        <Text type={textTypes.HEADING.XS}>
-          Review Orders
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Review Orders</Text>
 
         <ControlledInput
           className={styles.ReviewOrders_search}
@@ -100,8 +100,19 @@ function ReviewOrders() {
               <>
                 <div className={styles.ReviewOrders_orders}>
                   {filteredOrders.map(
-                    ({ id, seller, buyer, dateTimeCreated, report, items, totalPrice, status,
-                      deliveryLogs, deliveryFeeProofImageUrl, deliveryFee}) =>
+                    ({
+                      id,
+                      seller,
+                      buyer,
+                      dateTimeCreated,
+                      report,
+                      items,
+                      totalPrice,
+                      status,
+                      deliveryLogs,
+                      deliveryFeeProofImageUrl,
+                      deliveryFee,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.ReviewOrders_order}>
@@ -113,7 +124,7 @@ function ReviewOrders() {
                                   icon="storefront"
                                   type={buttonTypes.TEXT.BLUE}
                                   onClick={() => {
-                                    setSelectedOrder({id, seller});
+                                    setSelectedOrder({ id, seller });
                                     setIsSellerModalOpen(true);
                                   }}
                                 >
@@ -127,8 +138,8 @@ function ReviewOrders() {
                                   icon="person"
                                   type={buttonTypes.TEXT.BLUE}
                                   onClick={() => {
-                                    setSelectedOrder({id, buyer});
-                                    setIsBuyerModalOpen(true)
+                                    setSelectedOrder({ id, buyer });
+                                    setIsBuyerModalOpen(true);
                                   }}
                                 >
                                   <Text type={textTypes.HEADING.XXXS}>
@@ -137,8 +148,7 @@ function ReviewOrders() {
                                 </Button>
 
                                 <div className={styles.ReviewOrders_info_date}>
-                                  Date Ordered: 
-
+                                  Date Ordered:
                                   <Text
                                     colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXXS}
@@ -150,11 +160,19 @@ function ReviewOrders() {
 
                               <div className={styles.ReviewOrders_info_buttons}>
                                 <Button
-                                  className={styles.ReviewOrders_info_statusButton}
-                                  icon='pending'
+                                  className={
+                                    styles.ReviewOrders_info_statusButton
+                                  }
+                                  icon="pending"
                                   type={buttonTypes.TEXT.BLUE}
                                   onClick={() => {
-                                    setSelectedOrder({id, buyer, deliveryLogs, deliveryFeeProofImageUrl, deliveryFee});
+                                    setSelectedOrder({
+                                      id,
+                                      buyer,
+                                      deliveryLogs,
+                                      deliveryFeeProofImageUrl,
+                                      deliveryFee,
+                                    });
                                     setIsDeliveryLogsModalOpen(true);
                                   }}
                                 >
@@ -162,155 +180,196 @@ function ReviewOrders() {
                                 </Button>
 
                                 <IconButton
-                                  className={styles.ReviewOrders_info_reportsButton}
+                                  className={
+                                    styles.ReviewOrders_info_reportsButton
+                                  }
                                   icon="flag"
                                   type={iconButtonTypes.OUTLINE.XS}
                                   onClick={() => {
-                                    setSelectedOrder({id, buyer, report});
+                                    setSelectedOrder({ id, buyer, report });
                                     setIsOrderReportModalOpen(true);
                                   }}
                                 />
                               </div>
-                              
                             </div>
 
                             {items.map(
-                              ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                            
-                              <div key={productId} className={styles.ReviewOrders_item}>
-                                <div className={styles.ReviewOrders_product}>
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
-                                    alt="Product"
-                                    className={styles.ReviewOrders_product_image}
-                                    height={60}
-                                    src={productImageUrl}
-                                    width={60}
-                                  />
+                              ({
+                                productId,
+                                productImageUrl,
+                                productName,
+                                price,
+                                quantity,
+                                customizationMessage,
+                              }) => (
+                                <div
+                                  key={productId}
+                                  className={styles.ReviewOrders_item}
+                                >
+                                  <div className={styles.ReviewOrders_product}>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                      alt="Product"
+                                      className={
+                                        styles.ReviewOrders_product_image
+                                      }
+                                      height={60}
+                                      src={productImageUrl}
+                                      width={60}
+                                    />
 
-                                  <div>
-                                    <Text 
-                                      className={styles.ReviewOrders_product_text}
+                                    <div>
+                                      <Text
+                                        className={
+                                          styles.ReviewOrders_product_text
+                                        }
+                                        type={textTypes.HEADING.XXS}
+                                      >
+                                        {productName}
+                                      </Text>
+                                    </div>
+                                  </div>
+
+                                  <div className={styles.ReviewOrders_quantity}>
+                                    Quantity:
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
                                       type={textTypes.HEADING.XXS}
                                     >
-                                      {productName}
+                                      {quantity}
+                                    </Text>
+                                  </div>
+
+                                  <div
+                                    className={
+                                      styles.ReviewOrders_customizationText
+                                    }
+                                  >
+                                    Customization:
+                                    {customizationMessage ? (
+                                      <Text
+                                        colorClass={colorClasses.NEUTRAL['400']}
+                                        type={textTypes.HEADING.XXXS}
+                                      >
+                                        {customizationMessage}
+                                      </Text>
+                                    ) : (
+                                      <Text
+                                        colorClass={colorClasses.NEUTRAL['400']}
+                                        type={textTypes.HEADING.XXS}
+                                      >
+                                        No Customization
+                                      </Text>
+                                    )}
+                                  </div>
+
+                                  <div className={styles.ReviewOrders_price}>
+                                    Price:
+                                    <Text
+                                      className={styles.ReviewOrders_price_text}
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      ₱{price.toLocaleString()}
                                     </Text>
                                   </div>
                                 </div>
-
-                                <div className={styles.ReviewOrders_quantity}>
-                                  Quantity:
-                                  <Text 
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    {quantity}
-                                  </Text>
-                                </div>
-
-                                <div className={styles.ReviewOrders_customizationText}>
-                                  Customization:
-                                  {customizationMessage  ? (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXXS}
-                                    >
-                                      {customizationMessage } 
-                                    </Text>
-                                    ) : (
-                                    <Text 
-                                      colorClass={colorClasses.NEUTRAL['400']}
-                                      type={textTypes.HEADING.XXS}
-                                    >
-                                      No Customization
-                                    </Text>
-                                  )}
-                                </div>
-                              
-
-                                <div className={styles.ReviewOrders_price}>
-                                  Price:
-                                  <Text
-                                    className={styles.ReviewOrders_price_text}
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    ₱{price.toLocaleString()}
-                                  </Text>
-                                </div>
-                              </div>
                               )
                             )}
                           </div>
 
                           <div className={styles.ReviewOrders_orderTotal}>
-                            <div className={styles.ReviewOrders_orderTotal_fees}>
-                              <Button 
-                                className={cn(styles.ReviewOrders_orderTotal_text, 
-                                  styles.ReviewOrders_orderTotal_text_deliveryFee)}
+                            <div
+                              className={styles.ReviewOrders_orderTotal_fees}
+                            >
+                              <Button
+                                className={cn(
+                                  styles.ReviewOrders_orderTotal_text,
+                                  styles.ReviewOrders_orderTotal_text_deliveryFee
+                                )}
                                 type={buttonTypes.TEXT.NEUTRAL}
                                 onClick={() => {
-                                  setSelectedOrder({id, deliveryFeeProofImageUrl});
+                                  setSelectedOrder({
+                                    id,
+                                    deliveryFeeProofImageUrl,
+                                  });
                                   setIsDeliveryFeeProofModalOpen(true);
                                 }}
                               >
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
                                 >
                                   Delivery Fee:
                                 </Text>
 
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.BLUE['300']}
                                   type={textTypes.HEADING.XXXS}
                                 >
                                   ₱{deliveryFee.toLocaleString()}
-                                </Text>    
-                              </Button> 
-                              
-                              <div className={styles.ReviewOrders_orderTotal_text}>
-                                <Text 
+                                </Text>
+                              </Button>
+
+                              <div
+                                className={styles.ReviewOrders_orderTotal_text}
+                              >
+                                <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXS}
                                 >
                                   Order Total:
                                 </Text>
 
-                                <Text 
+                                <Text
                                   colorClass={colorClasses.GREEN['300']}
                                   type={textTypes.HEADING.XS}
                                 >
                                   ₱{totalPrice.toLocaleString()}
-                                </Text>    
-                              </div> 
+                                </Text>
+                              </div>
                             </div>
 
-                            <div className={styles.ReviewOrders_orderTotal_buttons}> 
+                            <div
+                              className={styles.ReviewOrders_orderTotal_buttons}
+                            >
                               <Button
-                                  className={styles.ReviewOrders_orderTotal_buttons_button}
-                                  disabled={isResolvingLoading && id === selectedOrder.id}
-                                  onClick={ async () => {
-                                    setSelectedOrder({id});
-                                    await resolveOrderReports(id);
-                                  }}
-                                >
-                                {(isResolvingLoading && id === selectedOrder.id) ? 'Resolving' : 'Resolve'}
-                                {(isResolvingLoading && id === selectedOrder.id) && (
-                                  <Spinner
-                                    className={styles.ReviewOrders_orderTotal_buttons_button_spinner}
-                                    colorName={colorNames.WHITE}
-                                    size={spinnerSizes.XS}
-                                  />
-                                )}
+                                className={
+                                  styles.ReviewOrders_orderTotal_buttons_button
+                                }
+                                disabled={
+                                  isResolvingLoading && id === selectedOrder.id
+                                }
+                                onClick={async () => {
+                                  setSelectedOrder({ id });
+                                  await resolveOrderReports(id);
+                                }}
+                              >
+                                {isResolvingLoading && id === selectedOrder.id
+                                  ? 'Resolving'
+                                  : 'Resolve'}
+                                {isResolvingLoading &&
+                                  id === selectedOrder.id && (
+                                    <Spinner
+                                      className={
+                                        styles.ReviewOrders_orderTotal_buttons_button_spinner
+                                      }
+                                      colorName={colorNames.WHITE}
+                                      size={spinnerSizes.XS}
+                                    />
+                                  )}
                               </Button>
 
                               <Button
-                                className={styles.ReviewOrders_orderTotal_buttons_button}
-                                disabled={isRefundingLoading && id === selectedOrder.id}
+                                className={
+                                  styles.ReviewOrders_orderTotal_buttons_button
+                                }
+                                disabled={
+                                  isRefundingLoading && id === selectedOrder.id
+                                }
                                 type={buttonTypes.SECONDARY.BLUE}
                                 onClick={() => {
-                                  setSelectedOrder({id});
+                                  setSelectedOrder({ id });
                                   toggleRefundConfirmation(true);
                                 }}
                               >
@@ -321,18 +380,19 @@ function ReviewOrders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <>
-                        </>
+                        <></>
                       )
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.ReviewOrders_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/admin/review-orders?page=${value}`, { scroll: false })
+                    router.push(`/admin/review-orders?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -356,16 +416,14 @@ function ReviewOrders() {
         />
       )}
 
-      {isDeliveryLogsModalOpen &&
+      {isDeliveryLogsModalOpen && (
         <DeliveryLogsModal
-          deliveryDetails={
-            (() => ({
-              fullName: selectedOrder.buyer.deliveryFullName,
-              contactNumber: selectedOrder.buyer.phoneNumber,
-              altMobileNumber: selectedOrder.buyer.altMobileNumber,
-              fullAddress: selectedOrder.buyer.deliveryAddress,
-            }))()
-          }
+          deliveryDetails={(() => ({
+            fullName: selectedOrder.buyer.deliveryFullName,
+            contactNumber: selectedOrder.buyer.phoneNumber,
+            altMobileNumber: selectedOrder.buyer.altMobileNumber,
+            fullAddress: selectedOrder.buyer.deliveryAddress,
+          }))()}
           deliveryFee={selectedOrder.deliveryFee}
           deliveryFeeProofImageUrl={selectedOrder.deliveryFeeProofImageUrl}
           deliveryLogs={selectedOrder.deliveryLogs}
@@ -373,7 +431,7 @@ function ReviewOrders() {
           isOpen={isDeliveryLogsModalOpen}
           title="Order Delivery Details"
         />
-      }
+      )}
 
       {isSellerModalOpen && (
         <SellerModal
@@ -394,7 +452,7 @@ function ReviewOrders() {
         />
       )}
 
-      {isOrderReportModalOpen &&
+      {isOrderReportModalOpen && (
         <OrderReportModal
           buyer={selectedOrder.buyer}
           handleClose={() => setIsOrderReportModalOpen(false)}
@@ -402,7 +460,7 @@ function ReviewOrders() {
           report={selectedOrder.report}
           title="Order Report Details"
         />
-      }
+      )}
 
       <ConfirmModal
         actions={[
@@ -411,7 +469,6 @@ function ReviewOrders() {
             text: 'Confirm',
             type: buttonTypes.PRIMARY.BLUE,
             onClick: async () => {
-      
               await refundOrder(selectedOrder.id);
               toggleRefundConfirmation(false);
             },
@@ -432,6 +489,6 @@ function ReviewOrders() {
         title="Refund?"
       />
     </>
-)
+  );
 }
 export default ReviewOrders;

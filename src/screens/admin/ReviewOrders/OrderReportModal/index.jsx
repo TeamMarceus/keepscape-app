@@ -2,19 +2,17 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { colorClasses, modalPositions, modalSizes, textTypes } from '@/app-globals';
+import {
+  colorClasses,
+  modalPositions,
+  modalSizes,
+  textTypes,
+} from '@/app-globals';
 import { Card, Icon, Modal, Text } from '@/components';
 
 import styles from './styles.module.scss';
 
-function OrderReportModal({
-  isOpen,
-  handleClose,
-  buyer,
-  report,
-  title,
-}) {
-
+function OrderReportModal({ isOpen, handleClose, buyer, report, title }) {
   return (
     <Modal
       className={styles.OrderReportModal}
@@ -29,10 +27,10 @@ function OrderReportModal({
           <div className={styles.OrderReportModal_report_info}>
             <Icon
               className={styles.OrderReportModal_report_icon}
-              icon='account_circle'
+              icon="account_circle"
             />
 
-            <Text 
+            <Text
               className={styles.OrderReportModal_report_name}
               type={textTypes.HEADING.XXS}
             >
@@ -50,7 +48,7 @@ function OrderReportModal({
         </Text>
       </Card>
     </Modal>
-  )
+  );
 }
 
 OrderReportModal.propTypes = {
@@ -67,6 +65,6 @@ OrderReportModal.propTypes = {
     reason: PropTypes.string.isRequired,
   }).isRequired,
   title: PropTypes.string.isRequired,
-}
+};
 
 export default OrderReportModal;

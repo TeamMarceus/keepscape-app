@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import { isEmpty } from 'lodash-es';
 
 import {
-
   buttonKinds,
   colorClasses,
   colorNames,
@@ -14,8 +13,7 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-
+import {
   Button,
   ControlledInput,
   ControlledTextArea,
@@ -25,9 +23,8 @@ import {
   Checkbox,
   Grid,
   ControlledSelect,
-  ScreenLoader
+  ScreenLoader,
 } from '@/components';
-
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 
@@ -48,7 +45,13 @@ const validate = (values) => {
     errors.description = 'This field is required.';
   }
 
-  if (!values.image1 && !values.image2 && !values.image3 && !values.image4 && !values.image5) {
+  if (
+    !values.image1 &&
+    !values.image2 &&
+    !values.image3 &&
+    !values.image4 &&
+    !values.image5
+  ) {
     errors.image1 = 'Atleast 1 image is required.';
   }
 
@@ -76,21 +79,20 @@ const validate = (values) => {
 };
 
 function AddProduct() {
+  const { isLoading: isProductCategoriesLoading, productCategories } =
+    useProductCategories();
+  const { isLoading: isProductPlacesLoading, productPlaces } =
+    useProductPlaces();
 
-  const {isLoading: isProductCategoriesLoading, productCategories} = useProductCategories();
-  const {isLoading: isProductPlacesLoading, productPlaces} = useProductPlaces();
-
-  const {isAdding: isAddingProduct, addProduct } = useAddProduct();
+  const { isAdding: isAddingProduct, addProduct } = useAddProduct();
 
   if (isProductCategoriesLoading || isProductPlacesLoading) {
-    return <ScreenLoader/>;
+    return <ScreenLoader />;
   }
 
   return (
     <div className={styles.AddProduct}>
-      <Text type={textTypes.HEADING.XS}>
-        Add New Product
-      </Text>
+      <Text type={textTypes.HEADING.XS}>Add New Product</Text>
 
       <div className={styles.AddProduct_content}>
         <Formik
@@ -113,7 +115,9 @@ function AddProduct() {
               name: values.name,
               description: values.description,
               placeId: values.place.value,
-              categoryIds: !isEmpty(values.categories) && values.categories.map((category) => category.value),
+              categoryIds:
+                !isEmpty(values.categories) &&
+                values.categories.map((category) => category.value),
               quantity: values.quantity,
               isCustomizable: values.isCustomizable,
               sellerPrice: values.price,
@@ -133,31 +137,32 @@ function AddProduct() {
               values.image4,
               values.image5,
             ];
-            
+
             const filteredImages = {};
-            
+
             let index = 1; // Initialize the index for property names
 
             for (const image of images) {
               const propertyName = `image${index}`;
-              
+
               if (!isEmpty(image)) {
                 filteredImages[propertyName] = image;
                 index++; // Increment the index only when a non-empty image is found
               }
             }
-            
+
             const productTobeAdded = {
               ...currentFormValues,
               ...filteredImages,
             };
 
-            const { responseCode: addProductResponseCode } = await addProduct(productTobeAdded);
+            const { responseCode: addProductResponseCode } =
+              await addProduct(productTobeAdded);
 
             const addProductCallbacks = {
               created: () => {
                 toastSuccess('Product successfully added.');
-              
+
                 // Reset form values
                 setFieldValue('name', '');
                 setFieldValue('description', '');
@@ -223,10 +228,10 @@ function AddProduct() {
                 className={styles.AddProduct_content_withMargin}
                 error={errors.place}
                 name="type"
-                options={ productPlaces.map((place) => ({
-                    label: place.name,
-                    value: place.id,
-                  }))}
+                options={productPlaces.map((place) => ({
+                  label: place.name,
+                  value: place.id,
+                }))}
                 placeholder="Choose a place*"
                 value={values.place}
                 onChange={(val) => setFieldValue('place', val)}
@@ -238,15 +243,15 @@ function AddProduct() {
                 error={errors.categories}
                 name="type"
                 options={productCategories.map((category) => ({
-                    label: category.name,
-                    value: category.id,
-                  }))}
+                  label: category.name,
+                  value: category.id,
+                }))}
                 placeholder="Choose categories*"
                 value={values.categories}
                 onChange={(val) => setFieldValue('categories', val)}
               />
 
-              <Text 
+              <Text
                 className={styles.AddProduct_content_imageText}
                 type={textTypes.HEADING.XXXS}
               >
@@ -256,7 +261,7 @@ function AddProduct() {
               <Grid type={gridTypes.FIVE}>
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 1" 
+                  text="Product Image 1"
                   value={values.image1}
                   onChange={(image) => {
                     setFieldValue('image1', image);
@@ -265,7 +270,7 @@ function AddProduct() {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 2" 
+                  text="Product Image 2"
                   value={values.image2}
                   onChange={(image) => {
                     setFieldValue('image2', image);
@@ -274,7 +279,7 @@ function AddProduct() {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 3" 
+                  text="Product Image 3"
                   value={values.image3}
                   onChange={(image) => {
                     setFieldValue('image3', image);
@@ -283,7 +288,7 @@ function AddProduct() {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 4" 
+                  text="Product Image 4"
                   value={values.image4}
                   onChange={(image) => {
                     setFieldValue('image4', image);
@@ -292,14 +297,14 @@ function AddProduct() {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 5" 
+                  text="Product Image 5"
                   value={values.image5}
                   onChange={(image) => {
                     setFieldValue('image5', image);
                   }}
-                />  
+                />
               </Grid>
-              
+
               <Grid className={styles.AddProduct_content_bottomGrid}>
                 <div className={styles.AddProduct_content_bottomGrid_left}>
                   <ControlledInput
@@ -331,22 +336,26 @@ function AddProduct() {
                     value={values.price}
                     onChange={(e) => setFieldValue('price', e.target.value)}
                   />
-                
+
                   <div className={styles.AddProduct_content_price_commission}>
-                    <Text 
+                    <Text
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XS}
                     >
                       +
                     </Text>
                     <Text type={textTypes.HEADING.XXXS}>
-                    <span className={styles.AddProduct_content_price_commission_span}>{`₱${(values.price * 0.05).toFixed(2)}`}</span> (5% service fee)
+                      <span
+                        className={
+                          styles.AddProduct_content_price_commission_span
+                        }
+                      >{`₱${(values.price * 0.05).toFixed(2)}`}</span>{' '}
+                      (5% service fee)
                     </Text>
                   </div>
 
                   <div className={styles.AddProduct_content_price_total}>
                     Customer's Price:
-
                     <Text
                       colorClass={colorClasses.GREEN['400']}
                       type={textTypes.HEADING.SM}
@@ -373,19 +382,23 @@ function AddProduct() {
                       onClick={() => {}}
                     >
                       <span
-                        className={styles.AddProduct_content_buttonGroup_buttonText}
+                        className={
+                          styles.AddProduct_content_buttonGroup_buttonText
+                        }
                       >
                         Add Product
                         {isAddingProduct && (
                           <Spinner
-                            className={styles.AddProduct_content_buttonGroup_spinner}
+                            className={
+                              styles.AddProduct_content_buttonGroup_spinner
+                            }
                             colorName={colorNames.WHITE}
                             size={spinnerSizes.XS}
                           />
                         )}
                       </span>
                     </Button>
-                   </div>
+                  </div>
                 </div>
               </Grid>
             </form>
@@ -393,6 +406,6 @@ function AddProduct() {
         </Formik>
       </div>
     </div>
-  )
+  );
 }
 export default AddProduct;

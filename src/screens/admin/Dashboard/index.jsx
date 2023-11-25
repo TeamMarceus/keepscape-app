@@ -11,10 +11,7 @@ import {
 
 import { Bar } from 'react-chartjs-2';
 
-import {
-  colorClasses,
-  textTypes,
-} from '@/app-globals';
+import { colorClasses, textTypes } from '@/app-globals';
 
 import { Card, Icon, ScreenLoader, Text } from '@/components';
 
@@ -31,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
- const options = {
+const options = {
   responsive: true,
   plugins: {
     legend: {
@@ -44,22 +41,36 @@ ChartJS.register(
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const labels = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 function Dashboard() {
+  const { isLoading: isAnnalyticsLoading, analytics } = useAnalytics('admin');
 
-  const {isLoading: isAnnalyticsLoading, analytics} = useAnalytics('admin');
-  
   if (isAnnalyticsLoading) {
-    return (<ScreenLoader />)
-  }  
+    return <ScreenLoader />;
+  }
 
   const data = {
     labels,
     datasets: [
       {
         label: 'Products',
-        data: labels.map((month) => analytics.monthlyStatistics[month].products),
+        data: labels.map(
+          (month) => analytics.monthlyStatistics[month].products
+        ),
         backgroundColor: '#48CFAD',
       },
       {
@@ -74,91 +85,90 @@ function Dashboard() {
       },
     ],
   };
-  
-  return <div className={styles.Dashboard}>
-    <Text type={textTypes.HEADING.XS}>
-      Dashboard
-    </Text>
 
-    <Card className={styles.Dashboard_statistics}>
-      <div className={styles.Dashboard_statistics_details}>
-        <Text
-          colorClass={colorClasses.NEUTRAL['400']} 
-          type={textTypes.HEADING.MD}
-        >
-          {analytics.sellerApplications}
-        </Text>
+  return (
+    <div className={styles.Dashboard}>
+      <Text type={textTypes.HEADING.XS}>Dashboard</Text>
 
-        <div className={styles.Dashboard_statistics_text}>
-          <Icon
-            className={styles.Dashboard_statistics_assignmentIcon}
-            icon="assignment"
-          />
-
-          <Text 
-            colorClass={colorClasses.NEUTRAL['400']}  
-            type={textTypes.HEADING.XXXS}
+      <Card className={styles.Dashboard_statistics}>
+        <div className={styles.Dashboard_statistics_details}>
+          <Text
+            colorClass={colorClasses.NEUTRAL['400']}
+            type={textTypes.HEADING.MD}
           >
-            Seller Applications
+            {analytics.sellerApplications}
           </Text>
+
+          <div className={styles.Dashboard_statistics_text}>
+            <Icon
+              className={styles.Dashboard_statistics_assignmentIcon}
+              icon="assignment"
+            />
+
+            <Text
+              colorClass={colorClasses.NEUTRAL['400']}
+              type={textTypes.HEADING.XXXS}
+            >
+              Seller Applications
+            </Text>
+          </div>
         </div>
-      </div>
-  
-      <div className={styles.Dashboard_statistics_details}>
-        <Text
-          colorClass={colorClasses.BLUE['400']} 
-          type={textTypes.HEADING.MD}
-        >
-          {analytics.ongoingOrders}
-        </Text>
 
-        <div className={styles.Dashboard_statistics_text}>
-          <Icon
-            className={styles.Dashboard_statistics_ongoingIcon}
-            icon="local_shipping"
-          />
-
-          <Text 
+        <div className={styles.Dashboard_statistics_details}>
+          <Text
             colorClass={colorClasses.BLUE['400']}
-            type={textTypes.HEADING.XXXS}
+            type={textTypes.HEADING.MD}
           >
-            On-going Orders
+            {analytics.ongoingOrders}
           </Text>
+
+          <div className={styles.Dashboard_statistics_text}>
+            <Icon
+              className={styles.Dashboard_statistics_ongoingIcon}
+              icon="local_shipping"
+            />
+
+            <Text
+              colorClass={colorClasses.BLUE['400']}
+              type={textTypes.HEADING.XXXS}
+            >
+              On-going Orders
+            </Text>
+          </div>
         </div>
-      </div>
-      
-      <div className={styles.Dashboard_statistics_details}>
-        <Text
-          colorClass={colorClasses.GREEN['400']} 
-          type={textTypes.HEADING.MD}
-        >
-          {analytics.products}
-        </Text>
 
-        <div className={styles.Dashboard_statistics_text}>
-          <Icon
-            className={styles.Dashboard_statistics_shoppingIcon}
-            icon="shopping_bag"
-          />
-
-          <Text 
+        <div className={styles.Dashboard_statistics_details}>
+          <Text
             colorClass={colorClasses.GREEN['400']}
-            type={textTypes.HEADING.XXXS}
+            type={textTypes.HEADING.MD}
           >
-            New Products
-        </Text>
+            {analytics.products}
+          </Text>
+
+          <div className={styles.Dashboard_statistics_text}>
+            <Icon
+              className={styles.Dashboard_statistics_shoppingIcon}
+              icon="shopping_bag"
+            />
+
+            <Text
+              colorClass={colorClasses.GREEN['400']}
+              type={textTypes.HEADING.XXXS}
+            >
+              New Products
+            </Text>
+          </div>
         </div>
-      </div>
+      </Card>
 
-    </Card>
+      <Text className={styles.Dashboard_withMargin} type={textTypes.HEADING.XS}>
+        Statistics
+      </Text>
 
-    <Text className={styles.Dashboard_withMargin} type={textTypes.HEADING.XS}>
-      Statistics
-    </Text>
-
-    <Card className={styles.Dashboard_graph}>
-      <Bar data={data} options={options} />
-    </Card>
-  </div>
+      <Card className={styles.Dashboard_graph}>
+        <Bar data={data} options={options} />
+      </Card>
+    </div>
+  );
 }
 export default Dashboard;

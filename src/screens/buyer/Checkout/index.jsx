@@ -5,16 +5,9 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
-import ShoppingCart from '%/images/Misc/shopping-cart.png'
+import ShoppingCart from '%/images/Misc/shopping-cart.png';
 import { colorClasses, textTypes } from '@/app-globals';
-import { 
-  Button, 
-  ButtonLink, 
-  Card, 
-  Icon, 
-  NoResults, 
-  Text 
-} from '@/components';
+import { Button, ButtonLink, Card, Icon, NoResults, Text } from '@/components';
 
 import { getCheckoutCart, getUser } from '@/ducks';
 
@@ -32,78 +25,74 @@ function Checkout() {
   const user = useSelector((store) => getUser(store));
 
   const {
-    isLoading: isPlacingOrder, 
+    isLoading: isPlacingOrder,
     checkoutOrder,
-    checkoutProduct, 
+    checkoutProduct,
   } = useCheckout();
 
-  const totalPrice = userCart.reduce((acc, curr) => 
-    acc + curr.cartItems.reduce((accs, currs) => 
-      accs + (currs.price * currs.quantity), 0), 0);
+  const totalPrice = userCart.reduce(
+    (acc, curr) =>
+      acc +
+      curr.cartItems.reduce(
+        (accs, currs) => accs + currs.price * currs.quantity,
+        0
+      ),
+    0
+  );
 
   return (
     <div className={styles.Checkout}>
-     <div className={styles.Checkout_banner}>
-      <div className={styles.Checkout_banner_text}>
-         <Text
-          colorClass={colorClasses.BLUE['400']}
-          type={textTypes.HEADING.MD}
-        > 
-         Artisan Checkout 
-        </Text>
+      <div className={styles.Checkout_banner}>
+        <div className={styles.Checkout_banner_text}>
+          <Text
+            colorClass={colorClasses.BLUE['400']}
+            type={textTypes.HEADING.MD}
+          >
+            Artisan Checkout
+          </Text>
 
-        <Image
-          alt="Shopping Checkout"
-          height={60}
-          src={ShoppingCart}
-          width={60}
-        />
+          <Image
+            alt="Shopping Checkout"
+            height={60}
+            src={ShoppingCart}
+            width={60}
+          />
+        </div>
       </div>
-     </div>
 
-     <Card className={styles.Checkout_delivery}>
-      <div className={styles.Checkout_delivery_title}>
-        <Icon 
-          className={styles.Checkout_delivery_title_icon}
-          icon="location_on"
-        />
-        
-        <Text
-          colorClass={colorClasses.BLUE['400']}
-          type={textTypes.HEADING.XS}
-        >
-          Delivery Address
-        </Text>
-      </div>
-      
-      <div className={styles.Checkout_delivery_details}>
-        <Text
-          type={textTypes.HEADING.XXS}
-        >
-          {user?.deliveryFullName} 
-        </Text>
-        <Text
-          type={textTypes.BODY.LG}
-        >
-          {user?.phoneNumber} 
-          {user?.phoneNumber && user?.altMobileNumber && ' | ' } 
-          {user?.altMobileNumber}
-        </Text>
+      <Card className={styles.Checkout_delivery}>
+        <div className={styles.Checkout_delivery_title}>
+          <Icon
+            className={styles.Checkout_delivery_title_icon}
+            icon="location_on"
+          />
 
-        <Text
-          type={textTypes.BODY.LG}
-        >
-          {user?.deliveryAddress}
-        </Text>
+          <Text
+            colorClass={colorClasses.BLUE['400']}
+            type={textTypes.HEADING.XS}
+          >
+            Delivery Address
+          </Text>
+        </div>
 
-        <ButtonLink
-          className={styles.Checkout_delivery_details_button}
-          to="/buyer/delivery"
-        > 
-          Change Address
-        </ButtonLink>
-      </div>
-     </Card>
+        <div className={styles.Checkout_delivery_details}>
+          <Text type={textTypes.HEADING.XXS}>{user?.deliveryFullName}</Text>
+          <Text type={textTypes.BODY.LG}>
+            {user?.phoneNumber}
+            {user?.phoneNumber && user?.altMobileNumber && ' | '}
+            {user?.altMobileNumber}
+          </Text>
+
+          <Text type={textTypes.BODY.LG}>{user?.deliveryAddress}</Text>
+
+          <ButtonLink
+            className={styles.Checkout_delivery_details_button}
+            to="/buyer/delivery"
+          >
+            Change Address
+          </ButtonLink>
+        </div>
+      </Card>
 
       <Card className={styles.Checkout_details}>
         <Text
@@ -112,87 +101,90 @@ function Checkout() {
         >
           Products Ordered
         </Text>
-        <Text 
+        <Text
           className={styles.Checkout_details_customization}
           colorClass={colorClasses.NEUTRAL['400']}
         >
           Customization
         </Text>
 
-        <Text 
+        <Text
           className={styles.Checkout_details_price}
           colorClass={colorClasses.NEUTRAL['400']}
         >
           Unit Price
         </Text>
 
-        <Text 
+        <Text
           className={styles.Checkout_details_quantity}
           colorClass={colorClasses.NEUTRAL['400']}
         >
           Quantity
         </Text>
 
-        <Text 
+        <Text
           className={styles.Checkout_details_total}
           colorClass={colorClasses.NEUTRAL['400']}
         >
           Total Price
         </Text>
       </Card>
-       
-      { userCart.length > 0 ? (
+
+      {userCart.length > 0 ? (
         <CheckoutCardList
           className={styles.Checkout_products}
           userCart={userCart}
         />
       ) : (
-        <NoResults 
+        <NoResults
           className={styles.Checkout_noResults}
           message="No products ordered yet."
         />
       )}
 
-     <div className={styles.Checkout_footer}>
-      <div className={styles.Checkout_footer_container}> 
-        <div className={styles.Checkout_footer_content}>
-          <Text 
-            colorClass={colorClasses.NEUTRAL['400']}
-            type={textTypes.HEADING.XXS}
-          >
-            Total Payment:
-          </Text>
+      <div className={styles.Checkout_footer}>
+        <div className={styles.Checkout_footer_container}>
+          <div className={styles.Checkout_footer_content}>
+            <Text
+              colorClass={colorClasses.NEUTRAL['400']}
+              type={textTypes.HEADING.XXS}
+            >
+              Total Payment:
+            </Text>
 
-          <Text 
-            colorClass={colorClasses.BLUE['300']}
-            type={textTypes.HEADING.XS}
-          >
-            ₱{totalPrice.toLocaleString()}
-          </Text>
+            <Text
+              colorClass={colorClasses.BLUE['300']}
+              type={textTypes.HEADING.XS}
+            >
+              ₱{totalPrice.toLocaleString()}
+            </Text>
 
-          <Button
-            className={styles.Checkout_footer_button}
-            disabled={totalPrice === 0 || isPlacingOrder}
-            onClick={ async () => {             
-              if (productId) {
-                const { quantity, customizationMessage } = userCart[0].cartItems[0];
+            <Button
+              className={styles.Checkout_footer_button}
+              disabled={totalPrice === 0 || isPlacingOrder}
+              onClick={async () => {
+                if (productId) {
+                  const { quantity, customizationMessage } =
+                    userCart[0].cartItems[0];
 
-                await checkoutProduct(productId, {
-                  quantity,
-                  customizationMessage
-                });
-              } else  {
-                const cartItemIds = userCart.map((cart) => cart.cartItems.map((item) => item.id));
+                  await checkoutProduct(productId, {
+                    quantity,
+                    customizationMessage,
+                  });
+                } else {
+                  const cartItemIds = userCart.map((cart) =>
+                    cart.cartItems.map((item) => item.id)
+                  );
 
-                await checkoutOrder(cartItemIds.flat());
-              }
-            }}
-          >
-            Place Order
-          </Button>
+                  await checkoutOrder(cartItemIds.flat());
+                }
+              }}
+            >
+              Place Order
+            </Button>
+          </div>
         </div>
       </div>
-     </div>
     </div>
   );
 }

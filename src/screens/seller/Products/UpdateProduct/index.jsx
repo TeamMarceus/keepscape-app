@@ -15,8 +15,7 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-
+import {
   Button,
   ControlledInput,
   ControlledTextArea,
@@ -26,13 +25,17 @@ import {
   Checkbox,
   Grid,
   ControlledSelect,
-  ScreenLoader
+  ScreenLoader,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
 
-import {  useProduct, useProductCategories, useProductPlaces, useUpdateProduct } from '@/hooks';
-
+import {
+  useProduct,
+  useProductCategories,
+  useProductPlaces,
+  useUpdateProduct,
+} from '@/hooks';
 
 import { toastError, toastSuccess } from '@/utils/toasts';
 
@@ -49,7 +52,13 @@ const validate = (values) => {
     errors.description = 'This field is required.';
   }
 
-  if (!values.image1 && !values.image2 && !values.image3 && !values.image4 && !values.image5) {
+  if (
+    !values.image1 &&
+    !values.image2 &&
+    !values.image3 &&
+    !values.image4 &&
+    !values.image5
+  ) {
     errors.image1 = 'Atleast 1 image is required.';
   }
 
@@ -76,27 +85,28 @@ const validate = (values) => {
   return errors;
 };
 
-function UpdateProduct({id}) {
+function UpdateProduct({ id }) {
   const router = useRouter();
-  const {isLoading: isProductCategoriesLoading, productCategories} = useProductCategories();
-  const {isLoading: isProductPlacesLoading, productPlaces} = useProductPlaces();
+  const { isLoading: isProductCategoriesLoading, productCategories } =
+    useProductCategories();
+  const { isLoading: isProductPlacesLoading, productPlaces } =
+    useProductPlaces();
 
-  const { isUpdating: isUpdatingProduct, updateProduct} = useUpdateProduct();
+  const { isUpdating: isUpdatingProduct, updateProduct } = useUpdateProduct();
 
-  const { 
-    isLoading: isProductLoading, 
-    product,
-  } = useProduct(id);
+  const { isLoading: isProductLoading, product } = useProduct(id);
 
-  if (isProductLoading ||isProductCategoriesLoading || isProductPlacesLoading) {
-    return <ScreenLoader/>;
+  if (
+    isProductLoading ||
+    isProductCategoriesLoading ||
+    isProductPlacesLoading
+  ) {
+    return <ScreenLoader />;
   }
 
   return (
     <div className={styles.UpdateProduct}>
-      <Text type={textTypes.HEADING.XS}>
-        Update Product
-      </Text>
+      <Text type={textTypes.HEADING.XS}>Update Product</Text>
 
       <div className={styles.UpdateProduct_content}>
         <Formik
@@ -108,8 +118,11 @@ function UpdateProduct({id}) {
             image3: product.images[2] || '',
             image4: product.images[3] || '',
             image5: product.images[4] || '',
-            place: {label: product.province.name, value: product.province.id},
-            categories: product.categories.map((category) => ({label: category.name, value: category.id})), 
+            place: { label: product.province.name, value: product.province.id },
+            categories: product.categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            })),
             quantity: product.quantity,
             isCustomizable: product.isCustomizable,
             price: product.sellerPrice,
@@ -119,7 +132,9 @@ function UpdateProduct({id}) {
               name: values.name,
               description: values.description,
               placeId: values.place.value,
-              categoryIds: !isEmpty(values.categories) && values.categories.map((category) => category.value),
+              categoryIds:
+                !isEmpty(values.categories) &&
+                values.categories.map((category) => category.value),
               quantity: values.quantity,
               isCustomizable: values.isCustomizable,
               sellerPrice: values.price,
@@ -139,27 +154,30 @@ function UpdateProduct({id}) {
               values.image4,
               values.image5,
             ];
-            
+
             const filteredImages = {};
             const deleteUrls = [];
-            
-            let index = 1; 
+
+            let index = 1;
 
             for (const image of images) {
               const propertyName = `image${index}`;
-             
+
               // Check if the image is empty or not and if it is a file
               if (!isEmpty(image) && image instanceof File) {
                 filteredImages[propertyName] = image;
               }
 
               // Check the index of the product image that has been changed and put it in the deleted urls array
-              if ((!isEmpty(image) && image instanceof File && product.images[index - 1]) ||
-                  (isEmpty(image) && product.images[index - 1])) {
+              if (
+                (!isEmpty(image) &&
+                  image instanceof File &&
+                  product.images[index - 1]) ||
+                (isEmpty(image) && product.images[index - 1])
+              ) {
                 deleteUrls.push(product.images[index - 1]);
               }
 
-         
               index++;
             }
 
@@ -169,10 +187,11 @@ function UpdateProduct({id}) {
               deleteUrls,
             };
 
-            const { responseCode: updateProductResponseCode } = await updateProduct({
-              productId: id, 
-              body: productTobeUpdated
-            });
+            const { responseCode: updateProductResponseCode } =
+              await updateProduct({
+                productId: id,
+                body: productTobeUpdated,
+              });
 
             const updateProductCallbacks = {
               updated: () => {
@@ -229,10 +248,10 @@ function UpdateProduct({id}) {
                 className={styles.UpdateProduct_content_withMargin}
                 error={errors.place}
                 name="type"
-                options={ productPlaces.map((place) => ({
-                    label: place.name,
-                    value: place.id,
-                  }))}
+                options={productPlaces.map((place) => ({
+                  label: place.name,
+                  value: place.id,
+                }))}
                 placeholder="Choose a place*"
                 value={values.place}
                 onChange={(val) => setFieldValue('place', val)}
@@ -244,15 +263,17 @@ function UpdateProduct({id}) {
                 error={errors.categories}
                 name="type"
                 options={productCategories.map((category) => ({
-                    label: category.name,
-                    value: category.id,
-                  }))}
+                  label: category.name,
+                  value: category.id,
+                }))}
                 placeholder="Choose categories*"
                 value={values.categories}
-                onChange={(val) => {setFieldValue('categories', val)}}
+                onChange={(val) => {
+                  setFieldValue('categories', val);
+                }}
               />
 
-              <Text 
+              <Text
                 className={styles.UpdateProduct_content_imageText}
                 type={textTypes.HEADING.XXXS}
               >
@@ -262,7 +283,7 @@ function UpdateProduct({id}) {
               <Grid type={gridTypes.FIVE}>
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 1" 
+                  text="Product Image 1"
                   value={values.image1}
                   onChange={(image) => {
                     setFieldValue('image1', image);
@@ -271,7 +292,7 @@ function UpdateProduct({id}) {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 2" 
+                  text="Product Image 2"
                   value={values.image2}
                   onChange={(image) => {
                     setFieldValue('image2', image);
@@ -280,7 +301,7 @@ function UpdateProduct({id}) {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 3" 
+                  text="Product Image 3"
                   value={values.image3}
                   onChange={(image) => {
                     setFieldValue('image3', image);
@@ -289,7 +310,7 @@ function UpdateProduct({id}) {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 4" 
+                  text="Product Image 4"
                   value={values.image4}
                   onChange={(image) => {
                     setFieldValue('image4', image);
@@ -298,14 +319,14 @@ function UpdateProduct({id}) {
 
                 <ImageDropzone
                   error={errors.image1}
-                  text="Product Image 5" 
+                  text="Product Image 5"
                   value={values.image5}
                   onChange={(image) => {
                     setFieldValue('image5', image);
                   }}
-                />  
+                />
               </Grid>
-              
+
               <Grid className={styles.UpdateProduct_content_bottomGrid}>
                 <div className={styles.UpdateProduct_content_bottomGrid_left}>
                   <ControlledInput
@@ -337,22 +358,28 @@ function UpdateProduct({id}) {
                     value={values.price}
                     onChange={(e) => setFieldValue('price', e.target.value)}
                   />
-                
-                  <div className={styles.UpdateProduct_content_price_commission}>
-                    <Text 
+
+                  <div
+                    className={styles.UpdateProduct_content_price_commission}
+                  >
+                    <Text
                       colorClass={colorClasses.NEUTRAL['400']}
                       type={textTypes.HEADING.XS}
                     >
                       +
                     </Text>
                     <Text type={textTypes.HEADING.XXXS}>
-                    <span className={styles.UpdateProduct_content_price_commission_span}>{`₱${(values.price * 0.05).toFixed(2)}`}</span> (5% service fee)
+                      <span
+                        className={
+                          styles.UpdateProduct_content_price_commission_span
+                        }
+                      >{`₱${(values.price * 0.05).toFixed(2)}`}</span>{' '}
+                      (5% service fee)
                     </Text>
                   </div>
 
                   <div className={styles.UpdateProduct_content_price_total}>
                     Customer's Price:
-
                     <Text
                       colorClass={colorClasses.GREEN['400']}
                       type={textTypes.HEADING.SM}
@@ -379,19 +406,23 @@ function UpdateProduct({id}) {
                       onClick={() => {}}
                     >
                       <span
-                        className={styles.UpdateProduct_content_buttonGroup_buttonText}
+                        className={
+                          styles.UpdateProduct_content_buttonGroup_buttonText
+                        }
                       >
                         Update Product
                         {isUpdatingProduct && (
                           <Spinner
-                            className={styles.UpdateProduct_content_buttonGroup_spinner}
+                            className={
+                              styles.UpdateProduct_content_buttonGroup_spinner
+                            }
                             colorName={colorNames.WHITE}
                             size={spinnerSizes.XS}
                           />
                         )}
                       </span>
                     </Button>
-                   </div>
+                  </div>
                 </div>
               </Grid>
             </form>
@@ -399,7 +430,7 @@ function UpdateProduct({id}) {
         </Formik>
       </div>
     </div>
-  )
+  );
 }
 
 UpdateProduct.propTypes = {

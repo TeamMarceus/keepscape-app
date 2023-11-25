@@ -26,20 +26,15 @@ export const metadata = {
   title: 'Keepscape',
 };
 
-
 export default function RootLayout({ children }) {
   return (
     <html className={`${inter.variable} ${montserrat.variable}`} lang="en">
       <body>
-        <NextTopLoader
-          color='#3BAFDA'
-          height={5}
-          showSpinner={false}
-        />
-       <Providers>{children}</Providers>
+        <NextTopLoader color="#3BAFDA" height={5} showSpinner={false} />
+        <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }
 
 RootLayout.propTypes = {

@@ -11,15 +11,15 @@ import {
   userStatus,
 } from '@/app-globals';
 
-import { 
-  IconButton, 
-  Card, 
-  ControlledInput, 
-  Icon, 
-  NoResults, 
+import {
+  IconButton,
+  Card,
+  ControlledInput,
+  Icon,
+  NoResults,
   Text,
   Pagination,
-  ControlledTextArea, 
+  ControlledTextArea,
 } from '@/components';
 
 import { textAreaTypes } from '@/components/TextArea/constants';
@@ -37,23 +37,24 @@ function ActiveSellers() {
   const router = useRouter();
   const { windowSize } = useWindowSize();
   const searchParams = useSearchParams();
-  
+
   const page = searchParams.get('page') || 1;
   const [currentPage, setCurrentPage] = useState(page);
   const [search, setSearch] = useState('');
 
   const {
-    isLoading: isActiveSellersLoading, 
-    sellers, 
+    isLoading: isActiveSellersLoading,
+    sellers,
     totalPages,
     isUpdating,
-    updateSellerStatus
-   } = useSellers({ page, pageSize: 10, isBanned: false, search });
+    updateSellerStatus,
+  } = useSellers({ page, pageSize: 10, isBanned: false, search });
 
   const [isIdModalOpen, setIsIdModalOpen] = useState(false);
-  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] = useState(false);
+  const [isBusinessPermitModalOpen, setIsBusinessPermitModalOpen] =
+    useState(false);
   const [isReasonModalOpen, setIsReasonModalOpen] = useState(false);
-  const [selectedSeller, setSelectedSeller] = useState({})
+  const [selectedSeller, setSelectedSeller] = useState({});
 
   const filteredActiveSellers = sellers.filter((seller) => {
     const searchLowerCase = search.toLowerCase();
@@ -68,9 +69,7 @@ function ActiveSellers() {
   return (
     <>
       <div className={styles.ActiveSellers}>
-        <Text type={textTypes.HEADING.XS}>
-          Active Sellers
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Active Sellers</Text>
 
         <ControlledInput
           className={styles.ActiveSellers_search}
@@ -172,22 +171,35 @@ function ActiveSellers() {
                       className={cn(
                         styles.ActiveSellers_grid_header,
                         styles.ActiveSellers_grid_column,
-                        styles.ActiveSellers_grid_header_action,
+                        styles.ActiveSellers_grid_header_action
                       )}
                     >
                       Actions
                     </div>
-                    
+
                     {/* Header of OrderGrid ends here */}
                   </Card>
 
                   {/* Body of OrderGrid starts here */}
                   {filteredActiveSellers.map(
-                    ({ id, dateTimeCreated, firstName, lastName, sellerName, email,
-                       phoneNumber, description, idImageUrl, businessPermitUrl  }) =>
+                    ({
+                      id,
+                      dateTimeCreated,
+                      firstName,
+                      lastName,
+                      sellerName,
+                      email,
+                      phoneNumber,
+                      description,
+                      idImageUrl,
+                      businessPermitUrl,
+                    }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
-                        <Card key={id} className={styles.ActiveSellers_grid_sellerGrid}>
+                        <Card
+                          key={id}
+                          className={styles.ActiveSellers_grid_sellerGrid}
+                        >
                           <div className={styles.ActiveSellers_grid_column}>
                             {dateTimeCreated.split('T')[0]}
                           </div>
@@ -199,19 +211,21 @@ function ActiveSellers() {
                           <div className={styles.ActiveSellers_grid_column}>
                             {sellerName}
                           </div>
-                            
+
                           <div className={styles.ActiveSellers_grid_column}>
                             {email}
                           </div>
 
                           <div className={styles.ActiveSellers_grid_column}>
-                            {phoneNumber} 
+                            {phoneNumber}
                           </div>
 
                           <ControlledTextArea
                             disabled
-                            inputClassName={cn(styles.ActiveSellers_grid_column,
-                              styles.ActiveSellers_grid_column_description)}
+                            inputClassName={cn(
+                              styles.ActiveSellers_grid_column,
+                              styles.ActiveSellers_grid_column_description
+                            )}
                             name="description"
                             type={textAreaTypes.SLIM}
                             value={description}
@@ -222,14 +236,16 @@ function ActiveSellers() {
                           jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Valid Id"
-                            className={cn(styles.ActiveSellers_grid_column, 
-                              styles.ActiveSellers_grid_column_id)}
+                            className={cn(
+                              styles.ActiveSellers_grid_column,
+                              styles.ActiveSellers_grid_column_id
+                            )}
                             height={60}
                             src={idImageUrl}
                             width={60}
                             onClick={() => {
                               setIsIdModalOpen(true);
-                              setSelectedSeller({ sellerName, idImageUrl })
+                              setSelectedSeller({ sellerName, idImageUrl });
                             }}
                           />
 
@@ -237,14 +253,19 @@ function ActiveSellers() {
                           jsx-a11y/no-noninteractive-element-interactions */}
                           <img
                             alt="Business Permit"
-                            className={cn(styles.ActiveSellers_grid_column, 
-                              styles.ActiveSellers_grid_column_id)}
+                            className={cn(
+                              styles.ActiveSellers_grid_column,
+                              styles.ActiveSellers_grid_column_id
+                            )}
                             height={60}
                             src={businessPermitUrl}
                             width={60}
                             onClick={() => {
                               setIsBusinessPermitModalOpen(true);
-                              setSelectedSeller({ sellerName, businessPermitUrl })
+                              setSelectedSeller({
+                                sellerName,
+                                businessPermitUrl,
+                              });
                             }}
                           />
 
@@ -252,7 +273,7 @@ function ActiveSellers() {
                             <div className={styles.ActiveSellers_grid_buttons}>
                               <IconButton
                                 className={styles.ActiveSellers_grid_button_ban}
-                                icon='person_off'
+                                icon="person_off"
                                 type={iconButtonTypes.ICON.MD}
                                 onClick={() => {
                                   setSelectedSeller({ id, sellerName });
@@ -269,7 +290,9 @@ function ActiveSellers() {
                           className={styles.ActiveSellers_grid_sellerGrid}
                         >
                           <summary className={styles.ActiveSellers_grid_title}>
-                            <div className={styles.ActiveSellers_grid_title_info}>
+                            <div
+                              className={styles.ActiveSellers_grid_title_info}
+                            >
                               <Icon
                                 className={styles.ActiveSellers_grid_title_icon}
                                 icon="expand_more"
@@ -289,7 +312,9 @@ function ActiveSellers() {
                               SellerName:
                             </Text>
 
-                            <Text type={textTypes.HEADING.XXS}>{sellerName}</Text>
+                            <Text type={textTypes.HEADING.XXS}>
+                              {sellerName}
+                            </Text>
                           </div>
                         </details>
                       )
@@ -297,13 +322,15 @@ function ActiveSellers() {
                   {/* Body of OrderGrid ends here */}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.ActiveSellers_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
 
-                    router.push(`/admin/sellers/active?page=${value}`, { scroll: false })
+                    router.push(`/admin/sellers/active?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -316,28 +343,27 @@ function ActiveSellers() {
             )}
           </>
         )}
-
       </div>
 
-      {isIdModalOpen &&
+      {isIdModalOpen && (
         <IdModal
           handleClose={() => setIsIdModalOpen(false)}
           image={selectedSeller.idImageUrl}
           isOpen={isIdModalOpen}
           title={`${selectedSeller.sellerName} ID`}
         />
-      }
+      )}
 
-      {isBusinessPermitModalOpen &&
+      {isBusinessPermitModalOpen && (
         <IdModal
           handleClose={() => setIsBusinessPermitModalOpen(false)}
           image={selectedSeller.businessPermitUrl}
           isOpen={isBusinessPermitModalOpen}
           title={`${selectedSeller.sellerName} Business Permit`}
         />
-      }
+      )}
 
-      {isReasonModalOpen &&
+      {isReasonModalOpen && (
         <ReasonModal
           handleClose={() => setIsReasonModalOpen(false)}
           isOpen={isReasonModalOpen}
@@ -347,8 +373,8 @@ function ActiveSellers() {
           updateUser={updateSellerStatus}
           userId={selectedSeller.id}
         />
-      }
+      )}
     </>
-  )
+  );
 }
 export default ActiveSellers;

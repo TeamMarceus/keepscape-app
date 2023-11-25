@@ -10,5 +10,5 @@ export default function ProductPage() {
   const params = useParams();
   const { id } = params;
 
- return <Product id={id}/>
+  return <Product id={id} />;
 }

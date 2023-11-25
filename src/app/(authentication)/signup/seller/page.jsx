@@ -59,7 +59,7 @@ const validate = (values) => {
     errors.email = 'This field is required.';
   } else if (!isValidEmail(values.email)) {
     errors.email = 'This must be a valid email address.';
-  } 
+  }
 
   if (!values.phoneNumber) {
     errors.phoneNumber = 'This field is required.';
@@ -100,15 +100,14 @@ export default function SellerSignUpPage() {
 
   const [isSigningUp, setIsSigningUp] = useState(false);
 
-
   return (
     <section className={styles.SellerSignUpPage}>
-        <Text 
-          className={styles.SellerSignUpPage_header}
-          type={textTypes.HEADING.MD}
-        >
-          Enter your account details
-        </Text>
+      <Text
+        className={styles.SellerSignUpPage_header}
+        type={textTypes.HEADING.MD}
+      >
+        Enter your account details
+      </Text>
 
       <div className={styles.SellerSignUpPage_content}>
         <Formik
@@ -148,9 +147,8 @@ export default function SellerSignUpPage() {
 
             // Sign up the seller
             try {
-              const { data: signUpResponse } = await UsersService.signupSeller(
-                currentFormValues
-              );
+              const { data: signUpResponse } =
+                await UsersService.signupSeller(currentFormValues);
 
               loginUpdate({
                 user: {
@@ -158,12 +156,8 @@ export default function SellerSignUpPage() {
                 },
               });
 
-             // Redirect the seller
-             redirect(
-              signUpResponse, 
-              null, 
-              null);
-
+              // Redirect the seller
+              redirect(signUpResponse, null, null);
             } catch (error) {
               setIsSigningUp(false);
               const responseData = error.response.data;
@@ -176,7 +170,7 @@ export default function SellerSignUpPage() {
                 setIsSigningUp(false);
               }
 
-              const {status} = error.response;
+              const { status } = error.response;
               const dataErrors = responseData.errors;
 
               switch (status) {
@@ -193,7 +187,7 @@ export default function SellerSignUpPage() {
                     });
                   }
                   break;
-                
+
                 case 401:
                   setIsSigningUp(false);
                   setErrors({
@@ -321,12 +315,16 @@ export default function SellerSignUpPage() {
                   onClick={() => {}}
                 >
                   <span
-                    className={styles.SellerSignUpPage_content_buttonGroup_buttonText}
+                    className={
+                      styles.SellerSignUpPage_content_buttonGroup_buttonText
+                    }
                   >
                     Sign Up
                     {isSigningUp && (
                       <Spinner
-                        className={styles.SellerSignUpPage_content_buttonGroup_spinner}
+                        className={
+                          styles.SellerSignUpPage_content_buttonGroup_spinner
+                        }
                         colorName={colorNames.WHITE}
                         size={spinnerSizes.XS}
                       />

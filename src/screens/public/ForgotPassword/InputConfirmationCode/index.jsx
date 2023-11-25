@@ -12,21 +12,19 @@ import {
   inputTypes,
   spinnerSizes,
   textTypes,
-
 } from '@/app-globals';
-import { 
-  Button, 
-  ButtonLink, 
-  ControlledInput, 
-  Spinner, 
-  Text 
+import {
+  Button,
+  ButtonLink,
+  ControlledInput,
+  Spinner,
+  Text,
 } from '@/components';
 
 import { useInterval } from '@/hooks';
 import { UsersService } from '@/services';
 
 import styles from './styles.module.scss';
-
 
 const RESEND_VERIFICATION_COOLDOWN = 30;
 
@@ -42,7 +40,7 @@ const validate = (values) => {
 
 function InputConfirmationCode() {
   const router = useRouter();
-  const searchParams  = useSearchParams();
+  const searchParams = useSearchParams();
   const email = searchParams.get('email');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -64,13 +62,12 @@ function InputConfirmationCode() {
   return (
     <div className={styles.InputConfirmationCode}>
       <div className={styles.InputConfirmationCode_header}>
-      <Text type={textTypes.HEADING.LG} >
-        Confirm your Email
-      </Text>
+        <Text type={textTypes.HEADING.LG}>Confirm your Email</Text>
 
-      <Text type={textTypes.BODY.LG}>
-        We've sent a confirmation code to your email. Input the code to proceed
-      </Text>
+        <Text type={textTypes.BODY.LG}>
+          We've sent a confirmation code to your email. Input the code to
+          proceed
+        </Text>
       </div>
 
       <Formik
@@ -86,18 +83,19 @@ function InputConfirmationCode() {
 
           try {
             // Verify the confirmation code
-            const {
-              status: verifyConfirmationCodeStatus,
-            } = await UsersService.verifyCode({
-              email,
-              code: values.code,
-            });
+            const { status: verifyConfirmationCodeStatus } =
+              await UsersService.verifyCode({
+                email,
+                code: values.code,
+              });
 
             if (verifyConfirmationCodeStatus === 200) {
-              router.push(`/forgot-password/password?email=${email}&code=${values.code}`);
+              router.push(
+                `/forgot-password/password?email=${email}&code=${values.code}`
+              );
             }
           } catch (error) {
-            const {status} = error.response;
+            const { status } = error.response;
 
             switch (status) {
               case 400:
@@ -119,14 +117,14 @@ function InputConfirmationCode() {
                 setErrors({
                   code: 'The user is banned.',
                 });
-              break;
+                break;
 
               case 404:
                 setIsSubmitting(false);
                 setErrors({
                   code: 'The user does not exist.',
                 });
-              break;
+                break;
 
               case 500:
                 setIsSubmitting(false);
@@ -141,10 +139,7 @@ function InputConfirmationCode() {
         }}
       >
         {({ errors, values, handleSubmit, setFieldValue }) => (
-          <form 
-            className={styles.InputEmail_content} 
-            onSubmit={handleSubmit}
-          >
+          <form className={styles.InputEmail_content} onSubmit={handleSubmit}>
             <ControlledInput
               className={styles.InputConfirmationCode_withMarginBottom}
               error={errors.code}
@@ -153,9 +148,7 @@ function InputConfirmationCode() {
               placeholder="Confirmation Code*"
               type={inputTypes.SLIM}
               value={values.code}
-              onChange={(e) =>
-                setFieldValue('code', e.target.value)
-              }
+              onChange={(e) => setFieldValue('code', e.target.value)}
             />
 
             {errors.overall && (
@@ -180,18 +173,24 @@ function InputConfirmationCode() {
 
             <div className={styles.InputConfirmationCode_content_buttonGroup}>
               <Button
-                className={styles.InputConfirmationCode_content_buttonGroup_submitButton}
+                className={
+                  styles.InputConfirmationCode_content_buttonGroup_submitButton
+                }
                 disabled={isSubmitting}
                 kind={buttonKinds.SUBMIT}
                 onClick={() => {}}
               >
                 <span
-                  className={styles.InputConfirmationCode_content_buttonGroup_buttonText}
+                  className={
+                    styles.InputConfirmationCode_content_buttonGroup_buttonText
+                  }
                 >
                   Submit
                   {isSubmitting && (
                     <Spinner
-                      className={styles.InputConfirmationCode_content_buttonGroup_spinner}
+                      className={
+                        styles.InputConfirmationCode_content_buttonGroup_spinner
+                      }
                       colorName={colorNames.WHITE}
                       size={spinnerSizes.XS}
                     />
@@ -200,8 +199,8 @@ function InputConfirmationCode() {
               </Button>
 
               <ButtonLink
-                icon='arrow_back'
-                to='/login'
+                icon="arrow_back"
+                to="/login"
                 type={buttonTypes.TEXT.BLUE}
               >
                 Back to Login

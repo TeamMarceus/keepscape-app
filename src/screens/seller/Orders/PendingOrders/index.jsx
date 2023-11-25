@@ -9,14 +9,14 @@ import {
   textTypes,
 } from '@/app-globals';
 
-import { 
-  Button, 
-  Card, 
-  ConfirmModal, 
-  ControlledInput, 
-  NoResults, 
-  Pagination, 
-  Text 
+import {
+  Button,
+  Card,
+  ConfirmModal,
+  ControlledInput,
+  NoResults,
+  Pagination,
+  Text,
 } from '@/components';
 
 import { useSellerOrders, useWindowSize } from '@/hooks';
@@ -29,7 +29,6 @@ import DeliveryDetailsModal from '../../../common/Modals/DeliveryDetailsModal';
 import AddDeliveryFeeModal from './AddDeliveryFeeModal';
 import styles from './styles.module.scss';
 
-
 function PendingOrders() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,23 +37,26 @@ function PendingOrders() {
   const page = searchParams.get('page') || 1;
 
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] = useState(false);
-  const [isAddDeliveryFeeModalOpen, setIsAddDeliveryFeeModalOpen] = useState(false);
+  const [isDeliveryDetailsModalOpen, setIsDeliveryDetailsModalOpen] =
+    useState(false);
+  const [isAddDeliveryFeeModalOpen, setIsAddDeliveryFeeModalOpen] =
+    useState(false);
   const [isBuyerModalOpen, setIsBuyerModalOpen] = useState(false);
-  const [isCancelConfirmationToggled, toggleCancelConfirmation] = useState(false);
+  const [isCancelConfirmationToggled, toggleCancelConfirmation] =
+    useState(false);
 
   const [selectedOrder, setSelectedOrder] = useState({});
 
-  const { 
-    isLoading: isOrdersLoading, 
+  const {
+    isLoading: isOrdersLoading,
     orders,
     totalPages,
     isAdding: isAddingDeliveryFee,
     addDeliveryFee,
     isCancelling: isCancellingOrder,
-    cancelOrder, 
+    cancelOrder,
   } = useSellerOrders({
     status: orderStatus.PENDING,
     search,
@@ -62,19 +64,20 @@ function PendingOrders() {
     pageSize: 10,
   });
 
-  const filteredOrders = orders.filter((order) => (
-    order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
-    order.buyer.lastName.toLowerCase().includes(search.toLowerCase()) ||
-    order.items.some((item) => item.productName.toLowerCase().includes(search.toLowerCase())) ||
-    order.dateTimeCreated.split('T')[0].includes(search.toLowerCase())
-  ));
+  const filteredOrders = orders.filter(
+    (order) =>
+      order.buyer.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      order.buyer.lastName.toLowerCase().includes(search.toLowerCase()) ||
+      order.items.some((item) =>
+        item.productName.toLowerCase().includes(search.toLowerCase())
+      ) ||
+      order.dateTimeCreated.split('T')[0].includes(search.toLowerCase())
+  );
 
   return (
     <>
       <div className={styles.PendingOrders}>
-        <Text type={textTypes.HEADING.XS}>
-          Pending Orders
-        </Text>
+        <Text type={textTypes.HEADING.XS}>Pending Orders</Text>
 
         <ControlledInput
           className={styles.PendingOrders_search}
@@ -94,7 +97,7 @@ function PendingOrders() {
               <>
                 <div className={styles.PendingOrders_orders}>
                   {filteredOrders.map(
-                    ({ id, buyer, dateTimeCreated, items, totalPrice}) =>
+                    ({ id, buyer, dateTimeCreated, items, totalPrice }) =>
                       windowSize.width > 767 ? (
                         // Desktop View
                         <Card key={id} className={styles.PendingOrders_order}>
@@ -105,8 +108,8 @@ function PendingOrders() {
                                 icon="person"
                                 type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
-                                  setSelectedOrder({id, buyer});
-                                  setIsBuyerModalOpen(true)
+                                  setSelectedOrder({ id, buyer });
+                                  setIsBuyerModalOpen(true);
                                 }}
                               >
                                 <Text type={textTypes.HEADING.XXXS}>
@@ -115,8 +118,7 @@ function PendingOrders() {
                               </Button>
 
                               <div className={styles.PendingOrders_info_date}>
-                                Date Ordered: 
-
+                                Date Ordered:
                                 <Text
                                   colorClass={colorClasses.NEUTRAL['400']}
                                   type={textTypes.HEADING.XXXS}
@@ -128,107 +130,133 @@ function PendingOrders() {
 
                             <div className={styles.PendingOrders_info_buttons}>
                               <Button
-                                className={styles.PendingOrders_info_statusButton}
-                                icon='pending'
+                                className={
+                                  styles.PendingOrders_info_statusButton
+                                }
+                                icon="pending"
                                 type={buttonTypes.TEXT.BLUE}
                                 onClick={() => {
-                                  setSelectedOrder({id, buyer});
-                                  setIsDeliveryDetailsModalOpen(true)
+                                  setSelectedOrder({ id, buyer });
+                                  setIsDeliveryDetailsModalOpen(true);
                                 }}
                               >
                                 Pending
                               </Button>
                             </div>
-                            
                           </div>
 
                           {items.map(
-                            ({ productId, productImageUrl, productName, price, quantity, customizationMessage  }) => (
-                            <div key={productId} className={styles.PendingOrders_item}>
-                              <div className={styles.PendingOrders_product}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                  alt="Product"
-                                  className={styles.PendingOrders_product_image}
-                                  height={60}
-                                  src={productImageUrl}
-                                  width={60}
-                                />
+                            ({
+                              productId,
+                              productImageUrl,
+                              productName,
+                              price,
+                              quantity,
+                              customizationMessage,
+                            }) => (
+                              <div
+                                key={productId}
+                                className={styles.PendingOrders_item}
+                              >
+                                <div className={styles.PendingOrders_product}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt="Product"
+                                    className={
+                                      styles.PendingOrders_product_image
+                                    }
+                                    height={60}
+                                    src={productImageUrl}
+                                    width={60}
+                                  />
 
-                                <div>
-                                  <Text 
-                                    className={styles.PendingOrders_product_text}
+                                  <div>
+                                    <Text
+                                      className={
+                                        styles.PendingOrders_product_text
+                                      }
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      {productName}
+                                    </Text>
+                                  </div>
+                                </div>
+
+                                <div className={styles.PendingOrders_quantity}>
+                                  Quantity:
+                                  <Text
+                                    colorClass={colorClasses.NEUTRAL['400']}
                                     type={textTypes.HEADING.XXS}
                                   >
-                                    {productName}
+                                    {quantity}
+                                  </Text>
+                                </div>
+
+                                <div
+                                  className={
+                                    styles.PendingOrders_customizationText
+                                  }
+                                >
+                                  Customization:
+                                  {customizationMessage ? (
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXXS}
+                                    >
+                                      {customizationMessage}
+                                    </Text>
+                                  ) : (
+                                    <Text
+                                      colorClass={colorClasses.NEUTRAL['400']}
+                                      type={textTypes.HEADING.XXS}
+                                    >
+                                      No Customization
+                                    </Text>
+                                  )}
+                                </div>
+
+                                <div className={styles.PendingOrders_price}>
+                                  Price:
+                                  <Text
+                                    className={styles.PendingOrders_price_text}
+                                    colorClass={colorClasses.NEUTRAL['400']}
+                                    type={textTypes.HEADING.XXS}
+                                  >
+                                    ₱{price.toLocaleString()}
                                   </Text>
                                 </div>
                               </div>
-
-                              <div className={styles.PendingOrders_quantity}>
-                                Quantity:
-                                <Text 
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
-                                >
-                                  {quantity}
-                                </Text>
-                              </div>
-
-                              <div className={styles.PendingOrders_customizationText}>
-                                Customization:
-                                {customizationMessage  ? (
-                                  <Text 
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXXS}
-                                  >
-                                    {customizationMessage } 
-                                  </Text>
-                                  ) : (
-                                  <Text 
-                                    colorClass={colorClasses.NEUTRAL['400']}
-                                    type={textTypes.HEADING.XXS}
-                                  >
-                                    No Customization
-                                  </Text>
-                                )}
-                              </div>
-                            
-
-                              <div className={styles.PendingOrders_price}>
-                                Price:
-                                <Text
-                                  className={styles.PendingOrders_price_text}
-                                  colorClass={colorClasses.NEUTRAL['400']}
-                                  type={textTypes.HEADING.XXS}
-                                >
-                                  ₱{price.toLocaleString()}
-                                </Text>
-                              </div>
-                            </div>
                             )
                           )}
-                          
+
                           <div className={styles.PendingOrders_orderTotal}>
-                            <div className={styles.PendingOrders_orderTotal_text}>
-                              <Text 
+                            <div
+                              className={styles.PendingOrders_orderTotal_text}
+                            >
+                              <Text
                                 colorClass={colorClasses.NEUTRAL['400']}
                                 type={textTypes.HEADING.XXXS}
                               >
                                 Order Total:
                               </Text>
 
-                              <Text 
+                              <Text
                                 colorClass={colorClasses.BLUE['300']}
                                 type={textTypes.HEADING.XXS}
                               >
                                 ₱{totalPrice.toLocaleString()}
-                              </Text>    
-                            </div> 
+                              </Text>
+                            </div>
 
-                            <div className={styles.PendingOrders_orderTotal_buttons}> 
+                            <div
+                              className={
+                                styles.PendingOrders_orderTotal_buttons
+                              }
+                            >
                               <Button
-                                className={styles.PendingOrders_orderTotal_buttons_button}
+                                className={
+                                  styles.PendingOrders_orderTotal_buttons_button
+                                }
                                 disabled={false}
                                 onClick={() => {
                                   setSelectedOrder({ id });
@@ -239,11 +267,13 @@ function PendingOrders() {
                               </Button>
 
                               <Button
-                                className={styles.PendingOrders_orderTotal_buttons_button}
+                                className={
+                                  styles.PendingOrders_orderTotal_buttons_button
+                                }
                                 disabled={false}
                                 type={buttonTypes.SECONDARY.BLUE}
                                 onClick={() => {
-                                  setSelectedOrder({id});
+                                  setSelectedOrder({ id });
                                   toggleCancelConfirmation(true);
                                 }}
                               >
@@ -254,18 +284,19 @@ function PendingOrders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <>
-                        </>
+                        <></>
                       )
                   )}
                 </div>
 
-                <Pagination 
+                <Pagination
                   className={styles.PendingOrders_pagination}
                   currentPage={currentPage}
                   pageJump={(value) => {
                     setCurrentPage(value);
-                    router.push(`/seller/orders/pending?page=${value}`, { scroll: false })
+                    router.push(`/seller/orders/pending?page=${value}`, {
+                      scroll: false,
+                    });
                   }}
                   totalPages={totalPages}
                 />
@@ -292,7 +323,7 @@ function PendingOrders() {
       )}
 
       {isAddDeliveryFeeModalOpen && (
-        <AddDeliveryFeeModal 
+        <AddDeliveryFeeModal
           addDeliveryFee={addDeliveryFee}
           handleClose={() => setIsAddDeliveryFeeModalOpen(false)}
           isAdding={isAddingDeliveryFee}
@@ -339,6 +370,6 @@ function PendingOrders() {
         title="Cancel?"
       />
     </>
-)
+  );
 }
 export default PendingOrders;

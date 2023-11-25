@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -10,16 +10,21 @@ import 'slick-carousel/slick/slick-theme.css';
 import Souvenir1 from '%/images/Beaches/souvenir1.png';
 import Souvenir2 from '%/images/Beaches/souvenir2.png';
 import { colorClasses, textTypes, userTypes } from '@/app-globals';
-import { Button, CardImage, Preloader, Text } from '@/components'
+import { Button, CardImage, Preloader, Text } from '@/components';
 import ProductCard from '@/components/ProductCard';
 import { getUser } from '@/ducks';
 
-import { useBuyerSuggestions, useProductCategories, useProducts, useWindowSize } from '@/hooks';
+import {
+  useBuyerSuggestions,
+  useProductCategories,
+  useProducts,
+  useWindowSize,
+} from '@/hooks';
 
 import { beaches } from '../constants/beaches';
 import { provinces } from '../constants/provinces';
 
-import styles from './styles.module.scss'
+import styles from './styles.module.scss';
 
 const bannerSliderSettings = {
   autoplay: true,
@@ -41,25 +46,20 @@ function Main() {
   let suggestions;
 
   if (user.id && user.userType === userTypes.BUYER) {
-    const {
-      isLoading,
-      buyerSuggestions
-    } = useBuyerSuggestions();
-    
+    const { isLoading, buyerSuggestions } = useBuyerSuggestions();
+
     isSuggestionsLoading = isLoading;
     suggestions = buyerSuggestions;
   }
 
   const {
-    isLoading: isDiscoverProductsLoading, 
-    products: disoverProducts, 
-    totalPages 
+    isLoading: isDiscoverProductsLoading,
+    products: disoverProducts,
+    totalPages,
   } = useProducts({ page: 1, pageSize, isHidden: false });
 
-  const {
-    isLoading: isProductCategoriesLoading, 
-    productCategories
-  } = useProductCategories();
+  const { isLoading: isProductCategoriesLoading, productCategories } =
+    useProductCategories();
 
   let slidesToShow = null;
   if (windowSize.width >= 991 && windowSize.width < 1199) {
@@ -73,7 +73,7 @@ function Main() {
   } else {
     slidesToShow = 4;
   }
- 
+
   const productSliderSettings = {
     lazyLoad: true,
     dots: false,
@@ -122,17 +122,19 @@ function Main() {
         </div>
       </div>
 
-      {(user.id && user?.userType === userTypes.BUYER) && (
-        isSuggestionsLoading ? (
+      {user.id &&
+        user?.userType === userTypes.BUYER &&
+        (isSuggestionsLoading ? (
           <Preloader />
         ) : (
           <>
             <Text
-                className={styles.Main_suggestions_title}  
-                colorClass={colorClasses.NEUTRAL['0']}
-                type={textTypes.HEADING.XS}
-              >
-                Based on your profile, you might be interested in these suggestions...
+              className={styles.Main_suggestions_title}
+              colorClass={colorClasses.NEUTRAL['0']}
+              type={textTypes.HEADING.XS}
+            >
+              Based on your profile, you might be interested in these
+              suggestions...
             </Text>
 
             <div className={styles.Main_suggestions} id="preferences">
@@ -154,58 +156,54 @@ function Main() {
                     </Text>
                   </div>
 
-                  <div 
-                  className={
-                      item.products.length !== 0 ? 
-                      styles.Main_suggestions_item_products :
-                      styles.Main_suggestions_item_productsEmpty
+                  <div
+                    className={
+                      item.products.length !== 0
+                        ? styles.Main_suggestions_item_products
+                        : styles.Main_suggestions_item_productsEmpty
                     }
                   >
-                    {
-                    item.products.length !== 0 ? 
-                      (
-                        <Slider {...productSliderSettings}>
-                          {item.products.map((product) => (
-                            <ProductCard
-                              key={index}
-                              isClickable
-                              className={styles.Main_suggestions_item_product}
-                              id={product.id}
-                              image={product.imageUrl}
-                              name={product.name}
-                              place={product.province.name}
-                              price={product.price}
-                              rating={product.stars}
-                              userId={user?.id}
-                            />
-                          ))}
-                        </Slider>
-                      ) : (
-                        <Text
-                          colorClass={colorClasses.NEUTRAL['600']}  
-                          type={textTypes.HEADING.SM}
-                        >
-                            No specific products available
-                        </Text>
-                      )
-                    }
+                    {item.products.length !== 0 ? (
+                      <Slider {...productSliderSettings}>
+                        {item.products.map((product) => (
+                          <ProductCard
+                            key={index}
+                            isClickable
+                            className={styles.Main_suggestions_item_product}
+                            id={product.id}
+                            image={product.imageUrl}
+                            name={product.name}
+                            place={product.province.name}
+                            price={product.price}
+                            rating={product.stars}
+                            userId={user?.id}
+                          />
+                        ))}
+                      </Slider>
+                    ) : (
+                      <Text
+                        colorClass={colorClasses.NEUTRAL['600']}
+                        type={textTypes.HEADING.SM}
+                      >
+                        No specific products available
+                      </Text>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
           </>
-        )
-      )}
+        ))}
 
       <div className={styles.Main_provinces} id="province">
         <Text
-          className={styles.Main_provinces_title}  
+          className={styles.Main_provinces_title}
           colorClass={colorClasses.NEUTRAL['600']}
           type={textTypes.HEADING.XS}
         >
-           PROVINCES
+          PROVINCES
         </Text>
-        
+
         <div className={styles.Main_provinces_list}>
           {provinces.map((province, index) => (
             <CardImage
@@ -216,7 +214,7 @@ function Main() {
               imageHeight={180}
               imageWidth={180}
               name={province.name}
-              onClick={() => 
+              onClick={() =>
                 router.push(`/keepscape/province/${province.name}`)
               }
             />
@@ -226,16 +224,16 @@ function Main() {
 
       <div className={styles.Main_categories} id="category">
         <Text
-            className={styles.Main_provinces_title}  
-            colorClass={colorClasses.NEUTRAL['600']}
-            type={textTypes.HEADING.XS}
-          >
-           CATEGORIES
+          className={styles.Main_provinces_title}
+          colorClass={colorClasses.NEUTRAL['600']}
+          type={textTypes.HEADING.XS}
+        >
+          CATEGORIES
         </Text>
 
         {isProductCategoriesLoading ? (
           <Preloader />
-          ) : (
+        ) : (
           <div className={styles.Main_categories_list}>
             <Slider {...productSliderSettings}>
               {productCategories.map((category) => (
@@ -247,7 +245,7 @@ function Main() {
                   imageString={category.imageUrl}
                   imageWidth={180}
                   name={category.name}
-                  onClick={() => 
+                  onClick={() =>
                     router.push(`/keepscape/category/${category.name}`)
                   }
                 />
@@ -266,12 +264,13 @@ function Main() {
             DAILY DISCOVER
           </Text>
         </div>
-        
+
         {isDiscoverProductsLoading ? (
           <Preloader />
         ) : (
           <div className={styles.Main_discover_products}>
-            {disoverProducts.length > 0 && disoverProducts.map((product, index) => (
+            {disoverProducts.length > 0 &&
+              disoverProducts.map((product, index) => (
                 <ProductCard
                   key={index}
                   isClickable
@@ -285,7 +284,7 @@ function Main() {
                   userId={user?.id}
                 />
               ))}
-          </div>  
+          </div>
         )}
 
         <Button
@@ -294,7 +293,7 @@ function Main() {
           onClick={() => {
             if (totalPages > 1) {
               setPageSize(pageSize + 5);
-            } 
+            }
 
             if (totalPages === 1) {
               setPageSize(10);
@@ -305,7 +304,7 @@ function Main() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
-export default Main
+export default Main;

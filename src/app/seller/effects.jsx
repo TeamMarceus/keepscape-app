@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -24,20 +24,19 @@ export default function SellerEffects({ children }) {
   const user = useSelector((store) => getUser(store));
   const accessToken = useSelector((store) => getAccessToken(store));
   const refreshToken = useSelector((store) => getRefreshToken(store));
-  
+
   const [isSidebarToggled, toggleSidebar] = useState(false);
 
   usePrivateRoute({ forUserType: userTypes.SELLER });
-  
+
   const [isRedirectSuccessful, setIsRedirectSuccessful] = useState(
-    !!accessToken && !!refreshToken && user.userType === userTypes.SELLER,
+    !!accessToken && !!refreshToken && user.userType === userTypes.SELLER
   );
 
   useEffect(() => {
     if (!user.id) {
       setIsRedirectSuccessful(false);
     }
-    
   }, [user]);
 
   if (!isRedirectSuccessful) {
@@ -46,19 +45,17 @@ export default function SellerEffects({ children }) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Navbar 
-        isSidebarToggled={isSidebarToggled}
-        toggleSidebar={toggleSidebar} 
-      />
-
-      <SellerSidebar 
+      <Navbar
         isSidebarToggled={isSidebarToggled}
         toggleSidebar={toggleSidebar}
       />
 
-      <section className={styles.container}>
-        {children}
-      </section>
+      <SellerSidebar
+        isSidebarToggled={isSidebarToggled}
+        toggleSidebar={toggleSidebar}
+      />
+
+      <section className={styles.container}>{children}</section>
     </LocalizationProvider>
   );
 }

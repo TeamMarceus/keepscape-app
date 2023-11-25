@@ -10,5 +10,5 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword');
 
- return <Search keyword={keyword}/>
+  return <Search keyword={keyword} />;
 }

@@ -7,13 +7,10 @@ import { Footer, Navbar } from '@/components';
 import styles from './styles.module.scss';
 
 export default function KeepscapeEffects({ children }) {
-
   return (
     <>
       <Navbar />
-      <section className={styles.container}>
-        {children}
-      </section>
+      <section className={styles.container}>{children}</section>
       <Footer />
     </>
   );
