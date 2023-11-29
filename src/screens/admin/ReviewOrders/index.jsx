@@ -380,7 +380,7 @@ function ReviewOrders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <></>
+                        <>Mobile View</>
                       )
                   )}
                 </div>

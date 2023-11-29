@@ -480,7 +480,7 @@ function Purchase() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <></>
+                        <>Mobile View</>
                       )
                   )}
                 </div>

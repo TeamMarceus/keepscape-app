@@ -435,7 +435,7 @@ function Orders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <></>
+                        <>Mobile View</>
                       )
                   )}
                 </div>

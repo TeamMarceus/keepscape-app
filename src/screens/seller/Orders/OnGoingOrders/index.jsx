@@ -321,7 +321,7 @@ function OngoingOrders() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <></>
+                        <>Mobile View</>
                       )
                   )}
                 </div>

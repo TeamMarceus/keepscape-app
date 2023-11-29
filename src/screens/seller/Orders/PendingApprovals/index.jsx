@@ -308,7 +308,7 @@ function PendingApprovals() {
                         </Card>
                       ) : (
                         // Mobile View
-                        <></>
+                        <>Mobile View</>
                       )
                   )}
                 </div>
