@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import {
   Chart as ChartJS,
   CategoryScale,
